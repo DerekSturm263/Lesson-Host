@@ -1,0 +1,122 @@
+{
+  "title": "Variables",
+  "lesson": {
+    "chapters": [
+      {
+        "title": "Introduction",
+        "elements": [
+          {
+            "type": "codespace",
+            "text": "In this lesson, you’ll be learning about <i>variables</i> in C#. <b>Variables allow you to store and change values in your program</b>. We will be covering <code>int</code>s, <code>float</code>s, <code>double</code>s, <code>char</code>s, <code>string</code>s, and <code>bool</code>s. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+            "value": {
+              "codespaceLanguage": "csharp",
+              "codespaceFiles": [
+                {
+                  "name": "Variables.cs",
+                  "content": "using System;\n\npublic class Program\n{\n  public static void Main(string[] args)\n  {\n    // Numeric Types.\n    int age = 18;\n    float pi = 3.1415926f;\n    double e = 2.718281828459045;\n    \n    // Alphanumeric Types.\n    char firstLetter = 'a';\n    string name = \"Joseph\";\n    \n    // Logical Types.\n    bool isEven = true;\n  }\n}\n"
+                }
+              ]
+            }
+          },
+          {
+            "type": "shortAnswer",
+            "text": "<i>What are some values in a game that you might need to keep track of or change over time?</i> Think about values like player health, location, inventories, etc. <u>When you’re ready, write your answer above.</u>",
+            "value": {}
+          }
+        ]
+      },
+      {
+        "title": "Numeric Types",
+        "elements": [
+          {
+            "type": "codespace",
+            "text": "In this lesson, you’ll be learning about <i>variables</i> in C#. <b>Variables allow you to store and change values in your program</b>. We will be covering <code>int</code>s, <code>float</code>s, <code>double</code>s, <code>char</code>s, <code>string</code>s, and <code>bool</code>s. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+            "value": {
+              "codespaceLanguage": "csharp",
+              "codespaceFiles": [
+                {
+                  "name": "Variables.cs",
+                  "content": "using System;\n\npublic class Program\n{\n  public static void Main(string[] args)\n  {\n    // Numeric Types.\n    int age = 18;\n    float pi = 3.1415926f;\n    double e = 2.718281828459045;\n    \n    // Alphanumeric Types.\n    char firstLetter = 'a';\n    string name = \"Joseph\";\n    \n    // Logical Types.\n    bool isEven = true;\n  }\n}\n"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Alphanumeric Types",
+        "elements": [
+          {
+            "type": "codespace",
+            "text": "In this lesson, you’ll be learning about <i>variables</i> in C#. <b>Variables allow you to store and change values in your program</b>. We will be covering <code>int</code>s, <code>float</code>s, <code>double</code>s, <code>char</code>s, <code>string</code>s, and <code>bool</code>s. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+            "value": {
+              "codespaceLanguage": "csharp",
+              "codespaceFiles": [
+                {
+                  "name": "Variables.cs",
+                  "content": "using System;\n\npublic class Program\n{\n  public static void Main(string[] args)\n  {\n    // Numeric Types.\n    int age = 18;\n    float pi = 3.1415926f;\n    double e = 2.718281828459045;\n    \n    // Alphanumeric Types.\n    char firstLetter = 'a';\n    string name = \"Joseph\";\n    \n    // Logical Types.\n    bool isEven = true;\n  }\n}\n"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Logical Types",
+        "elements": [
+          {
+            "type": "codespace",
+            "text": "In this lesson, you’ll be learning about <i>variables</i> in C#. <b>Variables allow you to store and change values in your program</b>. We will be covering <code>int</code>s, <code>float</code>s, <code>double</code>s, <code>char</code>s, <code>string</code>s, and <code>bool</code>s. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+            "value": {
+              "codespaceLanguage": "csharp",
+              "codespaceFiles": [
+                {
+                  "name": "Variables.cs",
+                  "content": "using System;\n\npublic class Program\n{\n  public static void Main(string[] args)\n  {\n    // Numeric Types.\n    int age = 18;\n    float pi = 3.1415926f;\n    double e = 2.718281828459045;\n    \n    // Alphanumeric Types.\n    char firstLetter = 'a';\n    string name = \"Joseph\";\n    \n    // Logical Types.\n    bool isEven = true;\n  }\n}\n"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Recap",
+        "elements": [
+          {
+            "type": "codespace",
+            "text": "In this lesson, you’ll be learning about <i>variables</i> in C#. <b>Variables allow you to store and change values in your program</b>. We will be covering <code>int</code>s, <code>float</code>s, <code>double</code>s, <code>char</code>s, <code>string</code>s, and <code>bool</code>s. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+            "value": {
+              "codespaceLanguage": "csharp",
+              "codespaceFiles": [
+                {
+                  "name": "Variables.cs",
+                  "content": "using System;\n\npublic class Program\n{\n  public static void Main(string[] args)\n  {\n    // Numeric Types.\n    int age = 18;\n    float pi = 3.1415926f;\n    double e = 2.718281828459045;\n    \n    // Alphanumeric Types.\n    char firstLetter = 'a';\n    string name = \"Joseph\";\n    \n    // Logical Types.\n    bool isEven = true;\n  }\n}\n"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Exit Ticket",
+        "elements": [
+          {
+            "type": "codespace",
+            "text": "In this lesson, you’ll be learning about <i>variables</i> in C#. <b>Variables allow you to store and change values in your program</b>. We will be covering <code>int</code>s, <code>float</code>s, <code>double</code>s, <code>char</code>s, <code>string</code>s, and <code>bool</code>s. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+            "value": {
+              "codespaceLanguage": "csharp",
+              "codespaceFiles": [
+                {
+                  "name": "Variables.cs",
+                  "content": "using System;\n\npublic class Program\n{\n  public static void Main(string[] args)\n  {\n    // Numeric Types.\n    int age = 18;\n    float pi = 3.1415926f;\n    double e = 2.718281828459045;\n    \n    // Alphanumeric Types.\n    char firstLetter = 'a';\n    string name = \"Joseph\";\n    \n    // Logical Types.\n    bool isEven = true;\n  }\n}\n"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "practice": {},
+  "examLink": ""
+}
