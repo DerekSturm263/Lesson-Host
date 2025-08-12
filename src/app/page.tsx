@@ -11,8 +11,13 @@ lti.onConnect(async (token: any, req: any, res: any) => {
   }
 });*/
 
-export default function Home({ searchParams }) {
-  const skill = JSON.parse(fs.readFileSync(`./public/skills/${searchParams.skill}.json`).toString());
+interface URLParams {
+  searchParams: { [ key: string ]: string | string[] | undefined };
+};
+
+export default async function Home({ searchParams }: URLParams) {
+  const skillText = (await searchParams).skill;
+  const skill = JSON.parse(fs.readFileSync(`./public/skills/${skillText}.json`).toString());
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">

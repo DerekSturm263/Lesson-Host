@@ -4,7 +4,7 @@ import { responseSchema } from './schemas';
 const ai = new GoogleGenAI({});
 
 const textModel = 'gemini-2.5-flash-lite';
-const ttsModel = 'gemini-2.5-flash-preview-tts';
+//const ttsModel = 'gemini-2.5-flash-preview-tts';
 
 const globalSystemInstruction =
     `Your response should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level. Keep your response as concise as possible without sacrificing usefulness.
