@@ -11,7 +11,7 @@ lti.onConnect(async (token: any, req: any, res: any) => {
   }
 });*/
 
-export default function Home({ searchParams }: any) {
+export default function Home({ searchParams }) {
   const skill = JSON.parse(fs.readFileSync(`./public/skills/${searchParams.skill}.json`).toString());
 
   return (
