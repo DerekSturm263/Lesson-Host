@@ -14,14 +14,14 @@ lti.onConnect(async (token: any, req: any, res: any) => {
 export default function Page() {
   const params = useParams();
 
-  const fileContents = fs.readFileSync(process.cwd() + `/app/data/skills/${params.slug}.json`, 'utf8').toString();
-  const skill = JSON.parse(fileContents);
+  //const fileContents = fs.readFileSync(process.cwd() + `/app/data/skills/${params.slug}.json`, 'utf8').toString();
+  //const skill = JSON.parse(fileContents);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <h1 className="text-center sm:text-center">
-          {skill.name}
+          {'Test'}
         </h1>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
