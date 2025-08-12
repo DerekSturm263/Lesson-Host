@@ -15,7 +15,7 @@ export default async function Home({ params, searchParams }: {
   params: { slug: string };
   searchParams: { [ key: string ]: string | string[] | undefined };
 }) {
-  const skillText = (await searchParams).skill;
+  const skillText = searchParams.skill;
   const skill = JSON.parse(fs.readFileSync(`./public/skills/${skillText}.json`).toString());
 
   return (
