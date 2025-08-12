@@ -8,8 +8,8 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "Online Lesson System",
-  description: "Complete lessons and practice problems online",
+  title: "My Skill Study",
+  description: "Learn, practice, and study skills online",
 };
 
 export default function RootLayout({
