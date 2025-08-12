@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
 import fs from 'fs';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 /*const lti = require('ltijs').Provider;
 
