@@ -1,6 +1,402 @@
 {
   "title": "Loops",
-  "lesson": {},
+  "lesson": {
+    "chapters": [
+      {
+        "title": "Introduction",
+        "elements": [
+        {
+          "type": "codespace",
+          "text": "In this lesson, you’ll be learning about loops in C#. <b>Loops allow you to create blocks of code that run multiple times without actually having to write the code multiple times</b>. We will be covering <code>for</code> Loops, <code>while</code> Loops, and <code>foreach</code> Loops. Experiment with the code above. You don’t need to understand it yet, but try changing different values and conditions to see what happens. <u>Press \"Run\" when you’re ready.</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "Runner.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class Runner\n  {\n    public static void Main(string[] args)\n    {\n      // Test out For Loops.\n      Console.WriteLine(\"For Loops:\");\n      ForLoops.Test();\n      \n      // Test out While Loops.\n      Console.WriteLine(\"While Loops:\");\n      WhileLoops.Test();\n      \n      // Test out ForEach Loops.\n      Console.WriteLine(\"ForEach Loops:\");\n      ForEachLoops.Test();\n    }\n  }\n}\n"
+              },
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Test()\n    {\n      // The loop starts at 0, it runs while it's less than 4, and it increases by 1 every iteration.\n      // This makes the loop run exactly 4 times.\n      for (int i = 0; i < 4; ++i)\n      {\n        // Every time the loop iterates, it prints \"Hello!\".\n        Console.WriteLine(\"Hello!\");\n      }\n    }\n  }\n}\n"
+              },
+              {
+                "name": "WhileLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class WhileLoops\n  {\n    public static void Test()\n    {\n      // Creating a variable that we can use to test the loop.\n      int num = 1;\n      \n      // The loop runs while the variable is less than 10.\n      while (num < 10)\n      {\n        // Every time the loop iterates, it prints the value that the variable is currently at.\n        Console.WriteLine(num);\n        \n        // Every time the loop iterates, the variable doubles in value.\n        num *= 2;\n      }\n    }\n  }\n}\n"
+              },
+              {
+                "name": "ForEachLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForEachLoops\n  {\n    public static void Test()\n    {\n      // Creating a variable that we can use to test the loop.\n      String[] fruits = new String[] { \"Apple\", \"Fruit\", \"Pear\" };\n      \n      // The loop iterates over every item in the variable once.\n      foreach (String fruit in fruits)\n      {\n        // Every time the loop iterates, it prints the current value it's iterating on.\n        Console.WriteLine(fruit);\n      }\n    }\n  }\n}\n"
+              }
+            ]
+          }
+        },
+        {
+          "type": "shortAnswer",
+          "text": "<i>What are some features in a game that might use loops or repetition?</i> Think about actions or sequences that happen multiple times in a row, like spawning multiple enemies at once, taking turns in combat, or taking multiple steps on a grid. <u>When you’re ready, write your answer above.</u>",
+          "value": { }
+        }
+      ]
+      },
+      {
+      "title": "For Loops",
+      "elements": [
+        {
+          "type": "codespace",
+          "text": "<code>for</code> Loops are the first type of loop we'll be learning about. This type of loop is used when <b>the number of times you want the code to repeat shouldn't change once the loop starts running</b>. <u>Press \"Run\" when you’re ready to start.</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      // The loop starts at 0, it runs while it's less than 4, and it increases by 1 every iteration.\n      // This makes the loop run exactly 4 times.\n      for (int i = 0; i < 4; ++i)\n      {\n        // Every time the loop iterates, it prints \"Hello!\".\n        Console.WriteLine(\"Hello!\");\n      }\n    }\n  }\n}\n"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "A <code>for</code> Loop is composed of 4 parts: an <b>initializer</b>, a <b>condition</b>, an <b>iterator</b>, and a <b>body</b> of code. Try changing some of the values and conditions in the code above and <u>press \"Run\" when you’re ready.</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      for (/*Initializer*/ int i = 0; /*Condition*/ i < 10; /*Iterator*/ ++i)\n      {\n        // Body\n        Console.WriteLine(i);\n      }\n    }\n  }\n}\n"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>initializer</b> runs right before the loop starts and is normally used for creating counter variables to keep track of how many times the loop has run. In the example on your screen, the initializer is set to <code>int i = 0</code>. This creates a variable called <code>i</code> inside of the loop that starts at 0. <u>Try changing the loop to start at 5 instead of 0 and hit \"Run\".</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      for (/*Initializer*/ int i = 0; /*Condition*/ i < 10; /*Iterator*/ ++i)\n      {\n        // Body\n        Console.WriteLine(i);\n      }\n    }\n  }\n}\n"
+              }
+            ],
+            "codespaceCorrectOutput": "5\n6\n7\n8\n9\n"
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>condition</b> is checked after every iteration of the loop, and as soon as it resolves to false, the loop stops running. In the example on your screen, the condition is set to <code>i < 10</code>. This allows the loop to run while <code>i</code> is still less than 10. <u>Try changing the loop to stop at 20 instead of 10 and hit \"Run\".</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      for (/*Initializer*/ int i = 5; /*Condition*/ i < 10; /*Iterator*/ ++i)\n      {\n        // Body\n        Console.WriteLine(i);\n      }\n    }\n  }\n}\n"
+              }
+            ],
+            "codespaceCorrectOutput": "5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n"
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>iterator</b> is ran after every iteration of the loop and is normally used to increase or decrease the value of the counter variable so the loop doesn't run infinitely. In the example on your screen, the iterator is set to <code>++i</code>. This increases <code>i</code> by 1 every time the loop runs. <u>Try changing the loop to go up by 2 instead of 1 and hit \"Run\".</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      for (/*Initializer*/ int i = 5; /*Condition*/ i < 20; /*Iterator*/ ++i)\n      {\n        // Body\n        Console.WriteLine(i);\n      }\n    }\n  }\n}\n"
+              }
+            ],
+            "codespaceCorrectOutput": "5\n7\n9\n11\n13\n15\n17\n19\n"
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>body</b> is a block of code that will be executed every time the loop runs. In the example on your screen, the body is set to <code>Console.WriteLine(i)</code>. This will print the counter variable every iteration, which should print the numbers 0 through 9. <u>Try changing the loop to print \"Hello, world!\" each iteration instead and hit \"Run\".</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      for (/*Initializer*/ int i = 5; /*Condition*/ i < 20; /*Iterator*/ i += 2)\n      {\n        // Body\n        Console.WriteLine(i);\n      }\n    }\n  }\n}\n"
+              }
+            ],
+            "codespaceCorrectOutput": "Hello, world!\nHello, world!\nHello, world!\nHello, world!\nHello, world!\nHello, world!\nHello, world!\nHello, world!\n"
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "Now that you know a little bit about <code>for</code> Loops, <u>try writing a <code>for</code> Loop from scratch that will print every third number between 1 and 22</u>. When you’re ready, press \"Run\". I recommend looking at the previous pages for examples on how to format a <code>for</code> Loop.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "ForLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class ForLoops\n  {\n    public static void Main(string[] args)\n    {\n      \n    }\n  }\n}\n"
+              }
+            ],
+            "codespaceCorrectOutput": "1\n4\n7\n10\n13\n16\n19\n22\n"
+          }
+        }
+      ]
+      },
+      {
+      "title": "While Loops",
+      "elements": [
+        {
+          "type": "codespace",
+          "text": "<code>while</code> Loops are the next type of loop we'll be learning about. This type of loop is used when <b>the loop may stop running during any of its iterations</b>. <u>Press \"Run\" when you’re ready to start.</u>",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "using System;\n\nnamespace Loops\n{\n  public class WhileLoops\n  {\n    public static void Test()\n    {\n      // Creating a variable that we can use to test the loop.\n      int num = 1;\n      \n      // The loop runs while the variable is less than 10.\n      while (num < 10)\n      {\n        // Every time the loop iterates, it prints the value that the variable is currently at.\n        Console.WriteLine(num);\n        \n        // Every time the loop iterates, the variable doubles in value.\n        num *= 2;\n      }\n    }\n  }\n}\n"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "A <code>while</code> Loop is composed of 1 part, the <b>condition</b>. <code>while</code> Loops also have a block of code surrounded by curly brackets that you want to be repeated.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "while (condition) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>condition</b> is checked after every iteration of the loop, and as soon as it resolves to false, the loop stops running. In the example on your screen, the condition is set to <code>isAlive</code>. This allows the loop to run while some theoretical character is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "After you write your condition, you can write the <b>body</b> of your loop. The body is a block of code that will be executed every time the loop runs. In the example on your screen, the body is set to <code>Console.WriteLine(\"Hello, world!\")</code>. This will print the message \"Hello, world!\" every iteration while the theoretical player is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { Console.WriteLine(\"Hello, world!\"); }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "Now that you know a little bit about <code>while</code> Loops, try writing a <code>while</code> Loop that prints every tenth number between 10 and 40.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": ""
+              }
+            ],
+            "codespaceCorrectOutput": "10 20 30 40"
+          }
+        }
+      ]
+      },
+      {
+      "title": "For Each Loops",
+      "elements": [
+        {
+          "type": "paragraph",
+          "text": "<code>while</code> Loops are the next type of loop we'll be learning about. This type of loop is used when <b>the loop may stop running during any of its iterations</b>."
+        },
+        {
+          "type": "codespace",
+          "text": "A <code>while</code> Loop is composed of 1 part, the <b>condition</b>. <code>while</code> Loops also have a block of code surrounded by curly brackets that you want to be repeated.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "while (condition) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>condition</b> is checked after every iteration of the loop, and as soon as it resolves to false, the loop stops running. In the example on your screen, the condition is set to <code>isAlive</code>. This allows the loop to run while some theoretical character is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "After you write your condition, you can write the <b>body</b> of your loop. The body is a block of code that will be executed every time the loop runs. In the example on your screen, the body is set to <code>Console.WriteLine(\"Hello, world!\")</code>. This will print the message \"Hello, world!\" every iteration while the theoretical player is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { Console.WriteLine(\"Hello, world!\"); }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "Now that you know a little bit about <code>while</code> Loops, try writing a <code>while</code> Loop that prints every tenth number between 10 and 40.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": ""
+              }
+            ],
+            "codespaceCorrectOutput": "10 20 30 40"
+          }
+        }
+      ]
+      },
+      {
+      "title": "Recap",
+      "elements": [
+        {
+          "type": "paragraph",
+          "text": "<code>while</code> Loops are the next type of loop we'll be learning about. This type of loop is used when <b>the loop may stop running during any of its iterations</b>."
+        },
+        {
+          "type": "codespace",
+          "text": "A <code>while</code> Loop is composed of 1 part, the <b>condition</b>. <code>while</code> Loops also have a block of code surrounded by curly brackets that you want to be repeated.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "while (condition) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>condition</b> is checked after every iteration of the loop, and as soon as it resolves to false, the loop stops running. In the example on your screen, the condition is set to <code>isAlive</code>. This allows the loop to run while some theoretical character is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "After you write your condition, you can write the <b>body</b> of your loop. The body is a block of code that will be executed every time the loop runs. In the example on your screen, the body is set to <code>Console.WriteLine(\"Hello, world!\")</code>. This will print the message \"Hello, world!\" every iteration while the theoretical player is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { Console.WriteLine(\"Hello, world!\"); }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "Now that you know a little bit about <code>while</code> Loops, try writing a <code>while</code> Loop that prints every tenth number between 10 and 40.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": ""
+              }
+            ],
+            "codespaceCorrectOutput": "10 20 30 40"
+          }
+        }
+      ]
+      },
+      {
+      "title": "Exit Ticket",
+      "elements": [
+        {
+          "type": "paragraph",
+          "text": "<code>while</code> Loops are the next type of loop we'll be learning about. This type of loop is used when <b>the loop may stop running during any of its iterations</b>."
+        },
+        {
+          "type": "codespace",
+          "text": "A <code>while</code> Loop is composed of 1 part, the <b>condition</b>. <code>while</code> Loops also have a block of code surrounded by curly brackets that you want to be repeated.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "while (condition) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "The <b>condition</b> is checked after every iteration of the loop, and as soon as it resolves to false, the loop stops running. In the example on your screen, the condition is set to <code>isAlive</code>. This allows the loop to run while some theoretical character is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "After you write your condition, you can write the <b>body</b> of your loop. The body is a block of code that will be executed every time the loop runs. In the example on your screen, the body is set to <code>Console.WriteLine(\"Hello, world!\")</code>. This will print the message \"Hello, world!\" every iteration while the theoretical player is still alive.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": "bool isAlive = true; while (isAlive) { Console.WriteLine(\"Hello, world!\"); }"
+              }
+            ]
+          }
+        },
+        {
+          "type": "codespace",
+          "text": "Now that you know a little bit about <code>while</code> Loops, try writing a <code>while</code> Loop that prints every tenth number between 10 and 40.",
+          "value": {
+            "codespaceLanguage": "csharp",
+            "codespaceFiles": [
+              {
+                "name": "WhileLoops.cs",
+                "content": ""
+              }
+            ],
+            "codespaceCorrectOutput": "10 20 30 40"
+          }
+        }
+      ]
+      }
+    ]
+  },
   "practice": {},
   "examLink": ""
 }
