@@ -11,7 +11,7 @@ lti.onConnect(async (token: any, req: any, res: any) => {
   }
 });*/
 
-export default async function Page() {
+export default function Page() {
   const params = useParams();
   /*const skillQuery = await sql`
     SELECT *
