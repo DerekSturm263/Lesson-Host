@@ -11,11 +11,10 @@ lti.onConnect(async (token: any, req: any, res: any) => {
   }
 });*/
 
-export default async function Home({ params, searchParams }: {
-  params: { slug: string };
+export default async function Home({ searchParams }: {
   searchParams: { [ key: string ]: string | string[] | undefined };
 }) {
-  const skillText = searchParams.skill;
+  const skillText = (await searchParams).skill;
   const skill = JSON.parse(fs.readFileSync(`./public/skills/${skillText}.json`).toString());
 
   return (
