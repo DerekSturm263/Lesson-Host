@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^1.13.0",
+    "dotenv": "^17.2.1",
     "ltijs": "^5.9.7",
     "next": "15.4.6",
     "react": "19.1.0",
