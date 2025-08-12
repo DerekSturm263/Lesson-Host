@@ -11,9 +11,9 @@ lti.onConnect(async (token: any, req: any, res: any) => {
   }
 });*/
 
-export default async function Home({ searchParams }: {
-  searchParams: { [ key: string ]: string | string[] | undefined };
-}) {
+type SearchParams = Promise<{ [ key: string ]: string | string[] | undefined }>;
+
+export default async function Home({ searchParams }: { searchParams: SearchParams }) {
   const skillText = (await searchParams).skill;
   const skill = JSON.parse(fs.readFileSync(`./public/skills/${skillText}.json`).toString());
 
