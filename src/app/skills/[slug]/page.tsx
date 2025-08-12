@@ -1,10 +1,7 @@
 'use client'
 
-import dotenv from 'dotenv';
-dotenv.config({ path: './.env' });
-
 import fs from 'fs';
-import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 /*const lti = require('ltijs').Provider;
 
@@ -15,9 +12,9 @@ lti.onConnect(async (token: any, req: any, res: any) => {
 });*/
 
 export default function Page() {
-  const router = useRouter();
+  const params = useParams();
 
-  console.log(JSON.stringify(router));
+  console.log(JSON.stringify(params));
 
   /*const fileContents = fs.readFileSync(process.cwd() + `/app/data/skills/${router.query.slug}.json`, 'utf8').toString();
   const skill = JSON.parse(fileContents);*/
