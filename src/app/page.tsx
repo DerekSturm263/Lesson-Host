@@ -3,7 +3,15 @@ dotenv.config({ path: './.env' });
 
 import fs from 'fs';
 
-export default function Home({ searchParams }) {
+/*const lti = require('ltijs').Provider;
+
+lti.onConnect(async (token: any, req: any, res: any) => {
+  if (token.custom) {
+    console.log('Custom Parameter:', token.custom.skill);
+  }
+});*/
+
+export default function Home({ searchParams }: any) {
   const skill = JSON.parse(fs.readFileSync(`./public/skills/${searchParams.skill}.json`).toString());
 
   return (
