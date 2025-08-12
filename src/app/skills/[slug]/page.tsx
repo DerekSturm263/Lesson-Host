@@ -1,10 +1,8 @@
-'use client'
-
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
 import fs from 'fs';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 /*const lti = require('ltijs').Provider;
 
@@ -36,7 +34,7 @@ export default function Page() {
             target="_self"
             rel="noopener noreferrer"
           >
-            Complete Lesson
+            Learn
           </a>
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[250px] md:h-[400px]"
@@ -44,7 +42,7 @@ export default function Page() {
             target="_self"
             rel="noopener noreferrer"
           >
-            Practice Skill
+            Practice
           </a>
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[250px] md:h-[400px]"
@@ -52,7 +50,7 @@ export default function Page() {
             target="_self"
             rel="noopener noreferrer"
           >
-            Implement Skill
+            Implement
           </a>
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[250px] md:h-[400px]"
@@ -60,7 +58,7 @@ export default function Page() {
             target="_self"
             rel="noopener noreferrer"
           >
-            Study Exam
+            Study
           </a>
         </div>
       </main>
