@@ -1,4 +1,11 @@
-export function Header({ title, doBackButton, doLanguageSwitcher }: { title: string, doBackButton: boolean, doLanguageSwitcher: boolean }) {
+import * as elements from '../lib/types';
+
+type Content = {
+  label: string,
+  action: () => void
+};
+
+export function Header({ title, content, doBackButton, doLanguageSwitcher }: { title: string, content: Content[], doBackButton: boolean, doLanguageSwitcher: boolean }) {
   return (
     <div className="">
       <h3 className="text-center">
@@ -23,12 +30,7 @@ export function Header({ title, doBackButton, doLanguageSwitcher }: { title: str
   );
 }
 
-type SidebarContent = {
-  label: string,
-  action: () => void
-};
-
-export function Sidebar({ label, content, doHamburgerButton }: { label: string, content: SidebarContent[], doHamburgerButton: boolean }) {
+export function Sidebar({ label, content, doHamburgerButton }: { label: string, content: Content[], doHamburgerButton: boolean }) {
   return (
     <div className="">
       <h3 className="text-center">
@@ -45,5 +47,117 @@ export function Sidebar({ label, content, doHamburgerButton }: { label: string, 
         ))}
       </ul>
     </div>
+  );
+}
+
+export function Element({ element }: { element: elements.Element }) {
+  return (
+    <div className="">
+      <Interaction type={element.type} value={element.value} />
+      <Text text={element.text} />
+    </div>
+  );
+}
+
+function Text({ text }: { text: string }) {
+  return (
+    <div className="">
+      <p>{text}</p>
+    </div>
+  );
+}
+
+function Interaction({ type, value }: { type: string, value: elements.ShortAnswer | elements.TrueOrFalse | elements.Matching | elements.Ordering | elements.Files | elements.Drawing | elements.Graph | elements.DAW | elements.Codespace | elements.Engine | elements.IFrame }) {
+  switch (type) {
+    case 'shortAnswer':
+      return (<div className=""><ShortAnswer value={value} /></div>);
+    case 'trueOrFalse':
+      return (<div className=""><TrueOrFalse value={value} /></div>);
+    case 'matching':
+      return (<div className=""><Matching value={value} /></div>);
+    case 'ordering':
+      return (<div className=""><Ordering value={value} /></div>);
+    case 'files':
+      return (<div className=""><Files value={value} /></div>);
+    case 'drawing':
+      return (<div className=""><Drawing value={value} /></div>);
+    case 'graph':
+      return (<div className=""><Graph value={value} /></div>);
+    case 'daw':
+      return (<div className=""><DAW value={value} /></div>);
+    case 'codespace':
+      return (<div className=""><Codespace value={value} /></div>);
+    case 'engine':
+      return (<div className=""><Engine value={value} /></div>);
+    case 'iFrame':
+      return (<div className=""><IFrame value={value} /></div>);
+    default:
+      return <div className=""></div>;
+  }
+}
+
+function ShortAnswer({ value }: { value: elements.ShortAnswer } ) {
+  return (
+
+  );
+}
+
+function TrueOrFalse({ value }: { value: elements.TrueOrFalse }) {
+  return (
+
+  );
+}
+
+function Matching({ value }: { value: elements.Matching }) {
+  return (
+
+  );
+}
+
+function Ordering({ value }: { value: elements.Ordering }) {
+  return (
+
+  );
+}
+
+function Files({ value }: { value: elements.Files }) {
+  return (
+
+  );
+}
+
+function Drawing({ value }: { value: elements.Drawing }) {
+  return (
+
+  );
+}
+
+function Graph({ value }: { value: elements.Graph }) {
+  return (
+
+  );
+}
+
+function DAW({ value }: { value: elements.DAW }) {
+  return (
+
+  );
+}
+
+function Codespace({ value }: { value: elements.Codespace }) {
+  return (
+
+  );
+}
+
+function Engine({ value }: { value: elements.Engine }) {
+  return (
+
+  );
+}
+
+function IFrame({ value }: { value: elements.IFrame }) {
+  return (
+    
   );
 }
