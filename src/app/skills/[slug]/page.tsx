@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation';
+import { Header } from '../../lib/components';
 import sql from '../../lib/sql';
 
 /*const lti = require('ltijs').Provider;
@@ -13,6 +14,8 @@ lti.onConnect(async (token: any, req: any, res: any) => {
 
 export default function Page() {
   const params = useParams();
+  const skillTitle: string = params.slug?.toString() ?? '';
+
   /*const skillQuery = await sql`
     SELECT *
     FROM skills
@@ -23,9 +26,7 @@ export default function Page() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <h1 className="text-center sm:text-center">
-          {params.slug}
-        </h1>
+        <Header title={skillTitle} doBackButton={false} doLanguageSwitcher={false} />
 
         <div className="grid grid-cols-4 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <a
