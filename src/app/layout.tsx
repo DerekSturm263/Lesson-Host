@@ -8,7 +8,7 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "My Skill Study",
+  title: "MySkillStudy.com",
   description: "Learn, practice, and study skills online",
 };
 
