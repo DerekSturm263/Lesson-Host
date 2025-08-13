@@ -29,7 +29,7 @@ export default function Page() {
 
         <div className="grid grid-cols-4 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <a
-            className="bg-gradient-to-t from-rgb(150, 150, 150) to-rgb(100, 100, 100) dark:from-rgb(100, 100, 100) dark:to-rgb(50, 50, 50) rounded-lg transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[250px] md:h-[400px]"
+            className="bg-linear-to-t from-rgb(150, 150, 150) to-rgb(100, 100, 100) dark:from-rgb(100, 100, 100) dark:to-rgb(50, 50, 50) rounded-lg transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[250px] md:h-[400px]"
             href={"./" + params.slug + "/learn"}
             target="_self"
             rel="noopener noreferrer"
