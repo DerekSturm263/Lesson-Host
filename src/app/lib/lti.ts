@@ -1,4 +1,4 @@
-const lti = require('ltijs').Provider;
+/*const lti = require('ltijs').Provider;
 
 lti.setup(process.env.LTI_KEY,
   {
@@ -21,4 +21,4 @@ lti.onConnect(async (token: any, req: any, res: any) => {
   await lti.registerPlatform({
     
   });
-})();
+})();*/
