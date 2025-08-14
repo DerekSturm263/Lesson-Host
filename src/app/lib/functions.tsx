@@ -110,6 +110,34 @@ export function loadCodespace(e: SyntheticEvent<HTMLIFrameElement, Event>) {
     language: e.currentTarget.dataset.language,
     files: JSON.parse(e.currentTarget.dataset.files ?? '')
   }, "*");
+
+// Submit Codespace
+if (e.currentTarget.contentWindow) {
+e.currentTarget.contentWindow.onmessage = function(e) {
+  if (!e.data)
+    return;
+
+  console.log(e);
+
+  /*if (e.data.action == 'runStart') {
+    const text = e.source as HTMLDivElement;
+
+    setThinkingText(text);
+  } else if (e.data.action == 'runComplete') {
+    const text = document.getElementById(`text${actualCurrentElement}`);
+    const iframe = document.getElementById(`interaction${actualCurrentElement}`);
+
+    const feedback = await verifyCodespace(text?.dataset.originaltext ?? '', e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
+    
+    text.innerHTML = wordByWordify(feedback.feedback);
+    text.dataset.lastnonthinkingtext = feedback.feedback;
+    
+    if (feedback.isValid) {
+      complete(currentChapter, currentElement, currentIsLastElement);
+    }
+  }*/
+}
+}
 }
 
 export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
@@ -162,29 +190,3 @@ export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
     complete(chapterIndex, elementIndex, isLastElement);
   }*/
 }
-
-// Submit Codespace
-window.onmessage = function(e) {
-  if (!e.data)
-    return;
-
-  console.log(e);
-
-  /*if (e.data.action == 'runStart') {
-    const text = e.source as HTMLDivElement;
-
-    setThinkingText(text);
-  } else if (e.data.action == 'runComplete') {
-    const text = document.getElementById(`text${actualCurrentElement}`);
-    const iframe = document.getElementById(`interaction${actualCurrentElement}`);
-
-    const feedback = await verifyCodespace(text?.dataset.originaltext ?? '', e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
-    
-    text.innerHTML = wordByWordify(feedback.feedback);
-    text.dataset.lastnonthinkingtext = feedback.feedback;
-    
-    if (feedback.isValid) {
-      complete(currentChapter, currentElement, currentIsLastElement);
-    }
-  }*/
-};
