@@ -43,15 +43,16 @@ export type Files = {
 };
 
 export type Drawing = {
-
+  placeholder: any
 };
 
 export type Graph = {
-
+  type: string,
+  fileName: string
 };
 
 export type DAW = {
-
+  placeholder: any
 };
 
 export type CodespaceFile = {
@@ -127,17 +128,24 @@ export type Codespace = {
 };
 
 export type Engine = {
-
+  placeholder: any
 };
 
 export type IFrame = {
   source: string
 };
 
+export enum ElementState {
+  Locked = 'locked',
+  InProgress = 'inProgress',
+  Complete = 'complete'
+};
+
 export type Element = {
-  type: ElementType,
   text: string,
+  type: ElementType,
   value: ShortAnswer | TrueOrFalse | Matching | Ordering | Files | Drawing | Graph | DAW | Codespace | Engine | IFrame
+  state: ElementState
 };
 
 export type Chapter = {
@@ -150,15 +158,15 @@ export type Learn = {
 };
 
 export type Practice = {
-
+  placeholder: any
 };
 
 export type Implement = {
-
+  link: string
 };
 
 export type Study = {
-
+  link: string
 };
 
 export type Skill = {

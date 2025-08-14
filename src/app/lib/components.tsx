@@ -1,16 +1,22 @@
-import * as elements from '../lib/types';
+import { Children } from 'react';
+import Markdown from 'react-markdown'
+import * as functions from '../lib/functions';
+import * as types from '../lib/types';
 
-type Content = {
-  label: string,
-  action: () => void
-};
-
-export function Header({ title, content, doBackButton, doLanguageSwitcher }: { title: string, content: Content[], doBackButton: boolean, doLanguageSwitcher: boolean }) {
+export function Header({ children, title, doBackButton, doLanguageSwitcher }: { children?: React.ReactNode, title: string, doBackButton: boolean, doLanguageSwitcher: boolean }) {
   return (
-    <div className="">
-      <h3 className="text-center">
+    <div className="header">
+      <h3>
         {title}
       </h3>
+
+      <ol>
+        {Children.map(children, child => 
+          <li>
+            {child}
+          </li>
+        )}
+      </ol>
 
       <select name="selectLanguage" id="selectLanguage">
         <option value="en">English</option>
@@ -30,134 +36,246 @@ export function Header({ title, content, doBackButton, doLanguageSwitcher }: { t
   );
 }
 
-export function Sidebar({ label, content, doHamburgerButton }: { label: string, content: Content[], doHamburgerButton: boolean }) {
+export function Sidebar({ children, label, doHamburgerButton }: { children?: React.ReactNode, label: string, doHamburgerButton: boolean }) {
   return (
-    <div className="">
-      <h3 className="text-center">
+    <div className="sidebar">
+      <h3>
         {label}
       </h3>
 
-      <ul className="">
-        {content.map((item, index) => (
-          <li key={index} className="">
-            <button onClick={item.action} className="">
-              {item.label}
-            </button>
+      <ol>
+        {Children.map(children, child => 
+          <li>
+            {child}
           </li>
-        ))}
-      </ul>
+        )}
+      </ol>
     </div>
   );
 }
 
-export function Element({ element }: { element: elements.Element }) {
+export function Element({ chapter, element }: { chapter: types.Chapter, element: types.Element }) {
   return (
-    <div className="">
+    <div className="element">
       <Interaction type={element.type} value={element.value} />
-      <Text text={element.text} />
+      <Text chapter={chapter} element={element} />
     </div>
   );
 }
 
-function Text({ text }: { text: string }) {
-  return (
-    <div className="">
-      <p>{text}</p>
-    </div>
-  );
-}
-
-function Interaction({ type, value }: { type: string, value: elements.ShortAnswer | elements.TrueOrFalse | elements.Matching | elements.Ordering | elements.Files | elements.Drawing | elements.Graph | elements.DAW | elements.Codespace | elements.Engine | elements.IFrame }) {
+function Interaction({ type, value }: { type: string, value: types.ShortAnswer | types.TrueOrFalse | types.Matching | types.Ordering | types.Files | types.Drawing | types.Graph | types.DAW | types.Codespace | types.Engine | types.IFrame }) {
   switch (type) {
     case 'shortAnswer':
-      return (<div className=""><ShortAnswer value={value} /></div>);
+      return (<div className="interaction" data-type="shortAnswer"><ShortAnswer value={value as types.ShortAnswer} /></div>);
     case 'trueOrFalse':
-      return (<div className=""><TrueOrFalse value={value} /></div>);
+      return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse value={value as types.TrueOrFalse} /></div>);
     case 'matching':
-      return (<div className=""><Matching value={value} /></div>);
+      return (<div className="interaction" data-type="matching"><Matching value={value as types.Matching} /></div>);
     case 'ordering':
-      return (<div className=""><Ordering value={value} /></div>);
+      return (<div className="interaction" data-type="ordering"><Ordering value={value as types.Ordering} /></div>);
     case 'files':
-      return (<div className=""><Files value={value} /></div>);
+      return (<div className="interaction" data-type="files"><Files value={value as types.Files} /></div>);
     case 'drawing':
-      return (<div className=""><Drawing value={value} /></div>);
+      return (<div className="interaction" data-type="drawing"><Drawing value={value as types.Drawing} /></div>);
     case 'graph':
-      return (<div className=""><Graph value={value} /></div>);
+      return (<div className="interaction" data-type="graph"><Graph value={value as types.Graph} /></div>);
     case 'daw':
-      return (<div className=""><DAW value={value} /></div>);
+      return (<div className="interaction" data-type="daw"><DAW value={value as types.DAW} /></div>);
     case 'codespace':
-      return (<div className=""><Codespace value={value} /></div>);
+      return (<div className="interaction" data-type="codespace"><Codespace value={value as types.Codespace} /></div>);
     case 'engine':
-      return (<div className=""><Engine value={value} /></div>);
+      return (<div className="interaction" data-type="engine"><Engine value={value as types.Engine} /></div>);
     case 'iFrame':
-      return (<div className=""><IFrame value={value} /></div>);
+      return (<div className="interaction" data-type="iFrame"><IFrame value={value as types.IFrame} /></div>);
     default:
-      return <div className=""></div>;
+      return <div className="interaction" data-type="none"></div>;
   }
 }
 
-function ShortAnswer({ value }: { value: elements.ShortAnswer } ) {
+function ShortAnswer({ value }: { value: types.ShortAnswer } ) {
   return (
-
+    <div
+      className="smallInteraction"
+    >
+      <form
+        action={functions.submitShortAnswer}
+      >
+        <input
+          type="text"
+          name="response"
+          placeholder="Write your response here. Press enter to submit"
+          autoComplete="off"
+        />
+      </form>
+    </div>
   );
 }
 
-function TrueOrFalse({ value }: { value: elements.TrueOrFalse }) {
+function TrueOrFalse({ value }: { value: types.TrueOrFalse }) {
   return (
-
+    <div
+      className="smallInteraction"
+    >
+      
+    </div>
   );
 }
 
-function Matching({ value }: { value: elements.Matching }) {
+function Matching({ value }: { value: types.Matching }) {
   return (
-
+    <div
+      className="smallInteraction"
+    >
+      
+    </div>
   );
 }
 
-function Ordering({ value }: { value: elements.Ordering }) {
+function Ordering({ value }: { value: types.Ordering }) {
   return (
-
+    <div
+      className="smallInteraction"
+    >
+      
+    </div>
   );
 }
 
-function Files({ value }: { value: elements.Files }) {
+function Files({ value }: { value: types.Files }) {
   return (
-
+    <div
+      className="smallInteraction"
+    >
+      
+    </div>
   );
 }
 
-function Drawing({ value }: { value: elements.Drawing }) {
+function Drawing({ value }: { value: types.Drawing }) {
   return (
-
+    <div
+      className="fullscreenInteraction"
+    >
+      
+    </div>
   );
 }
 
-function Graph({ value }: { value: elements.Graph }) {
+function Graph({ value }: { value: types.Graph }) {
   return (
-
+    <div
+      className="fullscreenInteraction"
+      onLoad={functions.loadGraph}
+      data-type={value.type}
+      data-filename={value.fileName}
+    ></div>
   );
 }
 
-function DAW({ value }: { value: elements.DAW }) {
+function DAW({ value }: { value: types.DAW }) {
   return (
-
+    <div
+      className="fullscreenInteraction"
+    >
+      
+    </div>
   );
 }
 
-function Codespace({ value }: { value: elements.Codespace }) {
+function Codespace({ value }: { value: types.Codespace }) {
   return (
-
+    <iframe
+      className="fullscreenInteraction"
+      onLoad={functions.loadCodespace}
+      src="https://onecompiler.com/embed/${element.value.codespaceLanguage}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true"
+      data-language={value.language}
+      data-files={JSON.stringify(value.files)}
+      data-correctoutput={value.correctOutput ?? ''}
+    ></iframe>
   );
 }
 
-function Engine({ value }: { value: elements.Engine }) {
+function Engine({ value }: { value: types.Engine }) {
   return (
-
+    <iframe
+      className="fullscreenInteraction"
+      src="https://editor.godotengine.org/releases/latest/"
+    ></iframe>
   );
 }
 
-function IFrame({ value }: { value: elements.IFrame }) {
+function IFrame({ value }: { value: types.IFrame }) {
   return (
-    
+    <iframe
+      className="fullscreenInteraction"
+      src={value.source}
+    ></iframe>
+  );
+}
+
+function Text({ chapter, element }: { chapter: types.Chapter, element: types.Element }) {
+  return (
+    <div className="textBox">
+      <div
+        className="text"
+        data-originaltext={element.text}
+        data-lastnonthinkingtext={element.text}
+      >
+        <Markdown>{functions.wordByWordify(element.text)}</Markdown>
+      </div>
+
+      <div className="buttons">
+        <div className="col1">
+          {chapter.elements.map((element, index) => (
+            <button
+              className="dot"
+              onClick={functions.load}
+              title={`Load section ${index}`}
+              disabled={element.state == types.ElementState.Locked}
+              data-iscomplete="false"
+              data-isselected="false"
+            ></button>
+          ))}
+        </div>
+
+        <div className="col2">
+          <button
+            onClick={functions.rephrase}
+            title="Rephrase text"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/8369/8369314.png"
+              width="25"
+              height="25"
+            />
+            Rephrase
+          </button>
+          
+          <button
+            onClick={functions.readAloud}
+            title="Read text aloud"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/10629/10629003.png"
+              width="25"
+              height="25"
+            />
+            Read Aloud
+          </button>
+
+          <button
+            onClick={functions.reset}
+            title="Reset text and interaction"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2618/2618245.png"
+              width="25"
+              height="25"
+            />
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -41,7 +41,12 @@ const safetySettings = [
     }
 ];
 
-export async function verifyShortAnswer(question: string, userResponse: string): Promise<string> {
+export type Verification = {
+    isValid: boolean;
+    feedback: string;
+};
+
+export async function verifyShortAnswer(question: string, userResponse: string): Promise<Verification> {
     const response = await ai.models.generateContent({
         model: textModel,
         contents: 
@@ -70,10 +75,10 @@ export async function verifyShortAnswer(question: string, userResponse: string):
         }
     });
 
-    return response.text ?? '';
+    return JSON.parse(response.text ?? '') as Verification;
 }
 
-export async function verifyCodespace(instructions: string, files: string[], result: {success: boolean, output: string}, correctOutput: string, language: string): Promise<{isValid: boolean, feedback: string}> {
+export async function verifyCodespace(instructions: string, files: string[], result: {success: boolean, output: string}, correctOutput: string, language: string): Promise<Verification> {
     let isValid = false;
     
     let contents = '';
