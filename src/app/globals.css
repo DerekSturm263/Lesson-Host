@@ -41,8 +41,9 @@ body {
   align-items: center;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 50px;
+  padding-right: 50px;
+  gap: 50px;
 
   h3 {
     font-weight: 500;
@@ -52,6 +53,7 @@ body {
     display: flex;
     align-items: center;
     gap: 50px;
+    flex: 1;
   }
 }
 

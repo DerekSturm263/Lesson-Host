@@ -8,7 +8,9 @@ export function Header({ children, title, doBackButton, doLanguageSwitcher }: { 
   return (
     <div className="header">
       <h3>
-        {title}
+        <a href="/">
+          MySkillStudy.com
+        </a>
       </h3>
 
       <ol>
