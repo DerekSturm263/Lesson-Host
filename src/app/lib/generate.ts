@@ -1,7 +1,7 @@
 import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
 import { responseSchema } from './schemas';
 
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const textModel = 'gemini-2.5-flash-lite';
 //const ttsModel = 'gemini-2.5-flash-preview-tts';

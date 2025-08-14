@@ -52,7 +52,7 @@ body {
   ol {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 25px;
     flex: 1;
   }
 }
