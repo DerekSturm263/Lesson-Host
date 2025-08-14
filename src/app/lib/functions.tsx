@@ -164,7 +164,7 @@ export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
 }
 
 // Submit Codespace
-window.onmessage = function(e: MessageEvent<any>) {
+window.onmessage = function(e) {
   if (!e.data)
     return;
 
