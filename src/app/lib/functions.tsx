@@ -26,16 +26,16 @@ async function define(word: string) {
 }
 
 function complete(element: HTMLDivElement) {
-  /*let dots = document.getElementsByClassName(`dot${elementIndex}`);
+  /*const dots = document.getElementsByClassName(`dot${elementIndex}`);
   for (let i = 0; i < dots.length; ++i) {
     dots[i].dataset.iscomplete = true;
   }
 
   if (isLastElement) {
-    let thisButton = document.getElementById(`chapterButton${chapterIndex}`);
+    const thisButton = document.getElementById(`chapterButton${chapterIndex}`);
     thisButton.dataset.iscomplete = true;
       
-    let thisCheckmark = document.getElementById(`chapterCheckmark${chapterIndex}`);
+    const thisCheckmark = document.getElementById(`chapterCheckmark${chapterIndex}`);
     thisCheckmark.dataset.iscomplete = true;
   }
 
@@ -43,20 +43,20 @@ function complete(element: HTMLDivElement) {
 }
 
 function unlock(element: HTMLDivElement) {
-  /*let dots = document.getElementsByClassName(`dot${elementIndex}`);
+  /*const dots = document.getElementsByClassName(`dot${elementIndex}`);
   for (let i = 0; i < dots.length; ++i) {
     dots[i].disabled = false;
   }
 
   if (isLastElement) {
-    let nextButton = document.getElementById(`chapterButton${chapterIndex + 1}`);
+    const nextButton = document.getElementById(`chapterButton${chapterIndex + 1}`);
     nextButton.disabled = false;
   }*/
 }
 
 export function load(e: MouseEvent<HTMLButtonElement>) {
-  /*let content = document.getElementsByClassName("chapterContent");
-  let thisContent = document.getElementById(`chapterContent${elementIndex}`);
+  /*const content = document.getElementsByClassName("chapterContent");
+  const thisContent = document.getElementById(`chapterContent${elementIndex}`);
     
   for (let i = 0; i < content.length; ++i) {
     content[i].style.display = "none";
@@ -64,8 +64,8 @@ export function load(e: MouseEvent<HTMLButtonElement>) {
 
   thisContent.style.display = "block";
 
-  let buttons = document.getElementsByClassName("chapterButton");
-  let thisButton = document.getElementById(`chapterButton${chapterIndex}`);
+  const buttons = document.getElementsByClassName("chapterButton");
+  const thisButton = document.getElementById(`chapterButton${chapterIndex}`);
 
   for (let i = 0; i < buttons.length; ++i) {
     buttons[i].dataset.isselected = false;
@@ -73,8 +73,8 @@ export function load(e: MouseEvent<HTMLButtonElement>) {
 
   thisButton.dataset.isselected = true;
 
-  let dots = document.getElementsByClassName(`dot`);
-  let theseDots = document.getElementsByClassName(`dot${elementIndex}`);
+  const dots = document.getElementsByClassName(`dot`);
+  const theseDots = document.getElementsByClassName(`dot${elementIndex}`);
 
   for (let i = 0; i < dots.length; ++i) {
     dots[i].dataset.isselected = false;
@@ -113,7 +113,7 @@ export function loadCodespace(e: SyntheticEvent<HTMLIFrameElement, Event>) {
 }
 
 export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
-  let text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
+  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
 
   setThinkingText(text);
   const newText = await rephraseText(text.dataset.lastnonthinkingtext ?? '');
@@ -123,12 +123,12 @@ export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
 }
 
 export function readAloud(e: MouseEvent<HTMLButtonElement>) {
-  let text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
+  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
 }
 
 export function reset(e: MouseEvent<HTMLButtonElement>) {
-  let text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
-  let interaction = e.currentTarget.parentElement?.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLElement;
+  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
+  const interaction = e.currentTarget.parentElement?.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLElement;
 
   text.innerHTML = wordByWordify(text.dataset.originaltext ?? '');
   
@@ -146,8 +146,8 @@ export function reset(e: MouseEvent<HTMLButtonElement>) {
 export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
   console.log(formData);
 
-  /*let text = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
-  let interaction = formData.;
+  /*const text = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
+  const interaction = formData.;
 
   setThinkingText(text);
   const feedback = await verifyShortAnswer(text.dataset.originaltext, formData.get('response')?.toString() ?? '');
@@ -171,12 +171,12 @@ window.onmessage = function(e: MessageEvent<any>) {
   console.log(e);
 
   /*if (e.data.action == 'runStart') {
-    let text = e.source as HTMLDivElement;
+    const text = e.source as HTMLDivElement;
 
     setThinkingText(text);
   } else if (e.data.action == 'runComplete') {
-    let text = document.getElementById(`text${actualCurrentElement}`);
-    let iframe = document.getElementById(`interaction${actualCurrentElement}`);
+    const text = document.getElementById(`text${actualCurrentElement}`);
+    const iframe = document.getElementById(`interaction${actualCurrentElement}`);
 
     const feedback = await verifyCodespace(text?.dataset.originaltext ?? '', e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
     

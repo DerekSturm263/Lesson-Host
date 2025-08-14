@@ -36,7 +36,7 @@ export default function Page() {
       ]
     },
     practice: {
-      placeholder: null
+      placeholder: true
     },
     implement: {
       link: ''
@@ -46,7 +46,7 @@ export default function Page() {
     }
   };
 
-  let page = (
+  const page = (
     <div>
       <main>
         <Header title={skill.title + " - Learn"} doBackButton={true} doLanguageSwitcher={false} />
@@ -55,6 +55,7 @@ export default function Page() {
           {skill.learn.chapters.map((chapter, index) => (
             <button
               title={`Load chapter ${index}`}
+              key={index}
               onClick={load}
               disabled={chapter.elements[0].state == types.ElementState.Locked}
               data-iscomplete="false"
@@ -73,9 +74,9 @@ export default function Page() {
           ))}
         </Sidebar>
 
-        {skill.learn.chapters.map((chapter) => (
-          chapter.elements.map((element) => (
-            <Element chapter={chapter} element={element} />
+        {skill.learn.chapters.map((chapter, cIndex) => (
+          chapter.elements.map((element, eIndex) => (
+            <Element key={`${cIndex}:${eIndex}`} chapter={chapter} element={element} />
           ))
         ))}
       </main>

@@ -43,7 +43,7 @@ export type Files = {
 };
 
 export type Drawing = {
-  placeholder: any
+  placeholder: boolean
 };
 
 export type Graph = {
@@ -52,7 +52,7 @@ export type Graph = {
 };
 
 export type DAW = {
-  placeholder: any
+  placeholder: boolean
 };
 
 export type CodespaceFile = {
@@ -128,7 +128,7 @@ export type Codespace = {
 };
 
 export type Engine = {
-  placeholder: any
+  placeholder: boolean
 };
 
 export type IFrame = {
@@ -158,7 +158,7 @@ export type Learn = {
 };
 
 export type Practice = {
-  placeholder: any
+  placeholder: boolean
 };
 
 export type Implement = {

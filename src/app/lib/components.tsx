@@ -229,6 +229,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
           {chapter.elements.map((element, index) => (
             <button
               className="dot"
+              key={index}
               onClick={functions.load}
               title={`Load section ${index}`}
               disabled={element.state == types.ElementState.Locked}
