@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header title={skillTitle + " - Study"} doBackButton={true} doLanguageSwitcher={false} />
+        <Header />
       </main>
     </div>
   );

@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header title={courseTitle} doBackButton={false} doLanguageSwitcher={false} />
+        <Header />
       </main>
     </div>
   );

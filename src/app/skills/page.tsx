@@ -4,7 +4,7 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header title="Skills" doBackButton={false} doLanguageSwitcher={false} />
+        <Header />
       </main>
     </div>
   );

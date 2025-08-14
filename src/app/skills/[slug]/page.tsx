@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header title={skillTitle} doBackButton={false} doLanguageSwitcher={false} />
+        <Header />
 
         <div>
           <a

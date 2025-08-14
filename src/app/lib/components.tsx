@@ -1,24 +1,38 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Children } from 'react';
 import Markdown from 'react-markdown'
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 
-export function Header({ children, title, doBackButton, doLanguageSwitcher }: { children?: React.ReactNode, title: string, doBackButton: boolean, doLanguageSwitcher: boolean }) {
+export function Header() {
   return (
     <div className="header">
       <h3>
-        <a href="/">
+        <Link
+          href="/"
+          target="_self"
+        >
           MySkillStudy.com
-        </a>
+        </Link>
       </h3>
 
       <ol>
-        {Children.map(children, child => 
-          <li>
-            {child}
-          </li>
-        )}
+        <Link
+          href="/skills"
+          target="_self"
+          rel="noopener noreferrer"
+        >
+          Learn
+        </Link>
+          
+        <Link
+          href="/courses"
+          target="_self"
+          rel="noopener noreferrer"
+        >
+          Teach
+        </Link>
       </ol>
 
       <select name="selectLanguage" id="selectLanguage">

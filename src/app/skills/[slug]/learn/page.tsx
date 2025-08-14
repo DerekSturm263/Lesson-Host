@@ -50,7 +50,7 @@ export default function Page() {
   const page = (
     <div>
       <main>
-        <Header title={skill.title + " - Learn"} doBackButton={true} doLanguageSwitcher={false} />
+        <Header />
 
         <Sidebar label="Chapters" doHamburgerButton={true}>
           {skill.learn.chapters.map((chapter, index) => (
