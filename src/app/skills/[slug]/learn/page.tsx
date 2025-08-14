@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import { Header, Sidebar, Element } from '../../../lib/components';
 import { load } from '../../../lib/functions';
 import * as types from '../../../lib/types';
@@ -65,9 +66,10 @@ export default function Page() {
                 {chapter.title}
               </h4>
 
-              <img
+              <Image
                 className="checkmark"
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_green_checkmark.svg/1200px-Eo_circle_green_checkmark.svg.png"
+                alt="Checkmark"
                 data-iscomplete="false"
               />
             </button>

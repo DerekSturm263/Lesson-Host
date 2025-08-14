@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Children } from 'react';
 import Markdown from 'react-markdown'
 import * as functions from '../lib/functions';
@@ -244,10 +245,11 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             onClick={functions.rephrase}
             title="Rephrase text"
           >
-            <img
+            <Image
               src="https://cdn-icons-png.flaticon.com/512/8369/8369314.png"
-              width="25"
-              height="25"
+              width={25}
+              height={25}
+              alt="Rephrase"
             />
             Rephrase
           </button>
@@ -256,10 +258,11 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             onClick={functions.readAloud}
             title="Read text aloud"
           >
-            <img
+            <Image
               src="https://cdn-icons-png.flaticon.com/512/10629/10629003.png"
-              width="25"
-              height="25"
+              width={25}
+              height={25}
+              alt="Read Aloud"
             />
             Read Aloud
           </button>
@@ -268,10 +271,11 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             onClick={functions.reset}
             title="Reset text and interaction"
           >
-            <img
+            <Image
               src="https://cdn-icons-png.flaticon.com/512/2618/2618245.png"
-              width="25"
-              height="25"
+              width={25}
+              height={25}
+              alt="Reset"
             />
             Reset
           </button>
