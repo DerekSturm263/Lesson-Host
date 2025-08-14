@@ -26,7 +26,7 @@ async function define(word: string) {
 }
 
 function complete(element: HTMLDivElement) {
-  let dots = document.getElementsByClassName(`dot${elementIndex}`);
+  /*let dots = document.getElementsByClassName(`dot${elementIndex}`);
   for (let i = 0; i < dots.length; ++i) {
     dots[i].dataset.iscomplete = true;
   }
@@ -39,11 +39,11 @@ function complete(element: HTMLDivElement) {
     thisCheckmark.dataset.iscomplete = true;
   }
 
-  unlock(chapterIndex, elementIndex + 1, isLastElement);
+  unlock(chapterIndex, elementIndex + 1, isLastElement);*/
 }
 
 function unlock(element: HTMLDivElement) {
-  let dots = document.getElementsByClassName(`dot${elementIndex}`);
+  /*let dots = document.getElementsByClassName(`dot${elementIndex}`);
   for (let i = 0; i < dots.length; ++i) {
     dots[i].disabled = false;
   }
@@ -51,11 +51,11 @@ function unlock(element: HTMLDivElement) {
   if (isLastElement) {
     let nextButton = document.getElementById(`chapterButton${chapterIndex + 1}`);
     nextButton.disabled = false;
-  }
+  }*/
 }
 
 export function load(e: MouseEvent<HTMLButtonElement>) {
-  let content = document.getElementsByClassName("chapterContent");
+  /*let content = document.getElementsByClassName("chapterContent");
   let thisContent = document.getElementById(`chapterContent${elementIndex}`);
     
   for (let i = 0; i < content.length; ++i) {
@@ -85,7 +85,7 @@ export function load(e: MouseEvent<HTMLButtonElement>) {
 
   currentChapter = chapterIndex;
   currentElement = elementIndex;
-  currentIsLastElement = isLastElement;
+  currentIsLastElement = isLastElement;*/
 }
 
 export function loadGraph(e: SyntheticEvent<HTMLDivElement, Event>) {
@@ -128,9 +128,9 @@ export function readAloud(e: MouseEvent<HTMLButtonElement>) {
 
 export function reset(e: MouseEvent<HTMLButtonElement>) {
   let text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
-  text.innerHTML = wordByWordify(text.dataset.originaltext ?? '');
-
   let interaction = e.currentTarget.parentElement?.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLElement;
+
+  text.innerHTML = wordByWordify(text.dataset.originaltext ?? '');
   
   switch (interaction.parentElement?.dataset.type) {
     case 'graph':
@@ -144,7 +144,9 @@ export function reset(e: MouseEvent<HTMLButtonElement>) {
 }
 
 export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
-  let text = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
+  console.log(formData);
+
+  /*let text = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
   let interaction = formData.;
 
   setThinkingText(text);
@@ -158,31 +160,31 @@ export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
     interaction.disabled = true;
 
     complete(chapterIndex, elementIndex, isLastElement);
-  }
+  }*/
 }
 
 // Submit Codespace
-window.onmessage = function(e) {
+window.onmessage = function(e: MessageEvent<any>) {
   if (!e.data)
     return;
 
-  if (e.data.action == 'runStart') {
-    setThinkingText(currentChapter, currentElement, currentIsLastElement);
-    
-    actualCurrentChapter = currentChapter;
-    actualCurrentElement = currentElement;
-    actualCurrentIsLastElement = currentIsLastElement;
+  console.log(e);
+
+  /*if (e.data.action == 'runStart') {
+    let text = e.source as HTMLDivElement;
+
+    setThinkingText(text);
   } else if (e.data.action == 'runComplete') {
     let text = document.getElementById(`text${actualCurrentElement}`);
     let iframe = document.getElementById(`interaction${actualCurrentElement}`);
 
-    const feedback = await verifyCodespace(text.dataset.originaltext, e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
+    const feedback = await verifyCodespace(text?.dataset.originaltext ?? '', e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
     
     text.innerHTML = wordByWordify(feedback.feedback);
     text.dataset.lastnonthinkingtext = feedback.feedback;
-          
+    
     if (feedback.isValid) {
-      complete(actualCurrentChapter, actualCurrentElement, actualCurrentIsLastElement);
+      complete(currentChapter, currentElement, currentIsLastElement);
     }
-  }
+  }*/
 };
