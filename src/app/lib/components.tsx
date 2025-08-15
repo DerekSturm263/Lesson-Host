@@ -31,7 +31,7 @@ export function Header() {
           target="_self"
           rel="noopener noreferrer"
         >
-          Teach
+          Create
         </Link>
       </ol>
 

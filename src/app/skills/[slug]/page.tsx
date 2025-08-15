@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { Header } from '../../lib/components';
 
 export default function Page() {
@@ -11,39 +12,40 @@ export default function Page() {
     <div>
       <main>
         <Header />
+        <h1>{skillTitle}</h1>
 
         <div>
-          <a
+          <Link
             href={"./" + params.slug + "/learn"}
             target="_self"
             rel="noopener noreferrer"
           >
             Learn
-          </a>
+          </Link>
 
-          <a
+          <Link
             href={"./" + params.slug + "/practice"}
             target="_self"
             rel="noopener noreferrer"
           >
             Practice
-          </a>
+          </Link>
 
-          <a
+          <Link
             href={"./" + params.slug + "/implement"}
             target="_self"
             rel="noopener noreferrer"
           >
             Implement
-          </a>
+          </Link>
           
-          <a
+          <Link
             href={"./" + params.slug + "/study"}
             target="_self"
             rel="noopener noreferrer"
           >
             Study
-          </a>
+          </Link>
         </div>
       </main>
     </div>

@@ -5,6 +5,7 @@ export default function Page() {
     <div>
       <main>
         <Header />
+        <h1>Courses</h1>
       </main>
     </div>
   );

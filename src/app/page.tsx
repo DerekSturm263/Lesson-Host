@@ -5,6 +5,7 @@ export default async function Home() {
     <div>
       <main>
         <Header />
+        <h1>Pick up where you left off</h1>
       </main>
     </div>
   );

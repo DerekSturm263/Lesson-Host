@@ -178,8 +178,14 @@ export type Skill = {
   study: Study
 };
 
+export type Project = {
+  title: string,
+  description: string
+};
+
 export type Course = {
   title: string,
   description: string,
-  skills: Skill[]
+  skills: string[],
+  projects: string[]
 };

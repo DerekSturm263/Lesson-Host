@@ -5,13 +5,13 @@ import { Header } from '../../lib/components';
 
 export default function Page() {
   const params = useParams();
-  const courseTitle: string = params.slug?.toString() ?? '';
+  const projectTitle: string = params.slug?.toString() ?? '';
 
   return (
     <div>
       <main>
         <Header />
-        <h1>{courseTitle}</h1>
+        <h1>{projectTitle}</h1>
       </main>
     </div>
   );
