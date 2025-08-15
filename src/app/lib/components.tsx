@@ -332,11 +332,11 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
         });
     }
 
-    if (isValidElement(node)) {
+    /*if (isValidElement(node)) {
       return cloneElement(node, {
         children: Children.map(node.props.children, wrapWords)
       });
-    }
+    }*/
 
     return node;
   };

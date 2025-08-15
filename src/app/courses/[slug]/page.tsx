@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { Header } from '../../lib/components';
 import { getCourse } from '../../lib/files';
 

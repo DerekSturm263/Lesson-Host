@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Header } from '../../lib/components';
 import { getSkill } from '../../lib/files';
 
