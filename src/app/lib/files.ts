@@ -4,7 +4,7 @@ import { readFile } from 'fs/promises';
 import { Skill, Course, Project } from './types';
 
 export async function getSkill(name: string) : Promise<Skill> {
-  const file = await readFile(`${process.cwd()}/src/app/data/skills/${name}.json`, 'utf-8')
+  const file = await readFile(`${process.cwd()}/data/skills/${name}.json`, 'utf-8')
   return JSON.parse(file) as Skill;
 }
 
