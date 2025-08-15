@@ -308,7 +308,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
 }
 
 function WordWrapper({ children }: { children?: React.ReactNode }) {
-  let wordIndex = useRef(0);
+  const wordIndex = useRef(0);
 
   const wrapWords = (node: ReactNode): ReactNode => {
     if (typeof node === "string") {
