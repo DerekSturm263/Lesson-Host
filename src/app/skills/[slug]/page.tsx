@@ -1,11 +1,11 @@
-'use client'
-
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Header } from '../../lib/components';
 import { getSkill } from '../../lib/files';
 
-export default async function Page({ params }: { params: { slug: string | undefined } }) {
-  const skill = await getSkill(params.slug?.toString() ?? '');
+export default async function Page() {
+  const router = useRouter();
+  const skill = await getSkill(router.query.slug?.toString() ?? '');
 
   return (
     <div>
@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { slug: string | undefi
 
         <div>
           <Link
-            href={"./" + params.slug + "/learn"}
+            href={"./" + skill.title + "/learn"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { slug: string | undefi
           </Link>
 
           <Link
-            href={"./" + params.slug + "/practice"}
+            href={"./" + skill.title + "/practice"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { slug: string | undefi
           </Link>
 
           <Link
-            href={"./" + params.slug + "/implement"}
+            href={"./" + skill.title + "/implement"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: { slug: string | undefi
           </Link>
           
           <Link
-            href={"./" + params.slug + "/study"}
+            href={"./" + skill.title + "/study"}
             target="_self"
             rel="noopener noreferrer"
           >

@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router';
 import { Header } from '../../lib/components';
 import { getProject } from '../../lib/files';
 
-export default async function Page({ params }: { params: { slug: string | undefined } }) {
-  const project = await getProject(params.slug?.toString() ?? '');
+export default async function Page() {
+  const router = useRouter();
+  const project = await getProject(router.query.slug?.toString() ?? '');
 
   return (
     <div>

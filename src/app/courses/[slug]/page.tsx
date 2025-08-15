@@ -1,10 +1,10 @@
-'use client'
-
+import { useRouter } from 'next/router';
 import { Header } from '../../lib/components';
 import { getCourse } from '../../lib/files';
 
-export default async function Page({ params }: { params: { slug: string | undefined } }) {
-  const course = await getCourse(params.slug?.toString() ?? '');
+export default async function Page() {
+  const router = useRouter();
+  const course = await getCourse(router.query.slug?.toString() ?? '');
 
   return (
     <div>
