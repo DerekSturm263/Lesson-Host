@@ -238,7 +238,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
         data-originaltext={element.text}
         data-lastnonthinkingtext={element.text}
       >
-        <Markdown>{functions.wordByWordify(element.text)}</Markdown>
+        <p>{functions.wordByWordify(element.text)}</p>
       </div>
 
       <div className="buttons">
