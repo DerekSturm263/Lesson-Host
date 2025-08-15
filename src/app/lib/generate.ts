@@ -1,3 +1,5 @@
+'use server'
+
 import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
 import { responseSchema } from './schemas';
 
