@@ -3,7 +3,10 @@
 :root {
   --background-1: rgb(195, 195, 195);
   --background-2: rgb(230, 230, 230);
+  --header-1: rgb(235, 235, 235);
+  --header-2: rgb(205, 205, 205);
   --foreground: rgb(0, 0, 0);
+  --text: rgb(255, 255, 255);
 }
 
 @theme inline {
@@ -17,7 +20,10 @@
   :root {
     --background-1: rgb(20, 20, 20);
     --background-2: rgb(55, 55, 55);
+    --header-1: rgb(60, 60, 60);
+    --header-2: rgb(30, 30, 30);
     --foreground: rgb(255, 255, 255);
+    --text: rgb(0, 0, 0);
   }
 }
 
@@ -36,7 +42,7 @@ body {
 }
 
 .header {
-  background-image: linear-gradient(rgb(60, 60, 60), rgb(30, 30, 30));
+  background-image: linear-gradient(var(--header-1), var(--header-2));
   position: fixed;
   width: 100%;
   left: 0;
@@ -65,7 +71,7 @@ body {
 }
 
 .sidebar {
-  background-image: linear-gradient(rgb(45, 45, 45), rgb(65, 65, 65));
+  background: rgba(0, 0, 0, 0.2);
   position: fixed;
   left: 0;
   top: 50px;
@@ -189,6 +195,11 @@ body {
       overflow-y: auto;
     }
   }
+
+  button {
+    background-color: var(--foreground);
+    color: var(--text);
+  }
 }
 
 .word {
@@ -304,7 +315,7 @@ button:disabled:hover {
 
 button[data-isselected="true"] {
   outline-style: solid;
-  outline-color: white;
+  outline-color: var(--foreground);
   outline-width: 2.5px;
   opacity: 1;
 }
