@@ -1,12 +1,8 @@
-'use client'
-
-import { useParams } from 'next/navigation';
 import { Header } from '../../lib/components';
 import { getProject } from '../../lib/files';
 
-export default function Page() {
-  const params = useParams();
-  const project = getProject(params.slug?.toString() ?? '');
+export default async function Page({ params }: { params: { slug: string | undefined } }) {
+  const project = await getProject(params.slug?.toString() ?? '');
 
   return (
     <div>
