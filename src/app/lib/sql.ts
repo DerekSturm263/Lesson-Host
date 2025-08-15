@@ -1,7 +1,7 @@
-import postgres from 'postgres';
+import { neon } from '@neondatabase/serverless';
 import { Skill, Project, Course } from './types';
 
-const sql = postgres(process.env.DATABASE_URL ?? '', { ssl: 'verify-full' });
+const sql = neon(process.env.DATABASE_URL ?? '');
 
 export async function getSkill(id: string): Promise<Skill> {
   const query = await sql`
