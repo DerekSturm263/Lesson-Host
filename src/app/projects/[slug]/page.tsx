@@ -1,5 +1,5 @@
 import { Header } from '../../lib/components';
-import { getProject } from '../../lib/files';
+import { getProject } from '../../lib/sql';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;
