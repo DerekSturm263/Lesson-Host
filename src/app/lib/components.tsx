@@ -262,7 +262,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             title="Rephrase text"
           >
             <Image
-              src="https://cdn-icons-png.flaticon.com/512/8369/8369314.png"
+              src="/sparkle.png"
               width={25}
               height={25}
               alt="Rephrase"
@@ -275,7 +275,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             title="Read text aloud"
           >
             <Image
-              src="https://cdn-icons-png.flaticon.com/512/10629/10629003.png"
+              src="/speaker.png"
               width={25}
               height={25}
               alt="Read Aloud"
@@ -288,7 +288,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             title="Reset text and interaction"
           >
             <Image
-              src="https://cdn-icons-png.flaticon.com/512/2618/2618245.png"
+              src="/refresh.png"
               width={25}
               height={25}
               alt="Reset"

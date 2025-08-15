@@ -68,7 +68,7 @@ export default function Page() {
 
               <Image
                 className="checkmark"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_green_checkmark.svg/1200px-Eo_circle_green_checkmark.svg.png"
+                src="/checkmark.png"
                 alt="Checkmark"
                 data-iscomplete="false"
               />
