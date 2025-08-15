@@ -1,6 +1,7 @@
 {
   "title": "Variables",
-  "lesson": {
+  "description": "",
+  "learn": {
     "chapters": [
       {
         "title": "Introduction",
@@ -117,6 +118,13 @@
       }
     ]
   },
-  "practice": {},
-  "examLink": ""
+  "practice": {
+    "placeholder": false
+  },
+  "implement": {
+    "link": ""
+  },
+  "study": {
+    "link": ""
+  }
 }
