@@ -1,16 +1,16 @@
 'use server'
 
-import fs from 'fs';
+import { readFile } from 'fs/promises';
 import { Skill, Course, Project } from './types';
 
-export function getSkill(name: string) : Skill {
-  return JSON.parse(fs.readFileSync(`./skills/${name}.json`, 'utf-8')) as Skill;
+export async function getSkill(name: string) : Promise<Skill> {
+  return JSON.parse(await readFile(`./skills/${name}.json`, 'utf-8')) as Skill;
 }
 
-export function getProject(name: string) : Project {
-  return JSON.parse(fs.readFileSync(`./projects/${name}.json`, 'utf-8')) as Project;
+export async function getProject(name: string) : Promise<Project> {
+  return JSON.parse(await readFile(`./projects/${name}.json`, 'utf-8')) as Project;
 }
 
-export function getCourse(name: string) : Course {
-  return JSON.parse(fs.readFileSync(`./courses/${name}.json`, 'utf-8')) as Course;
+export async function getCourse(name: string) : Promise<Course> {
+  return JSON.parse(await readFile(`./courses/${name}.json`, 'utf-8')) as Course;
 }
