@@ -5,9 +5,9 @@ import { useParams } from 'next/navigation';
 import { Header } from '../../lib/components';
 import { getSkill } from '../../lib/files';
 
-export default async function Page() {
+export default function Page() {
   const params = useParams();
-  const skill = await getSkill(params.slug?.toString() ?? '');
+  const skill = getSkill(params.slug?.toString() ?? '');
 
   return (
     <div>
