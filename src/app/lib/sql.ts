@@ -11,7 +11,7 @@ export async function getSkill(id: string): Promise<Skill> {
   `;
 
   console.log(query);
-  return JSON.parse(query[0].data) as Skill;
+  return JSON.parse(query[0].value) as Skill;
 }
 
 export async function createSkill(): Promise<Skill> {
@@ -64,7 +64,7 @@ export async function getProject(id: string): Promise<Project> {
   `;
 
   console.log(query);
-  return JSON.parse(query[0].data) as Project;
+  return JSON.parse(query[0].value) as Project;
 }
 
 export async function createProject(): Promise<Project> {
@@ -100,7 +100,7 @@ export async function getCourse(id: string): Promise<Course> {
   `;
 
   console.log(query);
-  return JSON.parse(query[0].data) as Course;
+  return JSON.parse(query[0].value) as Course;
 }
 
 export async function createCourse(): Promise<Course> {
