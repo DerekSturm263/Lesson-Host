@@ -29,7 +29,10 @@ body {
 }
 
 .mainHeader {
-  
+  margin-top: 150px;
+  font-size: 50px;
+  font-weight: 700;
+  margin-left: 50px;
 }
 
 .header {
