@@ -12,7 +12,7 @@ export default function Page() {
     <div>
       <main>
         <Header />
-        <h1>{skillTitle}</h1>
+        <h1 className="mainHeader">{skillTitle}</h1>
 
         <div>
           <Link

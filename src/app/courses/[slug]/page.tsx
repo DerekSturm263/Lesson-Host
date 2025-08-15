@@ -11,7 +11,7 @@ export default function Page() {
     <div>
       <main>
         <Header />
-        <h1>{courseTitle}</h1>
+        <h1 className="mainHeader">{courseTitle}</h1>
       </main>
     </div>
   );

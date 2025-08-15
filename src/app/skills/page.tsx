@@ -5,7 +5,7 @@ export default function Page() {
     <div>
       <main>
         <Header />
-        <h1>Skills</h1>
+        <h1 className="mainHeader">Skills</h1>
       </main>
     </div>
   );

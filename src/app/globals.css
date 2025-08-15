@@ -28,6 +28,10 @@ body {
   font-family: 'Lexend', Arial, Helvetica, sans-serif;
 }
 
+.mainHeader {
+  
+}
+
 .header {
   background-image: linear-gradient(rgb(60, 60, 60), rgb(30, 30, 30));
   position: fixed;
