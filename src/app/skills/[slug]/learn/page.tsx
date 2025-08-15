@@ -5,47 +5,11 @@ import Image from 'next/image';
 import { Header, Sidebar, Element } from '../../../lib/components';
 import { load } from '../../../lib/functions';
 import * as types from '../../../lib/types';
+import { getSkill } from '../../../lib/files';
 
 export default function Page() {
   const params = useParams();
-  const skill: types.Skill = {
-    title: params.slug?.toString() ?? '',
-    description: 'This is a placeholder description for the skill.',
-    learn: {
-      chapters: [
-        {
-          title: 'Chapter 1',
-          elements: [
-            {
-              text: 'What is SQL?',
-              type: types.ElementType.ShortAnswer,
-              value: {
-                correctAnswer: 'SQL is a standard language for accessing and manipulating databases.'
-              },
-              state: types.ElementState.InProgress
-            },
-            {
-              text: 'SQL stands for Structured Query Language.',
-              type: types.ElementType.TrueOrFalse,
-              value: {
-                isCorrect: true
-              },
-              state: types.ElementState.Locked
-            }
-          ]
-        }
-      ]
-    },
-    practice: {
-      placeholder: true
-    },
-    implement: {
-      link: ''
-    },
-    study: {
-      link: ''
-    }
-  };
+  const skill = getSkill(params.slug?.toString() ?? '');
 
   const page = (
     <div>
@@ -68,7 +32,7 @@ export default function Page() {
 
               <Image
                 className="checkmark"
-                src="/checkmark.png"
+                src="/icons/checkmark.png"
                 alt="Checkmark"
                 data-iscomplete="false"
               />

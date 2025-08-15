@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Children } from 'react';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode } from 'react';
 import Markdown from 'react-markdown'
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
@@ -238,7 +238,11 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
         data-originaltext={element.text}
         data-lastnonthinkingtext={element.text}
       >
-        <p>{functions.wordByWordify(element.text)}</p>
+        <WordWrapper>
+          <Markdown>
+            {element.text}
+          </Markdown>
+        </WordWrapper>
       </div>
 
       <div className="buttons">
@@ -262,7 +266,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             title="Rephrase text"
           >
             <Image
-              src="/sparkle.png"
+              src="/icons/sparkle.png"
               width={25}
               height={25}
               alt="Rephrase"
@@ -275,7 +279,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             title="Read text aloud"
           >
             <Image
-              src="/speaker.png"
+              src="/icons/speaker.png"
               width={25}
               height={25}
               alt="Read Aloud"
@@ -288,7 +292,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
             title="Reset text and interaction"
           >
             <Image
-              src="/refresh.png"
+              src="/icons/refresh.png"
               width={25}
               height={25}
               alt="Reset"
@@ -299,4 +303,41 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
       </div>
     </div>
   );
+}
+
+function WordWrapper({ children }: { children?: React.ReactNode }) {
+  let wordIndex = useRef(0);
+
+  const wrapWords = (node: ReactNode): ReactNode => {
+    if (typeof node === "string") {
+      return node
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((word) => {
+          const index = wordIndex.current++;
+          return (
+            <Fragment key={index}>
+              <span
+                className="word"
+                onDoubleClick={functions.define}
+                title="Double click to define this word"
+                style={{"--index": `${index / 8}s`} as React.CSSProperties}
+              >
+                {word}
+              </span>{" "}
+            </Fragment>
+          );
+        });
+    }
+
+    if (isValidElement(node)) {
+      return cloneElement(node, {
+        children: Children.map(node.props.children, wrapWords)
+      });
+    }
+
+    return node;
+  };
+
+  return <>{Children.map(children, wrapWords)}</>;
 }

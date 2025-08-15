@@ -1,28 +1,9 @@
 import { SyntheticEvent, MouseEvent } from 'react';
 import { verifyShortAnswer, verifyCodespace, rephraseText } from './generate';
 
-export function wordByWordify(text: string): string {
-  const words = text.split(' ');
-  const wrappedWords = words.map((word, index) => `<span class="word" ondblclick="define('${word.replace(/\W/g, '')}')" title="Double click to define this word" style="--index:${index / 8}s;">${word}</span>`);
-  const rejoinedWords = wrappedWords.join(' ');
-
-  return rejoinedWords;
-}
-
 function setThinkingText(textElement: HTMLDivElement) {
-  const thinkingText = wordByWordify("<i>Thinking...</i>");
-
-  if (textElement.innerHTML != thinkingText)
-    textElement.innerHTML = thinkingText;
-}
-
-async function define(word: string) {
-  const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word);
-  if (!response.ok) {
-    console.error(`Could not define ${word}`);
-  }
-
-  const data = JSON.parse(await response.json());
+  if (textElement.textContent != "*Thinking...*")
+    textElement.textContent = "*Thinking...*";
 }
 
 function complete(element: HTMLDivElement) {
@@ -111,33 +92,33 @@ export function loadCodespace(e: SyntheticEvent<HTMLIFrameElement, Event>) {
     files: JSON.parse(e.currentTarget.dataset.files ?? '')
   }, "*");
 
-// Submit Codespace
-if (e.currentTarget.contentWindow) {
-e.currentTarget.contentWindow.onmessage = function(e) {
-  if (!e.data)
-    return;
+  // Submit Codespace
+  if (e.currentTarget.contentWindow) {
+    e.currentTarget.contentWindow.onmessage = function(e) {
+      if (!e.data)
+        return;
 
-  console.log(e);
+      console.log(e);
 
-  /*if (e.data.action == 'runStart') {
-    const text = e.source as HTMLDivElement;
+      /*if (e.data.action == 'runStart') {
+        const text = e.source as HTMLDivElement;
 
-    setThinkingText(text);
-  } else if (e.data.action == 'runComplete') {
-    const text = document.getElementById(`text${actualCurrentElement}`);
-    const iframe = document.getElementById(`interaction${actualCurrentElement}`);
+        setThinkingText(text);
+      } else if (e.data.action == 'runComplete') {
+        const text = document.getElementById(`text${actualCurrentElement}`);
+        const iframe = document.getElementById(`interaction${actualCurrentElement}`);
 
-    const feedback = await verifyCodespace(text?.dataset.originaltext ?? '', e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
+        const feedback = await verifyCodespace(text?.dataset.originaltext ?? '', e.data.files, e.data.result, iframe.dataset.correctoutput, e.data.language);
     
-    text.innerHTML = wordByWordify(feedback.feedback);
-    text.dataset.lastnonthinkingtext = feedback.feedback;
+        text.textContent = feedback.feedback;
+        text.dataset.lastnonthinkingtext = feedback.feedback;
     
-    if (feedback.isValid) {
-      complete(currentChapter, currentElement, currentIsLastElement);
+        if (feedback.isValid) {
+          complete(currentChapter, currentElement, currentIsLastElement);
+        }
+      }*/
     }
-  }*/
-}
-}
+  }
 }
 
 export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
@@ -146,7 +127,7 @@ export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
   setThinkingText(text);
   const newText = await rephraseText(text.dataset.lastnonthinkingtext ?? '');
 
-  text.innerHTML = wordByWordify(newText);
+  text.textContent = newText;
   text.dataset.lastnonthinkingtext = newText;
 }
 
@@ -158,7 +139,7 @@ export function reset(e: MouseEvent<HTMLButtonElement>) {
   const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
   const interaction = e.currentTarget.parentElement?.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLElement;
 
-  text.innerHTML = wordByWordify(text.dataset.originaltext ?? '');
+  text.textContent = text.dataset.originaltext ?? '';
   
   switch (interaction.parentElement?.dataset.type) {
     case 'graph':
@@ -171,6 +152,17 @@ export function reset(e: MouseEvent<HTMLButtonElement>) {
   }
 }
 
+export async function define(e: MouseEvent<HTMLButtonElement>) {
+  const word = e.currentTarget.textContent;
+
+  const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word);
+  if (!response.ok) {
+    console.error(`Could not define ${word}`);
+  }
+
+  const data = JSON.parse(await response.json());
+}
+
 export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
   console.log(formData);
 
@@ -180,7 +172,7 @@ export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
   setThinkingText(text);
   const feedback = await verifyShortAnswer(text.dataset.originaltext, formData.get('response')?.toString() ?? '');
 
-  text.innerHTML = wordByWordify(feedback.feedback);
+  text.textContent = feedback.feedback;
   text.dataset.lastnonthinkingtext = feedback.feedback;
 
   if (feedback.isValid) {

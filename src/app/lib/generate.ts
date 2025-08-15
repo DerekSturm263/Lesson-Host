@@ -9,43 +9,43 @@ const textModel = 'gemini-2.5-flash-lite';
 //const ttsModel = 'gemini-2.5-flash-preview-tts';
 
 const globalSystemInstruction =
-    `Your response should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level. Keep your response as concise as possible without sacrificing usefulness.
+  `Your response should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level. Keep your response as concise as possible without sacrificing usefulness.
 
-    Wherever applicable, use technical documentation techniques. These should be included to make the text easy to follow and to highlight important information, terminology, formulas, syntaxes, etc. When doing this, use Markdown formatting. Remember that you need to sound like someone speaking, so don't include tables, headers, or other tags that may seem unnatural for spoken language. Here are some valid techniques to use:
-    - Bold Text
-    - Italics
-    - Underlined Text
-    - Unordered Lists
-    - Ordered Lists
-    - Line Breaks
+  Wherever applicable, use technical documentation techniques. These should be included to make the text easy to follow and to highlight important information, terminology, formulas, syntaxes, etc. When doing this, use Markdown formatting. Remember that you need to sound like someone speaking, so don't include tables, headers, or other tags that may seem unnatural for spoken language. Here are some valid techniques to use:
+  - Bold Text
+  - Italics
+  - Underlined Text
+  - Unordered Lists
+  - Ordered Lists
+  - Line Breaks
 
-    Code Blocks should always be surrounded by triple backticks. Short pieces of code should always be surrounded by single backticks.
-    Math formulas, equations, and variables should always be written using a slightly modified LATEX format that uses two dollar signs ($$) instead of one ($).
+  Code blocks should always be surrounded by triple backticks. Short pieces of code should always be surrounded by single backticks.
+  Math formulas, equations, and variables should always be written using LATEX formatting.
                 
-    Do not include any greetings or salutations with your response.`;
+  Do not include any greetings or salutations with your response.`;
 
 const safetySettings = [
-    {
-        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    },
-    {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    },
-    {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    },
-    {
-        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    }
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+  }
 ];
 
 export type Verification = {
-    isValid: boolean;
-    feedback: string;
+  isValid: boolean;
+  feedback: string;
 };
 
 export async function verifyShortAnswer(question: string, userResponse: string): Promise<Verification> {
@@ -82,7 +82,6 @@ export async function verifyShortAnswer(question: string, userResponse: string):
 
 export async function verifyCodespace(instructions: string, files: string[], result: {success: boolean, output: string}, correctOutput: string, language: string): Promise<Verification> {
     let isValid = false;
-    
     let contents = '';
 
     if (!result.success) {

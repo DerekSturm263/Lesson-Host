@@ -1,18 +1,19 @@
 'use client'
 
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Header } from '../../lib/components';
+import { getSkill } from '../../lib/files';
 
 export default function Page() {
   const params = useParams();
-  const skillTitle: string = params.slug?.toString() ?? '';
+  const skill = getSkill(params.slug?.toString() ?? '');
 
   return (
     <div>
       <main>
         <Header />
-        <h1 className="mainHeader">{skillTitle}</h1>
+        <h1 className="mainHeader">{skill.title}</h1>
 
         <div>
           <Link
