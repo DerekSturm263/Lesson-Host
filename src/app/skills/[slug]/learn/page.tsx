@@ -1,15 +1,12 @@
-'use client'
-
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Header, Sidebar, Element } from '../../../lib/components';
 import { load } from '../../../lib/functions';
-import * as types from '../../../lib/types';
 import { getSkill } from '../../../lib/files';
+import * as types from '../../../lib/types';
 
-export default function Page() {
-  const params = useParams();
-  const skill = getSkill(params.slug?.toString() ?? '');
+export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
+  const { slug } = await params;
+  const skill = await getSkill(slug);
 
   const page = (
     <div>
