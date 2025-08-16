@@ -1,5 +1,14 @@
 import { SyntheticEvent, MouseEvent } from 'react';
 import { verifyShortAnswer, verifyCodespace, rephraseText } from './generate';
+import * as types from '../lib/types';
+
+type ElementID = {
+  chapterIndex: number,
+  elementIndex: number,
+  chapter: types.Chapter,
+  element: types.Element,
+  isLastElement: boolean
+};
 
 function setThinkingText(textElement: HTMLDivElement) {
   if (textElement.textContent != "*Thinking...*")
@@ -166,19 +175,19 @@ export async function define(e: MouseEvent<HTMLButtonElement>) {
 export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
   console.log(formData);
 
-  /*const text = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
-  const interaction = formData.;
+  const textElement = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
+  const interactionElement = formData.;
 
   setThinkingText(text);
-  const feedback = await verifyShortAnswer(text.dataset.originaltext, formData.get('response')?.toString() ?? '');
+  const feedback = await verifyShortAnswer(element.text, formData.get('response')?.toString() ?? '');
 
-  text.textContent = feedback.feedback;
-  text.dataset.lastnonthinkingtext = feedback.feedback;
+  textElement.textContent = feedback.feedback;
+  textElement.dataset.lastnonthinkingtext = feedback.feedback;
 
   if (feedback.isValid) {
-    interaction.value = "";
-    interaction.disabled = true;
+    interactionElement.value = "";
+    interactionElement.disabled = true;
 
     complete(chapterIndex, elementIndex, isLastElement);
-  }*/
+  }
 }

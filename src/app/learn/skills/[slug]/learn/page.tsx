@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { Header, Sidebar, Element } from '../../../lib/components';
-import { load } from '../../../lib/functions';
-import { getSkill } from '../../../lib/sql';
-import * as types from '../../../lib/types';
+import { Header, Sidebar, Element } from '../../../../lib/components';
+import { load } from '../../../../lib/functions';
+import { getSkill } from '../../../../lib/sql';
+import * as types from '../../../../lib/types';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;
@@ -37,11 +37,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           ))}
         </Sidebar>
 
-        {skill.learn.chapters.map((chapter, cIndex) => (
-          chapter.elements.map((element, eIndex) => (
-            <Element key={`${cIndex}:${eIndex}`} chapter={chapter} element={element} />
-          ))
-        ))}
+        <div className="elements">
+          {skill.learn.chapters.map((chapter, cIndex) => (
+            chapter.elements.map((element, eIndex) => (
+              <Element key={`${cIndex}:${eIndex}`} chapter={chapter} element={element} />
+            ))
+          ))}
+        </div>
       </main>
     </div>
   );

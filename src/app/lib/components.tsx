@@ -21,7 +21,7 @@ export function Header() {
 
       <ol>
         <Link
-          href="/skills"
+          href="/learn"
           target="_self"
           rel="noopener noreferrer"
         >
@@ -29,7 +29,7 @@ export function Header() {
         </Link>
           
         <Link
-          href="/courses"
+          href="/create"
           target="_self"
           rel="noopener noreferrer"
         >

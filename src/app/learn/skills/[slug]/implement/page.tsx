@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation';
-import { Header } from '../../../lib/components';
+import { Header } from '../../../../lib/components';
 
 export default function Page() {
   const params = useParams();
