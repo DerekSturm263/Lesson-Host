@@ -173,7 +173,7 @@ export async function define(e: MouseEvent<HTMLButtonElement>) {
 }
 
 export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
-  console.log(formData);
+  /*console.log(formData);
 
   const textElement = formData.??.parentElement?.parentElement?.nextElementSibling.firstChild;
   const interactionElement = formData.;
@@ -189,5 +189,5 @@ export async function submitShortAnswer(formData: FormData) { // TODO: FINISH
     interactionElement.disabled = true;
 
     complete(chapterIndex, elementIndex, isLastElement);
-  }
+  }*/
 }
