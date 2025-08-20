@@ -1,7 +1,7 @@
 'use server'
 
 import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
-import { responseSchema } from './schemas';
+import * as schemas from './schemas';
 
 const ai = new GoogleGenAI({});
 
@@ -43,41 +43,41 @@ const safetySettings = [
   }
 ];
 
-export type Verification = {
+type Verification = {
   isValid: boolean;
   feedback: string;
 };
 
 export async function verifyShortAnswer(question: string, userResponse: string): Promise<Verification> {
-    const response = await ai.models.generateContent({
-        model: textModel,
-        contents: 
-            `TASK:
-            Decide whether a given RESPONSE is a valid answer to a given QUESTION and give appropriate feedback.
-            
-            QUESTION:
-            ${question}
+  const response = await ai.models.generateContent({
+    model: textModel,
+    contents: 
+      `TASK:
+      Decide whether a given RESPONSE is a valid answer to a given QUESTION and give appropriate feedback.
+      
+      QUESTION:
+      ${question}
 
-            RESPONSE:
-            ${userResponse}`
-        ,
-        config: {
-            temperature: 0,
-            responseMimeType: 'application/json',
-            responseSchema: responseSchema,
-            systemInstruction: [
-                `You are a high school tutor. You determine whether a student's RESPONSE to a QUESTION is VALID or not while giving them proper FEEDBACK.
-          
-                - If their response is VALID (true), your FEEDBACK should congratulate the user on getting it right and then explain why it's correct.
-                - If their answer is NOT VALID (false), your FEEDBACK should tell the user that their answer isn't quite right and then explain why. Afterwards, you should re-explain the original QUESTION in friendlier terms with new examples.
-                
-                ${globalSystemInstruction}`
-            ],
-            safetySettings: safetySettings
-        }
-    });
+      RESPONSE:
+      ${userResponse}`
+    ,
+    config: {
+      temperature: 0,
+      responseMimeType: 'application/json',
+      responseSchema: schemas.responseSchema,
+      systemInstruction: [
+        `You are a high school tutor. You determine whether a student's RESPONSE to a QUESTION is VALID or not while giving them proper FEEDBACK.
+        
+        - If their response is VALID (true), your FEEDBACK should congratulate the user on getting it right and then explain why it's correct.
+        - If their answer is NOT VALID (false), your FEEDBACK should tell the user that their answer isn't quite right and then explain why. Afterwards, you should re-explain the original QUESTION in friendlier terms with new examples.
+        
+        ${globalSystemInstruction}`
+      ],
+      safetySettings: safetySettings
+    }
+  });
 
-    return JSON.parse(response.text ?? '') as Verification;
+  return JSON.parse(response.text ?? '') as Verification;
 }
 
 export async function verifyCodespace(instructions: string, files: string[], result: {success: boolean, output: string}, correctOutput: string, language: string): Promise<Verification> {
