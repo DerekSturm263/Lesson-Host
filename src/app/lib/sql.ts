@@ -69,7 +69,7 @@ export async function getProject(id: string): Promise<Project> {
 
 export async function createProject(): Promise<Project> {
   const project: Project = {
-    title: "New Course",
+    title: "New Project",
     description: ""
   };
 
