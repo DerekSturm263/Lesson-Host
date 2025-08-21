@@ -1,5 +1,4 @@
 import { Type } from "@google/genai";
-import { types } from "util";
 
 export const responseSchema = {
   type: Type.OBJECT,
@@ -35,34 +34,34 @@ export const embedTypeSchema = {
 const shortAnswerSchema = {
   type: Type.OBJECT,
   properties: {
-    shortAnswerCorrectAnswer: {
+    correctAnswer: {
       type: Type.STRING
     }
   },
   propertyOrdering: [
-    "shortAnswerCorrectAnswer"
+    "correctAnswer"
   ]
 };
 
 const trueOrFalseSchema = {
   type: Type.OBJECT,
   properties: {
-    isTrueOrFalseCorrect: {
+    isCorrect: {
       type: Type.BOOLEAN
     }
   },
   required: [
-    "isTrueOrFalseCorrect"
+    "isCorrect"
   ],
   propertyOrdering: [
-    "isTrueOrFalseCorrect"
+    "isCorrect"
   ]
 };
 
 const matchingSchema = {
   type: Type.OBJECT,
   properties: {
-    matchingItems: {
+    items: {
       type: Type.ARRAY,
       items: {
         type: Type.OBJECT,
@@ -88,17 +87,17 @@ const matchingSchema = {
     }
   },
   required: [
-    "matchingItems"
+    "items"
   ],
   propertyOrdering: [
-    "matchingItems"
+    "items"
   ]
 };
 
 const orderingSchema = {
   type: Type.OBJECT,
   properties: {
-    orderingItems: {
+    items: {
       type: Type.ARRAY,
       items: {
         type: Type.STRING
@@ -108,10 +107,10 @@ const orderingSchema = {
     }
   },
   required: [
-    "orderingItems"
+    "items"
   ],
   propertyOrdering: [
-    "orderingItems"
+    "items"
   ]
 };
 
@@ -123,20 +122,20 @@ const fileSchema = {
       items: {
         type: Type.OBJECT,
         properties: {
-          fileSource: {
+          source: {
             type: Type.STRING
           },
-          isFileDownloadable: {
+          isDownloadable: {
             type: Type.BOOLEAN
           }
         },
         required: [
-          "fileSource",
-          "isFileDownloadable"
+          "source",
+          "isDownloadable"
         ],
         propertyOrdering: [
-          "fileSource",
-          "isFileDownloadable"
+          "source",
+          "isDownloadable"
         ]
       },
       minItems: 1,
@@ -193,7 +192,7 @@ const dawSchema = {
 const codespaceSchema = {
   type: Type.OBJECT,
   properties: {
-    codespaceLanguage: {
+    language: {
       type: Type.STRING,
       enum: [
         "csharp",
@@ -224,7 +223,7 @@ const codespaceSchema = {
         "angular"
       ]
     },
-    codespaceFiles: {
+    files: {
       type: Type.ARRAY,
       items: {
         type: Type.OBJECT,
@@ -242,20 +241,20 @@ const codespaceSchema = {
         ]
       },
       minItems: 1,
-      maxItems: 1
+      maxItems: 3
     },
-    codespaceCorrectOutput: {
+    correctOutput: {
       type: Type.STRING
     }
   },
   required: [
-    "codespaceLanguage",
-    "codespaceFiles"
+    "language",
+    "files"
   ],
   propertyOrdering: [
-    "codespaceLanguage",
-    "codespaceFiles",
-    "codespaceCorrectOutput"
+    "language",
+    "files",
+    "correctOutput"
   ]
 };
 
@@ -275,15 +274,15 @@ const engineSchema = {
 const iframeSchema = {
   type: Type.OBJECT,
   properties: {
-    iframeSource: {
+    source: {
       type: Type.STRING
     }
   },
   required: [
-    "iframeSource"
+    "source"
   ],
   propertyOrdering: [
-    "iframeSource"
+    "source"
   ]
 };
 
@@ -348,7 +347,7 @@ const chapterSchema = {
       type: Type.ARRAY,
       items: elementSchema,
       minItems: 1,
-      maxItems: 9
+      maxItems: 7
     }
   },
   required: [
@@ -382,13 +381,15 @@ const learnSchema = {
 const practiceSchema = {
   type: Type.OBJECT,
   properties: {
-    
+    placeholder: {
+      type: Type.BOOLEAN
+    }
   },
   required: [
-
+    "placeholder"
   ],
   propertyOrdering: [
-    
+    "placeholder"
   ]
 };
 

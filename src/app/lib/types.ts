@@ -142,8 +142,8 @@ export enum ElementState {
 };
 
 export type Element = {
-  text: string,
   type: ElementType,
+  text: string,
   value: ShortAnswer | TrueOrFalse | Matching | Ordering | Files | Drawing | Graph | DAW | Codespace | Engine | IFrame
   state: ElementState
 };

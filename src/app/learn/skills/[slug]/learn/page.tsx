@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Header, Sidebar, Element } from '../../../../lib/components';
 import { load } from '../../../../lib/functions';
-import { getSkill } from '../../../../lib/sql';
+import { getSkill } from '../../../../lib/files';
 import * as types from '../../../../lib/types';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {

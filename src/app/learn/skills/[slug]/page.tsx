@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Header } from '../../../lib/components';
-import { getSkill } from '../../../lib/sql';
+import { getSkill } from '../../../lib/files';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;
