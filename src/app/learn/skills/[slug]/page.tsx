@@ -9,7 +9,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   (async () => {
     try {
-      const launchInfo = await ky.get('/info', { credentials: 'include', headers: { Authorization: 'Bearer ' + process.env.LTI_KEY } }).json();
+      const launchInfo = await ky.get(`/info`,
+        {
+          credentials: 'include',
+          headers: {
+            Authorization: 'Bearer ' + process.env.LTI_KEY
+          }
+        }
+      ).json();
+
       console.log(JSON.stringify(launchInfo));
     } catch (err) {
       console.error(err);
