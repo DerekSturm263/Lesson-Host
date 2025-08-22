@@ -1,5 +1,5 @@
 import { Header } from '../../../lib/components';
-import { getCourse } from '../../../lib/database';
+import { getCourse } from '../../../lib/files';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;
