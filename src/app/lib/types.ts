@@ -16,6 +16,16 @@ export type ShortAnswer = {
   correctAnswer: string | undefined
 };
 
+export type MultipleChoiceItem = {
+  value: string,
+  isCorrect: boolean
+};
+
+export type MultipleChoice = {
+  choices: MultipleChoiceItem[],
+  needsAllCorrect: boolean
+};
+
 export type TrueOrFalse = {
   isCorrect: boolean
 };

@@ -1,4 +1,4 @@
-import { neon } from '@neondatabase/serverless';
+/*import { neon } from '@neondatabase/serverless';
 import { Skill, Project, Course } from './types';
 
 const sql = neon(process.env.DATABASE_URL ?? '');
@@ -128,4 +128,4 @@ export async function saveCourse(id: number, course: Course) {
   `;
 
   console.log(query);
-}
+}*/

@@ -82,10 +82,12 @@ export function Element({ chapter, element }: { chapter: types.Chapter, element:
   );
 }
 
-function Interaction({ type, value }: { type: string, value: types.ShortAnswer | types.TrueOrFalse | types.Matching | types.Ordering | types.Files | types.Drawing | types.Graph | types.DAW | types.Codespace | types.Engine | types.IFrame }) {
+function Interaction({ type, value }: { type: string, value: types.ShortAnswer | types.MultipleChoice | types.TrueOrFalse | types.Matching | types.Ordering | types.Files | types.Drawing | types.Graph | types.DAW | types.Codespace | types.Engine | types.IFrame }) {
   switch (type) {
     case 'shortAnswer':
       return (<div className="interaction" data-type="shortAnswer"><ShortAnswer value={value as types.ShortAnswer} /></div>);
+    case 'multipleChoice':
+      return (<div className="interaction" data-type="multipleChoice"><MultipleChoice value={value as types.MultipleChoice} /></div>);
     case 'trueOrFalse':
       return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse value={value as types.TrueOrFalse} /></div>);
     case 'matching':
@@ -111,7 +113,7 @@ function Interaction({ type, value }: { type: string, value: types.ShortAnswer |
   }
 }
 
-function ShortAnswer({ value }: { value: types.ShortAnswer } ) {
+function ShortAnswer({ value }: { value: types.ShortAnswer }) {
   return (
     <div
       className="smallInteraction"
@@ -126,6 +128,16 @@ function ShortAnswer({ value }: { value: types.ShortAnswer } ) {
           autoComplete="off"
         />
       </form>
+    </div>
+  );
+}
+
+function MultipleChoice({ value }: { value: types.MultipleChoice }) {
+  return (
+    <div
+      className="smallInteraction"
+    >
+      
     </div>
   );
 }

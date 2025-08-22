@@ -43,6 +43,42 @@ const shortAnswerSchema = {
   ]
 };
 
+const multipleChoiceSchema = {
+  type: Type.OBJECT,
+  properties: {
+    choices: {
+      type: Type.OBJECT,
+      properties: {
+        value: {
+          type: Type.STRING
+        },
+        isCorrect: {
+          type: Type.BOOLEAN
+        }
+      },
+      required: [
+        "value",
+        "isCorrect"
+      ],
+      propertyOrdering: [
+        "value",
+        "isCorrect"
+      ]
+    },
+    needsAllCorrect: {
+      type: Type.BOOLEAN
+    }
+  },
+  required: [
+    "choices",
+    "needsAllCorrect"
+  ],
+  propertyOrdering: [
+    "choices",
+    "needsAllCorrect"
+  ]
+};
+
 const trueOrFalseSchema = {
   type: Type.OBJECT,
   properties: {
@@ -293,6 +329,7 @@ const elementSchema = {
       type: Type.STRING,
       enum: [
         "shortAnswer",
+        "multipleChoice",
         "trueOrFalse",
         "matching",
         "ordering",
@@ -312,6 +349,7 @@ const elementSchema = {
       type: Type.OBJECT,
       anyOf: [
         shortAnswerSchema,
+        multipleChoiceSchema,
         trueOrFalseSchema,
         matchingSchema,
         orderingSchema,
