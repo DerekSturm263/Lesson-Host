@@ -3,8 +3,10 @@ import { Header } from '../../../lib/components';
 import { getSkill } from '../../../lib/files';
 import ky from 'ky';
 
+/* tslint:disable no-require-imports */
 const lti = require('ltijs').Provider;
 
+/* tslint:disable no-explicit-any */
 lti.onConnect(async (token: any, req: any, res: any) => {
   const customParams = res.locals.lti.custom;
   console.log('Custom parameters:', customParams);
@@ -14,24 +16,31 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const { slug } = await params;
   const skill = await getSkill(slug);
 
-
-
-  /*(async () => {
-    try {
-      const launchInfo = await ky.get(`https://api.schoology.com/v1/sections/{section_id}/grades`,
-        {
-          credentials: 'include',
-          headers: {
-            Authorization: 'Bearer ' + process.env.LTI_KEY
-          }
+  try {
+    /*const enrollment = await ky.get(`https://api.schoology.com/v1/[realm]/enrollments`,
+      {
+        credentials: 'include',
+        headers: {
+          Authorization: 'Bearer ' + process.env.LTI_KEY
         }
-      ).json();
+      }
+    ).json();
 
-      console.log(JSON.stringify(launchInfo));
-    } catch (err) {
-      console.error(err);
-    }
-  })();*/
+    console.log(JSON.stringify(enrollment));
+
+    const grades = await ky.get(`https://api.schoology.com/v1/sections/{section_id}/grades`,
+      {
+        credentials: 'include',
+        headers: {
+          Authorization: 'Bearer ' + process.env.LTI_KEY
+        }
+      }
+    ).json();
+
+    console.log(JSON.stringify(grades));*/
+  } catch (err) {
+    console.error(err);
+  }
 
   return (
     <div>
