@@ -3,13 +3,22 @@ import { Header } from '../../../lib/components';
 import { getSkill } from '../../../lib/files';
 import ky from 'ky';
 
+const lti = require('ltijs').Provider;
+
+lti.onConnect(async (token: any, req: any, res: any) => {
+  const customParams = res.locals.lti.custom;
+  console.log('Custom parameters:', customParams);
+});
+
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;
   const skill = await getSkill(slug);
 
-  (async () => {
+
+
+  /*(async () => {
     try {
-      const launchInfo = await ky.get(`/info`,
+      const launchInfo = await ky.get(`https://api.schoology.com/v1/sections/{section_id}/grades`,
         {
           credentials: 'include',
           headers: {
@@ -22,7 +31,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     } catch (err) {
       console.error(err);
     }
-  })();
+  })();*/
 
   return (
     <div>
