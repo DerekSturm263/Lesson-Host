@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode } from 'react';
-import Markdown from 'react-markdown'
+import { load } from '../lib/functions';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 
@@ -79,6 +80,30 @@ export function Element({ chapter, element }: { chapter: types.Chapter, element:
       <Interaction type={element.type} value={element.value} />
       <Text chapter={chapter} element={element} />
     </div>
+  );
+}
+
+export function ChapterButton({ chapter, index }: { chapter: types.Chapter, index: number }) {
+  return (
+    <button
+      title={`Load chapter ${index}`}
+      key={index}
+      onClick={load}
+      disabled={chapter.elements[0].state == types.ElementState.Locked}
+      data-iscomplete="false"
+      data-isselected="false"
+    >
+      <h4>
+        {chapter.title}
+      </h4>
+
+      <Image
+        className="checkmark"
+        src="/icons/checkmark.png"
+        alt="Checkmark"
+        data-iscomplete="false"
+      />
+    </button>
   );
 }
 

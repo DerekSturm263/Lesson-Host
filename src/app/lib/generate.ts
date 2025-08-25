@@ -14,12 +14,11 @@ const globalSystemInstruction =
   Wherever applicable, use technical documentation techniques. These should be included to make the text easy to follow and to highlight important information, terminology, formulas, syntaxes, etc. When doing this, use Markdown formatting. Remember that you need to sound like someone speaking, so don't include tables, headers, or other tags that may seem unnatural for spoken language. Here are some valid techniques to use:
   - Bold Text
   - Italics
-  - Underlined Text
   - Unordered Lists
   - Ordered Lists
   - Line Breaks
 
-  Code blocks should always be surrounded by triple backticks. Short pieces of code should always be surrounded by single backticks.
+  Code blocks should always be surrounded by triple backticks. Short pieces of code (including types and keywords) should always be surrounded by single backticks.
   Math formulas, equations, and variables should always be written using LATEX formatting.
                 
   Do not include any greetings or salutations with your response.`;

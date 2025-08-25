@@ -177,7 +177,7 @@ body {
   left: 350px;
   right: 100px;
   bottom: 50px;
-  height: 175px;
+  height: 200px;
   border-radius: 75px;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
   padding: 25px 75px 25px 75px;
@@ -225,6 +225,7 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  margin-top: 15px;
 
   .col1, .col2 {
     display: flex;

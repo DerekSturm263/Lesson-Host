@@ -1,8 +1,5 @@
-import Image from 'next/image';
-import { Header, Sidebar, Element } from '../../../../lib/components';
-import { load } from '../../../../lib/functions';
+import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
-import * as types from '../../../../lib/types';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;
@@ -15,25 +12,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
         <Sidebar label="Chapters" doHamburgerButton={true}>
           {skill.learn.chapters.map((chapter, index) => (
-            <button
-              title={`Load chapter ${index}`}
-              key={index}
-              //onClick={load}
-              disabled={chapter.elements[0].state == types.ElementState.Locked}
-              data-iscomplete="false"
-              data-isselected="false"
-            >
-              <h4>
-                {chapter.title}
-              </h4>
-
-              <Image
-                className="checkmark"
-                src="/icons/checkmark.png"
-                alt="Checkmark"
-                data-iscomplete="false"
-              />
-            </button>
+            <ChapterButton chapter={chapter} index={index} />
           ))}
         </Sidebar>
 
@@ -47,6 +26,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       </main>
     </div>
   );
+
+  //load();
 
   return page;
 }
