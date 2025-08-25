@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
         <Sidebar label="Chapters" doHamburgerButton={true}>
           {skill.learn.chapters.map((chapter, index) => (
-            <ChapterButton chapter={chapter} index={index} />
+            <ChapterButton key={index} chapter={chapter} index={index} />
           ))}
         </Sidebar>
 
