@@ -18,6 +18,8 @@ export async function getSkill(id: string): Promise<Skill> {
 
   await client.close();
 
+  console.log(JSON.stringify(skill));
+
   return skill as unknown as Skill;
 }
 
@@ -62,11 +64,13 @@ export async function saveSkill(id: string, skill: Skill) {
 export async function getProject(id: string): Promise<Project> {
   await client.connect();
 
-  const skill = await client.db('database').collection('projects').findOne({ _id: new ObjectId(id) });
+  const project = await client.db('database').collection('projects').findOne({ _id: new ObjectId(id) });
 
   await client.close();
 
-  return skill as unknown as Project;
+  console.log(JSON.stringify(project));
+
+  return project as unknown as Project;
 }
 
 export async function createProject(): Promise<Project> {
@@ -93,11 +97,13 @@ export async function saveProject(id: string, project: Project) {
 export async function getCourse(id: string): Promise<Course> {
   await client.connect();
 
-  const skill = await client.db('database').collection('courses').findOne({ _id: new ObjectId(id) });
+  const course = await client.db('database').collection('courses').findOne({ _id: new ObjectId(id) });
 
   await client.close();
 
-  return skill as unknown as Course;
+  console.log(JSON.stringify(course));
+
+  return course as unknown as Course;
 }
 
 export async function createCourse(): Promise<Course> {

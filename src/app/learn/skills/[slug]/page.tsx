@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Header } from '../../../lib/components';
-import { getSkill } from '../../../lib/files';
-import ky from 'ky';
+import { getSkill } from '../../../lib/database';
 
 /* tslint:disable no-require-imports */
 //const lti = require('ltijs').Provider;
