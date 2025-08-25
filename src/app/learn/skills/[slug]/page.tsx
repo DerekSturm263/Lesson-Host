@@ -4,13 +4,13 @@ import { getSkill } from '../../../lib/files';
 import ky from 'ky';
 
 /* tslint:disable no-require-imports */
-const lti = require('ltijs').Provider;
+//const lti = require('ltijs').Provider;
 
 /* tslint:disable no-explicit-any */
-lti.onConnect(async (token: any, req: any, res: any) => {
+/*lti.onConnect(async (token: any, req: any, res: any) => {
   const customParams = res.locals.lti.custom;
   console.log('Custom parameters:', customParams);
-});
+});*/
 
 export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
   const { slug } = await params;

@@ -1,17 +1,24 @@
-/*import { neon } from '@neondatabase/serverless';
+import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import { Skill, Project, Course } from './types';
 
-const sql = neon(process.env.DATABASE_URL ?? '');
+const uri: string = process.env.MONGODB_URI ?? '';
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
 export async function getSkill(id: string): Promise<Skill> {
-  const query = await sql`
-    SELECT *
-    FROM skills
-    WHERE id = ${id}
-  `;
+  await client.connect();
 
-  console.log(query);
-  return JSON.parse(query[0].value) as Skill;
+  const skill = await client.db('database').collection('skills').findOne({ _id: new ObjectId(id) });
+
+  await client.close();
+
+  return skill as unknown as Skill;
 }
 
 export async function createSkill(): Promise<Skill> {
@@ -37,34 +44,29 @@ export async function createSkill(): Promise<Skill> {
     }
   };
 
-  const query = await sql`
-    INSERT INTO skills
-    VALUES (${JSON.stringify(skill)})
-  `;
+  await client.connect();
+  await client.db('database').collection('skills').insertOne(skill);
+  await client.close();
 
-  console.log(query);
   return skill;
 }
 
-export async function saveSkill(id: number, skill: Skill) {
-  const query = await sql`
-    UPDATE skills
-    SET value = ${JSON.stringify(skill)}
-    WHERE id = ${id}
-  `;
+export async function saveSkill(id: string, skill: Skill) {
+  await client.connect();
 
-  console.log(query);
+  await client.db('database').collection('skills').updateOne({ _id: new ObjectId(id) }, { $set: skill });
+
+  await client.close();
 }
 
 export async function getProject(id: string): Promise<Project> {
-  const query = await sql`
-    SELECT *
-    FROM projects
-    WHERE id = ${id}
-  `;
+  await client.connect();
 
-  console.log(query);
-  return JSON.parse(query[0].value) as Project;
+  const skill = await client.db('database').collection('projects').findOne({ _id: new ObjectId(id) });
+
+  await client.close();
+
+  return skill as unknown as Project;
 }
 
 export async function createProject(): Promise<Project> {
@@ -73,34 +75,29 @@ export async function createProject(): Promise<Project> {
     description: ""
   };
 
-  const query = await sql`
-    INSERT INTO projects
-    VALUES (${JSON.stringify(project)})
-  `;
+  await client.connect();
+  await client.db('database').collection('projects').insertOne(project);
+  await client.close();
 
-  console.log(query);
   return project;
 }
 
-export async function saveProject(id: number, project: Project) {
-  const query = await sql`
-    UPDATE projects
-    SET value = ${JSON.stringify(project)}
-    WHERE id = ${id}
-  `;
+export async function saveProject(id: string, project: Project) {
+  await client.connect();
 
-  console.log(query);
+  await client.db('database').collection('projects').updateOne({ _id: new ObjectId(id) }, { $set: project });
+
+  await client.close();
 }
 
 export async function getCourse(id: string): Promise<Course> {
-  const query = await sql`
-    SELECT *
-    FROM courses
-    WHERE id = ${id}
-  `;
+  await client.connect();
 
-  console.log(query);
-  return JSON.parse(query[0].value) as Course;
+  const skill = await client.db('database').collection('courses').findOne({ _id: new ObjectId(id) });
+
+  await client.close();
+
+  return skill as unknown as Course;
 }
 
 export async function createCourse(): Promise<Course> {
@@ -111,21 +108,17 @@ export async function createCourse(): Promise<Course> {
     projects: []
   };
 
-  const query = await sql`
-    INSERT INTO courses
-    VALUES (${JSON.stringify(course)})
-  `;
+  await client.connect();
+  await client.db('database').collection('courses').insertOne(course);
+  await client.close();
 
-  console.log(query);
   return course;
 }
 
-export async function saveCourse(id: number, course: Course) {
-  const query = await sql`
-    UPDATE courses
-    SET value = ${JSON.stringify(course)}
-    WHERE id = ${id}
-  `;
+export async function saveCourse(id: string, course: Course) {
+    await client.connect();
 
-  console.log(query);
-}*/
+  await client.db('database').collection('courses').updateOne({ _id: new ObjectId(id) }, { $set: course });
+
+  await client.close();
+}
