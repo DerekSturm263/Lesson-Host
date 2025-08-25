@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
         <div>
           <Link
-            href={"./" + skill.title + "/learn"}
+            href={"./" + slug + "/learn"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </Link>
 
           <Link
-            href={"./" + skill.title + "/practice"}
+            href={"./" + slug + "/practice"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </Link>
 
           <Link
-            href={"./" + skill.title + "/implement"}
+            href={"./" + slug + "/implement"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -74,7 +74,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </Link>
           
           <Link
-            href={"./" + skill.title + "/study"}
+            href={"./" + slug + "/study"}
             target="_self"
             rel="noopener noreferrer"
           >
