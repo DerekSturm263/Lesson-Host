@@ -4,14 +4,7 @@ import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import { Skill, Project, Course } from './types';
 
 const uri: string = process.env.MONGODB_URI ?? '';
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const client = new MongoClient(uri);
 
 export async function getSkill(id: string): Promise<Skill> {
   await client.connect();
