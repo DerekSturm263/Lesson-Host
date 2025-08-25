@@ -1,6 +1,6 @@
 'use server'
 
-import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { Skill, Project, Course } from './types';
 
 const uri: string = process.env.MONGODB_URI ?? '';

@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image';
 import { Header, Sidebar, Element } from '../../../../lib/components';
 import { load } from '../../../../lib/functions';
