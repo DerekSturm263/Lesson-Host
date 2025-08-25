@@ -1,3 +1,5 @@
+'use server'
+
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import { Skill, Project, Course } from './types';
 
