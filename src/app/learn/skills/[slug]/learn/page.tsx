@@ -1,5 +1,3 @@
-'use client'
-
 import Image from 'next/image';
 import { Header, Sidebar, Element } from '../../../../lib/components';
 import { load } from '../../../../lib/functions';
@@ -20,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <button
               title={`Load chapter ${index}`}
               key={index}
-              onClick={load}
+              //onClick={load}
               disabled={chapter.elements[0].state == types.ElementState.Locked}
               data-iscomplete="false"
               data-isselected="false"
