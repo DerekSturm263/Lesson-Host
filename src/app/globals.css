@@ -152,7 +152,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  bottom: 0;
 }
 
 .interaction {
@@ -328,13 +327,7 @@ button[data-isselected="true"] {
     display: none;
   }
 
-  .smallInteraction {
-    left: 100px;
-    bottom: 475px;
-  }
-
   .fullscreenInteraction {
-    height: 50%;
     align-self: start;
   }
 
@@ -346,7 +339,6 @@ button[data-isselected="true"] {
     left: 0;
     right: 0;
     bottom: 0;
-    top: 50%;
     height: revert;
     border-radius: 0;
     padding: 25px 25px 25px 25px;
