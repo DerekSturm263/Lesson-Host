@@ -134,7 +134,7 @@ export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
   const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLDivElement;
 
   setThinkingText(text);
-  const newText = await rephraseText(text.dataset.lastnonthinkingtext ?? '');
+  const newText = await rephraseText(text.parentElement?.parentElement?.dataset.lastnonthinkingtext ?? '');
 
   text.textContent = newText;
   text.dataset.lastnonthinkingtext = newText;
