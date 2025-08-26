@@ -12,21 +12,23 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const page = (
     <div>
       <main>
+        <div className="all">
         {!hideHeader && <Header />}
 
-        <div className="content">
-          <Sidebar label="Chapters" doHamburgerButton={true}>
-            {skill.learn.chapters.map((chapter, index) => (
-              <ChapterButton key={index} chapter={chapter} index={index} />
-            ))}
-          </Sidebar>
+          <div className="content">
+            <Sidebar label="Chapters" doHamburgerButton={true}>
+              {skill.learn.chapters.map((chapter, index) => (
+                <ChapterButton key={index} chapter={chapter} index={index} />
+              ))}
+            </Sidebar>
 
-          <div className="elements">
-            {skill.learn.chapters.map((chapter, cIndex) => (
-              chapter.elements.map((element, eIndex) => (
-                <Element key={`${cIndex}:${eIndex}`} chapter={chapter} element={element} />
-              ))
-            ))}
+            <div className="elements">
+              {skill.learn.chapters.map((chapter, cIndex) => (
+                chapter.elements.map((element, eIndex) => (
+                  <Element key={`${cIndex}:${eIndex}`} chapter={chapter} element={element} />
+                ))
+              ))}
+            </div>
           </div>
         </div>
       </main>
