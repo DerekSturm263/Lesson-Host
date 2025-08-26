@@ -73,6 +73,7 @@ body {
 .content {
   top: 60px;
   bottom: 0;
+  width: 100%;
   position: fixed;
   display: flex;
 }
@@ -151,6 +152,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  bottom: 0;
 }
 
 .interaction {
