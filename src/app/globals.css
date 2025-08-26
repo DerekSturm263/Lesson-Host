@@ -61,7 +61,7 @@ body {
   padding-left: 50px;
   padding-right: 50px;
   gap: 50px;
-  position: fixed;
+  width: 100%;
 
   h3 {
     font-weight: 500;
@@ -76,10 +76,8 @@ body {
 }
 
 .content {
-  top: 60px;
   display: flex;
   flex: 1;
-  position: fixed;
 }
 
 .sidebar {
