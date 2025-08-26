@@ -330,20 +330,12 @@ button[data-isselected="true"] {
     display: none;
   }
 
-  .fullscreenInteraction {
-    align-self: start;
-  }
-
   input[type=text] {
     width: 300px;
   }
 
-  .text {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: revert;
-    border-radius: 0;
+  .textBox {
+    height: 400px;
     padding: 25px 25px 25px 25px;
   }
 
