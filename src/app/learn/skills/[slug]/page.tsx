@@ -45,6 +45,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     console.error(err);
   }
 
+  const urlParamAppend = urlParams ? "?hideHeader=" + urlParams.hideHeader : "";
+
   return (
     <div>
       <main>
@@ -53,7 +55,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
         <div>
           <Link
-            href={"./" + slug + "/learn"}
+            href={"./" + slug + "/learn" + urlParamAppend}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -61,7 +63,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           </Link>
 
           <Link
-            href={"./" + slug + "/practice"}
+            href={"./" + slug + "/practice" + urlParamAppend}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -69,7 +71,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           </Link>
 
           <Link
-            href={"./" + slug + "/implement"}
+            href={"./" + slug + "/implement" + urlParamAppend}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -77,7 +79,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           </Link>
           
           <Link
-            href={"./" + slug + "/study"}
+            href={"./" + slug + "/study" + urlParamAppend}
             target="_self"
             rel="noopener noreferrer"
           >
