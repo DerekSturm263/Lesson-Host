@@ -341,5 +341,9 @@ button[data-isselected="true"] {
 
   .buttons {
     flex-direction: column-reverse;
+
+    .col2 button {
+      min-width: 150px;
+    }
   }
 }
