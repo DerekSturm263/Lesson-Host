@@ -86,7 +86,7 @@ export function Element({ chapter, element }: { chapter: types.Chapter, element:
 export function ChapterButton({ chapter, index }: { chapter: types.Chapter, index: number }) {
   return (
     <button
-      title={`Load chapter ${index}`}
+      title={`Load chapter ${index + 1}`}
       key={index}
       onClick={load}
       disabled={chapter.elements[0].state == types.ElementState.Locked}
@@ -291,7 +291,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
               className="dot"
               key={index}
               onClick={functions.load}
-              title={`Load section ${index}`}
+              title={`Load section ${index + 1}`}
               disabled={element.state == types.ElementState.Locked}
               data-iscomplete="false"
               data-isselected="false"

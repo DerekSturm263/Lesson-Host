@@ -131,7 +131,7 @@ export function loadCodespace(e: SyntheticEvent<HTMLIFrameElement, Event>) {
 }
 
 export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
-  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
+  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLDivElement;
 
   setThinkingText(text);
   const newText = await rephraseText(text.dataset.lastnonthinkingtext ?? '');
@@ -141,11 +141,11 @@ export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
 }
 
 export function readAloud(e: MouseEvent<HTMLButtonElement>) {
-  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
+  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLDivElement;
 }
 
 export function reset(e: MouseEvent<HTMLButtonElement>) {
-  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling as HTMLDivElement;
+  const text = e.currentTarget.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLDivElement;
   const interaction = e.currentTarget.parentElement?.parentElement?.parentElement?.previousElementSibling?.firstChild?.firstChild as HTMLElement;
 
   text.textContent = text.dataset.originaltext ?? '';
