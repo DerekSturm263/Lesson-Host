@@ -13,7 +13,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     <div>
       <main>
         <div className="all">
-        {!hideHeader && <Header />}
+          {!hideHeader && <Header />}
 
           <div className="content">
             <Sidebar label="Chapters" doHamburgerButton={true}>
