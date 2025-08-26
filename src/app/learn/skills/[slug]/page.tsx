@@ -17,7 +17,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const skill = await getSkill(slug);
 
-  const showHeader = !urlParams || urlParams.hideHeader == 'true';
+  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
 
   try {
     /*const enrollment = await ky.get(`https://api.schoology.com/v1/[realm]/enrollments`,
@@ -45,12 +45,12 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     console.error(err);
   }
 
-  const urlParamAppend = urlParams ? "?hideHeader=" + urlParams.hideHeader : "";
+  const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`) : "";
 
   return (
     <div>
       <main>
-        {showHeader && <Header />}
+        {!hideHeader && <Header />}
         <h1 className="mainHeader">{skill.title}</h1>
 
         <div>

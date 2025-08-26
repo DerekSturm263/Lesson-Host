@@ -7,12 +7,12 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const skill = await getSkill(slug);
 
-  const showHeader = !urlParams || urlParams.hideHeader == 'true';
+  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
 
   const page = (
     <div>
       <main>
-        {showHeader && <Header />}
+        {!hideHeader && <Header />}
 
         <Sidebar label="Chapters" doHamburgerButton={true}>
           {skill.learn.chapters.map((chapter, index) => (
