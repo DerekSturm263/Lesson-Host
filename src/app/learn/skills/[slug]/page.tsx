@@ -15,7 +15,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const { slug } = await params;
   const skill = await getSkill(slug);
 
-  alert(JSON.stringify(searchParams));
+  console.log(JSON.stringify(searchParams));
 
   try {
     /*const enrollment = await ky.get(`https://api.schoology.com/v1/[realm]/enrollments`,
