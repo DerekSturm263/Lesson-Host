@@ -79,10 +79,6 @@ body {
 
 .sidebar {
   background: rgba(0, 0, 0, 0.2);
-  position: fixed;
-  left: 0;
-  top: 60px;
-  bottom: 0;
   width: 250px;
   overflow-y: scroll;
   padding-bottom: 25px;
@@ -145,11 +141,14 @@ body {
   }
 }
 
+.elements {
+  flex: 1;
+}
+
 .element {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .interaction {
