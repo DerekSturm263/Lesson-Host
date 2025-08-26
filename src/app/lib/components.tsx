@@ -243,7 +243,7 @@ function Codespace({ value }: { value: types.Codespace }) {
     <iframe
       className="fullscreenInteraction"
       onLoad={functions.loadCodespace}
-      src="https://onecompiler.com/embed/${element.value.codespaceLanguage}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true"
+      src={`https://onecompiler.com/embed/${value.language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
       data-language={value.language}
       data-files={JSON.stringify(value.files)}
       data-correctoutput={value.correctOutput ?? ''}
