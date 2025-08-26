@@ -137,7 +137,7 @@ export async function rephrase(e: MouseEvent<HTMLButtonElement>) {
   const newText = await rephraseText(text.parentElement?.parentElement?.dataset.lastnonthinkingtext ?? '');
 
   text.textContent = newText;
-  text.dataset.lastnonthinkingtext = newText;
+  text.parentElement?.parentElement?.dataset.lastnonthinkingtext = newText;
 }
 
 export function readAloud(e: MouseEvent<HTMLButtonElement>) {

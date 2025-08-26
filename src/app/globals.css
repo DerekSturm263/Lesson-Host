@@ -91,7 +91,7 @@ body {
   h3 {
     margin-top: 25px;
     margin-left: 35px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-weight: 500;
     font-size: 20px;
   }
@@ -112,6 +112,7 @@ body {
     display: flex;
     flex-direction: column-reverse;
     justify-content: space-between;
+    background-color: gray;
 
     h4 {
       color: white;
