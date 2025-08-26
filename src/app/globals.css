@@ -78,6 +78,8 @@ body {
 .content {
   display: flex;
   flex: 1;
+  position: fixed;
+  bottom: 0;
 }
 
 .sidebar {
