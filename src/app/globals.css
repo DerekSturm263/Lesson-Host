@@ -148,7 +148,6 @@ body {
 
 .element {
   overflow: hidden;
-  position: fixed;
   display: flex;
   flex-direction: column;
   height: 100%;
