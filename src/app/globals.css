@@ -147,8 +147,10 @@ body {
 
 .element {
   overflow: hidden;
+  position: fixed;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .interaction {
@@ -322,14 +324,6 @@ button[data-isselected="true"] {
 @media screen and (max-width: 800px) {
   .sidebar {
     display: none;
-  }
-
-  .chapterContent {
-    left: 0;
-  }
-
-  .interaction {
-    left: 0;
   }
 
   .smallInteraction {
