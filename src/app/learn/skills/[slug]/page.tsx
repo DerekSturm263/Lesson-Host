@@ -11,7 +11,7 @@ import { getSkill } from '../../../lib/database';
   console.log('Custom parameters:', customParams);
 });*/
 
-export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
+export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{  }> }) {
   const { slug } = await params;
   const skill = await getSkill(slug);
 
@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <div>
       <main>
-        <Header />
+        {<Header />}
         <h1 className="mainHeader">{skill.title}</h1>
 
         <div>

@@ -10,7 +10,7 @@ export default function Page() {
 
         <div>
           <Link
-            href={"./skill"}
+            href={"./create/skill"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -18,7 +18,7 @@ export default function Page() {
           </Link>
 
           <Link
-            href={"./project"}
+            href={"./create/project"}
             target="_self"
             rel="noopener noreferrer"
           >
@@ -26,7 +26,7 @@ export default function Page() {
           </Link>
 
           <Link
-            href={"./course"}
+            href={"./create/course"}
             target="_self"
             rel="noopener noreferrer"
           >
