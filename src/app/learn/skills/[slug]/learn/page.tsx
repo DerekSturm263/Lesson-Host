@@ -1,14 +1,18 @@
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
+  const urlParams = await searchParams;
+
   const skill = await getSkill(slug);
+
+  const showHeader = !urlParams || urlParams.hideHeader == 'true';
 
   const page = (
     <div>
       <main>
-        <Header />
+        {showHeader && <Header />}
 
         <Sidebar label="Chapters" doHamburgerButton={true}>
           {skill.learn.chapters.map((chapter, index) => (
