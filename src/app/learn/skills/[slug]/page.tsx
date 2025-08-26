@@ -13,9 +13,11 @@ import { getSkill } from '../../../lib/database';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
+  const urlParams = await searchParams;
+
   const skill = await getSkill(slug);
 
-  console.log(JSON.stringify(searchParams));
+  const showHeader = !urlParams || urlParams.hideHeader == 'true';
 
   try {
     /*const enrollment = await ky.get(`https://api.schoology.com/v1/[realm]/enrollments`,
@@ -46,7 +48,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   return (
     <div>
       <main>
-        {<Header />}
+        {showHeader && <Header />}
         <h1 className="mainHeader">{skill.title}</h1>
 
         <div>
