@@ -11,9 +11,11 @@ import { getSkill } from '../../../lib/database';
   console.log('Custom parameters:', customParams);
 });*/
 
-export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{  }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
   const skill = await getSkill(slug);
+
+  alert(JSON.stringify(searchParams));
 
   try {
     /*const enrollment = await ky.get(`https://api.schoology.com/v1/[realm]/enrollments`,
