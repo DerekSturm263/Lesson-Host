@@ -274,11 +274,12 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
     <div className="textBox">
       <div
         className="text"
-        data-originaltext={element.text}
-        data-lastnonthinkingtext={element.text}
       >
         <WordWrapper>
-          <Markdown>
+          <Markdown
+            data-originaltext={element.text}
+            data-lastnonthinkingtext={element.text}
+          >
             {element.text}
           </Markdown>
         </WordWrapper>
