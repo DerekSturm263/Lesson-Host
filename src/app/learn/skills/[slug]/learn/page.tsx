@@ -21,7 +21,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
               {skill.learn.chapters.map((chapter, index) => (
                 <ChapterButton
                   key={index}
-                  elementID={new ElementID(skill.learn, index, 0)}
+                  elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0 }}
                 />
               ))}
             </Sidebar>
@@ -31,7 +31,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 chapter.elements.map((element, eIndex) => (
                   <Element
                     key={`${cIndex}:${eIndex}`}
-                    elementID={new ElementID(skill.learn, cIndex, eIndex)}
+                    elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex }}
                   />
                 ))
               ))}

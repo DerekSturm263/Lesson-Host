@@ -6,6 +6,7 @@ import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode } from 'react';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
+import * as helpers from '../lib/helpers';
 
 export function Header() {
   return (
@@ -76,7 +77,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 export function Element({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
-      id={`element${elementID.getAbsoluteIndex()}`}
+      id={`element${helpers.getAbsoluteIndex(elementID)}`}
       className="element"
     >
       <Interaction elementID={elementID} />
@@ -92,12 +93,12 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
       title={`Load chapter ${elementID.chapterIndex + 1}`}
       //key={index}
       onClick={(e) => functions.load(elementID)}
-      disabled={elementID.getElement().state == types.ElementState.Locked}
+      disabled={helpers.getElement(elementID).state == types.ElementState.Locked}
       data-iscomplete="false"
       data-isselected="false"
     >
       <h4>
-        {elementID.getChapter().title}
+        {helpers.getChapter(elementID).title}
       </h4>
 
       <Image
@@ -112,7 +113,7 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
 }
 
 function Interaction({ elementID }: { elementID: types.ElementID }) {
-  switch (elementID.getElement().type) {
+  switch (helpers.getElement(elementID).type) {
     case types.ElementType.ShortAnswer:
       return (<div className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} /></div>);
     case types.ElementType.MultipleChoice:
@@ -151,7 +152,7 @@ function ShortAnswer({ elementID }: { elementID: types.ElementID }) {
         action={(e) => functions.submitShortAnswer(e, elementID)}
       >
         <input
-          id={`interaction${elementID.getAbsoluteIndex()}`}
+          id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
           type="text"
           name="response"
           placeholder="Write your response here. Press enter to submit"
@@ -168,17 +169,17 @@ function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
       className="smallInteraction"
     >
       <form
-        id={`interaction${elementID.getAbsoluteIndex()}`}
+        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
-        {elementID.getInteractionValue<types.MultipleChoice>().choices.map((item, index) => (
+        {helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.map((item, index) => (
           <label
             key={index}
           >
             {item.value}
 
             <input
-              type={elementID.getInteractionValue<types.MultipleChoice>().needsAllCorrect ? 'radio' : 'checkbox'}
+              type={helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect ? 'radio' : 'checkbox'}
               name="response"
               id={item.value}
               value={item.isCorrect.toString()}
@@ -205,7 +206,7 @@ function TrueOrFalse({ elementID }: { elementID: types.ElementID }) {
       className="smallInteraction"
     >
       <form
-        id={`interaction${elementID.getAbsoluteIndex()}`}
+        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
         action={(e) => functions.submitTrueOrFalse(e, elementID)}
       >
         <label>
@@ -305,10 +306,10 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 function Codespace({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
-      id={`interaction${elementID.getAbsoluteIndex()}`}
+      id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
       className="fullscreenInteraction"
       onLoad={(e) => functions.loadCodespace(elementID)}
-      src={`https://onecompiler.com/embed/${elementID.getInteractionValue<types.Codespace>().language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
+      src={`https://onecompiler.com/embed/${helpers.getInteractionValue<types.Codespace>(elementID).language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
     ></iframe>
   );
 }
@@ -325,9 +326,9 @@ function Engine({ elementID }: { elementID: types.ElementID }) {
 function IFrame({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
-      id={`interaction${elementID.getAbsoluteIndex()}`}
+      id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
       className="fullscreenInteraction"
-      src={elementID.getInteractionValue<types.IFrame>().source}
+      src={helpers.getInteractionValue<types.IFrame>(elementID).source}
     ></iframe>
   );
 }
@@ -336,25 +337,25 @@ function Text({ elementID }: { elementID: types.ElementID }) {
   return (
     <div className="textBox">
       <div
-        id={`text${elementID.getAbsoluteIndex()}`}
-        data-lastnonthinkingtext={elementID.getElement().text}
+        id={`text${helpers.getAbsoluteIndex(elementID)}`}
+        data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
         <WordWrapper>
           <Markdown>
-            {elementID.getElement().text}
+            {helpers.getElement(elementID).text}
           </Markdown>
         </WordWrapper>
       </div>
 
       <div className="buttons">
         <div className="col1">
-          {elementID.getChapter().elements.map((element, index) => {
-            const eID = new types.ElementID(elementID.learn, elementID.chapterIndex, index);
+          {helpers.getChapter(elementID).elements.map((element, index) => {
+            const eID = { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index };
           
             return (
               <button
-                className={`dot dot${eID.getAbsoluteIndex()}`}
+                className={`dot dot${helpers.getAbsoluteIndex(eID)}`}
                 key={index}
                 onClick={(e) => functions.load(eID)}
                 title={`Load section ${index + 1}`}

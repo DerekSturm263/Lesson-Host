@@ -555,77 +555,8 @@ export type Course = {
   }
 };*/
 
-export class ElementID {
-  readonly learn: Learn;
-  readonly chapterIndex: number;
-  readonly elementIndex: number;
-
-  constructor(learn: Learn, chapterIndex: number, elementIndex: number) {
-    this.learn = learn;
-    this.chapterIndex = chapterIndex;
-    this.elementIndex = elementIndex;
-  }
-
-  getChapter(): Chapter {
-    return this.learn.chapters[this.chapterIndex];
-  }
-
-  getElement(): Element {
-    return this.getChapter().elements[this.elementIndex];
-  }
-
-  getAbsoluteIndex(): number {
-    let index = 0;
-
-    for (let i = 0; i < this.chapterIndex; ++i) {
-      index += this.learn.chapters[i].elements.length;
-    }
-
-    return index + this.elementIndex;
-  }
-
-  getIsLastElement(): boolean {
-    return this.getChapter().elements.length - 1 == this.elementIndex;
-  }
-
-  // Gets the last non-thinking text.
-  getText(): string {
-    const parent = document.getElementById(`text${this.getAbsoluteIndex()}`);
-
-    return parent?.dataset.lastnonthinkingtext ?? "";
-  }
-
-  // Sets text and doesn't update non-thinking text.
-  startThinking() {
-    const parent = document.getElementById(`text${this.getAbsoluteIndex()}`);
-    const element = parent?.firstElementChild?.firstElementChild;
-    if (!element)
-      return;
-
-    element.textContent = "*Thinking...*";
-  }
-
-  // Sets text and updates the non-thinking text.
-  setText(text: string) {
-    const parent = document.getElementById(`text${this.getAbsoluteIndex()}`);
-    const element = parent?.firstElementChild?.firstElementChild;
-    if (!element)
-      return;
-
-    element.textContent = text;
-    parent.dataset.lastnonthinkingtext = text;
-  }
-
-  // Resets to the original text.
-  resetText() {
-    this.setText(this.getElement().text);
-  }
-
-  getInteractionElement<T>(func: (value: T) => void) {
-    func(document.getElementById(`interaction${this.getAbsoluteIndex()}`) as T);
-  }
-
-  getInteractionValue<T>(): T {
-    return this.getElement().value as T;
-  }
+export type ElementID = {
+  learn: Learn,
+  chapterIndex: number,
+  elementIndex: number
 };

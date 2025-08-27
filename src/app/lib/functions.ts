@@ -1,5 +1,6 @@
 import { verifyShortAnswer, verifyCodespace, rephraseText } from './generate';
 import * as types from '../lib/types';
+import * as helpers from '../lib/helpers';
 
 function complete(elementID: types.ElementID) {
   const dots = document.getElementsByClassName(`dot${elementID.elementIndex}`) as HTMLCollectionOf<HTMLButtonElement>;
@@ -7,7 +8,7 @@ function complete(elementID: types.ElementID) {
     dots[i].dataset.iscomplete = "true";
   }
 
-  if (elementID.getIsLastElement()) {
+  if (helpers.getIsLastElement(elementID)) {
     const thisButton = document.getElementById(`chapterButton${elementID.chapterIndex}`);
 
     if (thisButton)
@@ -28,7 +29,7 @@ function unlock(elementID: types.ElementID) {
     dots[i].disabled = false;
   }
 
-  if (elementID.getIsLastElement()) {
+  if (helpers.getIsLastElement(elementID)) {
     const nextButton = document.getElementById(`chapterButton${elementID.chapterIndex + 1}`) as HTMLButtonElement;
     nextButton.disabled = false;
   }
@@ -68,13 +69,13 @@ export function load(elementID: types.ElementID) {
 
 export function loadGraph(elementID: types.ElementID) {
   const params = {
-    "appName": elementID.getInteractionValue<types.Graph>().type,
+    "appName": helpers.getInteractionValue<types.Graph>(elementID).type,
     "width": 1067,
     "height": 600,
     "showToolBar": false,
     "showAlgebraInput": true,
     "showMenuBar": false,
-    "filename": elementID.getInteractionValue<types.Graph>().fileName,
+    "filename": helpers.getInteractionValue<types.Graph>(elementID).fileName,
     "scaleContainerClass": "interaction"
   };
 
@@ -83,14 +84,14 @@ export function loadGraph(elementID: types.ElementID) {
 }
 
 export function loadCodespace(elementID: types.ElementID) {
-  elementID.getInteractionElement<HTMLIFrameElement>((interaction) => {
+  helpers.getInteractionElement<HTMLIFrameElement>(elementID, (interaction) => {
     if (!interaction.contentWindow)
       return;
 
     interaction.contentWindow.postMessage({
       eventType: 'populateCode',
-      language: elementID.getInteractionValue<types.Codespace>().language,
-      files: elementID.getInteractionValue<types.Codespace>().files
+      language: helpers.getInteractionValue<types.Codespace>(elementID).language,
+      files: helpers.getInteractionValue<types.Codespace>(elementID).files
     }, "*");
 
     // Submit Codespace
@@ -99,11 +100,11 @@ export function loadCodespace(elementID: types.ElementID) {
         return;
 
       if (e.data.action == 'runStart') {
-        elementID.startThinking();
+        helpers.startThinking(elementID);
       } else if (e.data.action == 'runComplete') {
-        const feedback = await verifyCodespace(elementID.getElement().text, e.data.files, e.data.result, elementID.getInteractionValue<types.Codespace>().correctOutput ?? '', e.data.language);
+        const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', e.data.language);
     
-        elementID.setText(feedback.feedback);
+        helpers.setText(elementID, feedback.feedback);
     
         if (feedback.isValid) {
           complete(elementID);
@@ -114,9 +115,9 @@ export function loadCodespace(elementID: types.ElementID) {
 }
 
 export async function rephrase(elementID: types.ElementID) {
-  elementID.startThinking();
-  const newText = await rephraseText(elementID.getText());
-  elementID.setText(newText);
+  helpers.startThinking(elementID);
+  const newText = await rephraseText(helpers.getText(elementID));
+  helpers.setText(elementID, newText);
 }
 
 export function readAloud(elementID: types.ElementID) {
@@ -124,9 +125,9 @@ export function readAloud(elementID: types.ElementID) {
 }
 
 export function reset(elementID: types.ElementID) {
-  elementID.resetText();
+  helpers.resetText(elementID);
 
-  switch (elementID.getElement().type) {
+  switch (helpers.getElement(elementID).type) {
     case types.ElementType.Graph:
       loadGraph(elementID);
       break;
@@ -147,12 +148,12 @@ export async function define(word: string) {
 }
 
 export async function submitShortAnswer(formData: FormData, elementID: types.ElementID) {
-  elementID.startThinking();
-  const feedback = await verifyShortAnswer(elementID.getElement().text, formData.get('response')?.toString() ?? '');
-  elementID.setText(feedback.feedback);
+  helpers.startThinking(elementID);
+  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '');
+  helpers.setText(elementID, feedback.feedback);
 
   if (feedback.isValid) {
-    elementID.getInteractionElement<HTMLInputElement>((interaction) => {
+    helpers.getInteractionElement<HTMLInputElement>(elementID, (interaction) => {
       interaction.value = "";
       interaction.disabled = true;
     });
