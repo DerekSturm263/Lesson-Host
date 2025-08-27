@@ -3,7 +3,7 @@ import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
 function complete(elementID: types.ElementID) {
-  const dots = document.getElementsByClassName(`dot${elementID.elementIndex}`) as HTMLCollectionOf<HTMLButtonElement>;
+  const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
   for (let i = 0; i < dots.length; ++i) {
     dots[i].dataset.iscomplete = "true";
   }
@@ -24,7 +24,7 @@ function complete(elementID: types.ElementID) {
 }
 
 function unlock(elementID: types.ElementID) {
-  const dots = document.getElementsByClassName(`dot${elementID.elementIndex}`) as HTMLCollectionOf<HTMLButtonElement>;
+  const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
   for (let i = 0; i < dots.length; ++i) {
     dots[i].disabled = false;
   }
@@ -37,7 +37,7 @@ function unlock(elementID: types.ElementID) {
 
 export function load(elementID: types.ElementID) {
   const content = document.getElementsByClassName("element") as HTMLCollectionOf<HTMLElement>;
-  const thisContent = document.getElementById(`element${elementID.elementIndex}`);
+  const thisContent = document.getElementById(`element${helpers.getAbsoluteIndex(elementID)}`);
     
   for (let i = 0; i < content.length; ++i) {
     content[i].style.display = "none";
@@ -57,7 +57,7 @@ export function load(elementID: types.ElementID) {
     thisButton.dataset.isselected = "true";
 
   const dots = document.getElementsByClassName(`dot`) as HTMLCollectionOf<HTMLButtonElement>;
-  const theseDots = document.getElementsByClassName(`dot${elementID.elementIndex}`) as HTMLCollectionOf<HTMLButtonElement>;
+  const theseDots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
 
   for (let i = 0; i < dots.length; ++i) {
     dots[i].dataset.isselected = "false";

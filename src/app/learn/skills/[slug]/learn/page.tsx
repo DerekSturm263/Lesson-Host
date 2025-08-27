@@ -42,7 +42,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     </div>
   );
 
-  //load();
+  load({  });
 
   return page;
 }
