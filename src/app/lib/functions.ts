@@ -44,7 +44,7 @@ export function load(elementID: types.ElementID) {
   }
 
   if (thisContent)
-    thisContent.style.display = "block";
+    thisContent.style.display = "flex";
 
   const buttons = document.getElementsByClassName("chapterButton") as HTMLCollectionOf<HTMLButtonElement>;
   const thisButton = document.getElementById(`chapterButton${elementID.chapterIndex}`);
