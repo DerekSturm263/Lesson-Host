@@ -36,7 +36,7 @@ function unlock(elementID: types.ElementID) {
 }
 
 export function load(elementID: types.ElementID) {
-  const content = document.getElementsByClassName("element") as HTMLCollectionOf<HTMLElement>;
+  const content = document.getElementsByClassName('element') as HTMLCollectionOf<HTMLElement>;
   const thisContent = document.getElementById(`element${helpers.getAbsoluteIndex(elementID)}`);
     
   for (let i = 0; i < content.length; ++i) {
@@ -46,7 +46,7 @@ export function load(elementID: types.ElementID) {
   if (thisContent)
     thisContent.style.display = "flex";
 
-  const buttons = document.getElementsByClassName("chapterButton") as HTMLCollectionOf<HTMLButtonElement>;
+  const buttons = document.getElementsByClassName('chapterButton') as HTMLCollectionOf<HTMLButtonElement>;
   const thisButton = document.getElementById(`chapterButton${elementID.chapterIndex}`);
 
   for (let i = 0; i < buttons.length; ++i) {
