@@ -162,14 +162,19 @@ body {
   align-items: center;
   justify-content: center;
   flex: 1;
+
+  form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .smallInteraction {
-  position: fixed;
-  left: 350px;
-  right: 100px;
-  top: 100px;
-  bottom: 330px;
+  width: 65%;
+  height: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -280,8 +285,8 @@ body {
 
 input[type=text] {
   background-color: rgb(60, 60, 60);
-  width: 750px;
-  height: 15px;
+  width: 100%;
+  height: 20px;
   border-radius: 50px;
   padding: 20px;
   font-size: 15px;
@@ -329,10 +334,6 @@ button[data-isselected="true"] {
 @media screen and (max-width: 800px) {
   .sidebar {
     display: none;
-  }
-
-  input[type=text] {
-    width: 300px;
   }
 
   .textBox {
