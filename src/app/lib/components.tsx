@@ -172,7 +172,9 @@ function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
         {elementID.getInteractionValue<types.MultipleChoice>().choices.map((item, index) => (
-          <label>
+          <label
+            key={index}
+          >
             {item.value}
 
             <input
