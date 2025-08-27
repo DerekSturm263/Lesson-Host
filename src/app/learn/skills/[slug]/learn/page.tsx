@@ -1,3 +1,4 @@
+import { ElementID } from '@/app/lib/types';
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 
@@ -16,16 +17,22 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           {!hideHeader && <Header />}
 
           <div className="content">
-            <Sidebar label="Chapters" doHamburgerButton={true}>
+            <Sidebar label="Chapters">
               {skill.learn.chapters.map((chapter, index) => (
-                <ChapterButton key={index} chapter={chapter} index={index} />
+                <ChapterButton
+                  key={index}
+                  elementID={new ElementID(skill.learn, index, 0)}
+                />
               ))}
             </Sidebar>
 
             <div className="elements">
               {skill.learn.chapters.map((chapter, cIndex) => (
                 chapter.elements.map((element, eIndex) => (
-                  <Element key={`${cIndex}:${eIndex}`} chapter={chapter} element={element} />
+                  <Element
+                    key={`${cIndex}:${eIndex}`}
+                    elementID={new ElementID(skill.learn, cIndex, eIndex)}
+                  />
                 ))
               ))}
             </div>

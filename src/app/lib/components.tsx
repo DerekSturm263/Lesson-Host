@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode } from 'react';
-import { load } from '../lib/functions';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 
@@ -56,7 +55,7 @@ export function Header() {
   );
 }
 
-export function Sidebar({ children, label, doHamburgerButton }: { children?: React.ReactNode, label: string, doHamburgerButton: boolean }) {
+export function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
   return (
     <div className="sidebar">
       <h3>
@@ -74,30 +73,35 @@ export function Sidebar({ children, label, doHamburgerButton }: { children?: Rea
   );
 }
 
-export function Element({ chapter, element }: { chapter: types.Chapter, element: types.Element }) {
+export function Element({ elementID }: { elementID: types.ElementID }) {
   return (
-    <div className="element">
-      <Interaction type={element.type} value={element.value} />
-      <Text chapter={chapter} element={element} />
+    <div
+      id={`element${elementID.getAbsoluteIndex()}`}
+      className="element"
+    >
+      <Interaction elementID={elementID} />
+      <Text elementID={elementID} />
     </div>
   );
 }
 
-export function ChapterButton({ chapter, index }: { chapter: types.Chapter, index: number }) {
+export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
   return (
     <button
-      title={`Load chapter ${index + 1}`}
-      key={index}
-      onClick={load}
-      disabled={chapter.elements[0].state == types.ElementState.Locked}
+      id={`chapterButton${elementID.chapterIndex}`}
+      title={`Load chapter ${elementID.chapterIndex + 1}`}
+      //key={index}
+      onClick={(e) => functions.load(elementID)}
+      disabled={elementID.getElement().state == types.ElementState.Locked}
       data-iscomplete="false"
       data-isselected="false"
     >
       <h4>
-        {chapter.title}
+        {elementID.getChapter().title}
       </h4>
 
       <Image
+        id={`chapterCheckmark${elementID.chapterIndex}`}
         className="checkmark"
         src="/icons/checkmark.png"
         alt="Checkmark"
@@ -107,44 +111,44 @@ export function ChapterButton({ chapter, index }: { chapter: types.Chapter, inde
   );
 }
 
-function Interaction({ type, value }: { type: string, value: types.ShortAnswer | types.MultipleChoice | types.TrueOrFalse | types.Matching | types.Ordering | types.Files | types.Drawing | types.Graph | types.DAW | types.Codespace | types.Engine | types.IFrame }) {
-  switch (type) {
-    case 'shortAnswer':
-      return (<div className="interaction" data-type="shortAnswer"><ShortAnswer value={value as types.ShortAnswer} /></div>);
-    case 'multipleChoice':
-      return (<div className="interaction" data-type="multipleChoice"><MultipleChoice value={value as types.MultipleChoice} /></div>);
-    case 'trueOrFalse':
-      return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse value={value as types.TrueOrFalse} /></div>);
-    case 'matching':
-      return (<div className="interaction" data-type="matching"><Matching value={value as types.Matching} /></div>);
-    case 'ordering':
-      return (<div className="interaction" data-type="ordering"><Ordering value={value as types.Ordering} /></div>);
-    case 'files':
-      return (<div className="interaction" data-type="files"><Files value={value as types.Files} /></div>);
-    case 'drawing':
-      return (<div className="interaction" data-type="drawing"><Drawing value={value as types.Drawing} /></div>);
-    case 'graph':
-      return (<div className="interaction" data-type="graph"><Graph value={value as types.Graph} /></div>);
-    case 'daw':
-      return (<div className="interaction" data-type="daw"><DAW value={value as types.DAW} /></div>);
-    case 'codespace':
-      return (<div className="interaction" data-type="codespace"><Codespace value={value as types.Codespace} /></div>);
-    case 'engine':
-      return (<div className="interaction" data-type="engine"><Engine value={value as types.Engine} /></div>);
-    case 'iFrame':
-      return (<div className="interaction" data-type="iFrame"><IFrame value={value as types.IFrame} /></div>);
+function Interaction({ elementID }: { elementID: types.ElementID }) {
+  switch (elementID.getElement().type) {
+    case types.ElementType.ShortAnswer:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} /></div>);
+    case types.ElementType.MultipleChoice:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="multipleChoice"><MultipleChoice elementID={elementID} /></div>);
+    case types.ElementType.TrueOrFalse:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="trueOrFalse"><TrueOrFalse elementID={elementID} /></div>);
+    case types.ElementType.Matching:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="matching"><Matching elementID={elementID} /></div>);
+    case types.ElementType.Ordering:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="ordering"><Ordering elementID={elementID} /></div>);
+    case types.ElementType.Files:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="files"><Files elementID={elementID} /></div>);
+    case types.ElementType.Drawing:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="drawing"><Drawing elementID={elementID} /></div>);
+    case types.ElementType.Graph:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="graph"><Graph elementID={elementID} /></div>);
+    case types.ElementType.DAW:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="daw"><DAW elementID={elementID} /></div>);
+    case types.ElementType.Codespace:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="codespace"><Codespace elementID={elementID} /></div>);
+    case types.ElementType.Engine:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="engine"><Engine elementID={elementID} /></div>);
+    case types.ElementType.IFrame:
+      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="iFrame"><IFrame elementID={elementID} /></div>);
     default:
-      return <div className="interaction" data-type="none"></div>;
+      return <div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="none"></div>;
   }
 }
 
-function ShortAnswer({ value }: { value: types.ShortAnswer }) {
+function ShortAnswer({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="smallInteraction"
     >
       <form
-        action={functions.submitShortAnswer}
+        action={(e) => functions.submitShortAnswer(e, elementID)}
       >
         <input
           type="text"
@@ -157,7 +161,66 @@ function ShortAnswer({ value }: { value: types.ShortAnswer }) {
   );
 }
 
-function MultipleChoice({ value }: { value: types.MultipleChoice }) {
+function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
+  return (
+    <div
+      className="smallInteraction"
+    >
+      <form
+        action={(e) => functions.submitMultipleChoice(e, elementID)}
+      >
+        {elementID.getInteractionValue<types.MultipleChoice>().choices.map((item, index) => (
+          <label>
+            {item.value}
+
+            <input
+              type={elementID.getInteractionValue<types.MultipleChoice>().needsAllCorrect ? 'radio' : 'checkbox'}
+              name="response"
+              id={item.value}
+              value={item.isCorrect.toString()}
+            />
+          </label>
+        ))}
+      </form>
+    </div>
+  );
+}
+
+function TrueOrFalse({ elementID }: { elementID: types.ElementID }) {
+  return (
+    <div
+      className="smallInteraction"
+    >
+      <form
+        action={(e) => functions.submitTrueOrFalse(e, elementID)}
+      >
+        <label>
+          True
+        
+          <input
+            type="radio"
+            name="response"
+            id="true"
+            value="true"
+          />
+        </label>
+
+        <label>
+          False
+        
+          <input
+            type="radio"
+            name="response"
+            id="false"
+            value="false"
+          />
+        </label>
+      </form>
+    </div>
+  );
+}
+
+function Matching({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="smallInteraction"
@@ -167,7 +230,7 @@ function MultipleChoice({ value }: { value: types.MultipleChoice }) {
   );
 }
 
-function TrueOrFalse({ value }: { value: types.TrueOrFalse }) {
+function Ordering({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="smallInteraction"
@@ -177,7 +240,7 @@ function TrueOrFalse({ value }: { value: types.TrueOrFalse }) {
   );
 }
 
-function Matching({ value }: { value: types.Matching }) {
+function Files({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="smallInteraction"
@@ -187,27 +250,7 @@ function Matching({ value }: { value: types.Matching }) {
   );
 }
 
-function Ordering({ value }: { value: types.Ordering }) {
-  return (
-    <div
-      className="smallInteraction"
-    >
-      
-    </div>
-  );
-}
-
-function Files({ value }: { value: types.Files }) {
-  return (
-    <div
-      className="smallInteraction"
-    >
-      
-    </div>
-  );
-}
-
-function Drawing({ value }: { value: types.Drawing }) {
+function Drawing({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -217,18 +260,16 @@ function Drawing({ value }: { value: types.Drawing }) {
   );
 }
 
-function Graph({ value }: { value: types.Graph }) {
+function Graph({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="fullscreenInteraction"
-      onLoad={functions.loadGraph}
-      data-type={value.type}
-      data-filename={value.fileName}
+      onLoad={(e) => functions.loadGraph(elementID)}
     ></div>
   );
 }
 
-function DAW({ value }: { value: types.DAW }) {
+function DAW({ elementID }: { elementID: types.ElementID }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -238,20 +279,17 @@ function DAW({ value }: { value: types.DAW }) {
   );
 }
 
-function Codespace({ value }: { value: types.Codespace }) {
+function Codespace({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
       className="fullscreenInteraction"
-      onLoad={functions.loadCodespace}
-      src={`https://onecompiler.com/embed/${value.language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
-      data-language={value.language}
-      data-files={JSON.stringify(value.files)}
-      data-correctoutput={value.correctOutput ?? ''}
+      onLoad={(e) => functions.loadCodespace(elementID)}
+      src={`https://onecompiler.com/embed/${elementID.getInteractionValue<types.Codespace>().language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
     ></iframe>
   );
 }
 
-function Engine({ value }: { value: types.Engine }) {
+function Engine({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
       className="fullscreenInteraction"
@@ -260,48 +298,52 @@ function Engine({ value }: { value: types.Engine }) {
   );
 }
 
-function IFrame({ value }: { value: types.IFrame }) {
+function IFrame({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
       className="fullscreenInteraction"
-      src={value.source}
+      src={elementID.getInteractionValue<types.IFrame>().source}
     ></iframe>
   );
 }
 
-function Text({ chapter, element }: { chapter: types.Chapter, element: types.Element }) {
+function Text({ elementID }: { elementID: types.ElementID }) {
   return (
     <div className="textBox">
       <div
+        id={`text${elementID.getAbsoluteIndex()}`}
         className="text"
-        data-originaltext={element.text}
-        data-lastnonthinkingtext={element.text}
+        data-lastnonthinkingtext={elementID.getElement().text}
       >
         <WordWrapper>
           <Markdown>
-            {element.text}
+            {elementID.getElement().text}
           </Markdown>
         </WordWrapper>
       </div>
 
       <div className="buttons">
         <div className="col1">
-          {chapter.elements.map((element, index) => (
-            <button
-              className="dot"
-              key={index}
-              onClick={functions.load}
-              title={`Load section ${index + 1}`}
-              disabled={element.state == types.ElementState.Locked}
-              data-iscomplete="false"
-              data-isselected="false"
-            ></button>
-          ))}
+          {elementID.getChapter().elements.map((element, index) => {
+            const eID = new types.ElementID(elementID.learn, elementID.chapterIndex, index);
+          
+            return (
+              <button
+                className={`dot dot${eID.getAbsoluteIndex()}`}
+                key={index}
+                onClick={(e) => functions.load(eID)}
+                title={`Load section ${index + 1}`}
+                disabled={element.state == types.ElementState.Locked}
+                data-iscomplete="false"
+                data-isselected="false"
+              ></button>
+            )
+          })}
         </div>
 
         <div className="col2">
           <button
-            onClick={functions.rephrase}
+            onClick={(e) => functions.rephrase(elementID)}
             title="Rephrase text"
           >
             <Image
@@ -314,7 +356,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
           </button>
           
           <button
-            onClick={functions.readAloud}
+            onClick={(e) => functions.readAloud(elementID)}
             title="Read text aloud"
           >
             <Image
@@ -327,7 +369,7 @@ function Text({ chapter, element }: { chapter: types.Chapter, element: types.Ele
           </button>
 
           <button
-            onClick={functions.reset}
+            onClick={(e) => functions.reset(elementID)}
             title="Reset text and interaction"
           >
             <Image
@@ -358,7 +400,7 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
             <Fragment key={index}>
               <span
                 className="word"
-                onDoubleClick={functions.define}
+                onDoubleClick={(e) => functions.define(word)}
                 title="Double click to define this word"
                 style={{"--index": `${index / 8}s`} as React.CSSProperties}
               >

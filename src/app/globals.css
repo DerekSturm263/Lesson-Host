@@ -344,10 +344,6 @@ button[data-isselected="true"] {
 
     .col2 {
       overflow-x: auto;
-
-      button {
-        min-width: 150px;
-      }
     }
   }
 }
