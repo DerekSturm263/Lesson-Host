@@ -65,6 +65,8 @@ export function load(elementID: types.ElementID) {
   for (let i = 0; i < theseDots.length; ++i) {
     theseDots[i].dataset.isselected = "true";
   }
+
+  readAloud(elementID);
 }
 
 export function loadGraph(elementID: types.ElementID) {
@@ -103,8 +105,9 @@ export function loadCodespace(elementID: types.ElementID) {
         helpers.startThinking(elementID);
       } else if (e.data.action == 'runComplete') {
         const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', e.data.language);
-    
         helpers.setText(elementID, feedback.feedback);
+
+        readAloud(elementID);
     
         if (feedback.isValid) {
           complete(elementID);
@@ -118,6 +121,8 @@ export async function rephrase(elementID: types.ElementID) {
   helpers.startThinking(elementID);
   const newText = await rephraseText(helpers.getText(elementID));
   helpers.setText(elementID, newText);
+
+  readAloud(elementID);
 }
 
 export function readAloud(elementID: types.ElementID) {
@@ -155,6 +160,8 @@ export async function submitShortAnswer(formData: FormData, elementID: types.Ele
   helpers.startThinking(elementID);
   const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '');
   helpers.setText(elementID, feedback.feedback);
+
+  readAloud(elementID);
 
   if (feedback.isValid) {
     helpers.getInteractionElement<HTMLInputElement>(elementID, (interaction) => {
