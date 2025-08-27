@@ -590,26 +590,39 @@ export class ElementID {
 
   // Gets the last non-thinking text.
   getText(): string {
-    //dataset.lastnonthinkingtext ?? ''
+    const parent = document.getElementById(`text${this.getAbsoluteIndex()}`);
+
+    return parent?.dataset.lastnonthinkingtext ?? "";
   }
 
   // Sets text and doesn't update non-thinking text.
   startThinking() {
+    const parent = document.getElementById(`text${this.getAbsoluteIndex()}`);
+    const element = parent?.firstElementChild?.firstElementChild;
+    if (!element)
+      return;
 
+    element.textContent = "*Thinking...*";
   }
 
   // Sets text and updates the non-thinking text.
   setText(text: string) {
-    
+    const parent = document.getElementById(`text${this.getAbsoluteIndex()}`);
+    const element = parent?.firstElementChild?.firstElementChild;
+    if (!element)
+      return;
+
+    element.textContent = text;
+    parent.dataset.lastnonthinkingtext = text;
   }
 
   // Resets to the original text.
   resetText() {
-    //text.textContent = text.dataset.originaltext ?? '';
+    this.setText(this.getElement().text);
   }
 
   getInteractionElement<T>(func: (value: T) => void) {
-    
+    func(document.getElementById(`interaction${this.getAbsoluteIndex()}`) as T);
   }
 
   getInteractionValue<T>(): T {

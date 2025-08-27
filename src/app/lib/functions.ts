@@ -152,7 +152,7 @@ export async function submitShortAnswer(formData: FormData, elementID: types.Ele
   elementID.setText(feedback.feedback);
 
   if (feedback.isValid) {
-    elementID.getInteractionElement<HTMLInputElement>((interaction) =>{
+    elementID.getInteractionElement<HTMLInputElement>((interaction) => {
       interaction.value = "";
       interaction.disabled = true;
     });

@@ -114,31 +114,31 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
 function Interaction({ elementID }: { elementID: types.ElementID }) {
   switch (elementID.getElement().type) {
     case types.ElementType.ShortAnswer:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} /></div>);
     case types.ElementType.MultipleChoice:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="multipleChoice"><MultipleChoice elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="multipleChoice"><MultipleChoice elementID={elementID} /></div>);
     case types.ElementType.TrueOrFalse:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="trueOrFalse"><TrueOrFalse elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse elementID={elementID} /></div>);
     case types.ElementType.Matching:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="matching"><Matching elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="matching"><Matching elementID={elementID} /></div>);
     case types.ElementType.Ordering:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="ordering"><Ordering elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="ordering"><Ordering elementID={elementID} /></div>);
     case types.ElementType.Files:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="files"><Files elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="files"><Files elementID={elementID} /></div>);
     case types.ElementType.Drawing:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="drawing"><Drawing elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="drawing"><Drawing elementID={elementID} /></div>);
     case types.ElementType.Graph:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="graph"><Graph elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="graph"><Graph elementID={elementID} /></div>);
     case types.ElementType.DAW:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="daw"><DAW elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="daw"><DAW elementID={elementID} /></div>);
     case types.ElementType.Codespace:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="codespace"><Codespace elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="codespace"><Codespace elementID={elementID} /></div>);
     case types.ElementType.Engine:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="engine"><Engine elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="engine"><Engine elementID={elementID} /></div>);
     case types.ElementType.IFrame:
-      return (<div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="iFrame"><IFrame elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="iFrame"><IFrame elementID={elementID} /></div>);
     default:
-      return <div id={`interaction${elementID.getAbsoluteIndex()}`} className="interaction" data-type="none"></div>;
+      return <div className="interaction" data-type="none"></div>;
   }
 }
 
@@ -151,6 +151,7 @@ function ShortAnswer({ elementID }: { elementID: types.ElementID }) {
         action={(e) => functions.submitShortAnswer(e, elementID)}
       >
         <input
+          id={`interaction${elementID.getAbsoluteIndex()}`}
           type="text"
           name="response"
           placeholder="Write your response here. Press enter to submit"
@@ -167,6 +168,7 @@ function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
       className="smallInteraction"
     >
       <form
+        id={`interaction${elementID.getAbsoluteIndex()}`}
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
         {elementID.getInteractionValue<types.MultipleChoice>().choices.map((item, index) => (
@@ -181,6 +183,15 @@ function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
             />
           </label>
         ))}
+
+        <label>
+          Submit
+
+          <input
+            type="submit"
+            name="submit"
+          />
+        </label>
       </form>
     </div>
   );
@@ -192,6 +203,7 @@ function TrueOrFalse({ elementID }: { elementID: types.ElementID }) {
       className="smallInteraction"
     >
       <form
+        id={`interaction${elementID.getAbsoluteIndex()}`}
         action={(e) => functions.submitTrueOrFalse(e, elementID)}
       >
         <label>
@@ -213,6 +225,15 @@ function TrueOrFalse({ elementID }: { elementID: types.ElementID }) {
             name="response"
             id="false"
             value="false"
+          />
+        </label>
+
+        <label>
+          Submit
+
+          <input
+            type="submit"
+            name="submit"
           />
         </label>
       </form>
@@ -282,6 +303,7 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 function Codespace({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
+      id={`interaction${elementID.getAbsoluteIndex()}`}
       className="fullscreenInteraction"
       onLoad={(e) => functions.loadCodespace(elementID)}
       src={`https://onecompiler.com/embed/${elementID.getInteractionValue<types.Codespace>().language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
@@ -301,6 +323,7 @@ function Engine({ elementID }: { elementID: types.ElementID }) {
 function IFrame({ elementID }: { elementID: types.ElementID }) {
   return (
     <iframe
+      id={`interaction${elementID.getAbsoluteIndex()}`}
       className="fullscreenInteraction"
       src={elementID.getInteractionValue<types.IFrame>().source}
     ></iframe>
@@ -312,8 +335,8 @@ function Text({ elementID }: { elementID: types.ElementID }) {
     <div className="textBox">
       <div
         id={`text${elementID.getAbsoluteIndex()}`}
-        className="text"
         data-lastnonthinkingtext={elementID.getElement().text}
+        className="text"
       >
         <WordWrapper>
           <Markdown>
