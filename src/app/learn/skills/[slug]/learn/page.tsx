@@ -1,6 +1,7 @@
 import { ElementID } from '@/app/lib/types';
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
+import { load } from '../../../../lib/functions';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
@@ -42,7 +43,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     </div>
   );
 
-  load({  });
+  load({ learn: skill.learn, chapterIndex: 0, elementIndex: 0 });
 
   return page;
 }
