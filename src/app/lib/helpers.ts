@@ -36,7 +36,7 @@ export function startThinking(elementID: types.ElementID) {
   if (!element)
     return;
 
-  element.textContent = "*Thinking...*";
+  element.innerHTML = "*Thinking...*";
 }
 
 // Sets text and updates the non-thinking text.
