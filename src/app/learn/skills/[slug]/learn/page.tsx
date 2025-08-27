@@ -1,4 +1,3 @@
-import { ElementID } from '@/app/lib/types';
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 import { load } from '../../../../lib/functions';
