@@ -121,7 +121,11 @@ export async function rephrase(elementID: types.ElementID) {
 }
 
 export function readAloud(elementID: types.ElementID) {
+  const synth = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance(helpers.getText(elementID));
+  //utterance.voice = synth.getVoices()[0];
 
+  synth.speak(utterance);
 }
 
 export function reset(elementID: types.ElementID) {

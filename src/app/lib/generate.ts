@@ -6,7 +6,7 @@ import * as schemas from './schemas';
 const ai = new GoogleGenAI({});
 
 const textModel = 'gemini-2.5-flash-lite';
-//const ttsModel = 'gemini-2.5-flash-preview-tts';
+const ttsModel = 'gemini-2.5-flash-preview-tts';
 
 const globalSystemInstruction =
   `Your response should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level. Keep your response as concise as possible without sacrificing usefulness.
@@ -79,7 +79,7 @@ export async function verifyShortAnswer(question: string, userResponse: string):
   return JSON.parse(response.text ?? '') as Verification;
 }
 
-export async function verifyCodespace(instructions: string, files: string[], result: {success: boolean, output: string}, correctOutput: string, language: string): Promise<Verification> {
+export async function verifyCodespace(instructions: string, files: string[], result: { success: boolean, output: string }, correctOutput: string, language: string): Promise<Verification> {
     let isValid = false;
     let contents = '';
 
@@ -195,7 +195,7 @@ export async function rephraseText(text: string): Promise<string> {
     return response.text ?? '';
 }
 
-/*export async function readAloudText(text: string): Promise<> {
+/*export async function readTextAloud(text: string): Promise<Buffer<ArrayBufferLike>> {
     const response = await ai.models.generateContent({
         model: ttsModel,
         contents:
@@ -221,8 +221,8 @@ export async function rephraseText(text: string): Promise<string> {
         }
     });
 
-    const data = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data ?? '';
+    const data = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     const audioBuffer = Buffer.from(data, 'base64');
 
-    return response;
+    return audioBuffer;
 }*/

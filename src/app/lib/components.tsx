@@ -92,7 +92,6 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
       id={`chapterButton${elementID.chapterIndex}`}
       className='chapterButton'
       title={`Load chapter ${elementID.chapterIndex + 1}`}
-      //key={index}
       onClick={(e) => functions.load(elementID)}
       disabled={helpers.getElement(elementID).state == types.ElementState.Locked}
       data-iscomplete="false"
