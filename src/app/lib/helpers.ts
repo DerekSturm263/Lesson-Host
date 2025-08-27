@@ -46,7 +46,7 @@ export function setText(elementID: types.ElementID, text: string) {
   if (!element)
     return;
 
-  element.textContent = text;
+  element.innerHTML = text;
   parent.dataset.lastnonthinkingtext = text;
 }
 
