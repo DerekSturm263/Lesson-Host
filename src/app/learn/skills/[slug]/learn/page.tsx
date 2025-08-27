@@ -43,7 +43,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     </div>
   );
 
-  load({ learn: skill.learn, chapterIndex: 0, elementIndex: 0 });
+  //load({ learn: skill.learn, chapterIndex: 0, elementIndex: 0 });
 
   return page;
 }
