@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode } from 'react';
+import { useEffect } from 'react';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -87,6 +88,10 @@ export function Element({ elementID }: { elementID: types.ElementID }) {
 }
 
 export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
+  useEffect(() => {
+    functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0 });
+  }, []);
+
   return (
     <button
       id={`chapterButton${elementID.chapterIndex}`}
