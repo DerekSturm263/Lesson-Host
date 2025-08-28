@@ -317,7 +317,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
 
   async function executeCode() {
     setOutput("Running...");
-    setOutput(process.env.ONECOMPILER_API_KEY ?? '');
+    setOutput(process.env.ONECOMPILER_API_KEY ?? 'no key');
     helpers.startThinking(elementID);
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
