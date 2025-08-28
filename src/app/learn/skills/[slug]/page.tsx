@@ -53,7 +53,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
         {!hideHeader && <Header />}
         <h1 className="mainHeader">{skill.title}</h1>
 
-        <div>
+        <div className="colButtons">
           <Link
             href={"./" + slug + "/learn" + urlParamAppend}
             target="_self"
