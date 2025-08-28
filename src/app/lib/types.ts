@@ -555,3 +555,18 @@ export type ElementID = {
   chapterIndex: number,
   elementIndex: number
 };
+
+export enum CodeStatus {
+  Success = 'success',
+  Failed = 'failed'
+};
+
+export type CodeResult = {
+  stdout: string | undefined,
+  stderr: string | undefined,
+  exception: string | undefined,
+  executionTime: number,
+  limitPerMonthRemaining: number,
+  status: CodeStatus,
+  error: string
+};

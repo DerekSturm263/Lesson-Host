@@ -330,9 +330,9 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
           }
         ]
       }
-    }).json() as any;
+    }).json() as types.CodeResult;
 
-    setOutput(response.stdout);
+    setOutput(response.stdout ?? '');
   }
 
   return (
