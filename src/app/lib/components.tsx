@@ -6,6 +6,7 @@ import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
+import { verifyCodespace } from './generate';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -312,13 +313,16 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 
 function Codespace({ elementID }: { elementID: types.ElementID }) {
   const [ output, setOutput ] = useState("");
+  const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
 
   async function executeCode() {
+    helpers.startThinking(elementID);
+
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
-        'Content-Type': 'application/json',
-        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
         'x-rapidapi-key': process.env.ONECOMPILER_API_KEY,
+        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
+        'Content-Type': 'application/json',
       },
       json: {
         language: helpers.getInteractionValue<types.Codespace>(elementID).language,
@@ -326,13 +330,26 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
         files: [
           {
             name: "code.cs",
-            content: helpers.getInteractionValue<types.Codespace>(elementID).content
+            content: content
           }
         ]
       }
     }).json() as types.CodeResult;
 
     setOutput(response.stdout ?? '');
+
+    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, { success: response.exception != null, output: response.stdout ?? '' }, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
+    helpers.setText(elementID, feedback.feedback);
+
+    functions.readAloud(elementID);
+    
+    if (feedback.isValid) {
+      functions.complete(elementID);
+    }
+  }
+
+  function updateContent(content: string | undefined) {
+    setContent(content ?? '');
   }
 
   return (
@@ -343,6 +360,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
         defaultLanguage={helpers.getInteractionValue<types.Codespace>(elementID).language}
         defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
         theme="vs-dark"
+        onChange={updateContent}
       />
       <p>
         {output}

@@ -568,5 +568,5 @@ export type CodeResult = {
   executionTime: number,
   limitPerMonthRemaining: number,
   status: CodeStatus,
-  error: string
+  error: string | undefined
 };

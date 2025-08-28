@@ -78,7 +78,7 @@ export async function verifyShortAnswer(question: string, userResponse: string):
   return JSON.parse(response.text ?? '') as Verification;
 }
 
-export async function verifyCodespace(instructions: string, files: string[], result: { success: boolean, output: string }, correctOutput: string, language: string): Promise<Verification> {
+export async function verifyCodespace(instructions: string, content: string, result: { success: boolean, output: string }, correctOutput: string, language: string): Promise<Verification> {
     let isValid = false;
     let contents = '';
 
@@ -88,10 +88,10 @@ export async function verifyCodespace(instructions: string, files: string[], res
 
         contents =
             `TASK:
-            The student's code did not compile. View the attached FILES and USER'S OUTPUT and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
+            The student's code did not compile. View the attached FILE and USER'S OUTPUT and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
 
-            FILES:
-            ${JSON.stringify(files)}
+            FILE:
+            ${content}
 
             USER'S OUTPUT:
             ${result.output}
@@ -104,10 +104,10 @@ export async function verifyCodespace(instructions: string, files: string[], res
 
         contents =
             `TASK:
-            The code compiled and ran successfully, although this code wasn't made by the student. It was just an example for the student to run and examine the output. View the attached FILES and explain to the student how they tie back to the INSTRUCTIONS to produce the OUTPUT. Keep your explanation as short as possible, it just needs to introduce the user to the topic.
+            The code compiled and ran successfully, although this code wasn't made by the student. It was just an example for the student to run and examine the output. View the attached FILE and explain to the student how they tie back to the INSTRUCTIONS to produce the OUTPUT. Keep your explanation as short as possible, it just needs to introduce the user to the topic.
 
-            FILES:
-            ${JSON.stringify(files)}
+            FILE:
+            ${content}
 
             INSTRUCTIONS:
             ${instructions}
@@ -120,13 +120,13 @@ export async function verifyCodespace(instructions: string, files: string[], res
 
         contents =
             `TASK:
-            The student's code compiled successfully, but didn't match the CORRECT OUTPUT. View the attached FILES and USER'S OUTPUT and give the student feedback on what they should do to make their code match the CORRECT OUTPUT. Review the original INSTRUCTIONS with the student and make sure your feedback is accurate. Your feedback should guide them in the right direction without directly telling them exactly what they need to do. If necessary, try using simpler terms and friendlier language than the original INSTRUCTIONS.
+            The student's code compiled successfully, but didn't match the CORRECT OUTPUT. View the attached FILE and USER'S OUTPUT and give the student feedback on what they should do to make their code match the CORRECT OUTPUT. Review the original INSTRUCTIONS with the student and make sure your feedback is accurate. Your feedback should guide them in the right direction without directly telling them exactly what they need to do. If necessary, try using simpler terms and friendlier language than the original INSTRUCTIONS.
 
             CORRECT OUTPUT:
             ${correctOutput}
 
-            FILES:
-            ${JSON.stringify(files)}
+            FILE:
+            ${content}
 
             USER'S OUTPUT:
             ${result.output}
@@ -139,13 +139,13 @@ export async function verifyCodespace(instructions: string, files: string[], res
 
         contents =
             `TASK:
-            The student's code compiled successfully and matched the CORRECT OUTPUT. Congratulate the student on getting their code right. Review their FILES to recap how they successully follow the INSTRUCTIONS. Finally, give the student feedback on how they could improve their solution even further and advice on how to improve their coding skills in general.
+            The student's code compiled successfully and matched the CORRECT OUTPUT. Congratulate the student on getting their code right. Review their FILE to recap how they successully follow the INSTRUCTIONS. Finally, give the student feedback on how they could improve their solution even further and advice on how to improve their coding skills in general.
       
             CORRECT OUTPUT:
             ${correctOutput}
 
-            FILES:
-            ${JSON.stringify(files)}
+            FILE:
+            ${content}
 
             INSTRUCTIONS:
             ${instructions}`;
@@ -157,7 +157,7 @@ export async function verifyCodespace(instructions: string, files: string[], res
         config: {
             temperature: 0,
             systemInstruction: [
-                `You are a computer science tutor for a ${language} programming class. You evaluate one or more of a student's code FILES and give them proper FEEDBACK based on whether or not their code produces a given output. You will be told whether or not the code works and matches the output, all you need to do is give the FEEDBACK.
+                `You are a computer science tutor for a ${language} programming class. You evaluate one or more of a student's code FILE and give them proper FEEDBACK based on whether or not their code produces a given output. You will be told whether or not the code works and matches the output, all you need to do is give the FEEDBACK.
 
                 ${globalSystemInstruction}`
             ],
@@ -167,7 +167,7 @@ export async function verifyCodespace(instructions: string, files: string[], res
 
     return {
         isValid: isValid,
-        feedback : response.text ?? ''
+        feedback: response.text ?? ''
     };
 }
 

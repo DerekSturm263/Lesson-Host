@@ -1,4 +1,4 @@
-import { verifyShortAnswer, verifyCodespace, rephraseText } from './generate';
+import { verifyShortAnswer, rephraseText } from './generate';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
@@ -144,15 +144,3 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
 
 }
-
-/*export async function submitCodespace(elementID: types.ElementID) {
-  helpers.startThinking(elementID);
-  const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
-  helpers.setText(elementID, feedback.feedback);
-
-  readAloud(elementID);
-    
-  if (feedback.isValid) {
-    complete(elementID);
-  }
-}*/
