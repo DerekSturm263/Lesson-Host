@@ -167,7 +167,7 @@ let currentElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0
 let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }
 
 // Submit Codespace
-window.onmessage = async function(e) {
+/*window.onmessage = async function(e) {
   console.log(e);
 
   if (!e.data)
@@ -187,4 +187,4 @@ window.onmessage = async function(e) {
       complete(codespaceElement);
     }
   }
-}
+}*/
