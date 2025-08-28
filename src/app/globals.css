@@ -192,12 +192,15 @@ body {
   }
 }
 
-.smallInteraction {
-  width: 65%;
-  height: 50%;
+.smallInteraction, .fullscreenInteraction {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.smallInteraction {
+  width: 65%;
+  height: 50%;
 }
 
 .fullscreenInteraction {

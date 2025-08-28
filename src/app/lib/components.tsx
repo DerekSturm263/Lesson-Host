@@ -361,6 +361,8 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
         defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
         theme="vs-dark"
         onChange={updateContent}
+        width="50%"
+        height="100%"
       />
       <p>
         {output}
