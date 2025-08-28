@@ -317,6 +317,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
       className="fullscreenInteraction"
       defaultLanguage={helpers.getInteractionValue<types.Codespace>(elementID).language}
       defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
+      theme="vs-dark"
     />
   );
 }
