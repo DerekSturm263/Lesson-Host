@@ -9,6 +9,7 @@ import { Editor } from '@monaco-editor/react';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
+import ky from 'ky';
 
 export function Header() {
   return (
@@ -310,15 +311,39 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 }
 
 function Codespace({ elementID }: { elementID: types.ElementID }) {
-  const [ element, setElement ] = useState(elementID);
+  const [ output, setOutput ] = useState("");
+
+  async function executeCode() {
+    /*const response = await ky.get(`https://onecompiler.com/api/v1/run?access_token=your_access_token`,
+      {
+        headers: {
+          ContentType: "application/json"
+        },
+        
+      }
+    ).json();
+
+    setOutput(response.stdout);*/
+  }
 
   return (
-    <Editor
+    <div
       className="fullscreenInteraction"
-      defaultLanguage={helpers.getInteractionValue<types.Codespace>(elementID).language}
-      defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
-      theme="vs-dark"
-    />
+    >
+      <Editor
+        defaultLanguage={helpers.getInteractionValue<types.Codespace>(elementID).language}
+        defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
+        theme="vs-dark"
+      />
+      <p>
+        {output}
+      </p>
+      <button
+        onClick={executeCode}
+      >
+        Run
+      </button>
+    </div>
   );
 }
 
