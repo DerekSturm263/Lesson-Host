@@ -314,7 +314,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
   const [ output, setOutput ] = useState("");
 
   async function executeCode() {
-    const response = await ky.get('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
+    const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
         'Content-Type': 'application/json',
         'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
