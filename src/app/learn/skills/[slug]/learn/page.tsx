@@ -10,6 +10,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const skill = await getSkill(slug);
 
+  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+
   for (let i = 0; i < skill.learn.chapters.length; ++i) {
     for (let j = 0; j < skill.learn.chapters[i].elements.length; ++j) {
       if (i != 0 && j != 0) {
@@ -17,14 +19,6 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       }
     }
   }
-
-  for (let chapter of skill.learn.chapters) {
-    for (let element of chapter.elements) {
-      element.state = types.ElementState.Locked;
-    }
-  }
-
-  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
 
   /*useEffect(() => {
     load({ learn: skill.learn, chapterIndex: 0, elementIndex: 0 });
