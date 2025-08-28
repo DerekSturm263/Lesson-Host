@@ -11,7 +11,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const skill = await getSkill(slug);
 
   for (let i = 0; i < skill.learn.chapters.length; ++i) {
-    for (let j = 0; j < chapter.elements.length; ++j) {
+    for (let j = 0; j < skill.learn.chapters[i].elements.length; ++j) {
       if (i != 0 && j != 0) {
         skill.learn.chapters[i].elements[j].state = types.ElementState.Locked;
       }
