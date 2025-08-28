@@ -262,6 +262,7 @@ body {
   flex-direction: column;
 
   button {
+    background-image: linear-gradient(rgb(135, 135, 135), rgb(85, 85, 85));
     width: 100%;
     height: 40px;
   }
@@ -271,6 +272,7 @@ body {
     color: white;
     font-family: monospace;
     overflow-y: auto;
+    padding: 10px;
     flex: 1;
   }
 }
