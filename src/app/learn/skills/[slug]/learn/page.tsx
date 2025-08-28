@@ -2,7 +2,7 @@ import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/compone
 import { getSkill } from '../../../../lib/database';
 import { load } from '../../../../lib/functions';
 import * as types from '../../../../lib/types';
-//import { useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
@@ -20,9 +20,9 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     }
   }
 
-  /*useEffect(() => {
+  useEffect(() => {
     load({ learn: skill.learn, chapterIndex: 0, elementIndex: 0 });
-  });*/
+  }, []);
 
   const page = (
     <div>
