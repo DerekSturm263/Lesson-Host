@@ -147,6 +147,6 @@ export async function submitTrueOrFalse(formData: FormData, elementID: types.Ele
 
 }
 
-export async function getOneCompilerApiKey(): Promise<string> {
+export function getOneCompilerApiKey(): string {
   return oneCompilerApiKey;
 }

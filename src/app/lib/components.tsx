@@ -321,7 +321,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
-        'x-rapidapi-key': await functions.getOneCompilerApiKey() ?? '',
+        'x-rapidapi-key': functions.getOneCompilerApiKey() ?? '',
         'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
         'Content-Type': 'application/json',
       },
