@@ -1,4 +1,4 @@
-import { verifyShortAnswer, rephraseText } from './generate';
+import { verifyShortAnswer, verifyCodespace, rephraseText } from './generate';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
@@ -67,8 +67,6 @@ export function load(elementID: types.ElementID) {
   }
 
   readAloud(elementID);
-
-  window.dispatchEvent(new CustomEvent(`updateInteraction${helpers.getAbsoluteIndex(elementID)}`, { detail: elementID }));
 }
 
 export function loadGraph(elementID: types.ElementID) {
@@ -85,19 +83,6 @@ export function loadGraph(elementID: types.ElementID) {
 
   //const applet = new GGBApplet(params, true);
   //applet.inject(`interaction${elementIndex}`);
-}
-
-export function loadCodespace(elementID: types.ElementID) {
-  helpers.getInteractionElement<HTMLIFrameElement>(elementID, (interaction) => {
-    if (!interaction.contentWindow)
-      return;
-
-    interaction.contentWindow.postMessage({
-      eventType: 'populateCode',
-      language: helpers.getInteractionValue<types.Codespace>(elementID).language,
-      files: helpers.getInteractionValue<types.Codespace>(elementID).files
-    }, "*");
-  });
 }
 
 export async function rephrase(elementID: types.ElementID) {
@@ -122,10 +107,6 @@ export function reset(elementID: types.ElementID) {
   switch (helpers.getElement(elementID).type) {
     case types.ElementType.Graph:
       loadGraph(elementID);
-      break;
-
-    case types.ElementType.Codespace:
-      loadCodespace(elementID);
       break;
   }
 }
@@ -163,3 +144,15 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
 
 }
+
+/*export async function submitCodespace(elementID: types.ElementID) {
+  helpers.startThinking(elementID);
+  const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
+  helpers.setText(elementID, feedback.feedback);
+
+  readAloud(elementID);
+    
+  if (feedback.isValid) {
+    complete(elementID);
+  }
+}*/

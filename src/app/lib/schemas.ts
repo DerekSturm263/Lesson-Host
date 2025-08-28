@@ -259,25 +259,8 @@ const codespaceSchema = {
         "angular"
       ]
     },
-    files: {
-      type: Type.ARRAY,
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          name: {
-            type: Type.STRING
-          },
-          content: {
-            type: Type.STRING
-          }
-        },
-        propertyOrdering: [
-          "name",
-          "content"
-        ]
-      },
-      minItems: 1,
-      maxItems: 3
+    content: {
+      type: Type.STRING
     },
     correctOutput: {
       type: Type.STRING
@@ -285,11 +268,11 @@ const codespaceSchema = {
   },
   required: [
     "language",
-    "files"
+    "content"
   ],
   propertyOrdering: [
     "language",
-    "files",
+    "content",
     "correctOutput"
   ]
 };

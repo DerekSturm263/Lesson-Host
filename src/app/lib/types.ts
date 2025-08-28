@@ -66,11 +66,6 @@ export type DAW = {
   placeholder: boolean
 };
 
-export type CodespaceFile = {
-  name: string,
-  content: string
-};
-
 export enum CodespaceLanguage {
   Java = 'java',
   Python = 'python',
@@ -134,7 +129,7 @@ export enum CodespaceLanguage {
 
 export type Codespace = {
   language: CodespaceLanguage,
-  files: CodespaceFile[],
+  content: string,
   correctOutput: string | undefined
 };
 

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState } from 'react';
 import { useEffect } from 'react';
-import { verifyCodespace } from './generate';
+import { Editor } from '@monaco-editor/react';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -312,41 +312,12 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 function Codespace({ elementID }: { elementID: types.ElementID }) {
   const [ element, setElement ] = useState(elementID);
 
-  useEffect(() => {
-    window.addEventListener(`updateInteraction${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setElement((e as CustomEvent).detail);
-      console.log(element);
-    });
-
-    window.onmessage = async function(e) {
-      console.log(e);
-      console.log(element);
-
-      if (!e.data)
-        return;
-
-      if (e.data.action == 'runStart') {
-        helpers.startThinking(element);
-      } else if (e.data.action == 'runComplete') {
-        const feedback = await verifyCodespace(helpers.getElement(element).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(element).correctOutput ?? '', e.data.language);
-        helpers.setText(element, feedback.feedback);
-
-        functions.readAloud(element);
-    
-        if (feedback.isValid) {
-          functions.complete(element);
-        }
-      }
-    }
-  }, []);
-
   return (
-    <iframe
-      id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+    <Editor
       className="fullscreenInteraction"
-      onLoad={(e) => functions.loadCodespace(elementID)}
-      src={`https://onecompiler.com/embed/${helpers.getInteractionValue<types.Codespace>(elementID).language}?availableLanguages=true&hideLanguageSelection=true&hideNew=true&hideNewFileOption=true&hideTitle=true&theme=dark&listenToEvents=true&codeChangeEvent=true`}
-    ></iframe>
+      defaultLanguage={helpers.getInteractionValue<types.Codespace>(elementID).language}
+      defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
+    />
   );
 }
 
