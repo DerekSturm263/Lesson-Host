@@ -312,7 +312,7 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 }
 
 function Codespace({ elementID }: { elementID: types.ElementID }) {
-  const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs, runtime errors, or exceptions will be printed here...");
+  const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
 
   async function executeCode() {
@@ -361,7 +361,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
         defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
         theme="vs-dark"
         onChange={updateContent}
-        width="65%"
+        width="60%"
         height="100%"
       />
       <div
