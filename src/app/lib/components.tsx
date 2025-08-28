@@ -341,9 +341,11 @@ function IFrame({ elementID }: { elementID: types.ElementID }) {
 function Text({ elementID }: { elementID: types.ElementID }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
 
-  window.addEventListener('updateText', (e: Event) => {
-    setText((e as CustomEvent).detail);
-  });
+  useEffect(() => {
+    window.addEventListener('updateText', (e: Event) => {
+      setText((e as CustomEvent).detail);
+    });
+  }, []);
 
   return (
     <div className="textBox">
