@@ -66,6 +66,7 @@ export function load(elementID: types.ElementID) {
     theseDots[i].dataset.isselected = "true";
   }
 
+  currentElement = elementID;
   readAloud(elementID);
 }
 
@@ -162,23 +163,28 @@ export async function submitTrueOrFalse(formData: FormData, elementID: types.Ele
 
 }
 
+let currentElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 };
+let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }
+
 // Submit Codespace
 window.onmessage = async function(e) {
   console.log(e);
 
   if (!e.data)
     return;
-/*
-  if (e.data.action == 'runStart') {
-    helpers.startThinking(elementID);
-  } else if (e.data.action == 'runComplete') {
-    const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', e.data.language);
-    helpers.setText(elementID, feedback.feedback);
 
-    readAloud(elementID);
+  if (e.data.action == 'runStart') {
+    helpers.startThinking(currentElement);
+
+    codespaceElement = currentElement;
+  } else if (e.data.action == 'runComplete') {
+    const feedback = await verifyCodespace(helpers.getElement(codespaceElement).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(codespaceElement).correctOutput ?? '', e.data.language);
+    helpers.setText(codespaceElement, feedback.feedback);
+
+    readAloud(codespaceElement);
     
     if (feedback.isValid) {
-      complete(elementID);
+      complete(codespaceElement);
     }
-  }*/
+  }
 }
