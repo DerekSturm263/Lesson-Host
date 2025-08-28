@@ -1,8 +1,8 @@
-import { verifyShortAnswer, verifyCodespace, rephraseText } from './generate';
+import { verifyShortAnswer, rephraseText } from './generate';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
-function complete(elementID: types.ElementID) {
+export function complete(elementID: types.ElementID) {
   const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
   for (let i = 0; i < dots.length; ++i) {
     dots[i].dataset.iscomplete = "true";
@@ -23,7 +23,7 @@ function complete(elementID: types.ElementID) {
   unlock(elementID);
 }
 
-function unlock(elementID: types.ElementID) {
+export function unlock(elementID: types.ElementID) {
   const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
   for (let i = 0; i < dots.length; ++i) {
     dots[i].disabled = false;
@@ -68,6 +68,8 @@ export function load(elementID: types.ElementID) {
 
   currentElement = elementID;
   readAloud(elementID);
+
+  window.dispatchEvent(new CustomEvent(`updateInteraction${helpers.getAbsoluteIndex(elementID)}`, { detail: elementID }));
 }
 
 export function loadGraph(elementID: types.ElementID) {
@@ -163,28 +165,5 @@ export async function submitTrueOrFalse(formData: FormData, elementID: types.Ele
 
 }
 
-let currentElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 };
-//let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }
-
-// Submit Codespace
-/*window.onmessage = async function(e) {
-  console.log(e);
-
-  if (!e.data)
-    return;
-
-  if (e.data.action == 'runStart') {
-    helpers.startThinking(currentElement);
-
-    codespaceElement = currentElement;
-  } else if (e.data.action == 'runComplete') {
-    const feedback = await verifyCodespace(helpers.getElement(codespaceElement).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(codespaceElement).correctOutput ?? '', e.data.language);
-    helpers.setText(codespaceElement, feedback.feedback);
-
-    readAloud(codespaceElement);
-    
-    if (feedback.isValid) {
-      complete(codespaceElement);
-    }
-  }
-}*/
+export let currentElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 };
+export let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }

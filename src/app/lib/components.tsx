@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Markdown from 'react-markdown';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState } from 'react';
 import { useEffect } from 'react';
+import { verifyCodespace } from './generate';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -309,6 +310,34 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
 }
 
 function Codespace({ elementID }: { elementID: types.ElementID }) {
+  const [ element, setElement ] = useState(elementID);
+
+  useEffect(() => {
+    window.addEventListener(`updateInteraction${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setElement((e as CustomEvent).detail);
+    });
+
+    window.onmessage = async function(e) {
+      console.log(e);
+
+      if (!e.data)
+        return;
+
+      if (e.data.action == 'runStart') {
+        helpers.startThinking(element);
+      } else if (e.data.action == 'runComplete') {
+        const feedback = await verifyCodespace(helpers.getElement(element).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(element).correctOutput ?? '', e.data.language);
+        helpers.setText(element, feedback.feedback);
+
+        functions.readAloud(element);
+    
+        if (feedback.isValid) {
+          functions.complete(element);
+        }
+      }
+    }
+  }, []);
+
   return (
     <iframe
       id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
