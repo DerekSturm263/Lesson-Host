@@ -315,10 +315,12 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
   useEffect(() => {
     window.addEventListener(`updateInteraction${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
       setElement((e as CustomEvent).detail);
+      console.log(element);
     });
 
     window.onmessage = async function(e) {
       console.log(e);
+      console.log(element);
 
       if (!e.data)
         return;
