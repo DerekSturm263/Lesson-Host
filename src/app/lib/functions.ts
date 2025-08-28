@@ -66,7 +66,6 @@ export function load(elementID: types.ElementID) {
     theseDots[i].dataset.isselected = "true";
   }
 
-  currentElement = elementID;
   readAloud(elementID);
 
   window.dispatchEvent(new CustomEvent(`updateInteraction${helpers.getAbsoluteIndex(elementID)}`, { detail: elementID }));
@@ -164,6 +163,3 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
 
 }
-
-export let currentElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 };
-export let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }
