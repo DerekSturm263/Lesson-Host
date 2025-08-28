@@ -1,6 +1,7 @@
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 import { load } from '../../../../lib/functions';
+import * as types from '../../../../lib/types';
 //import { useEffect } from 'react';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
@@ -8,6 +9,20 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const urlParams = await searchParams;
 
   const skill = await getSkill(slug);
+
+  for (let i = 0; i < skill.learn.chapters.length; ++i) {
+    for (let j = 0; j < chapter.elements.length; ++j) {
+      if (i != 0 && j != 0) {
+        skill.learn.chapters[i].elements[j].state = types.ElementState.Locked;
+      }
+    }
+  }
+
+  for (let chapter of skill.learn.chapters) {
+    for (let element of chapter.elements) {
+      element.state = types.ElementState.Locked;
+    }
+  }
 
   const hideHeader = !urlParams || urlParams.hideHeader == 'true';
 
