@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
-import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode } from 'react';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState } from 'react';
 import { useEffect } from 'react';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
@@ -339,6 +339,12 @@ function IFrame({ elementID }: { elementID: types.ElementID }) {
 }
 
 function Text({ elementID }: { elementID: types.ElementID }) {
+  const [ text, setText ] = useState(helpers.getElement(elementID).text);
+
+  window.addEventListener('updateText', (e: Event) => {
+    setText((e as CustomEvent).detail);
+  });
+
   return (
     <div className="textBox">
       <div
@@ -347,9 +353,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         className="text"
       >
         <WordWrapper>
-          <Markdown>
-            {helpers.getElement(elementID).text}
-          </Markdown>
+          <Markdown children={text} />
         </WordWrapper>
       </div>
 

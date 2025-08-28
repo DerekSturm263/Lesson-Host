@@ -32,21 +32,19 @@ export function getText(elementID: types.ElementID): string {
 // Sets text and doesn't update non-thinking text.
 export function startThinking(elementID: types.ElementID) {
   const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
-  const element = parent?.firstElementChild?.firstElementChild;
-  if (!element)
+  if (!parent)
     return;
 
-  element.innerHTML = "*Thinking...*";
+  window.dispatchEvent(new CustomEvent('updateText', { detail: "*Thinking...*" }));
 }
 
 // Sets text and updates the non-thinking text.
 export function setText(elementID: types.ElementID, text: string) {
   const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
-  const element = parent?.firstElementChild?.firstElementChild;
-  if (!element)
+  if (!parent)
     return;
 
-  element.innerHTML = text;
+  window.dispatchEvent(new CustomEvent('updateText', { detail: text }));
   parent.dataset.lastnonthinkingtext = text;
 }
 
