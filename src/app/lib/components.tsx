@@ -316,6 +316,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
 
   async function executeCode() {
+    setOutput("Running...");
     helpers.startThinking(elementID);
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
