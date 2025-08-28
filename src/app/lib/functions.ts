@@ -98,6 +98,8 @@ export function loadCodespace(elementID: types.ElementID) {
 
     // Submit Codespace
     interaction.contentWindow.onmessage = async function(e) {
+      console.log(e);
+
       if (!e.data)
         return;
 
