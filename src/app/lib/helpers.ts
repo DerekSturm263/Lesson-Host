@@ -35,7 +35,7 @@ export function startThinking(elementID: types.ElementID) {
   if (!parent)
     return;
 
-  window.dispatchEvent(new CustomEvent('updateText', { detail: "*Thinking...*" }));
+  window.dispatchEvent(new CustomEvent(`updateText${getAbsoluteIndex(elementID)}`, { detail: "*Thinking...*" }));
 }
 
 // Sets text and updates the non-thinking text.
@@ -44,7 +44,7 @@ export function setText(elementID: types.ElementID, text: string) {
   if (!parent)
     return;
 
-  window.dispatchEvent(new CustomEvent('updateText', { detail: text }));
+  window.dispatchEvent(new CustomEvent(`updateText${getAbsoluteIndex(elementID)}`, { detail: text }));
   parent.dataset.lastnonthinkingtext = text;
 }
 

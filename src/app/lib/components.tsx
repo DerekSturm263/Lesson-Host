@@ -342,7 +342,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
 
   useEffect(() => {
-    window.addEventListener('updateText', (e: Event) => {
+    window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
       setText((e as CustomEvent).detail);
     });
   }, []);
