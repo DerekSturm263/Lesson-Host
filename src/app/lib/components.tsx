@@ -314,16 +314,25 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
   const [ output, setOutput ] = useState("");
 
   async function executeCode() {
-    /*const response = await ky.get(`https://onecompiler.com/api/v1/run?access_token=your_access_token`,
-      {
-        headers: {
-          ContentType: "application/json"
-        },
-        
+    const response = await ky.get('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
+        'x-rapidapi-key': process.env.ONECOMPILER_API_KEY,
+      },
+      json: {
+        language: helpers.getInteractionValue<types.Codespace>(elementID).language,
+        stdin: "",
+        files: [
+          {
+            name: "code.cs",
+            content: helpers.getInteractionValue<types.Codespace>(elementID).content
+          }
+        ]
       }
-    ).json();
+    }).json() as any;
 
-    setOutput(response.stdout);*/
+    setOutput(response.stdout);
   }
 
   return (
