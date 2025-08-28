@@ -95,7 +95,7 @@ export async function verifyCodespace(instructions: string, content: string, res
             ${content}
 
             EXCEPTION(S):
-            ${result.exception}
+            ${result.stderr}
 
             INSTRUCTIONS:
             ${instructions}`;
