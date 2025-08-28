@@ -2,6 +2,7 @@
 
 import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
 import * as schemas from './schemas';
+import * as types from './types'
 
 const ai = new GoogleGenAI({});
 
@@ -78,23 +79,23 @@ export async function verifyShortAnswer(question: string, userResponse: string):
   return JSON.parse(response.text ?? '') as Verification;
 }
 
-export async function verifyCodespace(instructions: string, content: string, result: { success: boolean, output: string }, correctOutput: string, language: string): Promise<Verification> {
+export async function verifyCodespace(instructions: string, content: string, result: types.CodeResult, correctOutput: string, language: string): Promise<Verification> {
     let isValid = false;
     let contents = '';
 
-    if (!result.success) {
+    if (result.exception != null) {
         // Code didn't compile
         isValid = false;
 
         contents =
             `TASK:
-            The student's code did not compile. View the attached FILE and USER'S OUTPUT and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
+            The student's code did not compile. View the attached FILE and EXCEPTION(S) and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
 
             FILE:
             ${content}
 
-            USER'S OUTPUT:
-            ${result.output}
+            EXCEPTION(S):
+            ${result.exception}
 
             INSTRUCTIONS:
             ${instructions}`;
@@ -113,8 +114,8 @@ export async function verifyCodespace(instructions: string, content: string, res
             ${instructions}
 
             OUTPUT:
-            ${result.output}`;
-    } else if (result.output != correctOutput) {
+            ${result.stdout}`;
+    } else if (result.stdout != correctOutput) {
         // Code compiled, but didn't match the correct output
         isValid = false;
 
@@ -129,7 +130,7 @@ export async function verifyCodespace(instructions: string, content: string, res
             ${content}
 
             USER'S OUTPUT:
-            ${result.output}
+            ${result.stdout}
 
             INSTRUCTIONS:
             ${instructions}`;

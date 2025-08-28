@@ -338,7 +338,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
 
     setOutput(response.stdout ?? '');
 
-    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, { success: response.exception != null, output: response.stdout ?? '' }, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
+    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
     helpers.setText(elementID, feedback.feedback);
 
     functions.readAloud(elementID);
