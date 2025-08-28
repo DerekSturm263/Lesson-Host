@@ -95,27 +95,6 @@ export function loadCodespace(elementID: types.ElementID) {
       language: helpers.getInteractionValue<types.Codespace>(elementID).language,
       files: helpers.getInteractionValue<types.Codespace>(elementID).files
     }, "*");
-
-    // Submit Codespace
-    interaction.contentWindow.onmessage = async function(e) {
-      console.log(e);
-
-      if (!e.data)
-        return;
-
-      if (e.data.action == 'runStart') {
-        helpers.startThinking(elementID);
-      } else if (e.data.action == 'runComplete') {
-        const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', e.data.language);
-        helpers.setText(elementID, feedback.feedback);
-
-        readAloud(elementID);
-    
-        if (feedback.isValid) {
-          complete(elementID);
-        }
-      }
-    }
   });
 }
 
@@ -181,4 +160,25 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
 
+}
+
+// Submit Codespace
+window.onmessage = async function(e) {
+  console.log(e);
+
+  if (!e.data)
+    return;
+/*
+  if (e.data.action == 'runStart') {
+    helpers.startThinking(elementID);
+  } else if (e.data.action == 'runComplete') {
+    const feedback = await verifyCodespace(helpers.getElement(elementID).text, e.data.files, e.data.result, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', e.data.language);
+    helpers.setText(elementID, feedback.feedback);
+
+    readAloud(elementID);
+    
+    if (feedback.isValid) {
+      complete(elementID);
+    }
+  }*/
 }
