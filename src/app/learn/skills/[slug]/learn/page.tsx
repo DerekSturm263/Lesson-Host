@@ -14,7 +14,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   for (let i = 0; i < skill.learn.chapters.length; ++i) {
     for (let j = 0; j < skill.learn.chapters[i].elements.length; ++j) {
-      if (i != 0 && j != 0) {
+      if (i != 0 || j != 0) {
         skill.learn.chapters[i].elements[j].state = types.ElementState.Locked;
       }
     }
