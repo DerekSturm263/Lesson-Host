@@ -164,7 +164,7 @@ export async function submitTrueOrFalse(formData: FormData, elementID: types.Ele
 }
 
 let currentElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 };
-let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }
+//let codespaceElement: types.ElementID = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0 }
 
 // Submit Codespace
 /*window.onmessage = async function(e) {
