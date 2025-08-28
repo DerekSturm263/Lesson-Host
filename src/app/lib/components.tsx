@@ -12,8 +12,6 @@ import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 import ky from 'ky';
 
-const onecompilerApiKey: string = process.env.ONECOMPILER_API_KEY ?? '';
-
 export function Header() {
   return (
     <div className="header">
@@ -323,7 +321,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
-        'x-rapidapi-key': onecompilerApiKey ?? '',
+        'x-rapidapi-key': await functions.getOneCompilerApiKey() ?? '',
         'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
         'Content-Type': 'application/json',
       },

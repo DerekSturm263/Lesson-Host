@@ -2,6 +2,8 @@ import { verifyShortAnswer, rephraseText } from './generate';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
+const oneCompilerApiKey: string = process.env.ONECOMPILER_API_KEY ?? '';
+
 export function complete(elementID: types.ElementID) {
   const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
   for (let i = 0; i < dots.length; ++i) {
@@ -143,4 +145,8 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
 
+}
+
+export async function getOneCompilerApiKey(): Promise<string> {
+  return oneCompilerApiKey;
 }
