@@ -353,7 +353,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         className="text"
       >
         <WordWrapper>
-          <Markdown>text</Markdown>
+          <Markdown>{text}</Markdown>
         </WordWrapper>
       </div>
 
