@@ -28,7 +28,7 @@ export function complete(elementID: types.ElementID) {
 }
 
 export function unlock(elementID: types.ElementID) {
-  window.dispatchEvent(new CustomEvent(`updateDots${elementID.chapterIndex}`, { detail: elementID.elementIndex }));
+  window.dispatchEvent(new CustomEvent(`updateDots${helpers.getAbsoluteIndex(elementID)}`, { detail: types.ElementState.InProgress }));
   window.dispatchEvent(new CustomEvent(`updateChapter${elementID.chapterIndex}`, { detail: types.ElementState.InProgress }));
 }
 

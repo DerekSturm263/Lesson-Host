@@ -343,6 +343,8 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
       }
     }).json() as types.CodeResult;
 
+    console.log(response);
+
     setOutput(response.stdout ?? response.stderr ?? 'Program did not output anything');
 
     const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
@@ -409,17 +411,10 @@ function IFrame({ elementID }: { elementID: types.ElementID }) {
 
 function Text({ elementID }: { elementID: types.ElementID }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
-  const [ dots, setDots ] = useState(helpers.getChapter(elementID).elements.map(element => element.state));
 
   useEffect(() => {
     window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
       setText((e as CustomEvent).detail);
-    });
-
-    window.addEventListener(`updateDots${elementID.chapterIndex}`, (e: Event) => {
-      const newDots = dots;
-      newDots[(e as CustomEvent).detail] = types.ElementState.Complete;
-      setDots(newDots);
     });
   }, []);
 
@@ -437,21 +432,12 @@ function Text({ elementID }: { elementID: types.ElementID }) {
 
       <div className="buttons">
         <div className="col1">
-          {helpers.getChapter(elementID).elements.map((element, index) => {
-            const eID = { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys };
-          
-            return (
-              <button
-                className={`dot dot${helpers.getAbsoluteIndex(eID)}`}
-                key={index}
-                onClick={(e) => functions.load(eID)}
-                title={`Load section ${index + 1}`}
-                disabled={dots[index] == types.ElementState.Locked}
-                data-iscomplete="false"
-                data-isselected="false"
-              ></button>
-            )
-          })}
+          {helpers.getChapter(elementID).elements.map((element, index) => (
+            <Dot
+              key={index}
+              elementID={{ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys }}
+            />
+          ))}
         </div>
 
         <div className="col2">
@@ -496,6 +482,27 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function Dot({ elementID }: { elementID: types.ElementID }) {
+  const [ dot, setDot ] = useState(helpers.getElement(elementID).state);
+
+  useEffect(() => {
+    window.addEventListener(`updateDots${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setDot((e as CustomEvent).detail);
+    });
+  }, []);
+
+  return (
+    <button
+      className={`dot dot${helpers.getAbsoluteIndex(elementID)}`}
+      onClick={(e) => functions.load(elementID)}
+      title={`Load section ${elementID.elementIndex + 1}`}
+      disabled={dot == types.ElementState.Locked}
+      data-iscomplete="false"
+      data-isselected="false"
+    ></button>
   );
 }
 
