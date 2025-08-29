@@ -427,7 +427,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
       >
         <Markdown>
           {JSON.stringify((<TypeAnimation
-            sequence={[  ]}
+            sequence={[ text ]}
             speed={70}
             cursor={false}
           />))}
