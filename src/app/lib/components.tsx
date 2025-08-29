@@ -337,7 +337,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
       }
     }).json() as types.CodeResult;
 
-    setOutput(response.stdout ?? '');
+    setOutput(response.stdout ?? 'Program did not output anything');
 
     const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
     helpers.setText(elementID, feedback.feedback);
