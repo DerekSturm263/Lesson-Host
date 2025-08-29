@@ -343,6 +343,8 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
     helpers.setText(elementID, feedback.feedback);
 
     functions.readAloud(elementID);
+
+    setOutput(JSON.stringify(feedback));
     
     if (feedback.isValid) {
       functions.complete(elementID);
