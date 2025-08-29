@@ -91,13 +91,13 @@ export function Element({ elementID }: { elementID: types.ElementID }) {
 }
 
 export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
-  const [ isDisabled, setIsDisabled ] = useState(helpers.getElement(elementID).state == types.ElementState.Locked);
+  const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
   useEffect(() => {
     functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0, keys: elementID.keys });
 
     window.addEventListener(`updateChapter${elementID.chapterIndex}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
+      setState((e as CustomEvent).detail);
     });
   }, []);
 
@@ -107,7 +107,7 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
       className='chapterButton'
       title={`Load chapter ${elementID.chapterIndex + 1}`}
       onClick={(e) => functions.load(elementID)}
-      disabled={isDisabled}
+      disabled={state == types.ElementState.Locked}
       data-iscomplete="false"
       data-isselected="false"
     >
@@ -416,7 +416,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
       setText((e as CustomEvent).detail);
     });
 
-    window.addEventListener(`updateDots${elementID.chapterIndex}`, (e: Event ) => {
+    window.addEventListener(`updateDots${elementID.chapterIndex}`, (e: Event) => {
       const newDots = dots;
       newDots[(e as CustomEvent).detail] = types.ElementState.Complete;
       setDots(newDots);

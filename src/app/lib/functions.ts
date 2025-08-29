@@ -29,7 +29,7 @@ export function complete(elementID: types.ElementID) {
 
 export function unlock(elementID: types.ElementID) {
   window.dispatchEvent(new CustomEvent(`updateDots${elementID.chapterIndex}`, { detail: elementID.elementIndex }));
-  window.dispatchEvent(new CustomEvent(`updateChapter${elementID.chapterIndex}`, { detail: false }));
+  window.dispatchEvent(new CustomEvent(`updateChapter${elementID.chapterIndex}`, { detail: types.ElementState.InProgress }));
 }
 
 export function load(elementID: types.ElementID) {
