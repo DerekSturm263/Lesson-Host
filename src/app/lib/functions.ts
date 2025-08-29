@@ -28,13 +28,8 @@ export function complete(elementID: types.ElementID) {
 }
 
 export function unlock(elementID: types.ElementID) {
-  const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
-  for (let i = 0; i < dots.length; ++i) {
-    dots[i].disabled = false;
-  }
-
-  const chapterButton = document.getElementById(`chapterButton${elementID.chapterIndex}`) as HTMLButtonElement;
-  chapterButton.disabled = false;
+  window.dispatchEvent(new CustomEvent(`updateDots${elementID.chapterIndex}`, { detail: elementID.elementIndex }));
+  window.dispatchEvent(new CustomEvent(`updateChapter${elementID.chapterIndex}`, { detail: false }));
 }
 
 export function load(elementID: types.ElementID) {

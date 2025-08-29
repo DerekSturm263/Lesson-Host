@@ -91,8 +91,14 @@ export function Element({ elementID }: { elementID: types.ElementID }) {
 }
 
 export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
+  const [ isDisabled, setIsDisabled ] = useState(helpers.getElement(elementID).state == types.ElementState.Locked);
+
   useEffect(() => {
     functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0, keys: elementID.keys });
+
+    window.addEventListener(`updateChapter${elementID.chapterIndex}`, (e: Event) => {
+      setIsDisabled((e as CustomEvent).detail);
+    });
   }, []);
 
   return (
@@ -101,7 +107,7 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
       className='chapterButton'
       title={`Load chapter ${elementID.chapterIndex + 1}`}
       onClick={(e) => functions.load(elementID)}
-      disabled={helpers.getElement(elementID).state == types.ElementState.Locked}
+      disabled={isDisabled}
       data-iscomplete="false"
       data-isselected="false"
     >
@@ -403,10 +409,17 @@ function IFrame({ elementID }: { elementID: types.ElementID }) {
 
 function Text({ elementID }: { elementID: types.ElementID }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
+  const [ dots, setDots ] = useState(helpers.getChapter(elementID).elements.map(element => element.state));
 
   useEffect(() => {
     window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
       setText((e as CustomEvent).detail);
+    });
+
+    window.addEventListener(`updateDots${elementID.chapterIndex}`, (e: Event ) => {
+      let newDots = dots;
+      newDots[(e as CustomEvent).detail] = types.ElementState.Complete;
+      setDots(newDots);
     });
   }, []);
 
@@ -433,7 +446,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
                 key={index}
                 onClick={(e) => functions.load(eID)}
                 title={`Load section ${index + 1}`}
-                disabled={false}
+                disabled={dots[index] == types.ElementState.Locked}
                 data-iscomplete="false"
                 data-isselected="false"
               ></button>
