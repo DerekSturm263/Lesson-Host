@@ -433,7 +433,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
                 key={index}
                 onClick={(e) => functions.load(eID)}
                 title={`Load section ${index + 1}`}
-                disabled={element.state == types.ElementState.Locked}
+                disabled={false}
                 data-iscomplete="false"
                 data-isselected="false"
               ></button>
