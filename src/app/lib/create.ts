@@ -201,7 +201,7 @@ function getInteractionPrompt(type: InteractionType): string {
       return  `Create a DAW environment with this element.`;
       
     case InteractionType.Codespace:
-      return  `Create a codespace environment with this element. The codespace needs a defined programming language and list of files. Each file needs a file name and content. If possible, keep your code to a single file. Only make multiple files if it's absolutely necessary to demonstrate the concept.`;
+      return  `Create a codespace environment with this element. The codespace needs a defined programming language and file content to demonstrate whatever concept is being taught.`;
       
     case InteractionType.Engine:
       return  `Create an engine environment with this element.`;

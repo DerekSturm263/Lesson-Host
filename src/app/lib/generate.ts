@@ -83,18 +83,18 @@ export async function verifyCodespace(instructions: string, content: string, res
     let isValid = false;
     let contents = '';
 
-    if (result.exception != null) {
+    if (result.stderr != null) {
         // Code didn't compile
         isValid = false;
 
         contents =
             `TASK:
-            The student's code did not compile. View the attached FILE and EXCEPTION(S) and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
+            The student's code did not compile. View the attached FILE and ERROR(S) and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
 
             FILE:
             ${content}
 
-            EXCEPTION(S):
+            ERROR(S):
             ${result.stderr}
 
             INSTRUCTIONS:
