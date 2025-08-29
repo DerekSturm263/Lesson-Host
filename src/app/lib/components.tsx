@@ -368,15 +368,15 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
       <div
         className="codeEditorRight"
       >
+        <p>
+          {output}
+        </p>
+
         <button
           onClick={executeCode}
         >
           Run
         </button>
-
-        <p>
-          {output}
-        </p>
       </div>
     </div>
   );
