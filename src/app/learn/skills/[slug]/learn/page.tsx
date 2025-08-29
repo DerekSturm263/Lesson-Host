@@ -1,15 +1,17 @@
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
-import type { GetStaticProps } from 'next'
+
+let oneCompilerApiKey: string = '';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
   const urlParams = await searchParams;
+  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
 
   const skill = await getSkill(slug);
 
-  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+  oneCompilerApiKey = process.env.ONECOMPILER_API_KEY ?? ''; 
 
   for (let i = 0; i < skill.learn.chapters.length; ++i) {
     for (let j = 0; j < skill.learn.chapters[i].elements.length; ++j) {
@@ -52,10 +54,4 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   );
 
   return page;
-}
-
-let oneCompilerApiKey: string = '';
-
-export async function getStaticProps() {
-  oneCompilerApiKey = process.env.ONECOMPILER_API_KEY ?? ''; 
 }
