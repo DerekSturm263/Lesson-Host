@@ -426,11 +426,11 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         className="text"
       >
         <Markdown>
-          {JSON.stringify((<TypeAnimation
+          {(<TypeAnimation
             sequence={[ text ]}
             speed={70}
             cursor={false}
-          />))}
+          />).props.sequence[0]}
         </Markdown>
       </div>
 
