@@ -20,7 +20,11 @@ export function complete(elementID: types.ElementID) {
       thisCheckmark.dataset.iscomplete = "true";
   }
 
-  unlock(elementID);
+  const nextElement: types.ElementID = helpers.getIsLastElement(elementID) ?
+    { learn: elementID.learn, chapterIndex: elementID.chapterIndex + 1, elementIndex: 0, keys: elementID.keys } :
+    { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: elementID.elementIndex + 1, keys: elementID.keys };
+  
+  unlock(nextElement);
 }
 
 export function unlock(elementID: types.ElementID) {
@@ -29,10 +33,8 @@ export function unlock(elementID: types.ElementID) {
     dots[i].disabled = false;
   }
 
-  if (helpers.getIsLastElement(elementID)) {
-    const nextButton = document.getElementById(`chapterButton${elementID.chapterIndex + 1}`) as HTMLButtonElement;
-    nextButton.disabled = false;
-  }
+  const chapterButton = document.getElementById(`chapterButton${elementID.chapterIndex}`) as HTMLButtonElement;
+  chapterButton.disabled = false;
 }
 
 export function load(elementID: types.ElementID) {
