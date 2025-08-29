@@ -425,13 +425,12 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        <Markdown>
-          {Children.toArray((<TypeAnimation
-            sequence={[ text ]}
-            speed={70}
-            cursor={false}
-          />).props.children)[0].toString()}
-        </Markdown>
+        <TypeAnimation
+          sequence={[ text ]}
+          speed={70}
+          cursor={false}
+        />
+        <Markdown>{text}</Markdown>
       </div>
 
       <div className="buttons">
