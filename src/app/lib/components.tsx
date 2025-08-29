@@ -345,7 +345,9 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
 
     console.log(response);
 
-    setOutput(response.stdout ?? response.stderr ?? 'Program did not output anything');
+    const output = response.stdout + '\n\n' + response.stderr;
+
+    setOutput(output == '\n\n' ? 'Program did not output anything' : output);
 
     const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
     helpers.setText(elementID, feedback.feedback);
