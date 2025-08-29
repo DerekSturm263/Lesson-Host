@@ -553,7 +553,8 @@ export type Course = {
 export type ElementID = {
   learn: Learn,
   chapterIndex: number,
-  elementIndex: number
+  elementIndex: number,
+  keys: string[]
 };
 
 export enum CodeStatus {

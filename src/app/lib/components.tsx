@@ -92,7 +92,7 @@ export function Element({ elementID }: { elementID: types.ElementID }) {
 
 export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
   useEffect(() => {
-    functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0 });
+    functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0, keys: elementID.keys });
   }, []);
 
   return (
@@ -321,7 +321,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
-        'x-rapidapi-key': functions.getOneCompilerApiKey() ?? '',
+        'x-rapidapi-key': elementID.keys[0],
         'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
         'Content-Type': 'application/json',
       },
@@ -425,7 +425,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
       <div className="buttons">
         <div className="col1">
           {helpers.getChapter(elementID).elements.map((element, index) => {
-            const eID = { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index };
+            const eID = { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys };
           
             return (
               <button

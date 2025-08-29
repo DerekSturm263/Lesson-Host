@@ -29,7 +29,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
               {skill.learn.chapters.map((chapter, index) => (
                 <ChapterButton
                   key={index}
-                  elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0 }}
+                  elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ oneCompilerApiKey ] }}
                 />
               ))}
             </Sidebar>
@@ -39,7 +39,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 chapter.elements.map((element, eIndex) => (
                   <Element
                     key={`${cIndex}:${eIndex}`}
-                    elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex }}
+                    elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ oneCompilerApiKey ] }}
                   />
                 ))
               ))}
@@ -51,4 +51,10 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   );
 
   return page;
+}
+
+let oneCompilerApiKey: string = '';
+
+export async function getStaticProps() {
+  oneCompilerApiKey = process.env.ONECOMPILER_API_KEY ?? ''; 
 }
