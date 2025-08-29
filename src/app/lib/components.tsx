@@ -417,7 +417,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
     });
 
     window.addEventListener(`updateDots${elementID.chapterIndex}`, (e: Event ) => {
-      let newDots = dots;
+      const newDots = dots;
       newDots[(e as CustomEvent).detail] = types.ElementState.Complete;
       setDots(newDots);
     });
