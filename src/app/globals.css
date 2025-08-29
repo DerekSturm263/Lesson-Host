@@ -275,6 +275,7 @@ body {
     padding: 10px;
     width: 100%;
     flex: 1;
+    white-space: pre-line;
   }
 }
 

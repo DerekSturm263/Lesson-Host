@@ -344,9 +344,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
       }
     }).json() as types.CodeResult;
 
-    const output = `${response.stdout ?? ''}
-    
-    ${response.stderr ?? ''}`;
+    const output = `${response.stdout ?? ''}\n\n${response.stderr ?? ''}`;
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
 
     const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
@@ -427,12 +425,13 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        <TypeAnimation
-          sequence={[ text ]}
-          speed={50}
-          cursor={false}
-        />
-        {/*<Markdown>{text}</Markdown>*/}
+        <Markdown>
+          {(<TypeAnimation
+            sequence={[  ]}
+            speed={70}
+            cursor={false}
+          />).toString()}
+        </Markdown>
       </div>
 
       <div className="buttons">
