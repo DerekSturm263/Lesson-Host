@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
-import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState } from 'react';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
@@ -11,6 +11,7 @@ import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 import ky from 'ky';
+import { TypeAnimation } from 'react-type-animation';
 
 export function Header() {
   return (
@@ -426,9 +427,12 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        <WordWrapper>
-          <Markdown>{text}</Markdown>
-        </WordWrapper>
+        <TypeAnimation
+          sequence={[ text ]}
+          speed={50}
+          cursor={false}
+        />
+        {/*<Markdown>{text}</Markdown>*/}
       </div>
 
       <div className="buttons">
@@ -505,41 +509,4 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
       data-isselected="false"
     ></button>
   );
-}
-
-function WordWrapper({ children }: { children?: React.ReactNode }) {
-  const wordIndex = useRef(0);
-
-  const wrapWords = (node: ReactNode): ReactNode => {
-    if (typeof node === "string") {
-      return node
-        .split(/\s+/)
-        .filter(Boolean)
-        .map((word) => {
-          const index = wordIndex.current++;
-          return (
-            <Fragment key={index}>
-              <span
-                className="word"
-                onDoubleClick={(e) => functions.define(word)}
-                title="Double click to define this word"
-                style={{"--index": `${index / 8}s`} as React.CSSProperties}
-              >
-                {word}
-              </span>{" "}
-            </Fragment>
-          );
-        });
-    }
-
-    /*if (isValidElement(node)) {
-      return cloneElement(node, {
-        children: Children.map(node.props.children, wrapWords)
-      });
-    }*/
-
-    return node;
-  };
-
-  return <>{Children.map(children, wrapWords)}</>;
 }

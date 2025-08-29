@@ -31,8 +31,6 @@ export function getText(elementID: types.ElementID): string {
 
 // Sets text and doesn't update non-thinking text.
 export function startThinking(elementID: types.ElementID) {
-  console.log("what");
-  
   const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
   if (!parent)
     return;
