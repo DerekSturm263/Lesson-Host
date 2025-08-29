@@ -38,6 +38,8 @@ export function unlock(elementID: types.ElementID) {
 }
 
 export function load(elementID: types.ElementID) {
+  console.log(`loading ${JSON.stringify(elementID)}`);
+
   const content = document.getElementsByClassName('element') as HTMLCollectionOf<HTMLElement>;
   const thisContent = document.getElementById(`element${helpers.getAbsoluteIndex(elementID)}`);
     
