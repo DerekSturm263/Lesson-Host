@@ -1,6 +1,6 @@
-import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
-import { getSkill } from '../../../../lib/database';
-import * as types from '../../../../lib/types';
+import { Header, Sidebar, Element, ChapterButton } from '../../../lib/components';
+import { getSkill, saveSkill } from '../../../lib/database';
+import * as types from '../../../lib/types';
 
 let oneCompilerApiKey: string = '';
 
@@ -33,9 +33,10 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 <ChapterButton
                   key={index}
                   elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ oneCompilerApiKey ] }}
-                  mode={types.ComponentMode.View}
+                  mode={types.ComponentMode.Edit}
                 />
               ))}
+              <button onClick={(e) => saveSkill(slug, skill)}>Save</button>
             </Sidebar>
 
             <div className="elements">
@@ -44,7 +45,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                   <Element
                     key={`${cIndex}:${eIndex}`}
                     elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ oneCompilerApiKey ] }}
-                    mode={types.ComponentMode.View}
+                    mode={types.ComponentMode.Edit}
                   />
                 ))
               ))}

@@ -571,3 +571,8 @@ export type CodeResult = {
   status: CodeStatus,
   error: string | undefined
 };
+
+export enum ComponentMode {
+  View = 'view',
+  Edit = 'edit' 
+}

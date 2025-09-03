@@ -78,19 +78,19 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
   );
 }
 
-export function Element({ elementID }: { elementID: types.ElementID }) {
+export function Element({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
       className="element"
     >
-      <Interaction elementID={elementID} />
-      <Text elementID={elementID} />
+      <Interaction elementID={elementID} mode={mode} />
+      <Text elementID={elementID} mode={mode} />
     </div>
   );
 }
 
-export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
+export function ChapterButton({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
   useEffect(() => {
@@ -126,38 +126,38 @@ export function ChapterButton({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Interaction({ elementID }: { elementID: types.ElementID }) {
+function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   switch (helpers.getElement(elementID).type) {
     case types.ElementType.ShortAnswer:
-      return (<div className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} mode={mode} /></div>);
     case types.ElementType.MultipleChoice:
-      return (<div className="interaction" data-type="multipleChoice"><MultipleChoice elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="multipleChoice"><MultipleChoice elementID={elementID} mode={mode} /></div>);
     case types.ElementType.TrueOrFalse:
-      return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Matching:
-      return (<div className="interaction" data-type="matching"><Matching elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="matching"><Matching elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Ordering:
-      return (<div className="interaction" data-type="ordering"><Ordering elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="ordering"><Ordering elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Files:
-      return (<div className="interaction" data-type="files"><Files elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="files"><Files elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Drawing:
-      return (<div className="interaction" data-type="drawing"><Drawing elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="drawing"><Drawing elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Graph:
-      return (<div className="interaction" data-type="graph"><Graph elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="graph"><Graph elementID={elementID} mode={mode} /></div>);
     case types.ElementType.DAW:
-      return (<div className="interaction" data-type="daw"><DAW elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="daw"><DAW elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Codespace:
-      return (<div className="interaction" data-type="codespace"><Codespace elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="codespace"><Codespace elementID={elementID} mode={mode} /></div>);
     case types.ElementType.Engine:
-      return (<div className="interaction" data-type="engine"><Engine elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="engine"><Engine elementID={elementID} mode={mode} /></div>);
     case types.ElementType.IFrame:
-      return (<div className="interaction" data-type="iFrame"><IFrame elementID={elementID} /></div>);
+      return (<div className="interaction" data-type="iFrame"><IFrame elementID={elementID} mode={mode} /></div>);
     default:
       return <div className="interaction" data-type="none"></div>;
   }
 }
 
-function ShortAnswer({ elementID }: { elementID: types.ElementID }) {
+function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -177,7 +177,7 @@ function ShortAnswer({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
+function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -214,7 +214,7 @@ function MultipleChoice({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function TrueOrFalse({ elementID }: { elementID: types.ElementID }) {
+function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -258,7 +258,7 @@ function TrueOrFalse({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Matching({ elementID }: { elementID: types.ElementID }) {
+function Matching({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -268,7 +268,7 @@ function Matching({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Ordering({ elementID }: { elementID: types.ElementID }) {
+function Ordering({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -278,7 +278,7 @@ function Ordering({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Files({ elementID }: { elementID: types.ElementID }) {
+function Files({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -288,7 +288,7 @@ function Files({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Drawing({ elementID }: { elementID: types.ElementID }) {
+function Drawing({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -298,7 +298,7 @@ function Drawing({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Graph({ elementID }: { elementID: types.ElementID }) {
+function Graph({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -307,7 +307,7 @@ function Graph({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function DAW({ elementID }: { elementID: types.ElementID }) {
+function DAW({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -317,7 +317,7 @@ function DAW({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Codespace({ elementID }: { elementID: types.ElementID }) {
+function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
 
@@ -389,7 +389,7 @@ function Codespace({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function Engine({ elementID }: { elementID: types.ElementID }) {
+function Engine({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <iframe
       className="fullscreenInteraction"
@@ -398,7 +398,7 @@ function Engine({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-function IFrame({ elementID }: { elementID: types.ElementID }) {
+function IFrame({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
     <iframe
       id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -410,7 +410,7 @@ function IFrame({ elementID }: { elementID: types.ElementID }) {
 
 let globalIndex = 0;
 
-function Text({ elementID }: { elementID: types.ElementID }) {
+function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
 
   useEffect(() => {
