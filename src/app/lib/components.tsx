@@ -426,7 +426,7 @@ function Text({ elementID }: { elementID: types.ElementID }) {
       >
         <Markdown
           components={{
-            p({ node, children }) {
+            text({ node, children }) {
               return <WordWrapper text={String(children)} />
             }
           }}
