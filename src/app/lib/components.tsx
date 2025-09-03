@@ -408,6 +408,8 @@ function IFrame({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
+let globalIndex = 0;
+
 function Text({ elementID }: { elementID: types.ElementID }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
 
@@ -416,6 +418,8 @@ function Text({ elementID }: { elementID: types.ElementID }) {
       setText((e as CustomEvent).detail);
     });
   }, []);
+
+  globalIndex = 0;
 
   return (
     <div className="textBox">
@@ -505,7 +509,7 @@ function WordWrapper({ text }: { text: string }) {
           className="word"
           onDoubleClick={(e) => functions.define(word)}
           title="Double click to define this word"
-          style={{"--index": `${i / 8}s`} as React.CSSProperties}
+          style={{"--index": `${globalIndex++ / 8}s`} as React.CSSProperties}
         >
           {word}{" "}
         </span>
