@@ -11,7 +11,6 @@ import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 import ky from 'ky';
-import { TypeAnimation } from 'react-type-animation';
 
 export function Header() {
   return (
@@ -425,12 +424,13 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        <TypeAnimation
-          sequence={[ text ]}
-          speed={70}
-          cursor={false}
-        />
-        <Markdown>{text}</Markdown>
+        <Markdown
+          components={{
+            text({ node, children }) {
+              return <WordWrapper text={String(children)} />
+            }
+          }}
+        >{text}</Markdown>
       </div>
 
       <div className="buttons">
@@ -485,6 +485,24 @@ function Text({ elementID }: { elementID: types.ElementID }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function WordWrapper({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/\s+/).map((word, i) => (
+        <span
+          key={i}
+          className="word"
+          onDoubleClick={(e) => functions.define(word)}
+          title="Double click to define this word"
+          style={{"--index": `${i / 8}s`} as React.CSSProperties}
+        >
+          {word}{" "}
+        </span>
+      ))}
+    </>
   );
 }
 
