@@ -429,8 +429,8 @@ function Text({ elementID }: { elementID: types.ElementID }) {
             strong({ node, children }) {
               return <strong><WordWrapper text={String(children)} /></strong>
             },
-            p({ node, children }) {
-              return <WordWrapper text={String(children)} />
+            i({ node, children }) {
+              return <i><WordWrapper text={String(children)} /></i>
             }
           }}
         >
