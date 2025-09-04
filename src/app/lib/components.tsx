@@ -111,9 +111,22 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
       data-iscomplete="false"
       data-isselected="false"
     >
-      <h4>
-        {helpers.getChapter(elementID).title}
-      </h4>
+      
+      {(mode == types.ComponentMode.View ? (
+        <h4>
+          {helpers.getChapter(elementID).title}
+        </h4>
+      ) : (
+        <form
+          action={(e) => elementID.learn.chapters[elementID.chapterIndex].title = e.get('chapterTitle')?.toString() ?? ''}
+        >
+          <input
+            type="text"
+            name="chapterTitle"
+            value={helpers.getChapter(elementID).title}
+          />
+        </form>
+      ))}
 
       <Image
         id={`chapterCheckmark${elementID.chapterIndex}`}
@@ -350,6 +363,11 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
 
   function updateContent(content: string | undefined) {
     setContent(content ?? '');
+
+    if (mode == types.ComponentMode.Edit) {
+      // TODO: Add language toggle and test.
+      helpers.getInteractionValue<types.Codespace>(elementID).content = content ?? '';
+    }
   }
 
   return (
@@ -420,21 +438,33 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        <Markdown
-          components={{
-            p({ node, children }) {
-              return <WordWrapper text={String(children)} />
-            },
-            strong({ node, children }) {
-              return <strong><WordWrapper text={String(children)} /></strong>
-            },
-            i({ node, children }) {
-              return <i><WordWrapper text={String(children)} /></i>
-            }
-          }}
-        >
-          {text}
-        </Markdown>
+        {(mode == types.ComponentMode.View ? (
+          <Markdown
+            components={{
+              p({ node, children }) {
+                return <WordWrapper text={String(children)} />
+              },
+              strong({ node, children }) {
+                return <strong><WordWrapper text={String(children)} /></strong>
+              },
+              i({ node, children }) {
+                return <i><WordWrapper text={String(children)} /></i>
+              }
+            }}
+          >
+            {text}
+          </Markdown>
+        ) : (
+          <form
+            action={(e) => elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].text = e.get('elementText')?.toString() ?? ''}
+          >
+            <input
+              type="text"
+              name="elementText"
+              value={text}
+            />
+          </form>
+        ))}
       </div>
 
       <div className="buttons">
@@ -445,6 +475,17 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               elementID={{ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys }}
             />
           ))}
+
+          {mode == types.ComponentMode.Edit && (
+            <button
+              onClick={(e) => elementID.learn.chapters[elementID.chapterIndex].elements.push({
+                type: types.ElementType.ShortAnswer,
+                text: "New element",
+                value: { correctAnswer: "" },
+                state: types.ElementState.Complete
+              })}
+            />
+          )}
         </div>
 
         <div className="col2">
