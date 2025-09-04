@@ -335,7 +335,7 @@ body {
 input[type=text] {
   background-color: rgb(60, 60, 60);
   width: 100%;
-  height: 20px;
+  height: 50px;
   border-radius: 50px;
   padding: 20px;
   font-size: 15px;
@@ -357,7 +357,7 @@ button:hover:enabled, input:hover:enabled {
   transform: scale(1.05);
 }
 
-button:hover:enabled {
+button:hover:enabled, input[type=submit]:hover:enabled {
   cursor: pointer;
 }
 
@@ -379,6 +379,8 @@ button[data-isselected="true"] {
   outline-width: 2.5px;
   opacity: 1;
 }
+
+
   
 @media screen and (max-width: 800px) {
   .sidebar {

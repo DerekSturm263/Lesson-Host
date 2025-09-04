@@ -47,35 +47,78 @@ type Verification = {
   feedback: string;
 };
 
-export async function verifyShortAnswer(question: string, userResponse: string): Promise<Verification> {
-  const response = await ai.models.generateContent({
-    model: textModel,
-    contents: 
-      `TASK:
-      Decide whether a given RESPONSE is a valid answer to a given QUESTION and give appropriate feedback.
+export async function verifyShortAnswer(question: string, userResponse: string, correctAnswer: string | undefined): Promise<Verification> {
+  let response;
+  
+  if (correctAnswer == null) {
+    response = await ai.models.generateContent({
+      model: textModel,
+      contents: 
+        `TASK:
+        Decide whether a given RESPONSE is a valid answer to a given QUESTION and give appropriate feedback.
       
+        QUESTION:
+        ${question}
+
+        RESPONSE:
+        ${userResponse}`
+      ,
+      config: {
+        temperature: 0,
+        responseMimeType: 'application/json',
+        responseSchema: schemas.responseSchema,
+        systemInstruction: [
+          `You are a high school tutor. You determine whether a student's RESPONSE to a QUESTION is VALID or not while giving them proper FEEDBACK.
+        
+          - If their response is VALID (true), your FEEDBACK should congratulate the user on getting it right and then explain why it's correct.
+          - If their answer is NOT VALID (false), your FEEDBACK should tell the user that their answer isn't quite right and then explain why. Afterwards, you should re-explain the original QUESTION in friendlier terms with new examples.
+        
+          ${globalSystemInstruction}`
+        ],
+        safetySettings: safetySettings
+      }
+    });
+  } else {
+    let contents = userResponse == correctAnswer ?
+      `TASK:
+      The student's answer was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.
+
       QUESTION:
       ${question}
 
       RESPONSE:
-      ${userResponse}`
-    ,
-    config: {
-      temperature: 0,
-      responseMimeType: 'application/json',
-      responseSchema: schemas.responseSchema,
-      systemInstruction: [
-        `You are a high school tutor. You determine whether a student's RESPONSE to a QUESTION is VALID or not while giving them proper FEEDBACK.
-        
-        - If their response is VALID (true), your FEEDBACK should congratulate the user on getting it right and then explain why it's correct.
-        - If their answer is NOT VALID (false), your FEEDBACK should tell the user that their answer isn't quite right and then explain why. Afterwards, you should re-explain the original QUESTION in friendlier terms with new examples.
-        
-        ${globalSystemInstruction}`
-      ],
-      safetySettings: safetySettings
-    }
-  });
+      ${userResponse}
+      
+      CORRECT ANSWER:
+      ${correctAnswer}` :
+      `TASK:
+      The student's answer was incorrect. View the student's RESPONSE and the original QUESTION and give the student feedback on why their answer isn't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.
 
+      QUESTION:
+      ${question}
+
+      RESPONSE:
+      ${userResponse}
+      
+      CORRECT ANSWER:
+      ${correctAnswer}`;
+
+    response = await ai.models.generateContent({
+      model: textModel,
+      contents: contents,
+      config: {
+        temperature: 0,
+        systemInstruction: [
+          `You are a high school tutor. You evaluate a student's RESPONSE to a short answer QUESTION and give them proper FEEDBACK based on whether or not their response matches the CORRECT ANSWER. You will be told whether or not the response is correct, all you need to do is give the FEEDBACK.
+        
+          ${globalSystemInstruction}`
+        ],
+        safetySettings: safetySettings
+      }
+    });
+  }
+
+  
   return JSON.parse(response.text ?? '') as Verification;
 }
 
@@ -140,7 +183,7 @@ export async function verifyCodespace(instructions: string, content: string, res
 
         contents =
             `TASK:
-            The student's code compiled successfully and matched the CORRECT OUTPUT. Congratulate the student on getting their code right. Review their FILE to recap how they successully follow the INSTRUCTIONS. Finally, give the student feedback on how they could improve their solution even further and advice on how to improve their coding skills in general.
+            The student's code compiled successfully and matched the CORRECT OUTPUT. Congratulate the student on getting their code right. Review their FILE to recap how they successully followed the INSTRUCTIONS. Finally, give the student feedback on how they could improve their solution even further and advice on how to improve their coding skills in general.
       
             CORRECT OUTPUT:
             ${correctOutput}

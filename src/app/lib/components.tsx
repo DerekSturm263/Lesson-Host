@@ -201,14 +201,10 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
           </label>
         ))}
 
-        <label>
-          Submit
-
-          <input
-            type="submit"
-            name="submit"
-          />
-        </label>
+        <input
+          type="submit"
+          name="submit"
+        />
       </form>
     </div>
   );
@@ -245,14 +241,10 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
           />
         </label>
 
-        <label>
-          Submit
-
-          <input
-            type="submit"
-            name="submit"
-          />
-        </label>
+        <input
+          type="submit"
+          name="submit"
+        />
       </form>
     </div>
   );

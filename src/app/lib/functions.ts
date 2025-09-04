@@ -119,7 +119,7 @@ export async function define(word: string) {
 
 export async function submitShortAnswer(formData: FormData, elementID: types.ElementID) {
   helpers.startThinking(elementID);
-  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '');
+  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
   helpers.setText(elementID, feedback.feedback);
 
   readAloud(elementID);
