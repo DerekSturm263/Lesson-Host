@@ -79,7 +79,7 @@ export async function verifyShortAnswer(question: string, userResponse: string, 
       }
     });
   } else {
-    let contents = userResponse == correctAnswer ?
+    const contents = userResponse == correctAnswer ?
       `TASK:
       The student's answer was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.
 
