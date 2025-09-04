@@ -128,8 +128,8 @@ export async function verifyShortAnswer(question: string, userResponse: string, 
 }
 
 export async function verifyMultipleChoice(question: string, userResponse: string[], value: types.MultipleChoice): Promise<Verification> {
-  let isValid = false;
-  let contents = '';
+  const isValid = false;
+  const contents = '';
   
   /*if (value.type == types.MultipleChoiceType.Radio) {
     if () {
