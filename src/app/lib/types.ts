@@ -22,8 +22,14 @@ export type MultipleChoiceItem = {
   isCorrect: boolean
 };
 
+export enum MultipleChoiceType {
+  Checkbox = 'checkbox',
+  Radio = 'radio'
+}
+
 export type MultipleChoice = {
   choices: MultipleChoiceItem[],
+  type: MultipleChoiceType,
   needsAllCorrect: boolean
 };
 

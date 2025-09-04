@@ -190,14 +190,14 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
           <label
             key={index}
           >
-            {item.value}
-
             <input
-              type={helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect ? 'radio' : 'checkbox'}
+              type={helpers.getInteractionValue<types.MultipleChoice>(elementID).type}
               name="response"
               id={item.value}
               value={item.isCorrect.toString()}
             />
+
+            {item.value}
           </label>
         ))}
 
@@ -220,25 +220,25 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
         action={(e) => functions.submitTrueOrFalse(e, elementID)}
       >
         <label>
-          True
-        
           <input
             type="radio"
             name="response"
             id="true"
             value="true"
           />
+
+          True
         </label>
 
         <label>
-          False
-        
           <input
             type="radio"
             name="response"
             id="false"
             value="false"
           />
+
+          False
         </label>
 
         <input
