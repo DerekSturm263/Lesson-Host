@@ -284,7 +284,6 @@ body {
   justify-content: space-between;
   gap: 20px;
   margin-top: 15px;
-  flex-wrap: wrap;
 
   .col1, .col2 {
     display: flex;
