@@ -366,7 +366,7 @@ button:hover:active:enabled {
   transform: scale(0.95);
 }
 
-button:disabled {
+button:disabled, input:disabled {
   opacity: 0.5;
 }
 

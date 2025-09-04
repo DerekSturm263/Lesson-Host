@@ -171,7 +171,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
 }
 
 function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(true);
+  const [ isDisabled, setIsDisabled ] = useState(false);
 
   useEffect(() => {
     window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
@@ -200,7 +200,7 @@ function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: ty
 }
 
 function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(true);
+  const [ isDisabled, setIsDisabled ] = useState(false);
 
   useEffect(() => {
     window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
@@ -243,7 +243,7 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
 }
 
 function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(true);
+  const [ isDisabled, setIsDisabled ] = useState(false);
 
   useEffect(() => {
     window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
@@ -294,6 +294,8 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
 }
 
 function Matching({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ isDisabled, setIsDisabled ] = useState(false);
+
   return (
     <div
       className="smallInteraction"
@@ -304,6 +306,8 @@ function Matching({ elementID, mode }: { elementID: types.ElementID, mode: types
 }
 
 function Ordering({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ isDisabled, setIsDisabled ] = useState(false);
+
   return (
     <div
       className="smallInteraction"
