@@ -358,6 +358,11 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
 
   function updateContent(content: string | undefined) {
     setContent(content ?? '');
+
+    if (mode == types.ComponentMode.Edit) {
+      // TODO: Add language toggle and test.
+      helpers.getInteractionValue<types.Codespace>(elementID).content = content ?? '';
+    }
   }
 
   return (
@@ -428,21 +433,26 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        <Markdown
-          components={{
-            p({ node, children }) {
-              return <WordWrapper text={String(children)} />
-            },
-            strong({ node, children }) {
-              return <strong><WordWrapper text={String(children)} /></strong>
-            },
-            i({ node, children }) {
-              return <i><WordWrapper text={String(children)} /></i>
-            }
-          }}
-        >
-          {text}
-        </Markdown>
+        {(mode == types.ComponentMode.View ? (
+          <Markdown
+            components={{
+              p({ node, children }) {
+                return <WordWrapper text={String(children)} />
+              },
+              strong({ node, children }) {
+                return <strong><WordWrapper text={String(children)} /></strong>
+              },
+              i({ node, children }) {
+                return <i><WordWrapper text={String(children)} /></i>
+              }
+            }}
+          >
+            {text}
+          </Markdown>
+        ) : (
+          <input type="text" value={text} onChange={(e) => helpers.getElement(elementID).text = e.target.value} />
+        ))}
+        
       </div>
 
       <div className="buttons">

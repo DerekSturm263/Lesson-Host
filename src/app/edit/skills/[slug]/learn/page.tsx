@@ -1,6 +1,6 @@
-import { Header, Sidebar, Element, ChapterButton } from '../../../lib/components';
-import { getSkill, saveSkill } from '../../../lib/database';
-import * as types from '../../../lib/types';
+import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
+import { getSkill, saveSkill } from '../../../../lib/database';
+import * as types from '../../../../lib/types';
 
 let oneCompilerApiKey: string = '';
 
