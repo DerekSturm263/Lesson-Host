@@ -171,6 +171,14 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
 }
 
 function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ isDisabled, setIsDisabled ] = useState(true);
+
+  useEffect(() => {
+    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setIsDisabled((e as CustomEvent).detail);
+    });
+  }, []);
+
   return (
     <div
       className="smallInteraction"
@@ -184,6 +192,7 @@ function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: ty
           name="response"
           placeholder="Write your response here. Press enter to submit"
           autoComplete="off"
+          disabled={isDisabled}
         />
       </form>
     </div>
@@ -191,6 +200,14 @@ function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: ty
 }
 
 function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ isDisabled, setIsDisabled ] = useState(true);
+
+  useEffect(() => {
+    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setIsDisabled((e as CustomEvent).detail);
+    });
+  }, []);
+
   return (
     <div
       className="smallInteraction"
@@ -208,6 +225,7 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
               name="response"
               id={item.value}
               value={item.isCorrect.toString()}
+              disabled={isDisabled}
             />
 
             {item.value}
@@ -217,6 +235,7 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
         <input
           type="submit"
           name="submit"
+          disabled={isDisabled}
         />
       </form>
     </div>
@@ -224,6 +243,14 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
 }
 
 function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ isDisabled, setIsDisabled ] = useState(true);
+
+  useEffect(() => {
+    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setIsDisabled((e as CustomEvent).detail);
+    });
+  }, []);
+
   return (
     <div
       className="smallInteraction"
@@ -238,6 +265,7 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
             name="response"
             id="true"
             value="true"
+            disabled={isDisabled}
           />
 
           True
@@ -249,6 +277,7 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
             name="response"
             id="false"
             value="false"
+            disabled={isDisabled}
           />
 
           False
@@ -257,6 +286,7 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
         <input
           type="submit"
           name="submit"
+          disabled={isDisabled}
         />
       </form>
     </div>
@@ -351,7 +381,7 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
     const output = `${response.stdout ?? ''}\n${response.stderr ?? ''}`;
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
 
-    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID).correctOutput ?? '', helpers.getInteractionValue<types.Codespace>(elementID).language);
+    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID));
     helpers.setText(elementID, feedback.feedback);
 
     functions.readAloud(elementID);

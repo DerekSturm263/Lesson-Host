@@ -1,4 +1,4 @@
-import { verifyShortAnswer, rephraseText } from './generate';
+import { verifyShortAnswer, verifyMultipleChoice, verifyTrueOrFalse, rephraseText } from './generate';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
@@ -119,25 +119,43 @@ export async function define(word: string) {
 
 export async function submitShortAnswer(formData: FormData, elementID: types.ElementID) {
   helpers.startThinking(elementID);
-  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
+  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID));
   helpers.setText(elementID, feedback.feedback);
 
   readAloud(elementID);
 
   if (feedback.isValid) {
-    helpers.getInteractionElement<HTMLInputElement>(elementID, (interaction) => {
-      interaction.value = "";
-      interaction.disabled = true;
-    });
-
+    window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
     complete(elementID);
   }
 }
 
 export async function submitMultipleChoice(formData: FormData, elementID: types.ElementID) {
+  console.log(JSON.stringify(formData));
 
+  helpers.startThinking(elementID);
+  const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, [], helpers.getInteractionValue<types.MultipleChoice>(elementID));
+  helpers.setText(elementID, feedback.feedback);
+
+  readAloud(elementID);
+
+  if (feedback.isValid) {
+    window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
+    complete(elementID);
+  }
 }
 
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
+  console.log(JSON.stringify(formData));
 
+  helpers.startThinking(elementID);
+  const feedback = await verifyTrueOrFalse(helpers.getElement(elementID).text, false, helpers.getInteractionValue<types.TrueOrFalse>(elementID));
+  helpers.setText(elementID, feedback.feedback);
+
+  readAloud(elementID);
+
+  if (feedback.isValid) {
+    window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
+    complete(elementID);
+  }
 }

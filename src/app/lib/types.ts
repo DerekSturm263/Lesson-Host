@@ -23,8 +23,8 @@ export type MultipleChoiceItem = {
 };
 
 export enum MultipleChoiceType {
-  Checkbox = 'checkbox',
-  Radio = 'radio'
+  Radio = 'radio',
+  Checkbox = 'checkbox'
 }
 
 export type MultipleChoice = {
