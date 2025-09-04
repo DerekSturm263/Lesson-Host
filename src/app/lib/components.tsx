@@ -118,7 +118,7 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
         </h4>
       ) : (
         <form
-          action={(e) => elementID.learn.chapters[elementID.chapterIndex].title = e.get('chapterTitle')?.toString() ?? ''}
+          action={(e) => { elementID.learn.chapters[elementID.chapterIndex].title = e.get('chapterTitle')?.toString() ?? '' }}
         >
           <input
             type="text"
@@ -441,9 +441,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         {(mode == types.ComponentMode.View ? (
           <Markdown
             components={{
-              p({ node, children }) {
-                return <WordWrapper text={String(children)} />
-              },
               strong({ node, children }) {
                 return <strong><WordWrapper text={String(children)} /></strong>
               },
@@ -456,7 +453,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           </Markdown>
         ) : (
           <form
-            action={(e) => elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].text = e.get('elementText')?.toString() ?? ''}
+            action={(e) => { elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].text = e.get('elementText')?.toString() ?? '' }}
           >
             <input
               type="text"
