@@ -78,8 +78,11 @@ export async function verifyShortAnswer(question: string, userResponse: string, 
         safetySettings: safetySettings
       }
     });
+    
+    return JSON.parse(response.text ?? '') as Verification;
   } else {
-    const contents = userResponse == correctAnswer ?
+    const isValid = userResponse == correctAnswer;
+    const contents = isValid ?
       `TASK:
       The student's answer was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.
 
@@ -116,10 +119,9 @@ export async function verifyShortAnswer(question: string, userResponse: string, 
         safetySettings: safetySettings
       }
     });
+    
+    return { isValid: isValid, feedback: response.text ?? '' };
   }
-
-  
-  return JSON.parse(response.text ?? '') as Verification;
 }
 
 export async function verifyCodespace(instructions: string, content: string, result: types.CodeResult, correctOutput: string, language: string): Promise<Verification> {
