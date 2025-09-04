@@ -36,7 +36,9 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                   mode={types.ComponentMode.Edit}
                 />
               ))}
-              <button onClick={(e) => saveSkill(slug, skill)}>Save</button>
+
+              {/*<button onClick={(e) => saveSkill(slug, skill)}>New Chapter</button>*/}
+              {/*<button onClick={(e) => saveSkill(slug, skill)}>Save</button>*/}
             </Sidebar>
 
             <div className="elements">
