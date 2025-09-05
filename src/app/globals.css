@@ -201,6 +201,12 @@ body {
 .smallInteraction {
   width: 65%;
   height: 50%;
+
+  input[type=submit] {
+    padding: 10px;
+    font-weight: 600;
+    font-size: 15px;
+  }
 }
 
 .fullscreenInteraction {
@@ -362,7 +368,7 @@ button:hover:enabled, input[type=submit]:hover:enabled {
   cursor: pointer;
 }
 
-button:hover:active:enabled {
+button:hover:active:enabled, input[type=submit]:hover:active:enabled {
   transform: scale(0.95);
 }
 
@@ -370,7 +376,7 @@ button:disabled, input:disabled {
   opacity: 0.5;
 }
 
-button:disabled:hover {
+button:disabled:hover, input:disabled:hover {
   cursor: not-allowed;
 }
 
