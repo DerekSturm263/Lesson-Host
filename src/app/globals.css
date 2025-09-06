@@ -214,7 +214,7 @@ body {
   height: 100%;
 }
 
-.multipleChoices {
+.multipleOptions {
   display: flex;
   flex-direction: column;
   gap: 20px;
