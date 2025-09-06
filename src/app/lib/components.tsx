@@ -214,6 +214,7 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        className='multipleOptions'
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
         {helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.map((item, index) => (

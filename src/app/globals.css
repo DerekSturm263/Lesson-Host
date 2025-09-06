@@ -214,6 +214,12 @@ body {
   height: 100%;
 }
 
+.multipleChoices {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .textBox {
   background-image: linear-gradient(rgb(100, 100, 100, 0.5), rgb(50, 50, 50, 0.5));
   height: 225px;
@@ -348,6 +354,15 @@ input[type=text] {
   font-size: 15px;
   text-align: center;
   border: none;
+}
+
+input[type=radio], input[type=checkbox] {
+  margin-right: 10px;
+}
+
+input[type=submit] {
+  background-color: var(--foreground);
+  color: var(--text);
 }
 
 button, input[type=submit] {
