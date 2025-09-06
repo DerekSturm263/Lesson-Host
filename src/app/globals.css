@@ -206,6 +206,8 @@ body {
     padding: 10px;
     font-weight: 600;
     font-size: 15px;
+    background-color: var(--foreground);
+    color: var(--text);
   }
 }
 
@@ -358,11 +360,6 @@ input[type=text] {
 
 input[type=radio], input[type=checkbox] {
   margin-right: 10px;
-}
-
-input[type=submit] {
-  background-color: var(--foreground);
-  color: var(--text);
 }
 
 button, input[type=submit] {
