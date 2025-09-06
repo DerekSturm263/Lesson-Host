@@ -258,6 +258,7 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        className='multipleOptions'
         action={(e) => functions.submitTrueOrFalse(e, elementID)}
       >
         <label>
