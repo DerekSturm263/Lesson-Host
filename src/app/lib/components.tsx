@@ -7,6 +7,7 @@ import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, us
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
+import { saveSkill } from './database';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -616,7 +617,7 @@ export function NewChapter({ skill }: { skill: types.Skill }) {
 export function Save({ slug, skill }: { slug: string, skill: types.Skill }) {
   return (
     <button
-      onClick={(e) => functions.saveSkill(slug, skill)}
+      onClick={(e) => saveSkill(slug, skill)}
     >
       Save
     </button>
