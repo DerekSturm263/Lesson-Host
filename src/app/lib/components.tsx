@@ -604,3 +604,21 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
     ></button>
   );
 }
+
+export function NewChapter({ skill }: { skill: types.Skill }) {
+  return (
+    <button>
+      New Chapter
+    </button>
+  )
+}
+
+export function Save({ slug, skill }: { slug: string, skill: types.Skill }) {
+  return (
+    <button
+      onClick={(e) => functions.saveSkill(slug, skill)}
+    >
+      Save
+    </button>
+  )
+}

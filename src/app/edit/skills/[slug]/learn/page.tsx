@@ -1,4 +1,4 @@
-import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
+import { Header, Sidebar, Element, ChapterButton, NewChapter, Save } from '../../../../lib/components';
 import { getSkill, saveSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
 
@@ -29,8 +29,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 />
               ))}
 
-              {/*<button onClick={(e) => saveSkill(slug, skill)}>New Chapter</button>*/}
-              {/*<button onClick={(e) => saveSkill(slug, skill)}>Save</button>*/}
+              <NewChapter skill={skill} />
+              <Save slug={slug} skill={skill} />
             </Sidebar>
 
             <div className="elements">
