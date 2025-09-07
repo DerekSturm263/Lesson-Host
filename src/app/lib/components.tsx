@@ -92,6 +92,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
 }
 
 export function ChapterButton({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
   const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
   useEffect(() => {
@@ -115,18 +116,15 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
       
       {(mode == types.ComponentMode.View ? (
         <h4>
-          {helpers.getChapter(elementID).title}
+          {title}
         </h4>
       ) : (
-        <form
-          action={(e) => { elementID.learn.chapters[elementID.chapterIndex].title = e.get('chapterTitle')?.toString() ?? '' }}
-        >
-          <input
-            type="text"
-            name="chapterTitle"
-            value={helpers.getChapter(elementID).title}
-          />
-        </form>
+        <input
+          type="text"
+          name="chapterTitle"
+          value={title}
+          onInput={(e) => { setTitle(e.currentTarget.value) }}
+        />
       ))}
 
       <Image
@@ -141,7 +139,26 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
 }
 
 function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  switch (helpers.getElement(elementID).type) {
+  const [ type, setType ] = useState(helpers.getElement(elementID).type);
+
+  {mode == types.ComponentMode.Edit && (
+    <label>
+      Type:
+
+      <select
+        name="selectType"
+        onChange={(e) => setType(e.currentTarget.value as types.ElementType)}
+      >
+        {(Object.values(types.ElementType).map(item => (
+          <option value={item}>
+            {item}
+          </option>
+        )))}
+      </select>
+    </label>
+  )}
+
+  switch (type) {
     case types.ElementType.ShortAnswer:
       return (<div className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} mode={mode} /></div>);
     case types.ElementType.MultipleChoice:
@@ -202,6 +219,13 @@ function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: ty
 
 function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ isDisabled, setIsDisabled ] = useState(false);
+  const [ choices, setChoices ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices);
+
+  function setChoice(index: number, value: types.MultipleChoiceItem) {
+    const newChoices = choices;
+    newChoices[index] = value;
+    setChoices(newChoices);
+  }
 
   useEffect(() => {
     window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
@@ -218,7 +242,7 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
         className='multipleOptions'
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
-        {helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.map((item, index) => (
+        {choices.map((item, index) => (
           <label
             key={index}
           >
@@ -235,13 +259,21 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
                 {item.value}
               </Markdown>
             ) : (
-              <form>
+              <div>
+                <input
+                  type="checkbox"
+                  name="responseIsCorrect"
+                  value={item.isCorrect.toString()}
+                  onInput={(e) => setChoice(index, { value: choices[index].value, isCorrect: e.currentTarget.value == "true" } )}
+                />
+                
                 <input
                   type="text"
-                  name="elementText"
+                  name="responseValue"
                   value={item.value}
+                  onInput={(e) => setChoice(index, { value: e.currentTarget.value, isCorrect: choices[index].isCorrect })}
                 />
-              </form>
+              </div>
             ))}
           </label>
         ))}
@@ -372,8 +404,9 @@ function DAW({ elementID, mode }: { elementID: types.ElementID, mode: types.Comp
 }
 
 function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
+  const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
+  const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
 
   async function executeCode() {
     setOutput("Running...");
@@ -386,7 +419,7 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
         'Content-Type': 'application/json',
       },
       json: {
-        language: helpers.getInteractionValue<types.Codespace>(elementID).language,
+        language: language,
         stdin: "",
         files: [
           {
@@ -414,7 +447,6 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
     setContent(content ?? '');
 
     if (mode == types.ComponentMode.Edit) {
-      // TODO: Add language toggle and test.
       helpers.getInteractionValue<types.Codespace>(elementID).content = content ?? '';
     }
   }
@@ -424,8 +456,8 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
       className="fullscreenInteraction"
     >
       <Editor
-        defaultLanguage={helpers.getInteractionValue<types.Codespace>(elementID).language}
-        defaultValue={helpers.getInteractionValue<types.Codespace>(elementID).content}
+        defaultLanguage={language}
+        defaultValue={content}
         theme="vs-dark"
         onChange={updateContent}
         width="60%"
@@ -471,12 +503,28 @@ let globalIndex = 0;
 
 function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
+  const [ elements, setElements ] = useState(helpers.getChapter(elementID).elements);
 
   useEffect(() => {
     window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
       setText((e as CustomEvent).detail);
     });
   }, []);
+
+  function addElement() {
+    const newElements = elements;
+    newElements.push({
+      type: types.ElementType.ShortAnswer,
+      text: "New element",
+      value: { correctAnswer: "" },
+      state: types.ElementState.Complete
+    });
+    setElements(newElements);
+  }
+
+  function removeElement(index: number) {
+
+  }
 
   globalIndex = 0;
 
@@ -501,21 +549,18 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             {text}
           </Markdown>
         ) : (
-          <form
-            action={(e) => { elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].text = e.get('elementText')?.toString() ?? '' }}
-          >
-            <input
-              type="text"
-              name="elementText"
-              value={text}
-            />
-          </form>
+          <input
+            type="text"
+            name="elementText"
+            value={text}
+            onInput={(e) => setText(e.currentTarget.value)}
+          />
         ))}
       </div>
 
       <div className="buttons">
         <div className="col1">
-          {helpers.getChapter(elementID).elements.map((element, index) => (
+          {elements.map((element, index) => (
             <Dot
               key={index}
               elementID={{ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys }}
@@ -524,13 +569,10 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
 
           {mode == types.ComponentMode.Edit && (
             <button
-              onClick={(e) => elementID.learn.chapters[elementID.chapterIndex].elements.push({
-                type: types.ElementType.ShortAnswer,
-                text: "New element",
-                value: { correctAnswer: "" },
-                state: types.ElementState.Complete
-              })}
-            />
+              onClick={(e) => addElement()}
+            >
+              New
+            </button>
           )}
         </div>
 
@@ -621,7 +663,7 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
 export function NewChapter({ addChapter }: { addChapter: () => void }) {
   return (
     <button
-      onClick={e => addChapter()}
+      onClick={(e) => addChapter()}
     >
       New Chapter
     </button>

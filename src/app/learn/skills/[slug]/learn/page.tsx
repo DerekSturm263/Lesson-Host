@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
