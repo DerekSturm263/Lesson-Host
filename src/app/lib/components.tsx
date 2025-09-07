@@ -230,7 +230,19 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
               disabled={isDisabled}
             />
 
-            {item.value}
+            {(mode == types.ComponentMode.View ? (
+              <Markdown>
+                {item.value}
+              </Markdown>
+            ) : (
+              <form>
+                <input
+                  type="text"
+                  name="elementText"
+                  value={item.value}
+                />
+              </form>
+            ))}
           </label>
         ))}
 
