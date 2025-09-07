@@ -14,15 +14,15 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   oneCompilerApiKey = process.env.ONECOMPILER_API_KEY ?? ''; 
 
-  for (let i = 0; i < skill.learn.chapters.length; ++i) {
-    for (let j = 0; j < skill.learn.chapters[i].elements.length; ++j) {
+  const [ chapters, setChapters ] = useState(skill.learn.chapters);
+
+  for (let i = 0; i < chapters.length; ++i) {
+    for (let j = 0; j < chapters[i].elements.length; ++j) {
       if (i != 0 || j != 0) {
-        skill.learn.chapters[i].elements[j].state = types.ElementState.Locked;
+        chapters[i].elements[j].state = types.ElementState.Locked;
       }
     }
   }
-
-  const [ chapters, setChapters ] = useState(skill.learn.chapters);
 
   const page = (
     <div>
