@@ -134,7 +134,7 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
   console.log(JSON.stringify(formData));
 
   helpers.startThinking(elementID);
-  const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, [], helpers.getInteractionValue<types.MultipleChoice>(elementID));
+  const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
   helpers.setText(elementID, feedback.feedback);
 
   readAloud(elementID);
@@ -149,7 +149,7 @@ export async function submitTrueOrFalse(formData: FormData, elementID: types.Ele
   console.log(JSON.stringify(formData));
 
   helpers.startThinking(elementID);
-  const feedback = await verifyTrueOrFalse(helpers.getElement(elementID).text, false, helpers.getInteractionValue<types.TrueOrFalse>(elementID));
+  const feedback = await verifyTrueOrFalse(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<types.TrueOrFalse>(elementID));
   helpers.setText(elementID, feedback.feedback);
 
   readAloud(elementID);
