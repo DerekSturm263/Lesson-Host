@@ -618,9 +618,11 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
-export function NewChapter({ skill }: { skill: types.Skill }) {
+export function NewChapter({ addChapter }: { addChapter: () => void }) {
   return (
-    <button>
+    <button
+      onClick={e => addChapter()}
+    >
       New Chapter
     </button>
   )

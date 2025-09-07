@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Header, Sidebar, Element, ChapterButton, NewChapter, Save } from '../../../../lib/components';
 import { getSkill, saveSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
@@ -13,6 +14,20 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   oneCompilerApiKey = process.env.ONECOMPILER_API_KEY ?? ''; 
 
+  const [ chapters, setChapters ] = useState(skill.learn.chapters);
+
+  function addChapter() {
+    const newChapters = chapters;
+    newChapters.push();
+    setChapters(newChapters);
+  }
+
+  function removeChapter(index: number) {
+    const newChapters = chapters;
+    chapters.splice(index, 1);
+    setChapters(newChapters);
+  }
+
   const page = (
     <div>
       <main>
@@ -21,7 +36,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
           <div className="content">
             <Sidebar label="Chapters">
-              {skill.learn.chapters.map((chapter, index) => (
+              {chapters.map((chapter, index) => (
                 <ChapterButton
                   key={index}
                   elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ oneCompilerApiKey ] }}
@@ -29,12 +44,12 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 />
               ))}
 
-              <NewChapter skill={skill} />
+              <NewChapter addChapter={addChapter} />
               <Save slug={slug} skill={skill} />
             </Sidebar>
 
             <div className="elements">
-              {skill.learn.chapters.map((chapter, cIndex) => (
+              {chapters.map((chapter, cIndex) => (
                 chapter.elements.map((element, eIndex) => (
                   <Element
                     key={`${cIndex}:${eIndex}`}
