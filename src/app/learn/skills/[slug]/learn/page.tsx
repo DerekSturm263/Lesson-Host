@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Header, Sidebar, Element, ChapterButton } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
@@ -21,6 +22,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     }
   }
 
+  const [ chapters, setChapters ] = useState(skill.learn.chapters);
+
   const page = (
     <div>
       <main>
@@ -29,7 +32,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
           <div className="content">
             <Sidebar label="Chapters">
-              {skill.learn.chapters.map((chapter, index) => (
+              {chapters.map((chapter, index) => (
                 <ChapterButton
                   key={index}
                   elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ oneCompilerApiKey ] }}
@@ -39,7 +42,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
             </Sidebar>
 
             <div className="elements">
-              {skill.learn.chapters.map((chapter, cIndex) => (
+              {chapters.map((chapter, cIndex) => (
                 chapter.elements.map((element, eIndex) => (
                   <Element
                     key={`${cIndex}:${eIndex}`}
