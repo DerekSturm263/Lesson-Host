@@ -138,6 +138,63 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
   );
 }
 
+export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, skill: types.Skill, mode: types.ComponentMode, apiKey: string }) {
+  const [ chapters, setChapters ] = useState(skill.learn.chapters);
+
+  function addChapter() {
+    const newChapters = chapters;
+    newChapters.push();
+    setChapters(newChapters);
+  }
+
+  function removeChapter(index: number) {
+    const newChapters = chapters;
+    chapters.splice(index, 1);
+    setChapters(newChapters);
+  }
+
+  if (mode == types.ComponentMode.View) {
+    for (let i = 0; i < chapters.length; ++i) {
+      for (let j = 0; j < chapters[i].elements.length; ++j) {
+        if (i != 0 || j != 0) {
+          chapters[i].elements[j].state = types.ElementState.Locked;
+        }
+      }
+    }
+  }
+
+  return (
+    <div className="content">
+      <Sidebar label="Chapters">
+        {chapters.map((chapter, index) => (
+          <ChapterButton
+            key={index}
+            elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] }}
+            mode={mode}
+          />
+        ))}
+
+        (mode == types.ComponentMode.Edit && (
+          <NewChapter addChapter={addChapter} />
+          <Save slug={slug} skill={skill} />
+        ))
+      </Sidebar>
+
+      <div className="elements">
+        {chapters.map((chapter, cIndex) => (
+          chapter.elements.map((element, eIndex) => (
+            <Element
+              key={`${cIndex}:${eIndex}`}
+              elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] }}
+              mode={mode}
+            />
+          ))
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
 
