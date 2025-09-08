@@ -206,8 +206,11 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
         name="selectType"
         onChange={(e) => setType(e.currentTarget.value as types.ElementType)}
       >
-        {(Object.values(types.ElementType).map(item => (
-          <option value={item}>
+        {(Object.values(types.ElementType).map((item, index) => (
+          <option
+            key={index}
+            value={item}
+          >
             {item}
           </option>
         )))}
