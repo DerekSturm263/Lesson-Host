@@ -123,7 +123,10 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
           type="text"
           name="chapterTitle"
           value={title}
-          onInput={(e) => { setTitle(e.currentTarget.value) }}
+          onInput={(e) => {
+            setTitle(e.currentTarget.value)
+            elementID.learn.chapters[elementID.chapterIndex].title = e.currentTarget.value;
+          }}
         />
       ))}
 
