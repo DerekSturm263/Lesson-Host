@@ -12,6 +12,7 @@ import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 import ky from 'ky';
+import { TypeAnimation } from 'react-type-animation';
 
 export function Header() {
   return (
@@ -602,13 +603,13 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           <Markdown
             components={{
               strong({ node, children }) {
-                return <strong><WordWrapper text={String(children)} /></strong>
+                return <strong><TypeAnimation sequence={ [ String(children) ]} speed={40} cursor={false} /></strong>
               },
               i({ node, children }) {
-                return <i><WordWrapper text={String(children)} /></i>
+                return <i><TypeAnimation sequence={ [ String(children) ]} speed={40} cursor={false} /></i>
               },
               p({ node, children }) {
-                return <WordWrapper text={String(children)} />
+                return <TypeAnimation sequence={ [ String(children) ]} speed={40} cursor={false} />
               }
             }}
           >
