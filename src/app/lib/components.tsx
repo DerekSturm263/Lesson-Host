@@ -174,10 +174,13 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           />
         ))}
 
-        (mode == types.ComponentMode.Edit && (
+        {mode == types.ComponentMode.Edit && (
           <NewChapter addChapter={addChapter} />
+        )}
+
+        {mode == types.ComponentMode.Edit && (
           <Save slug={slug} skill={skill} />
-        ))
+        )}
       </Sidebar>
 
       <div className="elements">
@@ -603,6 +606,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               },
               i({ node, children }) {
                 return <i><WordWrapper text={String(children)} /></i>
+              },
+              p({ node, children }) {
+                return <p><WordWrapper text={String(children)} /></p>
               }
             }}
           >
