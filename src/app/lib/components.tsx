@@ -175,11 +175,19 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         ))}
 
         {mode == types.ComponentMode.Edit && (
-          <NewChapter addChapter={addChapter} />
+          <button
+            onClick={(e) => addChapter()}
+          >
+            New Chapter
+          </button>
         )}
 
         {mode == types.ComponentMode.Edit && (
-          <Save slug={slug} skill={skill} />
+          <button
+            onClick={(e) => saveSkill(slug, skill)}
+          >
+            Save
+          </button>
         )}
       </Sidebar>
 
@@ -724,24 +732,4 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
       data-isselected="false"
     ></button>
   );
-}
-
-export function NewChapter({ addChapter }: { addChapter: () => void }) {
-  return (
-    <button
-      onClick={(e) => addChapter()}
-    >
-      New Chapter
-    </button>
-  )
-}
-
-export function Save({ slug, skill }: { slug: string, skill: types.Skill }) {
-  return (
-    <button
-      onClick={(e) => saveSkill(slug, skill)}
-    >
-      Save
-    </button>
-  )
 }
