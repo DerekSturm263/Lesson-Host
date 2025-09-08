@@ -617,6 +617,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               },
               p({ node, children }) {
                 return <WordWrapper text={String(children)} />
+              },
+              li({ node, children }) {
+                return <li><WordWrapper text={String(children)} /></li>
               }
             }}
           >
