@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
-import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement } from 'react';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
@@ -153,7 +153,15 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
   function addChapter() {
     const newChapters = chapters;
-    newChapters.push();
+    newChapters.push({
+      title: "New Chapter",
+      elements: [ {
+        type: types.ElementType.ShortAnswer,
+        text: "New element",
+        value: { correctAnswer: "" },
+        state: types.ElementState.Complete
+      } ]
+    });
     setChapters(newChapters);
   }
 
@@ -219,8 +227,15 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
 function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
+  const [ isDisabled, setIsDisabled ] = useState(false);
 
-  {mode == types.ComponentMode.Edit && (
+  useEffect(() => {
+    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setIsDisabled((e as CustomEvent).detail);
+    });
+  }, []);
+
+  const typeSwitcher = (
     <label>
       Type:
 
@@ -238,47 +253,47 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
         )))}
       </select>
     </label>
-  )}
+  );
+
+  let interaction: JSX.Element = <></>;
 
   switch (type) {
     case types.ElementType.ShortAnswer:
-      return (<div className="interaction" data-type="shortAnswer"><ShortAnswer elementID={elementID} mode={mode} /></div>);
+      interaction = <ShortAnswer elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.MultipleChoice:
-      return (<div className="interaction" data-type="multipleChoice"><MultipleChoice elementID={elementID} mode={mode} /></div>);
+      interaction = <MultipleChoice elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.TrueOrFalse:
-      return (<div className="interaction" data-type="trueOrFalse"><TrueOrFalse elementID={elementID} mode={mode} /></div>);
+      interaction = <TrueOrFalse elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Matching:
-      return (<div className="interaction" data-type="matching"><Matching elementID={elementID} mode={mode} /></div>);
+      interaction = <Matching elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Ordering:
-      return (<div className="interaction" data-type="ordering"><Ordering elementID={elementID} mode={mode} /></div>);
+      interaction = <Ordering elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Files:
-      return (<div className="interaction" data-type="files"><Files elementID={elementID} mode={mode} /></div>);
+      interaction = <Files elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Drawing:
-      return (<div className="interaction" data-type="drawing"><Drawing elementID={elementID} mode={mode} /></div>);
+      interaction = <Drawing elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Graph:
-      return (<div className="interaction" data-type="graph"><Graph elementID={elementID} mode={mode} /></div>);
+      interaction = <Graph elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.DAW:
-      return (<div className="interaction" data-type="daw"><DAW elementID={elementID} mode={mode} /></div>);
+      interaction = <DAW elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Codespace:
-      return (<div className="interaction" data-type="codespace"><Codespace elementID={elementID} mode={mode} /></div>);
+      interaction = <Codespace elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.Engine:
-      return (<div className="interaction" data-type="engine"><Engine elementID={elementID} mode={mode} /></div>);
+      interaction = <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
     case types.ElementType.IFrame:
-      return (<div className="interaction" data-type="iFrame"><IFrame elementID={elementID} mode={mode} /></div>);
-    default:
-      return <div className="interaction" data-type="none"></div>;
+      interaction = <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
   }
+
+  return (
+    <div className="interaction" data-type={helpers.getElement(elementID).type}>
+      {mode == types.ComponentMode.Edit && typeSwitcher}
+
+      {interaction}
+    </div>
+  )
 }
 
-function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
-    });
-  }, []);
-
+function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -299,8 +314,7 @@ function ShortAnswer({ elementID, mode }: { elementID: types.ElementID, mode: ty
   );
 }
 
-function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(false);
+function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ choices, setChoices ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices);
 
   function setChoice(index: number, value: types.MultipleChoiceItem) {
@@ -308,12 +322,6 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
     newChoices[index] = value;
     setChoices(newChoices);
   }
-
-  useEffect(() => {
-    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
-    });
-  }, []);
 
   return (
     <div
@@ -370,15 +378,7 @@ function MultipleChoice({ elementID, mode }: { elementID: types.ElementID, mode:
   );
 }
 
-function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
-    });
-  }, []);
-
+function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -422,9 +422,7 @@ function TrueOrFalse({ elementID, mode }: { elementID: types.ElementID, mode: ty
   );
 }
 
-function Matching({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(false);
-
+function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -434,9 +432,7 @@ function Matching({ elementID, mode }: { elementID: types.ElementID, mode: types
   );
 }
 
-function Ordering({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ isDisabled, setIsDisabled ] = useState(false);
-
+function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -446,7 +442,7 @@ function Ordering({ elementID, mode }: { elementID: types.ElementID, mode: types
   );
 }
 
-function Files({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="smallInteraction"
@@ -456,7 +452,7 @@ function Files({ elementID, mode }: { elementID: types.ElementID, mode: types.Co
   );
 }
 
-function Drawing({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -466,7 +462,7 @@ function Drawing({ elementID, mode }: { elementID: types.ElementID, mode: types.
   );
 }
 
-function Graph({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -475,7 +471,7 @@ function Graph({ elementID, mode }: { elementID: types.ElementID, mode: types.Co
   );
 }
 
-function DAW({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <div
       className="fullscreenInteraction"
@@ -485,7 +481,7 @@ function DAW({ elementID, mode }: { elementID: types.ElementID, mode: types.Comp
   );
 }
 
-function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
   const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
@@ -562,7 +558,7 @@ function Codespace({ elementID, mode }: { elementID: types.ElementID, mode: type
   );
 }
 
-function Engine({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Engine({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <iframe
       className="fullscreenInteraction"
@@ -571,7 +567,7 @@ function Engine({ elementID, mode }: { elementID: types.ElementID, mode: types.C
   );
 }
 
-function IFrame({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <iframe
       id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
