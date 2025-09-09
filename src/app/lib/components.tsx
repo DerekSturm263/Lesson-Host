@@ -388,30 +388,37 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         ))}
 
         {mode == types.ComponentMode.Edit && (
-          <input
-            type="checkbox"
-            name="needsAllCorrect"
-            id="needsAllCorrect"
-            value={String(needsAllCorrect)}
-            onInput={(e) => setNeedsAllCorrect(e.currentTarget.value == "true")}
-          />
+          <label>
+            Type: 
+            <select
+              name="selectType"
+              value={type}
+              onChange={(e) => setType(e.currentTarget.value as types.MultipleChoiceType)}
+            >
+              {(Object.values(types.MultipleChoiceType).map((item, index) => (
+                <option
+                  key={index}
+                  value={item}
+                >
+                  {item}
+                </option>
+              )))}
+            </select>
+          </label>
         )}
-
+        
         {mode == types.ComponentMode.Edit && (
-          <select
-            name="selectType"
-            value={type}
-            onChange={(e) => setType(e.currentTarget.value as types.MultipleChoiceType)}
-          >
-            {(Object.values(types.MultipleChoiceType).map((item, index) => (
-              <option
-                key={index}
-                value={item}
-              >
-                {item}
-              </option>
-            )))}
-          </select>
+          <label>
+            Needs All Correct: 
+
+            <input
+              type="checkbox"
+              name="needsAllCorrect"
+              id="needsAllCorrect"
+              value={String(needsAllCorrect)}
+              onInput={(e) => setNeedsAllCorrect(e.currentTarget.value == "true")}
+            />
+          </label>
         )}
 
         <input
