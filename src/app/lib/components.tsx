@@ -372,7 +372,7 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
         {mode == types.ComponentMode.Edit && (
           <label>
             Correct Answer:
-            
+
             <input
               type="text"
               name="correctAnswer"
@@ -482,7 +482,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
             <input
               type="checkbox"
               name="responseIsCorrect"
-              value={item.isCorrect.toString()}
+              value={choice.isCorrect.toString()}
               onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.value == "true" } )}
             />
           </label>
@@ -493,7 +493,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
             <input
               type="text"
               name="responseValue"
-              value={item.value}
+              value={choice.value}
               onInput={(e) => setChoice({ value: e.currentTarget.value, isCorrect: choice.isCorrect })}
             />
           </label>
