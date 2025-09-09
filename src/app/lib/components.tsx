@@ -235,13 +235,35 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
     });
   }, []);
 
+  function setTypeAndUpdate(type: types.ElementType) {
+    setType(type);
+
+    switch (type) {
+      case types.ElementType.ShortAnswer:
+        elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = {
+          correctAnswer: ""
+        };
+        break;
+        
+      case types.ElementType.MultipleChoice:
+        elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = {
+          choices: [],
+          type: types.MultipleChoiceType.Radio,
+          needsAllCorrect: false
+        };
+        break;
+        
+        
+    }
+  }
+
   const typeSwitcher = (
     <label>
       Type:
 
       <select
         name="selectType"
-        onChange={(e) => setType(e.currentTarget.value as types.ElementType)}
+        onChange={(e) => setTypeAndUpdate(e.currentTarget.value as types.ElementType)}
       >
         {(Object.values(types.ElementType).map((item, index) => (
           <option
@@ -301,7 +323,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
     case types.ElementType.Engine:
       interaction = <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
       break;
-      
+
     case types.ElementType.IFrame:
       interaction = <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
       break;
