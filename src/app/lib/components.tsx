@@ -863,15 +863,15 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           </button>
         </div>
 
-        <div className="col2">
-          {mode == types.ComponentMode.Edit && (
+        {mode == types.ComponentMode.Edit && (
+          <div className="col2">
             <button
               onClick={(e) => removeElement(elementID.elementIndex)}
             >
               Delete
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
