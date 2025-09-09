@@ -263,8 +263,8 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
 
       <select
         name="selectType"
-        onChange={(e) => setTypeAndUpdate(e.currentTarget.value as types.ElementType)}
         value={type}
+        onChange={(e) => setTypeAndUpdate(e.currentTarget.value as types.ElementType)}
       >
         {(Object.values(types.ElementType).map((item, index) => (
           <option
@@ -364,6 +364,9 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
 }
 
 function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const [ type, setType ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).type);
+  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
+
   return (
     <div
       className="smallInteraction"
@@ -383,6 +386,33 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
             index={index}
           />
         ))}
+
+        {mode == types.ComponentMode.Edit && (
+          <input
+            type="checkbox"
+            name="needsAllCorrect"
+            id="needsAllCorrect"
+            value={String(needsAllCorrect)}
+            onInput={(e) => setNeedsAllCorrect(e.currentTarget.value == "true")}
+          />
+        )}
+
+        {mode == types.ComponentMode.Edit && (
+          <select
+            name="selectType"
+            value={type}
+            onChange={(e) => setType(e.currentTarget.value as types.MultipleChoiceType)}
+          >
+            {(Object.values(types.MultipleChoiceType).map((item, index) => (
+              <option
+                key={index}
+                value={item}
+              >
+                {item}
+              </option>
+            )))}
+          </select>
+        )}
 
         <input
           type="submit"
