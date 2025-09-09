@@ -186,7 +186,7 @@ export async function verifyTrueOrFalse(question: string, userResponse: boolean,
     contents:
     `TASK:
     ${isCorrect ?
-      `The student's response was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.` :
+      `The student's response was correct. Congratulate the student on getting their answer right. Review how the QUESTION was solved and why the user's RESPONSE was correct.` :
       `The student's response aws incorrect. View the student's RESPONSE and the original QUESTION and give the student feedback on why their answer isn't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`}
 
     QUESTION:
