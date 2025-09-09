@@ -15,7 +15,12 @@ export default async function Page({ params, searchParams }: { params: Promise<{
         <div className="all">
           {!hideHeader && <Header />}
 
-          <LearnPageContent slug={slug} skill={skill} mode={types.ComponentMode.View} apiKey={process.env.ONECOMPILER_API_KEY ?? ''} />
+          <LearnPageContent
+            slug={slug}
+            skill={skill}
+            mode={types.ComponentMode.View}
+            apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
+          />
         </div>
       </main>
     </div>

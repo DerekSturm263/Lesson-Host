@@ -315,14 +315,6 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
 }
 
 function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ choices, setChoices ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices);
-
-  function setChoice(index: number, value: types.MultipleChoiceItem) {
-    const newChoices = choices;
-    newChoices[index] = value;
-    setChoices(newChoices);
-  }
-
   return (
     <div
       className="smallInteraction"
@@ -332,40 +324,15 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         className='multipleOptions'
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
-        {choices.map((item, index) => (
-          <label
+        {helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.map((item, index) => (
+          <MultipleChoiceItem
             key={index}
-          >
-            <input
-              type={helpers.getInteractionValue<types.MultipleChoice>(elementID).type}
-              name="response"
-              id={item.value}
-              value={item.isCorrect.toString()}
-              disabled={isDisabled}
-            />
-
-            {(mode == types.ComponentMode.View ? (
-              <Markdown>
-                {item.value}
-              </Markdown>
-            ) : (
-              <div>
-                <input
-                  type="checkbox"
-                  name="responseIsCorrect"
-                  value={item.isCorrect.toString()}
-                  onInput={(e) => setChoice(index, { value: choices[index].value, isCorrect: e.currentTarget.value == "true" } )}
-                />
-                
-                <input
-                  type="text"
-                  name="responseValue"
-                  value={item.value}
-                  onInput={(e) => setChoice(index, { value: e.currentTarget.value, isCorrect: choices[index].isCorrect })}
-                />
-              </div>
-            ))}
-          </label>
+            elementID={elementID}
+            isDisabled={isDisabled}
+            mode={mode}
+            item={item}
+            index={index}
+          />
         ))}
 
         <input
@@ -375,6 +342,44 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         />
       </form>
     </div>
+  );
+}
+
+function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.MultipleChoiceItem, index: number }) {
+  const [ choice, setChoice ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices[index]);
+
+  return (
+    <label>
+      <input
+        type={helpers.getInteractionValue<types.MultipleChoice>(elementID).type}
+        name="response"
+        id={item.value}
+        value={item.isCorrect.toString()}
+        disabled={isDisabled}
+      />
+
+      {(mode == types.ComponentMode.View ? (
+        <Markdown>
+          {item.value}
+        </Markdown>
+      ) : (
+        <div>
+          <input
+            type="checkbox"
+            name="responseIsCorrect"
+            value={item.isCorrect.toString()}
+            onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.value == "true" } )}
+          />
+                
+          <input
+            type="text"
+            name="responseValue"
+            value={item.value}
+            onInput={(e) => setChoice({ value: e.currentTarget.value, isCorrect: choice.isCorrect })}
+          />
+        </div>
+      ))}
+    </label>
   );
 }
 
