@@ -548,7 +548,25 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
     <div
       className="smallInteraction"
     >
-      
+      <Reorder>
+        {helpers.getInteractionValue<types.Matching>(elementID).items.map((item, index) => (
+          <li
+            key={index}
+          >
+            {item.leftSide}
+          </li>
+        ))}
+      </Reorder>
+
+      <Reorder>
+        {helpers.getInteractionValue<types.Matching>(elementID).items.map((item, index) => (
+          <li
+            key={index}
+          >
+            {item.rightSide}
+          </li>
+        ))}
+      </Reorder>
     </div>
   );
 }
