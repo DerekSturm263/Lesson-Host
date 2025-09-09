@@ -523,7 +523,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             value="true"
             disabled={isDisabled}
             checked={isCorrect}
-            onInput={(e) => setIsCorrect(true)}
+            onChange={(e) => setIsCorrect(true)}
           />
 
           True
@@ -537,7 +537,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             value="false"
             disabled={isDisabled}
             checked={!isCorrect}
-            onInput={(e) => setIsCorrect(false)}
+            onChange={(e) => setIsCorrect(false)}
           />
 
           False
