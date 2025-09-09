@@ -442,7 +442,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
               name="needsAllCorrect"
               id="needsAllCorrect"
               checked={needsAllCorrect}
-              onInput={(e) => setNeedsAllCorrect(e.currentTarget.value == "true")}
+              onInput={(e) => setNeedsAllCorrect(e.currentTarget.checked)}
             />
           </label>
         )}
@@ -483,7 +483,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
               type="checkbox"
               name="responseIsCorrect"
               checked={choice.isCorrect}
-              onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.value == "true" } )}
+              onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.checked } )}
             />
           </label>
           
