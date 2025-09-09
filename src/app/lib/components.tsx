@@ -370,14 +370,18 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
         />
 
         {mode == types.ComponentMode.Edit && (
-          <input
-            type="text"
-            name="correctAnswer"
-            autoComplete="off"
-            disabled={isDisabled}
-            value={correctAnswer}
-            onInput={(e) => setCorrectAnswer(e.currentTarget.value)}
-          />
+          <label>
+            Correct Answer:
+            
+            <input
+              type="text"
+              name="correctAnswer"
+              autoComplete="off"
+              disabled={isDisabled}
+              value={correctAnswer}
+              onInput={(e) => setCorrectAnswer(e.currentTarget.value)}
+            />
+          </label>
         )}
       </form>
     </div>
