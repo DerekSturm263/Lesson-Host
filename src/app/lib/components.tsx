@@ -91,7 +91,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
   );
 }
 
-export function ChapterButton({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+export function ChapterButton({ elementID, mode, removeChapter }: { elementID: types.ElementID, mode: types.ComponentMode, removeChapter: (index: number) => void }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
   const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
@@ -113,7 +113,6 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
       data-iscomplete="false"
       data-isselected="false"
     >
-      
       {(mode == types.ComponentMode.View ? (
         <h4>
           {title}
@@ -137,6 +136,14 @@ export function ChapterButton({ elementID, mode }: { elementID: types.ElementID,
         alt="Checkmark"
         data-iscomplete="false"
       />
+      
+      {mode == types.ComponentMode.Edit && (
+        <button
+          onClick={(e) => removeChapter(elementID.chapterIndex)}
+        >
+          Delete
+        </button>
+      )}
     </button>
   );
 }
@@ -174,6 +181,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
             key={index}
             elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] }}
             mode={mode}
+            removeChapter={removeChapter}
           />
         ))}
 
@@ -597,7 +605,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   }
 
   function removeElement(index: number) {
-
+    const newElements = elements;
+    newElements.splice(index, 1);
+    setElements(newElements);
   }
 
   globalIndex = 0;
@@ -623,6 +633,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               },
               li({ node, children }) {
                 return <li><WordWrapper text={String(children)} /></li>
+              },
+              code({ node, children }) {
+                return <code><WordWrapper text={String(children)} /></code>
               }
             }}
           >
@@ -695,6 +708,16 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             />
             Reset
           </button>
+        </div>
+
+        <div className="col2">
+          {mode == types.ComponentMode.Edit && (
+            <button
+              onClick={(e) => removeElement(elementID.elementIndex)}
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </div>
