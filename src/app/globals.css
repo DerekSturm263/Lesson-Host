@@ -209,6 +209,10 @@ body {
     background-color: var(--foreground);
     color: var(--text);
   }
+
+  label {
+    display: flex;
+  }
 }
 
 .fullscreenInteraction {
