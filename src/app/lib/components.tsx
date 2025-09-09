@@ -560,7 +560,9 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
     >
       <Reorder>
         {helpers.getInteractionValue<types.Ordering>(elementID).correctOrder.map((item, index) => (
-          <li>
+          <li
+            key={index}
+          >
             {item}
           </li>
         ))}
