@@ -174,7 +174,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
     setChapters(newChapters);
   }
 
-  if (mode == types.ComponentMode.View) {
+  /*if (mode == types.ComponentMode.View) {
     for (let i = 0; i < chapters.length; ++i) {
       for (let j = 0; j < chapters[i].elements.length; ++j) {
         if (i != 0 || j != 0) {
@@ -182,7 +182,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         }
       }
     }
-  }
+  }*/
 
   return (
     <div className="content">
