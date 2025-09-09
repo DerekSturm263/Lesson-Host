@@ -285,7 +285,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   }
 
   return (
-    <div className="interaction" data-type={helpers.getElement(elementID).type}>
+    <div className="interaction" data-type={type}>
       {mode == types.ComponentMode.Edit && typeSwitcher}
 
       {interaction}
