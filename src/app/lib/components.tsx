@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
-import { Reorder } from 'react-reorder';
+//import { Reorder } from 'react-reorder';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
@@ -548,7 +548,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
     <div
       className="smallInteraction"
     >
-      <Reorder>
+      {/*<Reorder>
         {helpers.getInteractionValue<types.Matching>(elementID).items.map((item, index) => (
           <li
             key={index}
@@ -566,7 +566,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
             {item.rightSide}
           </li>
         ))}
-      </Reorder>
+      </Reorder>*/}
     </div>
   );
 }
@@ -576,7 +576,7 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
     <div
       className="smallInteraction"
     >
-      <Reorder>
+      {/*<Reorder>
         {helpers.getInteractionValue<types.Ordering>(elementID).correctOrder.map((item, index) => (
           <li
             key={index}
@@ -584,7 +584,7 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
             {item}
           </li>
         ))}
-      </Reorder>
+      </Reorder>*/}
     </div>
   );
 }
