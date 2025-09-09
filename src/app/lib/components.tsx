@@ -482,7 +482,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
             <input
               type="checkbox"
               name="responseIsCorrect"
-              value={choice.isCorrect.toString()}
+              checked={choice.isCorrect}
               onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.value == "true" } )}
             />
           </label>
