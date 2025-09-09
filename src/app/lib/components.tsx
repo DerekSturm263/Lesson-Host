@@ -260,32 +260,47 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   switch (type) {
     case types.ElementType.ShortAnswer:
       interaction = <ShortAnswer elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.MultipleChoice:
       interaction = <MultipleChoice elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.TrueOrFalse:
       interaction = <TrueOrFalse elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Matching:
       interaction = <Matching elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Ordering:
       interaction = <Ordering elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Files:
       interaction = <Files elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Drawing:
       interaction = <Drawing elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Graph:
       interaction = <Graph elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.DAW:
       interaction = <DAW elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Codespace:
       interaction = <Codespace elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.Engine:
       interaction = <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
     case types.ElementType.IFrame:
       interaction = <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+      break;
   }
 
   return (
-    <div className="interaction" data-type={type}>
+    <div
+      className="interaction"
+      data-type={type}
+    >
       {mode == types.ComponentMode.Edit && typeSwitcher}
 
       {interaction}
