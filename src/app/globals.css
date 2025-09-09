@@ -376,15 +376,15 @@ button, input {
   transition: 0.1s;
 }
 
-button:hover:enabled, input:hover:enabled {
+button:hover:enabled, input:hover:enabled, label:hover:enabled {
   transform: scale(1.05);
 }
 
-button:hover:enabled, input[type=submit]:hover:enabled {
+button:hover:enabled, input[type=submit]:hover:enabled, input[type=checkbox]:hover:enabled, input[type=radio]:hover:enabled, label:hover:enabled {
   cursor: pointer;
 }
 
-button:hover:active:enabled, input[type=submit]:hover:active:enabled {
+button:hover:active:enabled, input[type=submit]:hover:active:enabled, input[type=checkbox]:hover:active:enabled, input[type=radio]:hover:active:enabled, label:hover:active:enabled {
   transform: scale(0.95);
 }
 
