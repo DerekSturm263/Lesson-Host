@@ -504,6 +504,8 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
 }
 
 function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect);
+
   return (
     <div
       className="smallInteraction"
@@ -520,6 +522,8 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             id="true"
             value="true"
             disabled={isDisabled}
+            checked={isCorrect}
+            onInput={(e) => setIsCorrect(true)}
           />
 
           True
@@ -532,6 +536,8 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             id="false"
             value="false"
             disabled={isDisabled}
+            checked={!isCorrect}
+            onInput={(e) => setIsCorrect(false)}
           />
 
           False
