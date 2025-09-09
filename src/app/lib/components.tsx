@@ -450,19 +450,27 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
         </Markdown>
       ) : (
         <div>
-          <input
-            type="checkbox"
-            name="responseIsCorrect"
-            value={item.isCorrect.toString()}
-            onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.value == "true" } )}
-          />
-                
-          <input
-            type="text"
-            name="responseValue"
-            value={item.value}
-            onInput={(e) => setChoice({ value: e.currentTarget.value, isCorrect: choice.isCorrect })}
-          />
+          <label>
+            Value:
+            
+            <input
+              type="checkbox"
+              name="responseIsCorrect"
+              value={item.isCorrect.toString()}
+              onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.value == "true" } )}
+            />
+          </label>
+          
+          <label>
+            Is Correct: 
+            
+            <input
+              type="text"
+              name="responseValue"
+              value={item.value}
+              onInput={(e) => setChoice({ value: e.currentTarget.value, isCorrect: choice.isCorrect })}
+            />
+          </label>
         </div>
       ))}
     </label>
