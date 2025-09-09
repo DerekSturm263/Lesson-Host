@@ -351,6 +351,8 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
 }
 
 function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
+
   return (
     <div
       className="smallInteraction"
@@ -366,6 +368,17 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
           autoComplete="off"
           disabled={isDisabled}
         />
+
+        {mode == types.ComponentMode.Edit && (
+          <input
+            type="text"
+            name="correctAnswer"
+            autoComplete="off"
+            disabled={isDisabled}
+            value={correctAnswer}
+            onInput={(e) => setCorrectAnswer(e.currentTarget.value)}
+          />
+        )}
       </form>
     </div>
   );
