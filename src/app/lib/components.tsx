@@ -558,7 +558,13 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
     <div
       className="smallInteraction"
     >
-      <Reorder></>
+      <Reorder>
+        {helpers.getInteractionValue<types.Ordering>(elementID).correctOrder.map((item, index) => (
+          <li>
+            {item}
+          </li>
+        ))}
+      </Reorder>
     </div>
   );
 }
