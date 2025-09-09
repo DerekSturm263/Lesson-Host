@@ -264,6 +264,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
       <select
         name="selectType"
         onChange={(e) => setTypeAndUpdate(e.currentTarget.value as types.ElementType)}
+        value={type}
       >
         {(Object.values(types.ElementType).map((item, index) => (
           <option
