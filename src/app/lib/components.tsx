@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Markdown from 'react-markdown';
+import { Reorder } from 'react-reorder';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
@@ -155,12 +156,14 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
     const newChapters = chapters;
     newChapters.push({
       title: "New Chapter",
-      elements: [ {
-        type: types.ElementType.ShortAnswer,
-        text: "New element",
-        value: { correctAnswer: "" },
-        state: types.ElementState.Complete
-      } ]
+      elements: [
+        {
+          type: types.ElementType.ShortAnswer,
+          text: "New element",
+          value: { correctAnswer: "" },
+          state: types.ElementState.Complete
+        }
+      ]
     });
     setChapters(newChapters);
   }
@@ -247,7 +250,12 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
         
       case types.ElementType.MultipleChoice:
         elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = {
-          choices: [],
+          choices: [
+            {
+              value: "New Multiple Choice Item",
+              isCorrect: false
+            }
+          ],
           type: types.MultipleChoiceType.Radio,
           needsAllCorrect: false
         };
@@ -537,7 +545,7 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
     <div
       className="smallInteraction"
     >
-      
+      <Reorder></>
     </div>
   );
 }
