@@ -389,7 +389,8 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
 
         {mode == types.ComponentMode.Edit && (
           <label>
-            Type: 
+            Type:
+
             <select
               name="selectType"
               value={type}
@@ -409,13 +410,13 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         
         {mode == types.ComponentMode.Edit && (
           <label>
-            Needs All Correct: 
+            Needs All Correct:
 
             <input
               type="checkbox"
               name="needsAllCorrect"
               id="needsAllCorrect"
-              value={String(needsAllCorrect)}
+              checked={needsAllCorrect}
               onInput={(e) => setNeedsAllCorrect(e.currentTarget.value == "true")}
             />
           </label>
@@ -451,7 +452,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
       ) : (
         <div>
           <label>
-            Value:
+            Is Correct:
             
             <input
               type="checkbox"
@@ -462,8 +463,8 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elem
           </label>
           
           <label>
-            Is Correct: 
-            
+            Value:
+
             <input
               type="text"
               name="responseValue"
