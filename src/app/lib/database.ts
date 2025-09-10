@@ -5,7 +5,8 @@ import { Skill, Project, Course } from './types';
 
 const uri: string = process.env.MONGODB_URI ?? '';
 const client = new MongoClient(uri, {
-  serverSelectionTimeoutMS: 120000
+  serverSelectionTimeoutMS: 120000,
+  connectTimeoutMS: 120000
 });
 
 export async function getSkill(id: string): Promise<Skill> {
