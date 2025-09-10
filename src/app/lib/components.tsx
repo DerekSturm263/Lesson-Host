@@ -604,7 +604,37 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
     <div
       className="smallInteraction"
     >
-      
+      {helpers.getInteractionValue<types.Files>(elementID).files.map((item, index) => {
+        const fileType = item.source.substring(item.source.length - 3) == "png" ? ("png") :
+        item.source.substring(item.source.length - 3) == "mp4" ? ("mp4") :
+        item.source.substring(item.source.length - 3) == "mp3" ? ("mp3") : "";
+
+        switch (fileType) {
+          case "png":
+            return (
+              <Image
+                src={item.source}
+                alt={item.source}
+              />
+            );
+
+          case "mp4":
+            return (
+              <video
+                src={item.source}
+                controls
+              ></video>
+            );
+
+          case "mp3":
+            return (
+              <audio
+                src={item.source}
+                controls
+              ></audio>
+            );
+        }
+      })}
     </div>
   );
 }
