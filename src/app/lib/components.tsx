@@ -834,6 +834,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             name="elementText"
             value={text}
             rows={4}
+            cols={100}
             onChange={(e) => setText(e.currentTarget.value)}
           />
         ))}
