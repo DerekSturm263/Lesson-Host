@@ -4,7 +4,9 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { Skill, Project, Course } from './types';
 
 const uri: string = process.env.MONGODB_URI ?? '';
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  serverSelectionTimeoutMS: 120000
+});
 
 export async function getSkill(id: string): Promise<Skill> {
   await client.connect();

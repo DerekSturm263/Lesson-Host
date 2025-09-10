@@ -607,7 +607,7 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
       {helpers.getInteractionValue<types.Files>(elementID).files.map((item, index) => {
         const fileType = item.source.substring(item.source.length - 3) == "png" ? ("png") :
         item.source.substring(item.source.length - 3) == "mp4" ? ("mp4") :
-        item.source.substring(item.source.length - 3) == "mp3" ? ("mp3") : "";
+        item.source.substring(item.source.length - 3) == "mp3" ? ("mp3") : "other";
 
         switch (fileType) {
           case "png":
@@ -632,6 +632,11 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
                 src={item.source}
                 controls
               ></audio>
+            );
+
+          case "other":
+            return (
+              <></>
             );
         }
       })}
