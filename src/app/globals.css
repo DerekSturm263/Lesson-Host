@@ -48,6 +48,7 @@ body {
   gap: 20px;
   margin-left: 50px;
   margin-right: 50px;
+  justify-content: space-between;
 
   a {
     background-image: linear-gradient(rgb(120, 120, 120), rgb(80, 80, 80));
@@ -58,6 +59,7 @@ body {
     border-radius: 8px;
     font-size: 20px;
     font-weight: 500;
+    padding-top: 125px;
   }
 }
 
@@ -376,7 +378,7 @@ button, input {
   transition: 0.1s;
 }
 
-button:hover:enabled, input:hover:enabled, label:hover:enabled {
+button:hover:enabled, input:hover:enabled, label:hover:enabled, a:hover:enabled {
   transform: scale(1.05);
 }
 
@@ -384,7 +386,7 @@ button:hover:enabled, input[type=submit]:hover:enabled, input[type=checkbox]:hov
   cursor: pointer;
 }
 
-button:hover:active:enabled, input[type=submit]:hover:active:enabled, input[type=checkbox]:hover:active:enabled, input[type=radio]:hover:active:enabled, label:hover:active:enabled {
+button:hover:active:enabled, input[type=submit]:hover:active:enabled, input[type=checkbox]:hover:active:enabled, input[type=radio]:hover:active:enabled, label:hover:active:enabled, a:hover:active:enabled {
   transform: scale(0.95);
 }
 
