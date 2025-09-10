@@ -50,7 +50,18 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     <div>
       <main>
         {!hideHeader && <Header />}
-        <h1 className="mainHeader">{skill.title}</h1>
+
+        <h1
+          className="mainHeader"
+        >
+          {skill.title}
+        </h1>
+        
+        <h3
+          className="subHeader"
+        >
+          {skill.description}
+        </h3>
 
         <div className="colButtons">
           <Link

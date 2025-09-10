@@ -43,6 +43,13 @@ body {
   font-weight: 700;
 }
 
+.subHeader {
+  margin-left: 50px;
+  margin-right: 50px;
+  font-size: 30px;
+  font-weight: 500;
+}
+
 .colButtons {
   display: flex;
   gap: 20px;
