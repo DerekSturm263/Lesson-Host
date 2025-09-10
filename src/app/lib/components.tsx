@@ -174,7 +174,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
     setChapters(newChapters);
   }
 
-  /*if (mode == types.ComponentMode.View) {
+  if (mode == types.ComponentMode.View) {
     for (let i = 0; i < chapters.length; ++i) {
       for (let j = 0; j < chapters[i].elements.length; ++j) {
         if (i != 0 || j != 0) {
@@ -182,7 +182,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         }
       }
     }
-  }*/
+  }
 
   return (
     <div className="content">
@@ -522,7 +522,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             id="true"
             value="true"
             disabled={isDisabled}
-            checked={isCorrect}
+            checked={mode == types.ComponentMode.Edit && isCorrect}
             onChange={(e) => setIsCorrect(true)}
           />
 
@@ -536,7 +536,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             id="false"
             value="false"
             disabled={isDisabled}
-            checked={!isCorrect}
+            checked={mode == types.ComponentMode.Edit && !isCorrect}
             onChange={(e) => setIsCorrect(false)}
           />
 
