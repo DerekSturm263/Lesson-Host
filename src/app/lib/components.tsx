@@ -760,12 +760,33 @@ function Engine({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
 }
 
 function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const [ source, setSource ] = useState(helpers.getInteractionValue<types.IFrame>(elementID).source);
+
   return (
-    <iframe
-      id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+    <div
       className="fullscreenInteraction"
-      src={helpers.getInteractionValue<types.IFrame>(elementID).source}
-    ></iframe>
+    >
+      <iframe
+        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        className="fullscreenInteraction"
+        src={source}
+      ></iframe>
+
+      {mode == types.ComponentMode.Edit && (
+        <label>
+          Source:
+
+          <input
+            type="text"
+            name="source"
+            autoComplete="off"
+            disabled={isDisabled}
+            value={source}
+            onInput={(e) => setSource(e.currentTarget.value)}
+          />
+        </label>
+      )}
+    </div>
   );
 }
 
