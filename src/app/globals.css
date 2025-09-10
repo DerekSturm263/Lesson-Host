@@ -46,8 +46,9 @@ body {
 .subHeader {
   margin-left: 50px;
   margin-right: 50px;
-  font-size: 30px;
-  font-weight: 500;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 .colButtons {
