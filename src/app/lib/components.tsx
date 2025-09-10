@@ -830,11 +830,11 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             {text}
           </Markdown>
         ) : (
-          <input
-            type="text"
+          <textarea
             name="elementText"
             value={text}
-            onInput={(e) => setText(e.currentTarget.value)}
+            rows={4}
+            onChange={(e) => setText(e.currentTarget.value)}
           />
         ))}
       </div>
