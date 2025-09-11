@@ -725,7 +725,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         files: [
           {
             name: "code.cs",
-            content: helpers.getInteractionValue<types.Codespace>(elementID).isSimplified ? templateify : content
+            content: isSimplified ? templateify : content
           }
         ]
       }
