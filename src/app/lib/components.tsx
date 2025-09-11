@@ -8,7 +8,7 @@ import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, us
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
-import { saveSkillLearn } from './database';
+import { saveSkillLearn, createSkill, createProject, createCourse } from './database';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -1154,5 +1154,44 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
       data-iscomplete="false"
       data-isselected="false"
     ></button>
+  );
+}
+
+export function CreateSkillButton() {
+  return (
+    <button
+      onClick={async (e) => {
+        const newSkill = await createSkill();
+        window.open(`https://www.myskillstudy.com/edit/skills/${newSkill[1]}/`);
+      }}
+    >
+      Skill
+    </button>
+  );
+}
+
+export function CreateProjectButton() {
+  return (
+    <button
+      onClick={async (e) => {
+        const newProject = await createProject();
+        window.open(`https://www.myskillstudy.com/edit/projects/${newProject[1]}/`);
+      }}
+    >
+      Project
+    </button>
+  );
+}
+
+export function CreateCourseButton() {
+  return (
+    <button
+      onClick={async (e) => {
+        const newCourse = await createCourse();
+        window.open(`https://www.myskillstudy.com/edit/courses/${newCourse[1]}/`);
+      }}
+    >
+      Course
+    </button>
   );
 }
