@@ -471,21 +471,22 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
 }
 
 function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.MultipleChoiceItem, index: number, type: types.MultipleChoiceType }) {
-  const [ choice, setChoice ] = useState(item);
+  const [ value, setValue ] = useState(item.value);
+  const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
 
   return (
     <label>
       <input
         type={type}
         name="response"
-        id={item.value}
-        value={item.isCorrect.toString()}
+        id={value}
+        value={isCorrect.toString()}
         disabled={isDisabled}
       />
 
       {(mode == types.ComponentMode.View ? (
         <Markdown>
-          {item.value}
+          {value}
         </Markdown>
       ) : (
         <div>
@@ -494,9 +495,9 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
             
             <input
               type="checkbox"
-              name="responseIsCorrect"
-              checked={choice.isCorrect}
-              onInput={(e) => setChoice({ value: choice.value, isCorrect: e.currentTarget.checked } )}
+              name="isCorrect"
+              checked={isCorrect}
+              onInput={(e) => setIsCorrect(e.currentTarget.checked)}
             />
           </label>
           
@@ -505,9 +506,9 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
 
             <input
               type="text"
-              name="responseValue"
-              value={choice.value}
-              onInput={(e) => setChoice({ value: e.currentTarget.value, isCorrect: choice.isCorrect })}
+              name="value"
+              value={value}
+              onInput={(e) => setValue(e.currentTarget.value)}
             />
           </label>
         </div>
