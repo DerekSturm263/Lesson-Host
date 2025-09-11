@@ -13,6 +13,7 @@ import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 import ky from 'ky';
+import { toast } from 'react-toastify';
 
 export function Header() {
   return (
@@ -206,7 +207,10 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
         {mode == types.ComponentMode.Edit && (
           <button
-            onClick={(e) => saveSkill(slug, skill)}
+            onClick={async (e) => { 
+              await saveSkill(slug, skill);
+              toast(`${skill.title} saved successfully`);
+            }}
           >
             Save
           </button>

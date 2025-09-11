@@ -2,7 +2,6 @@
 
 import { MongoClient, ObjectId } from 'mongodb';
 import { Skill, Project, Course } from './types';
-import { toast } from 'react-toastify';
 
 const uri: string = process.env.MONGODB_URI ?? '';
 const client = new MongoClient(uri, {
@@ -49,8 +48,6 @@ export async function createSkill(): Promise<Skill> {
   await client.db('database').collection('skills').insertOne(skill);
   await client.close();
 
-  toast(`New skill created successfully`);
-
   return skill;
 }
 
@@ -60,8 +57,6 @@ export async function saveSkill(id: string, skill: Skill) {
   await client.db('database').collection('skills').replaceOne({ _id: new ObjectId(id) }, { $set: skill });
 
   await client.close();
-
-  toast(`${skill.title} saved successfully`);
 }
 
 export async function getProject(id: string): Promise<Project> {
@@ -86,8 +81,6 @@ export async function createProject(): Promise<Project> {
   await client.db('database').collection('projects').insertOne(project);
   await client.close();
 
-  toast(`New project created successfully`);
-
   return project;
 }
 
@@ -97,8 +90,6 @@ export async function saveProject(id: string, project: Project) {
   await client.db('database').collection('projects').replaceOne({ _id: new ObjectId(id) }, { $set: project });
 
   await client.close();
-
-  toast(`${project.title} saved successfully`);
 }
 
 export async function getCourse(id: string): Promise<Course> {
@@ -125,8 +116,6 @@ export async function createCourse(): Promise<Course> {
   await client.db('database').collection('courses').insertOne(course);
   await client.close();
 
-  toast(`New course created successfully`);
-
   return course;
 }
 
@@ -136,6 +125,4 @@ export async function saveCourse(id: string, course: Course) {
   await client.db('database').collection('courses').replaceOne({ _id: new ObjectId(id) }, { $set: course });
 
   await client.close();
-
-  toast(`${course.title} saved successfully`);
 }
