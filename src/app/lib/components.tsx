@@ -141,7 +141,10 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
       
       {mode == types.ComponentMode.Edit && (
         <button
-          onClick={(e) => removeChapter(elementID.chapterIndex)}
+          onClick={(e) => {
+            removeChapter(elementID.chapterIndex);
+            toast("Chapter deleted");
+          }}
         >
           Delete
         </button>
