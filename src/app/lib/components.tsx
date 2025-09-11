@@ -430,7 +430,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         className='multipleOptions'
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
-        {shuffledItems.map((item, index) => (
+        {items.map((item, index) => (
           <MultipleChoiceItem
             key={index}
             elementID={elementID}
