@@ -497,7 +497,13 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
               type="checkbox"
               name="isCorrect"
               checked={isCorrect}
-              onInput={(e) => setIsCorrect(e.currentTarget.checked)}
+              onInput={(e) => {
+                setIsCorrect(e.currentTarget.checked);
+
+                if (mode == types.ComponentMode.Edit) {
+                  helpers.getInteractionValue<types.MultipleChoice>(elementID).choices[index].isCorrect = e.currentTarget.checked;
+                }
+              }}
             />
           </label>
           
@@ -508,7 +514,13 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
               type="text"
               name="value"
               value={value}
-              onInput={(e) => setValue(e.currentTarget.value)}
+              onInput={(e) => {
+                setValue(e.currentTarget.value);
+                
+                if (mode == types.ComponentMode.Edit) {
+                  helpers.getInteractionValue<types.MultipleChoice>(elementID).choices[index].value = e.currentTarget.value;
+                }
+              }}
             />
           </label>
         </div>
