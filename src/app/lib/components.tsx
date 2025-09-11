@@ -694,6 +694,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
   const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
+  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).correctOutput);
+
   const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
 
   async function executeCode() {
@@ -709,8 +711,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         {
           ${text}
         }
-      }
-      `;
+      }`;
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
@@ -777,8 +778,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
 
           <input
             type="checkbox"
-            name="needsAllCorrect"
-            id="needsAllCorrect"
+            name="isSimplified"
+            id="isSimplified"
             checked={isSimplified}
             onInput={(e) => {
               setIsSimplified(e.currentTarget.checked);
@@ -802,6 +803,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         width="60%"
         height="100%"
       />
+
       <div
         className="codeEditorRight"
       >
@@ -815,6 +817,24 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           Run
         </button>
       </div>
+
+      
+      {mode == types.ComponentMode.Edit && (
+        <label>
+          Correct Output:
+
+          <textarea
+            name="correctOutput"
+            value={correctOutput}
+            rows={4}
+            cols={120}
+            onChange={(e) => {
+              setCorrectOutput(e.currentTarget.value);
+              helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.currentTarget.value;
+            }}
+          />
+        </label>
+      )}
     </div>
   );
 }
@@ -851,7 +871,10 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
             autoComplete="off"
             disabled={isDisabled}
             value={source}
-            onInput={(e) => setSource(e.currentTarget.value)}
+            onInput={(e) => {
+              setSource(e.currentTarget.value);
+              helpers.getInteractionValue<types.IFrame>(elementID).source = e.currentTarget.value;
+            }}
           />
         </label>
       )}
