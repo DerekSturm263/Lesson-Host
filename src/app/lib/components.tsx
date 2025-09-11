@@ -901,55 +901,61 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         </div>
 
         <div className="col2">
-          <button
-            onClick={(e) => functions.rephrase(elementID)}
-            title="Rephrase text"
-          >
-            <Image
-              src="/icons/sparkle.png"
-              width={25}
-              height={25}
-              alt="Rephrase"
-            />
-            Rephrase
-          </button>
-          
-          <button
-            onClick={(e) => functions.readAloud(elementID)}
-            title="Read text aloud"
-          >
-            <Image
-              src="/icons/speaker.png"
-              width={25}
-              height={25}
-              alt="Read Aloud"
-            />
-            Read Aloud
-          </button>
-
-          <button
-            onClick={(e) => functions.reset(elementID)}
-            title="Reset text and interaction"
-          >
-            <Image
-              src="/icons/refresh.png"
-              width={25}
-              height={25}
-              alt="Reset"
-            />
-            Reset
-          </button>
-        </div>
-
-        {mode == types.ComponentMode.Edit && (
-          <div className="col2">
+          {mode == types.ComponentMode.View && (
             <button
-              onClick={(e) => removeElement(elementID.elementIndex)}
+              onClick={(e) => functions.rephrase(elementID)}
+              title="Rephrase text"
             >
-              Delete
+              <Image
+                src="/icons/sparkle.png"
+                width={25}
+                height={25}
+                alt="Rephrase"
+              />
+              Rephrase
             </button>
-          </div>
-        )}
+          )}
+          
+          {mode == types.ComponentMode.View && (
+            <button
+              onClick={(e) => functions.readAloud(elementID)}
+              title="Read text aloud"
+            >
+              <Image
+                src="/icons/speaker.png"
+                width={25}
+                height={25}
+                alt="Read Aloud"
+              />
+              Read Aloud
+            </button>
+          )}
+
+          {mode == types.ComponentMode.View && (
+            <button
+              onClick={(e) => functions.reset(elementID)}
+              title="Reset text and interaction"
+            >
+              <Image
+                src="/icons/refresh.png"
+                width={25}
+                height={25}
+                alt="Reset"
+              />
+              Reset
+            </button>
+          )}
+
+          {mode == types.ComponentMode.Edit && (
+            <div className="col2">
+              <button
+                onClick={(e) => removeElement(elementID.elementIndex)}
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
