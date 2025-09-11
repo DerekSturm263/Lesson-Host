@@ -12,7 +12,9 @@ const client = new MongoClient(uri, {
 export async function getSkill(id: string): Promise<Skill> {
   await client.connect();
 
-  const skill = await client.db('database').collection('skills').findOne({ _id: new ObjectId(id) });
+  const skill = await client.db('database').collection('skills').findOne(
+    { _id: new ObjectId(id) }
+  );
 
   await client.close();
 
@@ -54,7 +56,10 @@ export async function createSkill(): Promise<Skill> {
 export async function saveSkill(id: string, skill: Skill) {
   await client.connect();
 
-  const result = await client.db('database').collection('skills').updateOne({ _id: new ObjectId(id) }, { $set: skill });
+  const result = await client.db('database').collection('skills').updateOne(
+    { _id: new ObjectId(id) },
+    { $set: skill }
+  );
   console.log(result);
 
   await client.close();
@@ -63,7 +68,9 @@ export async function saveSkill(id: string, skill: Skill) {
 export async function getProject(id: string): Promise<Project> {
   await client.connect();
 
-  const project = await client.db('database').collection('projects').findOne({ _id: new ObjectId(id) });
+  const project = await client.db('database').collection('projects').findOne(
+    { _id: new ObjectId(id) }
+  );
 
   await client.close();
 
@@ -88,7 +95,10 @@ export async function createProject(): Promise<Project> {
 export async function saveProject(id: string, project: Project) {
   await client.connect();
 
-  await client.db('database').collection('projects').updateOne({ _id: new ObjectId(id) }, { $set: project });
+  await client.db('database').collection('projects').updateOne(
+    { _id: new ObjectId(id) },
+    { $set: project }
+  );
 
   await client.close();
 }
@@ -96,7 +106,9 @@ export async function saveProject(id: string, project: Project) {
 export async function getCourse(id: string): Promise<Course> {
   await client.connect();
 
-  const course = await client.db('database').collection('courses').findOne({ _id: new ObjectId(id) });
+  const course = await client.db('database').collection('courses').findOne(
+    { _id: new ObjectId(id) }
+  );
 
   await client.close();
 
@@ -123,7 +135,10 @@ export async function createCourse(): Promise<Course> {
 export async function saveCourse(id: string, course: Course) {
     await client.connect();
 
-  await client.db('database').collection('courses').updateOne({ _id: new ObjectId(id) }, { $set: course });
+  await client.db('database').collection('courses').updateOne(
+    { _id: new ObjectId(id) },
+    { $set: course }
+  );
 
   await client.close();
 }
