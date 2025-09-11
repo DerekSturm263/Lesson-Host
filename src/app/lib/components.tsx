@@ -617,11 +617,13 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 }
 
 function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const [ files, setFiles ] = useState(helpers.getInteractionValue<types.Files>(elementID).files);
+
   return (
     <div
       className="smallInteraction"
     >
-      {helpers.getInteractionValue<types.Files>(elementID).files.map((item, index) => {
+      {files.map((item, index) => {
         const fileType = item.source.substring(item.source.length - 3) == "png" ? ("png") :
         item.source.substring(item.source.length - 3) == "mp4" ? ("mp4") :
         item.source.substring(item.source.length - 3) == "mp3" ? ("mp3") : "other";
@@ -826,8 +828,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           <textarea
             name="correctOutput"
             value={correctOutput}
-            rows={32}
-            cols={46}
+            rows={20}
+            cols={30}
             onChange={(e) => {
               setCorrectOutput(e.currentTarget.value);
               helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.currentTarget.value;
