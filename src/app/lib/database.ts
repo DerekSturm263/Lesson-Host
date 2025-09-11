@@ -120,7 +120,7 @@ export async function createCourse(): Promise<Course> {
 }
 
 export async function saveCourse(id: string, course: Course) {
-    await client.connect();
+  await client.connect();
 
   await client.db('database').collection('courses').replaceOne({ _id: new ObjectId(id) }, { $set: course });
 
