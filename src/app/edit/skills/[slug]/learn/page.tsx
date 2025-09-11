@@ -1,6 +1,6 @@
 import { ToastContainer } from 'react-toastify';
 import { Header, LearnPageContent } from '../../../../lib/components';
-import { getSkill, saveSkill } from '../../../../lib/database';
+import { getSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
