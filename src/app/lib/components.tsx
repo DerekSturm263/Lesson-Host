@@ -392,6 +392,8 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
   const [ type, setType ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).type);
   const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
 
+  const shuffledItems = helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.sort(item => Math.random() - 0.5);
+
   return (
     <div
       className="smallInteraction"
@@ -401,7 +403,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         className='multipleOptions'
         action={(e) => functions.submitMultipleChoice(e, elementID)}
       >
-        {helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.map((item, index) => (
+        {shuffledItems.map((item, index) => (
           <MultipleChoiceItem
             key={index}
             elementID={elementID}
@@ -554,26 +556,29 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
 }
 
 function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const shuffledItemsLeft = helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.leftSide).sort(item => Math.random() - 0.5);
+  const shuffledItemsRight = helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.rightSide).sort(item => Math.random() - 0.5);
+  
   return (
     <div
       className="smallInteraction"
     >
       {/*<Reorder>
-        {helpers.getInteractionValue<types.Matching>(elementID).items.map((item, index) => (
+        {shuffledItemsLeft.map((item, index) => (
           <li
             key={index}
           >
-            {item.leftSide}
+            {item}
           </li>
         ))}
       </Reorder>
 
       <Reorder>
-        {helpers.getInteractionValue<types.Matching>(elementID).items.map((item, index) => (
+        {shuffledItemsRight.map((item, index) => (
           <li
             key={index}
           >
-            {item.rightSide}
+            {item}
           </li>
         ))}
       </Reorder>*/}
@@ -582,12 +587,14 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 }
 
 function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+  const shuffledItems = helpers.getInteractionValue<types.Ordering>(elementID).correctOrder.sort(item => Math.random() - 0.5);
+
   return (
     <div
       className="smallInteraction"
     >
       {/*<Reorder>
-        {helpers.getInteractionValue<types.Ordering>(elementID).correctOrder.map((item, index) => (
+        {shuffledItems.map((item, index) => (
           <li
             key={index}
           >
