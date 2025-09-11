@@ -724,7 +724,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         files: [
           {
             name: "code.cs",
-            content: isSimplified ? templateify : content
+            content: isSimplified ? templateify(content) : content
           }
         ]
       }
