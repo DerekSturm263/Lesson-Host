@@ -619,6 +619,18 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ files, setFiles ] = useState(helpers.getInteractionValue<types.Files>(elementID).files);
 
+  function addFile() {
+    const newFiles = files;
+    newFiles.push();
+    setFiles(newFiles);
+  }
+
+  function removeFile(index: number) {
+    const newFiles = files;
+    newFiles.splice(index, 1);
+    setFiles(newFiles);
+  }
+
   return (
     <div
       className="smallInteraction"
