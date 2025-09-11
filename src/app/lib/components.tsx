@@ -647,14 +647,16 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
 
-  //const shuffledItems = useState(items.sort(item => Math.random() - 0.5))[0];
+  if (mode == types.ComponentMode.View) {
+    setItems(items.sort(item => Math.random() - 0.5));
+  }
 
   return (
     <div
       className="smallInteraction"
     >
       {/*<Reorder>
-        {shuffledItems.map((item, index) => (
+        {items.map((item, index) => (
           <li
             key={index}
           >
