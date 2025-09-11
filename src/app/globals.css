@@ -114,7 +114,7 @@ body {
 .sidebar {
   background: rgba(0, 0, 0, 0.2);
   width: 250px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-bottom: 25px;
   z-index: 2;
 
