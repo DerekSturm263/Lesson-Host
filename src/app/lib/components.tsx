@@ -29,7 +29,7 @@ export function Header() {
 
       <ol>
         <Link
-          href="/learn"
+          href="/view"
           target="_self"
           rel="noopener noreferrer"
         >
