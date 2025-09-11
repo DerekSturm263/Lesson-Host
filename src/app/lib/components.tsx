@@ -170,12 +170,16 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
       ]
     });
     setChapters(newChapters);
+
+    skill.learn.chapters = newChapters;
   }
 
   function removeChapter(index: number) {
     const newChapters = chapters;
     chapters.splice(index, 1);
     setChapters(newChapters);
+
+    skill.learn.chapters = newChapters;
   }
 
   if (mode == types.ComponentMode.View) {
