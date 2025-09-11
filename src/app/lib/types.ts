@@ -136,6 +136,7 @@ export enum CodespaceLanguage {
 export type Codespace = {
   language: CodespaceLanguage,
   content: string,
+  requiresMain: boolean,
   correctOutput: string | undefined
 };
 

@@ -743,6 +743,23 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
     <div
       className="fullscreenInteraction"
     >
+      {mode == types.ComponentMode.Edit && (
+        <select
+          name="selectType"
+          value={language}
+          onChange={(e) => setLanguage(e.currentTarget.value as types.CodespaceLanguage)}
+        >
+          {(Object.values(types.CodespaceLanguage).map((item, index) => (
+            <option
+              key={index}
+              value={item}
+            >
+              {item}
+            </option>
+          )))}
+        </select>
+      )}
+
       <Editor
         defaultLanguage={language}
         defaultValue={content}
