@@ -18,8 +18,6 @@ export async function getSkill(id: string): Promise<Skill> {
 
   await client.close();
 
-  console.log(JSON.stringify(skill));
-
   return skill as unknown as Skill;
 }
 
@@ -56,6 +54,9 @@ export async function createSkill(): Promise<Skill> {
 export async function saveSkill(id: string, skill: Skill) {
   await client.connect();
 
+  console.log(id);
+  console.log(skill);
+
   const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
     { $set: skill }
@@ -73,8 +74,6 @@ export async function getProject(id: string): Promise<Project> {
   );
 
   await client.close();
-
-  console.log(JSON.stringify(project));
 
   return project as unknown as Project;
 }
@@ -111,8 +110,6 @@ export async function getCourse(id: string): Promise<Course> {
   );
 
   await client.close();
-
-  console.log(JSON.stringify(course));
 
   return course as unknown as Course;
 }
