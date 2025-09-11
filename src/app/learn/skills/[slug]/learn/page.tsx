@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify';
 import { Header, LearnPageContent } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
 import * as types from '../../../../lib/types';
@@ -21,6 +22,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
             mode={types.ComponentMode.View}
             apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           />
+
+          <ToastContainer />
         </div>
       </main>
     </div>
