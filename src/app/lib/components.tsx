@@ -694,6 +694,7 @@ function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDi
 function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
+  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
   const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
 
   async function executeCode() {
@@ -748,20 +749,38 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       className="fullscreenInteraction"
     >
       {mode == types.ComponentMode.Edit && (
-        <select
-          name="selectType"
-          value={language}
-          onChange={(e) => setLanguage(e.currentTarget.value as types.CodespaceLanguage)}
-        >
-          {(Object.values(types.CodespaceLanguage).map((item, index) => (
-            <option
-              key={index}
-              value={item}
-            >
-              {item}
-            </option>
-          )))}
-        </select>
+        <label>
+          Language:
+
+          <select
+            name="selectType"
+            value={language}
+            onChange={(e) => setLanguage(e.currentTarget.value as types.CodespaceLanguage)}
+          >
+            {(Object.values(types.CodespaceLanguage).map((item, index) => (
+              <option
+                key={index}
+                value={item}
+              >
+                {item}
+              </option>
+            )))}
+          </select>
+        </label>
+      )}
+
+      {mode == types.ComponentMode.Edit && (
+        <label>
+          Is Simplified:
+
+          <input
+            type="checkbox"
+            name="needsAllCorrect"
+            id="needsAllCorrect"
+            checked={isSimplified}
+            onInput={(e) => setIsSimplified(e.currentTarget.checked)}
+          />
+        </label>
       )}
 
       <Editor
