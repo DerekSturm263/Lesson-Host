@@ -1,7 +1,7 @@
 'use server'
 
 import { MongoClient, ObjectId } from 'mongodb';
-import { Skill, Project, Course } from './types';
+import { Skill, Project, Course, Learn } from './types';
 
 const uri: string = process.env.MONGODB_URI ?? '';
 const client = new MongoClient(uri, {
@@ -51,15 +51,15 @@ export async function createSkill(): Promise<Skill> {
   return skill;
 }
 
-export async function saveSkill(id: string, skill: Skill) {
+export async function saveSkillLearn(id: string, learn: Learn) {
   await client.connect();
 
   console.log(id);
-  console.log(skill);
+  console.log(learn);
 
   const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
-    { $set: skill }
+    { $set: { learn: learn } }
   );
   console.log(result);
 
