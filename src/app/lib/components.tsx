@@ -687,6 +687,7 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
     >
       {files.map((item, index) => (
         <FileItem
+          key={index}
           elementID={elementID}
           isDisabled={isDisabled}
           mode={mode}
