@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Header } from '../../../lib/components';
 import { getSkill } from '../../../lib/database';
-import { useState } from 'react';
+//import { useState } from 'react';
 
 export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const { slug } = await params;
@@ -12,8 +12,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
   const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`) : "";
 
-  const [ title, setTitle ] = useState(skill.title);
-  const [ description, setDescription ] = useState(skill.description);
+  /*const [ title, setTitle ] = useState(skill.title);
+  const [ description, setDescription ] = useState(skill.description);*/
 
   return (
     <div>
@@ -27,11 +27,11 @@ export default async function Page({ params, searchParams }: { params: Promise<{
             type="text"
             name="title"
             autoComplete="off"
-            value={title}
+            /*value={title}
             onInput={(e) => {
               setTitle(e.currentTarget.value)
               skill.title = e.currentTarget.value;
-            }}
+            }}*/
           />
         </label>
         
@@ -42,11 +42,11 @@ export default async function Page({ params, searchParams }: { params: Promise<{
             type="text"
             name="description"
             autoComplete="off"
-            value={description}
+            /*value={description}
             onInput={(e) => {
               setDescription(e.currentTarget.value)
               skill.description = e.currentTarget.value;
-            }}
+            }}*/
           />
         </label>
 
