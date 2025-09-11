@@ -700,6 +700,18 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
     setOutput("Running...");
     helpers.startThinking(elementID);
 
+    const templateify = (text: string) =>
+      `using System;
+
+      public class Program
+      {
+        public static void Main(string[] args)
+        {
+          ${text}
+        }
+      }
+      `;
+
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
         'x-rapidapi-key': elementID.keys[0],
@@ -712,7 +724,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         files: [
           {
             name: "code.cs",
-            content: content
+            content: helpers.getInteractionValue<types.Codespace>(elementID).isSimplified ? templateify : content
           }
         ]
       }
