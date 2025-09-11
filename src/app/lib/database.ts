@@ -57,11 +57,11 @@ export async function saveSkill(id: string, skill: Skill) {
   console.log(id);
   console.log(skill);
 
-  const result = await client.db('database').collection('skills').updateOne(
+  /*const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
     { $set: skill }
   );
-  console.log(result);
+  console.log(result);*/
 
   await client.close();
 }
