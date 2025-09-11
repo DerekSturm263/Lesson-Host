@@ -54,7 +54,8 @@ export async function createSkill(): Promise<Skill> {
 export async function saveSkill(id: string, skill: Skill) {
   await client.connect();
 
-  await client.db('database').collection('skills').updateOne({ _id: new ObjectId(id) }, { $set: skill });
+  const result = await client.db('database').collection('skills').updateOne({ _id: new ObjectId(id) }, { $set: skill });
+  console.log(result);
 
   await client.close();
 }
