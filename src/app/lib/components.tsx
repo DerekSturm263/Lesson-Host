@@ -826,8 +826,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           <textarea
             name="correctOutput"
             value={correctOutput}
-            rows={4}
-            cols={120}
+            rows={32}
+            cols={46}
             onChange={(e) => {
               setCorrectOutput(e.currentTarget.value);
               helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.currentTarget.value;
