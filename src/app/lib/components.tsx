@@ -251,16 +251,17 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
 
   function setTypeAndUpdate(type: types.ElementType) {
     setType(type);
+    helpers.getElement(elementID).type = type;
 
     switch (type) {
       case types.ElementType.ShortAnswer:
-        elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = {
+        helpers.getElement(elementID).value = {
           correctAnswer: ""
         };
         break;
         
       case types.ElementType.MultipleChoice:
-        elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = {
+        helpers.getElement(elementID).value = {
           choices: [
             {
               value: "New Multiple Choice Item",
@@ -271,8 +272,6 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
           needsAllCorrect: false
         };
         break;
-        
-        
     }
   }
 
@@ -755,7 +754,10 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           <select
             name="selectType"
             value={language}
-            onChange={(e) => setLanguage(e.currentTarget.value as types.CodespaceLanguage)}
+            onChange={(e) => {
+              setLanguage(e.currentTarget.value as types.CodespaceLanguage);
+              helpers.getInteractionValue<types.Codespace>(elementID).language = e.currentTarget.value as types.CodespaceLanguage;
+            }}
           >
             {(Object.values(types.CodespaceLanguage).map((item, index) => (
               <option
@@ -778,7 +780,10 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
             name="needsAllCorrect"
             id="needsAllCorrect"
             checked={isSimplified}
-            onInput={(e) => setIsSimplified(e.currentTarget.checked)}
+            onInput={(e) => {
+              setIsSimplified(e.currentTarget.checked);
+              helpers.getInteractionValue<types.Codespace>(elementID).isSimplified = e.currentTarget.checked;
+            }}
           />
         </label>
       )}
