@@ -866,7 +866,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             onChange={(e) => {
               setText(e.currentTarget.value);
               elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].text = e.currentTarget.value;
-            }
+            }}
           />
         ))}
       </div>

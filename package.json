@@ -21,6 +21,7 @@
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",
     "react-reorder": "^3.0.0-alpha.7",
+    "react-toastify": "^11.0.5",
     "react-type-animation": "^3.2.0"
   },
   "devDependencies": {
