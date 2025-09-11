@@ -50,7 +50,7 @@ type Verification = {
 export async function verifyShortAnswer(question: string, userResponse: string, value: types.ShortAnswer): Promise<Verification> {
   let response;
   
-  if (value.correctAnswer == null) {
+  if (value.correctAnswer == null || value.correctAnswer == "") {
     response = await ai.models.generateContent({
       model: textModel,
       contents: 
