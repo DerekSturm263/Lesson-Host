@@ -402,7 +402,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
   const [ type, setType ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).type);
   const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
 
-  const shuffledItems = helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.sort(item => Math.random() - 0.5);
+  const shuffledItems = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.sort(item => Math.random() - 0.5))[0];
 
   return (
     <div
@@ -421,6 +421,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
             mode={mode}
             item={item}
             index={index}
+            type={type}
           />
         ))}
 
@@ -469,13 +470,13 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
   );
 }
 
-function MultipleChoiceItem({ elementID, isDisabled, mode, item, index }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.MultipleChoiceItem, index: number }) {
-  const [ choice, setChoice ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices[index]);
+function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.MultipleChoiceItem, index: number, type: types.MultipleChoiceType }) {
+  const [ choice, setChoice ] = useState(item);
 
   return (
     <label>
       <input
-        type={helpers.getInteractionValue<types.MultipleChoice>(elementID).type}
+        type={type}
         name="response"
         id={item.value}
         value={item.isCorrect.toString()}
@@ -535,7 +536,13 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             value="true"
             disabled={isDisabled}
             checked={mode == types.ComponentMode.Edit && isCorrect}
-            onChange={(e) => setIsCorrect(true)}
+            onChange={(e) => {
+              setIsCorrect(true);
+
+              if (mode == types.ComponentMode.Edit) {
+                helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect = true;
+              }
+            }}
           />
 
           True
@@ -549,7 +556,13 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
             value="false"
             disabled={isDisabled}
             checked={mode == types.ComponentMode.Edit && !isCorrect}
-            onChange={(e) => setIsCorrect(false)}
+            onChange={(e) => {
+              setIsCorrect(false);
+              
+              if (mode == types.ComponentMode.Edit) {
+                helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect = false;
+              }
+            }}
           />
 
           False
@@ -566,8 +579,8 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
 }
 
 function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const shuffledItemsLeft = helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.leftSide).sort(item => Math.random() - 0.5);
-  const shuffledItemsRight = helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.rightSide).sort(item => Math.random() - 0.5);
+  const shuffledItemsLeft = useState(helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[1];
+  const shuffledItemsRight = useState(helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
   
   return (
     <div
@@ -635,44 +648,57 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
     <div
       className="smallInteraction"
     >
-      {files.map((item, index) => {
-        const fileType = item.source.substring(item.source.length - 3) == "png" ? ("png") :
-        item.source.substring(item.source.length - 3) == "mp4" ? ("mp4") :
-        item.source.substring(item.source.length - 3) == "mp3" ? ("mp3") : "other";
-
-        switch (fileType) {
-          case "png":
-            return (
-              <Image
-                src={item.source}
-                alt={item.source}
-              />
-            );
-
-          case "mp4":
-            return (
-              <video
-                src={item.source}
-                controls
-              ></video>
-            );
-
-          case "mp3":
-            return (
-              <audio
-                src={item.source}
-                controls
-              ></audio>
-            );
-
-          case "other":
-            return (
-              <></>
-            );
-        }
-      })}
+      {files.map((item, index) => (
+        <FileItem
+          elementID={elementID}
+          isDisabled={isDisabled}
+          mode={mode}
+          item={item}
+          index={index}
+        />
+      ))}
     </div>
   );
+}
+
+function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.File, index: number }) {
+  const [ source, setSource ] = useState(item.source);
+  const [ isDownloadable, setIsDownloadable ] = useState(item.isDownloadable);
+  
+  const fileType = source.substring(source.length - 3) == "png" ? ("png") :
+  source.substring(source.length - 3) == "mp4" ? ("mp4") :
+  source.substring(source.length - 3) == "mp3" ? ("mp3") : "other";
+
+  switch (fileType) {
+    case "png":
+      return (
+        <Image
+          src={item.source}
+          alt={item.source}
+        />
+      );
+
+    case "mp4":
+      return (
+        <video
+          src={item.source}
+          controls
+        ></video>
+      );
+
+    case "mp3":
+      return (
+        <audio
+          src={item.source}
+          controls
+        ></audio>
+      );
+
+    case "other":
+      return (
+        <></>
+      );
+  }
 }
 
 function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
