@@ -8,7 +8,7 @@ import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, us
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
-import { saveSkill } from './database';
+import { saveSkillLearn } from './database';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
@@ -215,7 +215,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         {mode == types.ComponentMode.Edit && (
           <button
             onClick={async (e) => { 
-              await saveSkillLearn(slug, skill);
+              await saveSkillLearn(slug, skill.learn);
               toast(`${skill.title} saved successfully`);
             }}
           >
