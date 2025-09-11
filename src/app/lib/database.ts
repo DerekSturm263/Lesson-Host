@@ -54,7 +54,7 @@ export async function createSkill(): Promise<Skill> {
 export async function saveSkill(id: string, skill: Skill) {
   await client.connect();
 
-  await client.db('database').collection('skills').replaceOne({ _id: new ObjectId(id) }, { $set: skill });
+  await client.db('database').collection('skills').replaceOne({ _id: new ObjectId(id) }, skill);
 
   await client.close();
 }
@@ -87,7 +87,7 @@ export async function createProject(): Promise<Project> {
 export async function saveProject(id: string, project: Project) {
   await client.connect();
 
-  await client.db('database').collection('projects').replaceOne({ _id: new ObjectId(id) }, { $set: project });
+  await client.db('database').collection('projects').replaceOne({ _id: new ObjectId(id) }, project);
 
   await client.close();
 }
@@ -122,7 +122,7 @@ export async function createCourse(): Promise<Course> {
 export async function saveCourse(id: string, course: Course) {
   await client.connect();
 
-  await client.db('database').collection('courses').replaceOne({ _id: new ObjectId(id) }, { $set: course });
+  await client.db('database').collection('courses').replaceOne({ _id: new ObjectId(id) }, course);
 
   await client.close();
 }
