@@ -28,7 +28,7 @@ export enum MultipleChoiceType {
 }
 
 export type MultipleChoice = {
-  choices: MultipleChoiceItem[],
+  items: MultipleChoiceItem[],
   type: MultipleChoiceType,
   needsAllCorrect: boolean
 };

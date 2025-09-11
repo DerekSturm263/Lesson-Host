@@ -262,7 +262,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
         
       case types.ElementType.MultipleChoice:
         helpers.getElement(elementID).value = {
-          choices: [
+          items: [
             {
               value: "New Multiple Choice Item",
               isCorrect: false
@@ -402,7 +402,23 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
   const [ type, setType ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).type);
   const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
 
-  const shuffledItems = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).choices.sort(item => Math.random() - 0.5))[0];
+  const [ items, setItems ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).items);
+  const shuffledItems = useState(items.sort(item => Math.random() - 0.5))[0];
+
+  function addItem() {
+    const newItems = items;
+    newItems.push({
+      value: "New Multiple Choice Item",
+      isCorrect: false
+    });
+    setItems(newItems);
+  }
+
+  function removeItem(index: number) {
+    const newItems = items;
+    newItems.splice(index, 1);
+    setItems(newItems);
+  }
 
   return (
     <div
@@ -455,7 +471,10 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
               name="needsAllCorrect"
               id="needsAllCorrect"
               checked={needsAllCorrect}
-              onInput={(e) => setNeedsAllCorrect(e.currentTarget.checked)}
+              onInput={(e) => {
+                setNeedsAllCorrect(e.currentTarget.checked);
+                helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect = e.currentTarget.checked;
+              }}
             />
           </label>
         )}
@@ -501,7 +520,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
                 setIsCorrect(e.currentTarget.checked);
 
                 if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).choices[index].isCorrect = e.currentTarget.checked;
+                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].isCorrect = e.currentTarget.checked;
                 }
               }}
             />
@@ -518,7 +537,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
                 setValue(e.currentTarget.value);
                 
                 if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).choices[index].value = e.currentTarget.value;
+                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].value = e.currentTarget.value;
                 }
               }}
             />
@@ -592,8 +611,10 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
 }
 
 function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const shuffledItemsLeft = useState(helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[1];
-  const shuffledItemsRight = useState(helpers.getInteractionValue<types.Matching>(elementID).items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
+  const [ items, setItems ] = useState(helpers.getInteractionValue<types.Matching>(elementID).items);
+  
+  const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
+  const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
   
   return (
     <div
@@ -623,7 +644,9 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 }
 
 function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const shuffledItems = helpers.getInteractionValue<types.Ordering>(elementID).correctOrder.sort(item => Math.random() - 0.5);
+  const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
+
+  const shuffledItems = useState(items.sort(item => Math.random() - 0.5))[0];
 
   return (
     <div
@@ -647,7 +670,10 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
 
   function addFile() {
     const newFiles = files;
-    newFiles.push();
+    newFiles.push({
+      source: "",
+      isDownloadable: false
+    });
     setFiles(newFiles);
   }
 
@@ -1107,11 +1133,11 @@ function WordWrapper({ text }: { text: string }) {
 }
 
 function Dot({ elementID }: { elementID: types.ElementID }) {
-  const [ dot, setDot ] = useState(helpers.getElement(elementID).state);
+  const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
   useEffect(() => {
     window.addEventListener(`updateDots${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setDot((e as CustomEvent).detail);
+      setState((e as CustomEvent).detail);
     });
   }, []);
 
@@ -1120,7 +1146,7 @@ function Dot({ elementID }: { elementID: types.ElementID }) {
       className={`dot dot${helpers.getAbsoluteIndex(elementID)}`}
       onClick={(e) => functions.load(elementID)}
       title={`Load section ${elementID.elementIndex + 1}`}
-      disabled={dot == types.ElementState.Locked}
+      disabled={state == types.ElementState.Locked}
       data-iscomplete="false"
       data-isselected="false"
     ></button>
