@@ -731,14 +731,6 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
     }
   }
 
-  function updateContent(content: string | undefined) {
-    setContent(content ?? '');
-
-    if (mode == types.ComponentMode.Edit) {
-      helpers.getInteractionValue<types.Codespace>(elementID).content = content ?? '';
-    }
-  }
-
   return (
     <div
       className="fullscreenInteraction"
@@ -764,7 +756,13 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         defaultLanguage={language}
         defaultValue={content}
         theme="vs-dark"
-        onChange={updateContent}
+        onChange={(e) => {
+          setContent(e ?? '');
+
+          if (mode == types.ComponentMode.Edit) {
+            helpers.getInteractionValue<types.Codespace>(elementID).content = e ?? '';
+          }
+        }}
         width="60%"
         height="100%"
       />
@@ -893,7 +891,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             cols={120}
             onChange={(e) => {
               setText(e.currentTarget.value);
-              elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].text = e.currentTarget.value;
+              helpers.getElement(elementID).text = e.currentTarget.value;
             }}
           />
         ))}
