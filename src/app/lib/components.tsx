@@ -215,7 +215,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         {mode == types.ComponentMode.Edit && (
           <button
             onClick={async (e) => { 
-              await saveSkill(slug, skill);
+              await saveSkillLearn(slug, skill);
               toast(`${skill.title} saved successfully`);
             }}
           >
