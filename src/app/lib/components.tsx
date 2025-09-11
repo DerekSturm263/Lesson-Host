@@ -402,9 +402,9 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
 
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).items);
 
-  if (mode == types.ComponentMode.View) {
+  /*if (mode == types.ComponentMode.View) {
     setItems(items.sort(item => Math.random() - 0.5));
-  }
+  }*/
 
   function addItem() {
     const newItems = items;
@@ -647,9 +647,9 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
 
-  if (mode == types.ComponentMode.View) {
+  /*if (mode == types.ComponentMode.View) {
     setItems(items.sort(item => Math.random() - 0.5));
-  }
+  }*/
 
   return (
     <div
