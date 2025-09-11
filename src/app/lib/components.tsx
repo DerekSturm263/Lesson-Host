@@ -401,7 +401,10 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
   const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
 
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).items);
-  const shuffledItems = useState(items.sort(item => Math.random() - 0.5))[0];
+
+  if (mode == types.ComponentMode.View) {
+    setItems(items.sort(item => Math.random() - 0.5));
+  }
 
   function addItem() {
     const newItems = items;
@@ -611,8 +614,8 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
 function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.Matching>(elementID).items);
   
-  const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
-  const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
+  //const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
+  //const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
   
   return (
     <div
@@ -644,7 +647,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
 
-  const shuffledItems = useState(items.sort(item => Math.random() - 0.5))[0];
+  //const shuffledItems = useState(items.sort(item => Math.random() - 0.5))[0];
 
   return (
     <div
