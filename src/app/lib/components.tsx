@@ -125,8 +125,8 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
           name="chapterTitle"
           value={title}
           onInput={(e) => {
-            setTitle(e.currentTarget.value)
-            elementID.learn.chapters[elementID.chapterIndex].title = e.currentTarget.value;
+            setTitle(e.currentTarget.value);
+            helpers.getChapter(elementID).title = e.currentTarget.value;
           }}
         />
       ))}
@@ -262,12 +262,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
         
       case types.ElementType.MultipleChoice:
         helpers.getElement(elementID).value = {
-          items: [
-            {
-              value: "New Multiple Choice Item",
-              isCorrect: false
-            }
-          ],
+          items: [],
           type: types.MultipleChoiceType.Radio,
           needsAllCorrect: false
         };
@@ -389,7 +384,10 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
               autoComplete="off"
               disabled={isDisabled}
               value={correctAnswer}
-              onInput={(e) => setCorrectAnswer(e.currentTarget.value)}
+              onInput={(e) => {
+                setCorrectAnswer(e.currentTarget.value)
+                helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.currentTarget.value;
+              }}
             />
           </label>
         )}
