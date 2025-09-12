@@ -215,6 +215,9 @@ export async function verifyCodespace(instructions: string, content: string, res
   let isValid = false;
   let contents = '';
 
+  console.log(result.stdout);
+  console.log(value.correctOutput);
+
   if (result.stderr != null) {
     // Code didn't compile
     isValid = false;

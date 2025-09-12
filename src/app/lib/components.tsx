@@ -158,6 +158,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
   function addChapter() {
     const newChapters = chapters;
+
     newChapters.push({
       title: "New Chapter",
       elements: [
@@ -176,6 +177,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
   function removeChapter(index: number) {
     const newChapters = chapters;
+    
     chapters.splice(index, 1);
     setChapters(newChapters);
 

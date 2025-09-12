@@ -581,5 +581,6 @@ export type CodeResult = {
 
 export enum ComponentMode {
   View = 'view',
-  Edit = 'edit' 
+  Edit = 'edit',
+  Master = 'master'
 }
