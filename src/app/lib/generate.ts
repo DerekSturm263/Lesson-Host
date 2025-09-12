@@ -82,6 +82,7 @@ export async function verifyShortAnswer(question: string, userResponse: string, 
     return JSON.parse(response.text ?? '') as Verification;
   } else {
     const isValid = userResponse == value.correctAnswer;
+
     const contents = isValid ?
       `TASK:
       The student's response was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.
@@ -128,38 +129,44 @@ export async function verifyShortAnswer(question: string, userResponse: string, 
 }
 
 export async function verifyMultipleChoice(question: string, userResponse: string[], value: types.MultipleChoice): Promise<Verification> {
-  const isValid = false;
-  const contents = '';
+  let isValid = false;
+  let contents = '';
   
-  /*if (value.type == types.MultipleChoiceType.Radio) {
-    if () {
-      // One correct answer, radio, correct.
+  const correctAnswers = value.items.filter(item => item.isCorrect).map(item => item.value);
+  // Got at least one right answer, and either doesn't need all correct or got them all correct.
+  if ((!value.needsAllCorrect && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
+    isValid = true;
 
-    } else if () {
-      // Multiple correct answers, radio, correct.
+    contents =
+      `TASK:
+      The student's selections were correct. Congratulate the student on getting their answer right. Review their SELECTION(S) to recap how the QUESTION was solved and why their selections were correct.
 
-    } else if () {
-      // One correct answer, radio, incorrect.
+      QUESTION:
+      ${question}
 
-    } else if () {
-      // Multiple correct answers, radio, incorrect.
-    
-    }
+      SELECTION(S):
+      ${userResponse.join(', ')}
+
+      CORRECT ANSWER(S):
+      ${correctAnswers.join(', ')}
+      `;
   } else {
-    if () {
-      // One correct answer, checkbox, correct.
-
-    } else if () {
-      // Multiple correct answers, checkbox, correct.
-
-    } else if () {
-      // One correct answer, checkbox, incorrect.
-
-    } else if () {
-      // Multiple correct answers, checkbox, incorrect.
+    isValid = false;
     
-    }
-  }*/
+    contents =
+      `TASK:
+      The student's selections were incorrect. View the student's SELECTION(S) and the original QUESTION and give the student feedback on why their selections aren't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER(S).
+
+      QUESTION:
+      ${question}
+
+      SELECTION(S):
+      ${userResponse.join(', ')}
+
+      CORRECT ANSWER(S):
+      ${correctAnswers.join(', ')}
+      `;
+  }
 
   const response = await ai.models.generateContent({
     model: textModel,
@@ -176,6 +183,18 @@ export async function verifyMultipleChoice(question: string, userResponse: strin
   });
 
   return { isValid: isValid, feedback: response.text ?? '' } as Verification
+}
+
+function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
+  if (arr1.length !== arr2.length)
+    return false;
+
+  for (let i = 0; i < arr1.length; ++i) {
+    if (arr1[i] !== arr2[i])
+      return false;
+  }
+
+  return true;
 }
 
 export async function verifyTrueOrFalse(question: string, userResponse: boolean, value: types.TrueOrFalse): Promise<Verification> {
