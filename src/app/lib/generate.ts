@@ -240,12 +240,12 @@ export async function verifyCodespace(instructions: string, content: string, res
 
     contents =
       `TASK:
-      The code compiled and ran successfully, although this code wasn't made by the student. It was just an example for the student to run and examine the output. View the attached FILE and explain to the student how they tie back to the INSTRUCTIONS to produce the OUTPUT. Keep your explanation as short as possible, it just needs to introduce the user to the topic.
+      The code compiled and ran successfully, although this code wasn't made by the student. It was just an example for the student to run and examine the output. View the attached FILE and explain to the student how it ties back to the TEXT and produces the OUTPUT. Keep your explanation as short as possible, it just needs to introduce the user to the topic.
 
       FILE:
       ${content}
 
-      INSTRUCTIONS:
+      TEXT:
       ${instructions}
 
       OUTPUT:
