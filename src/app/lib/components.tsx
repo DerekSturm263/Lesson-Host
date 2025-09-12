@@ -1005,7 +1005,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       >
         {(mode == types.ComponentMode.View ? (
           <Markdown
-            components={{
+            /*components={{
               strong({ node, children }) {
                 return <strong><WordWrapper text={String(children)} /></strong>
               },
@@ -1021,7 +1021,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               code({ node, children }) {
                 return <code><WordWrapper text={String(children)} /></code>
               }
-            }}
+            }}*/
           >
             {text}
           </Markdown>
