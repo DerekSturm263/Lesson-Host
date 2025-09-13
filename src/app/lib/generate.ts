@@ -270,7 +270,7 @@ export async function verifyCodespace(instructions: string, content: string, res
 
       OUTPUT:
       ${result.stdout}`;
-  } else if (result.stdout != value.correctOutput) {
+  } else if (result.stdout?.toString() !== value.correctOutput) {
     // Code compiled, but didn't match the correct output
     isValid = false;
 
