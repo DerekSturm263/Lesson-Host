@@ -147,7 +147,7 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 }
 
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
-  console.log(JSON.stringify(formData));
+  console.log(JSON.stringify(formData.get('response')));
 
   helpers.startThinking(elementID);
   const feedback = await verifyTrueOrFalse(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<types.TrueOrFalse>(elementID));
