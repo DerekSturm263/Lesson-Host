@@ -133,8 +133,8 @@ export async function verifyMultipleChoice(question: string, userResponse: strin
   let contents = '';
   
   const correctAnswers = value.items.filter(item => item.isCorrect).map(item => item.value);
-  // Got at least one right answer, and either doesn't need all correct or got them all correct.
   if ((!value.needsAllCorrect && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
+    // Got at least one right answer, and either doesn't need all correct or got them all correct.
     isValid = true;
 
     contents =
@@ -151,6 +151,7 @@ export async function verifyMultipleChoice(question: string, userResponse: strin
       ${correctAnswers.join(', ')}
       `;
   } else {
+    // Didn't get any right answers.
     isValid = false;
     
     contents =
