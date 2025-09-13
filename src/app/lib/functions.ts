@@ -131,7 +131,8 @@ export async function submitShortAnswer(formData: FormData, elementID: types.Ele
 }
 
 export async function submitMultipleChoice(formData: FormData, elementID: types.ElementID) {
-  console.log(JSON.stringify(formData));
+  console.log(JSON.stringify(formData.getAll('response')));
+  console.log(JSON.stringify(formData.get('response')));
 
   helpers.startThinking(elementID);
   const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
