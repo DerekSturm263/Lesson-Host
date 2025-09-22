@@ -1,3 +1,4 @@
+import { Props } from '@/app/lib/types';
 import { ToastContainer } from 'react-toastify';
 import { Header, LearnPageContent } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
