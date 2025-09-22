@@ -1,5 +1,3 @@
-'use client'
-
 import { Props } from '@/app/lib/types';
 import { Header } from '../../../../lib/components';
 import { getSkill } from '../../../../lib/database';
