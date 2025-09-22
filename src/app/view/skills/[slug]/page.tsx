@@ -1,48 +1,25 @@
 import Link from 'next/link';
 import { Header } from '../../../lib/components';
 import { getSkill } from '../../../lib/database';
+import { Metadata, ResolvingMetadata } from 'next';
+import { Props } from '@/app/lib/types';
 
-/* tslint:disable no-require-imports */
-//const lti = require('ltijs').Provider;
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const { slug } = await params;
+  const skill = await getSkill(slug);
 
-/* tslint:disable no-explicit-any */
-/*lti.onConnect(async (token: any, req: any, res: any) => {
-  const customParams = res.locals.lti.custom;
-  console.log('Custom parameters:', customParams);
-});*/
+  return {
+    title: `${skill.title} | MySkillStudy.com`,
+    description: 'Learn anything by practicing skills and creating projects.',
+  }
+}
 
-export default async function Page({ params, searchParams }: { params: Promise<{ slug: string }>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
   const urlParams = await searchParams;
   const hideHeader = !urlParams || urlParams.hideHeader == 'true';
 
   const skill = await getSkill(slug);
-
-  try {
-    /*const enrollment = await ky.get(`https://api.schoology.com/v1/[realm]/enrollments`,
-      {
-        credentials: 'include',
-        headers: {
-          Authorization: 'Bearer ' + process.env.LTI_KEY
-        }
-      }
-    ).json();
-
-    console.log(JSON.stringify(enrollment));
-
-    const grades = await ky.get(`https://api.schoology.com/v1/sections/{section_id}/grades`,
-      {
-        credentials: 'include',
-        headers: {
-          Authorization: 'Bearer ' + process.env.LTI_KEY
-        }
-      }
-    ).json();
-
-    console.log(JSON.stringify(grades));*/
-  } catch (err) {
-    console.error(err);
-  }
 
   const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`) : "";
 
