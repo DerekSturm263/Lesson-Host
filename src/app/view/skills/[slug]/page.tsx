@@ -4,7 +4,7 @@ import { getSkill } from '../../../lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 import { Props } from '@/app/lib/types';
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+/*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const skill = await getSkill(slug);
 
@@ -12,7 +12,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
-}
+}*/
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;

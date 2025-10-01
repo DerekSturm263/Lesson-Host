@@ -3,7 +3,7 @@ import { Header } from '../../../lib/components';
 import { getProject } from '../../../lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+/*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProject(slug);
 
@@ -11,7 +11,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     title: `${project.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
-}
+}*/
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;

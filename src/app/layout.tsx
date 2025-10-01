@@ -7,10 +7,10 @@ const lexend = Lexend({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+/*export const metadata: Metadata = {
   title: "MySkillStudy.com",
   description: "Learn, practice, and study skills online",
-};
+};*/
 
 export default function RootLayout({
   children,
