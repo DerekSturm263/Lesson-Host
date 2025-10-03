@@ -141,7 +141,6 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
         <button
           onClick={(e) => {
             removeChapter(elementID.chapterIndex);
-            toast("Chapter deleted");
           }}
         >
           Delete
@@ -216,7 +215,6 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           <button
             onClick={async (e) => { 
               await saveSkillLearn(slug, skill.learn);
-              toast(`${skill.title} saved successfully`);
             }}
           >
             Save
