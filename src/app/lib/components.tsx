@@ -1,19 +1,17 @@
 'use client'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import Markdown from 'react-markdown';
-//import { Reorder } from 'react-reorder';
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
 import { saveSkillLearn, createSkill, createProject, createCourse } from './database';
+import Image from 'next/image';
+import Link from 'next/link';
+import Markdown from 'react-markdown';
+import ky from 'ky';
 import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
-import ky from 'ky';
-import { toast } from 'react-toastify';
 
 export function Header() {
   return (
