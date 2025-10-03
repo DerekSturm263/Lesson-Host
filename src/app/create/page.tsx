@@ -1,6 +1,5 @@
-import { Header } from '../lib/components';
-import { CreateSkillButton, CreateProjectButton, CreateCourseButton } from '../lib/components';
-import { Metadata } from 'next'
+import { Header, CreateSkillButton, CreateProjectButton, CreateCourseButton } from '@/app/lib/components';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Create | MySkillStudy.com',

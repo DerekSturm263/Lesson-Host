@@ -1,8 +1,6 @@
-import { Props } from '@/app/lib/types';
-import { ToastContainer } from 'react-toastify';
-import { Header, LearnPageContent } from '../../../../lib/components';
-import { getSkill } from '../../../../lib/database';
-import * as types from '../../../../lib/types';
+import { Props, ComponentMode } from '@/app/lib/types';
+import { Header, LearnPageContent } from '@/app/lib/components';
+import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
 /*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
@@ -15,7 +13,7 @@ import { Metadata, ResolvingMetadata } from 'next';
   }
 }*/
 
-export default async function Page({ params, searchParams }: types.Props) {
+export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
 
   const urlParams = await searchParams;
@@ -33,11 +31,9 @@ export default async function Page({ params, searchParams }: types.Props) {
           <LearnPageContent
             slug={slug}
             skill={skill}
-            mode={mode as types.ComponentMode}
+            mode={mode as ComponentMode}
             apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           />
-
-          <ToastContainer />
         </div>
       </main>
     </div>

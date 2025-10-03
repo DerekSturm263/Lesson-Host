@@ -1,9 +1,8 @@
-import Link from 'next/link';
-import { Header, SkillDescription, SkillTitle } from '../../../lib/components';
-import { getSkill } from '../../../lib/database';
+import { Props, ComponentMode } from '@/app/lib/types';
+import { Header, SkillDescription, SkillTitle } from '@/app/lib/components';
+import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
-import * as types from '../../../../lib/types';
-import { Props } from '@/app/lib/types';
+import Link from 'next/link';
 
 /*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
@@ -31,8 +30,8 @@ export default async function Page({ params, searchParams }: Props) {
       <main>
         {!hideHeader && <Header />}
 
-        <SkillTitle skill={skill} mode={mode as types.ComponentMode} />
-        <SkillDescription skill={skill} mode={mode as types.ComponentMode} />
+        <SkillTitle skill={skill} mode={mode as ComponentMode} />
+        <SkillDescription skill={skill} mode={mode as ComponentMode} />
 
         <div className="colButtons">
           <Link

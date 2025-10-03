@@ -1,6 +1,6 @@
-import { Props } from '@/app/lib/types';
-import { Header } from '../../../../lib/components';
-import { getSkill } from '../../../../lib/database';
+import { Props, ComponentMode } from '@/app/lib/types';
+import { Header } from '@/app/lib/components';
+import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
 /*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {

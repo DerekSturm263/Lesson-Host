@@ -1,5 +1,5 @@
-import { Header } from '../lib/components';
-import type { Metadata } from 'next'
+import { Header } from '@/app/lib/components';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'View | MySkillStudy.com',
