@@ -1,6 +1,6 @@
 import { Header } from '../lib/components';
 import { CreateSkillButton, CreateProjectButton, CreateCourseButton } from '../lib/components';
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Create | MySkillStudy.com',
@@ -14,7 +14,7 @@ export default function Page() {
         <Header />
         <h1 className="mainHeader">Create</h1>
 
-        <div>
+        <div className="colButtons">
           <CreateSkillButton />
           <CreateProjectButton />
           <CreateCourseButton />

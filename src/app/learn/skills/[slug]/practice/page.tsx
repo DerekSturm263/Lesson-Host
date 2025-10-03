@@ -1,27 +1,31 @@
 import { Props } from '@/app/lib/types';
-import { Header } from '../../../lib/components';
-import { getCourse } from '../../../lib/database';
+import { Header } from '../../../../lib/components';
+import { getSkill } from '../../../../lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
 /*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
-  const course = await getCourse(slug);
+  const skill = await getSkill(slug);
 
   return {
-    title: `${course.title} | MySkillStudy.com`,
+    title: `Practice ${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
 }*/
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
-  const course = await getCourse(slug);
+
+  const urlParams = await searchParams;
+  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+  const mode = urlParams?.mode ?? "view";
+
+  const skill = await getSkill(slug);
 
   return (
     <div>
       <main>
         <Header />
-        <h1 className="mainHeader">{course.title}</h1>
       </main>
     </div>
   );

@@ -8,13 +8,18 @@ import { Metadata, ResolvingMetadata } from 'next';
   const skill = await getSkill(slug);
 
   return {
-    title: `Implement ${skill.title} | MySkillStudy.com`,
+    title: `Study ${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
 }*/
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
+
+  const urlParams = await searchParams;
+  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+  const mode = urlParams?.mode ?? "view";
+
   const skill = await getSkill(slug);
 
   return (

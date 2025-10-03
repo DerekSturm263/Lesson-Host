@@ -115,11 +115,7 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
       data-iscomplete="false"
       data-isselected="false"
     >
-      {(mode == types.ComponentMode.View ? (
-        <h4>
-          {title}
-        </h4>
-      ) : (
+      {(mode == types.ComponentMode.Edit ? (
         <input
           type="text"
           name="chapterTitle"
@@ -129,6 +125,10 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
             helpers.getChapter(elementID).title = e.currentTarget.value;
           }}
         />
+      ) : (
+        <h4>
+          {title}
+        </h4>
       ))}
 
       <Image
@@ -404,7 +404,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
 
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).items);
 
-  /*if (mode == types.ComponentMode.View) {
+  /*if (mode != types.ComponentMode.Edit) {
     setItems(items.sort(item => Math.random() - 0.5));
   }*/
 
@@ -506,11 +506,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
         disabled={isDisabled}
       />
 
-      {(mode == types.ComponentMode.View ? (
-        <Markdown>
-          {value}
-        </Markdown>
-      ) : (
+      {(mode == types.ComponentMode.Edit ? (
         <div>
           <label>
             Is Correct:
@@ -546,6 +542,10 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
             />
           </label>
         </div>
+      ) : (
+        <Markdown>
+          {value}
+        </Markdown>
       ))}
     </label>
   );
@@ -649,7 +649,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
 
-  /*if (mode == types.ComponentMode.View) {
+  /*if (mode != types.ComponentMode.Edit) {
     setItems(items.sort(item => Math.random() - 0.5));
   }*/
 
@@ -1005,7 +1005,18 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
         className="text"
       >
-        {(mode == types.ComponentMode.View ? (
+        {(mode == types.ComponentMode.Edit ? (
+          <textarea
+            name="elementText"
+            value={text}
+            rows={4}
+            cols={120}
+            onChange={(e) => {
+              setText(e.currentTarget.value);
+              helpers.getElement(elementID).text = e.currentTarget.value;
+            }}
+          />
+        ) : (
           <Markdown
             /*components={{
               strong({ node, children }) {
@@ -1027,17 +1038,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           >
             {text}
           </Markdown>
-        ) : (
-          <textarea
-            name="elementText"
-            value={text}
-            rows={4}
-            cols={120}
-            onChange={(e) => {
-              setText(e.currentTarget.value);
-              helpers.getElement(elementID).text = e.currentTarget.value;
-            }}
-          />
         ))}
       </div>
 
@@ -1060,7 +1060,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         </div>
 
         <div className="col2">
-          {mode == types.ComponentMode.View && (
+          {mode != types.ComponentMode.Edit && (
             <button
               onClick={(e) => functions.rephrase(elementID)}
               title="Rephrase text"
@@ -1075,7 +1075,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             </button>
           )}
           
-          {mode == types.ComponentMode.View && (
+          {mode != types.ComponentMode.Edit && (
             <button
               onClick={(e) => functions.readAloud(elementID)}
               title="Read text aloud"
@@ -1090,7 +1090,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             </button>
           )}
 
-          {mode == types.ComponentMode.View && (
+          {mode != types.ComponentMode.Edit && (
             <button
               onClick={(e) => functions.reset(elementID)}
               title="Reset text and interaction"
@@ -1164,7 +1164,7 @@ export function CreateSkillButton() {
     <button
       onClick={async (e) => {
         const newSkill = await createSkill();
-        window.open(`https://www.myskillstudy.com/edit/skills/${newSkill[1]}/`);
+        window.open(`https://www.myskillstudy.com/learn/skills/${newSkill[1]}?mode=edit`);
       }}
     >
       Skill
@@ -1177,7 +1177,7 @@ export function CreateProjectButton() {
     <button
       onClick={async (e) => {
         const newProject = await createProject();
-        window.open(`https://www.myskillstudy.com/edit/projects/${newProject[1]}/`);
+        window.open(`https://www.myskillstudy.com/learn/projects/${newProject[1]}?mode=edit`);
       }}
     >
       Project
@@ -1190,10 +1190,72 @@ export function CreateCourseButton() {
     <button
       onClick={async (e) => {
         const newCourse = await createCourse();
-        window.open(`https://www.myskillstudy.com/edit/courses/${newCourse[1]}/`);
+        window.open(`https://www.myskillstudy.com/learn/courses/${newCourse[1]}?mode=edit`);
       }}
     >
       Course
     </button>
   );
+}
+
+export function SkillTitle({ skill, mode }: { skill: types.Skill, mode: types.ComponentMode }) {
+  const [ title, setTitle ] = useState(skill.title);
+
+  const header = (
+    <h1
+      className="mainHeader"
+    >
+      {title}
+    </h1>
+  );
+
+  const input = (
+    <label>
+      Title:
+
+      <input
+        type="text"
+        name="title"
+        autoComplete="off"
+        value={title}
+        onInput={(e) => {
+          setTitle(e.currentTarget.value)
+          skill.title = e.currentTarget.value;
+        }}
+      />
+    </label>
+  );
+
+  return mode == types.ComponentMode.Edit ? input : header;
+}
+
+export function SkillDescription({ skill, mode }: { skill: types.Skill, mode: types.ComponentMode }) {
+  const [ description, setDescription ] = useState(skill.description);
+  
+  const header = (
+    <h1
+      className="subHeader"
+    >
+      {description}
+    </h1>
+  );
+
+  const input = (
+    <label>
+      Description:
+
+      <input
+        type="text"
+        name="description"
+        autoComplete="off"
+        value={description}
+        onInput={(e) => {
+          setDescription(e.currentTarget.value)
+          skill.description = e.currentTarget.value;
+        }}
+      />
+    </label>
+  );
+
+  return mode == types.ComponentMode.Edit ? input : header;
 }

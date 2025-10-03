@@ -1,66 +1,38 @@
 import Link from 'next/link';
-import { Header } from '../../../lib/components';
+import { Header, SkillDescription, SkillTitle } from '../../../lib/components';
 import { getSkill } from '../../../lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
+import * as types from '../../../../lib/types';
 import { Props } from '@/app/lib/types';
-//import { useState } from 'react';
 
 /*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const skill = await getSkill(slug);
 
   return {
-    title: `Edit ${skill.title} | MySkillStudy.com`,
+    title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
 }*/
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
+
   const urlParams = await searchParams;
   const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+  const mode = urlParams?.mode ?? "view";
 
   const skill = await getSkill(slug);
 
   const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`) : "";
-
-  /*const [ title, setTitle ] = useState(skill.title);
-  const [ description, setDescription ] = useState(skill.description);*/
 
   return (
     <div>
       <main>
         {!hideHeader && <Header />}
 
-        <label>
-          Title:
-
-          <input
-            type="text"
-            name="title"
-            autoComplete="off"
-            /*value={title}
-            onInput={(e) => {
-              setTitle(e.currentTarget.value)
-              skill.title = e.currentTarget.value;
-            }}*/
-          />
-        </label>
-        
-        <label>
-          Description:
-
-          <input
-            type="text"
-            name="description"
-            autoComplete="off"
-            /*value={description}
-            onInput={(e) => {
-              setDescription(e.currentTarget.value)
-              skill.description = e.currentTarget.value;
-            }}*/
-          />
-        </label>
+        <SkillTitle skill={skill} mode={mode as types.ComponentMode} />
+        <SkillDescription skill={skill} mode={mode as types.ComponentMode} />
 
         <div className="colButtons">
           <Link

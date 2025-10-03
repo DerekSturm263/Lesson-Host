@@ -1,5 +1,5 @@
 import { Header } from './lib/components';
-import type { Metadata } from 'next'
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Home | MySkillStudy.com',
@@ -11,7 +11,7 @@ export default async function Home() {
     <div>
       <main>
         <Header />
-        <h1 className="mainHeader">Pick up where you left off</h1>
+        <h1 className="mainHeader">Main page under construction. Be back soon!</h1>
       </main>
     </div>
   );
