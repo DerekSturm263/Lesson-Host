@@ -76,6 +76,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
 
           <Stack
             direction="row"
+            spacing={2}
           >
             <FormControl>
               <InputLabel id="type-label">Type</InputLabel>
