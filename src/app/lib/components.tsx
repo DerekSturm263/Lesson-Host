@@ -63,6 +63,14 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             component="div"
             sx={{ flexGrow: 1 }}
           >
+            MySkillStudy.com
+          </Typography>
+
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
             {title}
           </Typography>
           
@@ -98,10 +106,18 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             </Select>
           </FormControl>
 
-          <LinearProgress
-            variant="determinate"
-            value={0}
-          />
+          <Box>
+            <LinearProgress
+              variant="determinate"
+              value={0}
+            />
+
+            <Typography
+              variant="body2"
+            >
+              {`${0}% Complete`}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
