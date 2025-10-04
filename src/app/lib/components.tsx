@@ -1066,7 +1066,8 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       >
         {(mode == types.ComponentMode.Edit ? (
           <TextField
-            name="elementText"
+            label="Text"
+            multiline
             value={text}
             onChange={(e) => {
               setText(e.currentTarget.value);
