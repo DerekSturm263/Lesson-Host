@@ -38,6 +38,8 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -1078,86 +1080,88 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   globalIndex = 0;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <IconButton>
-        <Fullscreen />
-      </IconButton>
+    <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <IconButton>
+          <Fullscreen />
+        </IconButton>
 
-      <div
-        id={`text${helpers.getAbsoluteIndex(elementID)}`}
-        data-lastnonthinkingtext={helpers.getElement(elementID).text}
-        className="text"
-      >
-        {(mode == types.ComponentMode.Edit ? (
-          <TextField
-            label="Text"
-            multiline
-            value={text}
-            onChange={(e) => {
-              setText(e.currentTarget.value);
-              helpers.getElement(elementID).text = e.currentTarget.value;
-            }}
-          />
-        ) : (
-          <Markdown
-            /*components={{
-              strong({ node, children }) {
-                return <strong><WordWrapper text={String(children)} /></strong>
-              },
-              i({ node, children }) {
-                return <i><WordWrapper text={String(children)} /></i>
-              },
-              p({ node, children }) {
-                return <WordWrapper text={String(children)} />
-              },
-              li({ node, children }) {
-                return <li><WordWrapper text={String(children)} /></li>
-              },
-              code({ node, children }) {
-                return <code><WordWrapper text={String(children)} /></code>
-              }
-            }}*/
-          >
-            {text}
-          </Markdown>
-        ))}
-      </div>
-
-      <Box sx={{ flexGrow: 1 }}>
-        <Pagination count={elements.length} />
-
-        <Stack
-          direction="row"
-          spacing={1}
+        <div
+          id={`text${helpers.getAbsoluteIndex(elementID)}`}
+          data-lastnonthinkingtext={helpers.getElement(elementID).text}
+          className="text"
         >
-          <Chip
-            icon={<AutoAwesome />}
-            label="Rephrase"
-            onClick={(e) => functions.rephrase(elementID)}
-          />
-
-          <Chip
-            icon={<VolumeUp />}
-            label="Read Aloud"
-            onClick={(e) => functions.readAloud(elementID)}
-          />
-
-          <Chip
-            icon={<Refresh />}
-            label="Reset"
-            onClick={(e) => functions.reset(elementID)}
-          />
-
-          {mode == types.ComponentMode.Edit && (
-            <Chip
-              icon={<Delete />}
-              label="Delete"
-              onClick={(e) => removeElement(elementID.elementIndex)}
+          {(mode == types.ComponentMode.Edit ? (
+            <TextField
+              label="Text"
+              multiline
+              value={text}
+              onChange={(e) => {
+                setText(e.currentTarget.value);
+                helpers.getElement(elementID).text = e.currentTarget.value;
+              }}
             />
-          )}
-        </Stack>
-      </Box>
-    </Box>
+          ) : (
+            <Markdown
+              /*components={{
+                strong({ node, children }) {
+                  return <strong><WordWrapper text={String(children)} /></strong>
+                },
+                i({ node, children }) {
+                  return <i><WordWrapper text={String(children)} /></i>
+                },
+                p({ node, children }) {
+                  return <WordWrapper text={String(children)} />
+                },
+                li({ node, children }) {
+                  return <li><WordWrapper text={String(children)} /></li>
+                },
+                code({ node, children }) {
+                  return <code><WordWrapper text={String(children)} /></code>
+                }
+              }}*/
+            >
+              {text}
+            </Markdown>
+          ))}
+        </div>
+
+        <Box sx={{ flexGrow: 1 }}>
+          <Pagination count={elements.length} />
+
+          <Stack
+            direction="row"
+            spacing={1}
+          >
+            <Chip
+              icon={<AutoAwesome />}
+              label="Rephrase"
+              onClick={(e) => functions.rephrase(elementID)}
+            />
+
+            <Chip
+              icon={<VolumeUp />}
+              label="Read Aloud"
+              onClick={(e) => functions.readAloud(elementID)}
+            />
+
+            <Chip
+              icon={<Refresh />}
+              label="Reset"
+              onClick={(e) => functions.reset(elementID)}
+            />
+
+            {mode == types.ComponentMode.Edit && (
+              <Chip
+                icon={<Delete />}
+                label="Delete"
+                onClick={(e) => removeElement(elementID.elementIndex)}
+              />
+            )}
+          </Stack>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
 
