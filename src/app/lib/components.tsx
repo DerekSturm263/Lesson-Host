@@ -1096,22 +1096,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       </div>
 
       <div className="buttons">
-        <div className="col1">
-          {elements.map((element, index) => (
-            <Dot
-              key={index}
-              elementID={{ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys }}
-            />
-          ))}
-
-          {mode == types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => addElement()}
-            >
-              New
-            </button>
-          )}
-        </div>
+        <Pagination count={elements.length} />
 
         <Stack
           direction="row"
