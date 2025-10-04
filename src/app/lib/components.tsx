@@ -1134,7 +1134,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           )}
         </Stack>
       </Box>
-    </div>
+    </Box>
   );
 }
 
