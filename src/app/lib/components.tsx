@@ -64,7 +64,9 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
       <AppBar
         position="static"
       >
-        <Toolbar>
+        <Toolbar
+          variant="dense"
+        >
           <Typography
             variant="h6"
             component="div"
@@ -1194,27 +1196,6 @@ function WordWrapper({ text }: { text: string }) {
         </span>
       ))}
     </>
-  );
-}
-
-function Dot({ elementID }: { elementID: types.ElementID }) {
-  const [ state, setState ] = useState(helpers.getElement(elementID).state);
-
-  useEffect(() => {
-    window.addEventListener(`updateDots${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setState((e as CustomEvent).detail);
-    });
-  }, []);
-
-  return (
-    <button
-      className={`dot dot${helpers.getAbsoluteIndex(elementID)}`}
-      onClick={(e) => functions.load(elementID)}
-      title={`Load section ${elementID.elementIndex + 1}`}
-      disabled={state == types.ElementState.Locked}
-      data-iscomplete="false"
-      data-isselected="false"
-    ></button>
   );
 }
 
