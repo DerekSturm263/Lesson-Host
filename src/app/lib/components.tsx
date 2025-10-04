@@ -811,7 +811,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
   const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
   const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).correctOutput);
 
-  const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
+  const [ output, setOutput ] = useState("");
 
   async function executeCode() {
     setOutput("Running...");
@@ -922,16 +922,25 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       <div
         className="codeEditorRight"
       >
+        <Stack
+          direction="row"
+          spacing={1}
+        >
+          <Typography>
+            Press \"Run\" to execute your code. Any outputs or errors will be printed here
+          </Typography>
+
+          <Button
+            startIcon={<PlayArrow />}
+            onClick={executeCode}
+          >
+            Run
+          </Button>
+        </Stack>
+
         <p>
           {output}
         </p>
-
-        <Button
-          startIcon={<PlayArrow />}
-          onClick={executeCode}
-        >
-          Run
-        </Button>
       </div>
 
       
@@ -1090,7 +1099,10 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           )}
         </div>
 
-        <Stack direction="row" spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+        >
           <Chip
             icon={<AutoAwesome />}
             label="Rephrase"
