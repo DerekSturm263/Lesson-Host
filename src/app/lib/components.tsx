@@ -37,6 +37,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -1053,7 +1054,11 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   globalIndex = 0;
 
   return (
-    <div className="textBox">
+    <Box sx={{ flexGrow: 1 }}>
+      <IconButton>
+        <Fullscreen />
+      </IconButton>
+
       <div
         id={`text${helpers.getAbsoluteIndex(elementID)}`}
         data-lastnonthinkingtext={helpers.getElement(elementID).text}
