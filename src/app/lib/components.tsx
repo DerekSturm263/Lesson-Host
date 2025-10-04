@@ -1065,11 +1065,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         className="text"
       >
         {(mode == types.ComponentMode.Edit ? (
-          <textarea
+          <TextField
             name="elementText"
             value={text}
-            rows={4}
-            cols={120}
             onChange={(e) => {
               setText(e.currentTarget.value);
               helpers.getElement(elementID).text = e.currentTarget.value;
