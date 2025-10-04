@@ -926,7 +926,9 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           direction="row"
           spacing={1}
         >
-          <Typography>
+          <Typography
+            variant="body1"
+          >
             Press \"Run\" to execute your code. Any outputs or errors will be printed here
           </Typography>
 
