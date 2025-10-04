@@ -58,8 +58,12 @@ import Delete from '@mui/icons-material/Delete';
 
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box
+      sx={{ flexGrow: 1 }}
+    >
+      <AppBar
+        position="static"
+      >
         <Toolbar>
           <Typography
             variant="h6"
@@ -1087,51 +1091,52 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   globalIndex = 0;
 
   return (
-    <Card sx={{ flexGrow: 1 }}>
+    <Card
+      id={`text${helpers.getAbsoluteIndex(elementID)}`}
+      sx={{ flexGrow: 1 }}
+    >
       <CardContent>
         {isThinking && <LinearProgress />}
 
-        <Box
-          id={`text${helpers.getAbsoluteIndex(elementID)}`}
-        >
-          {(mode == types.ComponentMode.Edit ? (
-            <TextField
-              label="Text"
-              multiline
-              value={text}
-              onChange={(e) => {
-                setText(e.currentTarget.value);
-                helpers.getElement(elementID).text = e.currentTarget.value;
-              }}
-            />
-          ) : (
-            <Markdown
-              /*components={{
-                strong({ node, children }) {
-                  return <strong><WordWrapper text={String(children)} /></strong>
-                },
-                i({ node, children }) {
-                  return <i><WordWrapper text={String(children)} /></i>
-                },
-                p({ node, children }) {
-                  return <WordWrapper text={String(children)} />
-                },
-                li({ node, children }) {
-                  return <li><WordWrapper text={String(children)} /></li>
-                },
-                code({ node, children }) {
-                  return <code><WordWrapper text={String(children)} /></code>
-                }
-              }}*/
-            >
-              {isThinking ? "Thinking..." : text}
-            </Markdown>
-          ))}
-        </Box>
+        {(mode == types.ComponentMode.Edit ? (
+          <TextField
+            label="Text"
+            multiline
+            value={text}
+            onChange={(e) => {
+              setText(e.currentTarget.value);
+              helpers.getElement(elementID).text = e.currentTarget.value;
+            }}
+          />
+        ) : (
+          <Markdown
+            /*components={{
+              strong({ node, children }) {
+                return <strong><WordWrapper text={String(children)} /></strong>
+              },
+              i({ node, children }) {
+                return <i><WordWrapper text={String(children)} /></i>
+              },
+              p({ node, children }) {
+                return <WordWrapper text={String(children)} />
+              },
+              li({ node, children }) {
+                return <li><WordWrapper text={String(children)} /></li>
+              },
+              code({ node, children }) {
+                return <code><WordWrapper text={String(children)} /></code>
+              }
+            }}*/
+          >
+            {isThinking ? "Thinking..." : text}
+          </Markdown>
+        ))}
       </CardContent>
 
       <CardActions>
-        <Pagination count={elements.length} />
+        <Pagination
+          count={elements.length}
+        />
 
         <Stack
           direction="row"

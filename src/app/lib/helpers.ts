@@ -26,26 +26,17 @@ export function getIsLastElement(elementID: types.ElementID): boolean {
 export function getText(elementID: types.ElementID): string {
   const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
 
-  return parent?.dataset.lastnonthinkingtext ?? "";
+  return parent?.firstChild?.firstChild?.textContent ?? '';
 }
 
 // Sets text and doesn't update non-thinking text.
 export function setThinking(elementID: types.ElementID, isThinking: boolean) {
-  const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
-  if (!parent)
-    return;
-
   window.dispatchEvent(new CustomEvent(`updateThinking${getAbsoluteIndex(elementID)}`, { detail: isThinking }));
 }
 
 // Sets text and updates the non-thinking text.
 export function setText(elementID: types.ElementID, text: string) {
-  const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
-  if (!parent)
-    return;
-
   window.dispatchEvent(new CustomEvent(`updateText${getAbsoluteIndex(elementID)}`, { detail: text }));
-  parent.dataset.lastnonthinkingtext = text;
 }
 
 // Resets to the original text.
