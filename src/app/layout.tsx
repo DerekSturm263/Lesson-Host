@@ -1,6 +1,10 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import "./globals.css";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -9,7 +13,7 @@ const lexend = Lexend({
 
 export const metadata: Metadata = {
   title: "MySkillStudy.com",
-  description: "Learn, practice, and study skills online",
+  description: "Learn anything by practicing skills and creating projects.",
 };
 
 export default function RootLayout({

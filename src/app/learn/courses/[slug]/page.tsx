@@ -22,7 +22,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   const course = await getCourse(slug);
 
-  const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`) : "";
+  const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`).join('&') : "";
 
   return (
     <div>

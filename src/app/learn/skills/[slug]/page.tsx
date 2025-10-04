@@ -23,7 +23,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   const skill = await getSkill(slug);
 
-  const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`) : "";
+  const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`).join('&') : "";
 
   return (
     <div>

@@ -13,19 +13,6 @@ import * as functions from '../lib/functions';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
 
-import Refresh from '@mui/icons-material/Refresh';
-import VolumeUp from '@mui/icons-material/VolumeUp';
-import AutoAwesome from '@mui/icons-material/AutoAwesome';
-import Menu from '@mui/icons-material/Menu';
-import CheckCircle from '@mui/icons-material/CheckCircle';
-import PlayArrow from '@mui/icons-material/PlayArrow';
-import Fullscreen from '@mui/icons-material/Fullscreen';
-import FullscreenExit from '@mui/icons-material/FullscreenExit';
-import School from '@mui/icons-material/School';
-import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import Create from '@mui/icons-material/Create';
-import CloudUpload from '@mui/icons-material/CloudUpload';
-
 import Button from '@mui/material/Button';
 import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
@@ -44,6 +31,20 @@ import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+
+import Refresh from '@mui/icons-material/Refresh';
+import VolumeUp from '@mui/icons-material/VolumeUp';
+import AutoAwesome from '@mui/icons-material/AutoAwesome';
+import Menu from '@mui/icons-material/Menu';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Fullscreen from '@mui/icons-material/Fullscreen';
+import FullscreenExit from '@mui/icons-material/FullscreenExit';
+import School from '@mui/icons-material/School';
+import LocalLibrary from '@mui/icons-material/LocalLibrary';
+import Create from '@mui/icons-material/Create';
+import CloudUpload from '@mui/icons-material/CloudUpload';
 
 export function Header() {
   return (
@@ -59,7 +60,7 @@ export function Header() {
 
       <ol>
         <Link
-          href="/view"
+          href="/learn"
           target="_self"
           rel="noopener noreferrer"
         >
