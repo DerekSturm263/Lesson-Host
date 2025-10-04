@@ -926,11 +926,12 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           {output}
         </p>
 
-        <button
+        <Button
+          startIcon={<PlayArrow />}
           onClick={executeCode}
         >
           Run
-        </button>
+        </Button>
       </div>
 
       
@@ -1090,11 +1091,30 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         </div>
 
         <Stack direction="row" spacing={1}>
-          <Chip icon={<AutoAwesome />} label="Rephrase" onClick={(e) => functions.rephrase(elementID)} />
-          <Chip icon={<VolumeUp />} label="Read Aloud" onClick={(e) => functions.readAloud(elementID)} />
-          <Chip icon={<Refresh />} label="Reset" onClick={(e) => functions.reset(elementID)} />
+          <Chip
+            icon={<AutoAwesome />}
+            label="Rephrase"
+            onClick={(e) => functions.rephrase(elementID)}
+          />
+
+          <Chip
+            icon={<VolumeUp />}
+            label="Read Aloud"
+            onClick={(e) => functions.readAloud(elementID)}
+          />
+
+          <Chip
+            icon={<Refresh />}
+            label="Reset"
+            onClick={(e) => functions.reset(elementID)}
+          />
+
           {mode == types.ComponentMode.Edit && (
-            <Chip icon={<Delete />} label="Delete" onClick={(e) => removeElement(elementID.elementIndex)} />
+            <Chip
+              icon={<Delete />}
+              label="Delete"
+              onClick={(e) => removeElement(elementID.elementIndex)}
+            />
           )}
         </Stack>
       </div>
