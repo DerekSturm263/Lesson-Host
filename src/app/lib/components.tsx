@@ -73,51 +73,58 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
           >
             {title}
           </Typography>
-          
-          <FormControl>
-            <InputLabel id="type-label">Type</InputLabel>
-            <Select
-              labelId="type-label"
-              value={type}
-              label="Type"
-            >
-              <MenuItem value="Learn">Learn</MenuItem>
-              <MenuItem value="Practice">Practice</MenuItem>
-              <MenuItem value="Implement">Implement</MenuItem>
-              <MenuItem value="Study">Study</MenuItem>
-            </Select>
-          </FormControl>
-          
-          <FormControl>
-            <InputLabel id="mode-label">Mode</InputLabel>
-            <Select
-              labelId="mode-label"
-              value={mode}
-              label="Mode"
-            >
-              {Object.values(types.ComponentMode).map((item, index) => (
-                <MenuItem
-                  key={index}
-                  value={item}
-                >
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
 
-          <Box>
-            <LinearProgress
-              variant="determinate"
-              value={0}
-            />
+          <Stack
+            direction="row"
+          >
+            <FormControl>
+              <InputLabel id="type-label">Type</InputLabel>
 
-            <Typography
-              variant="body2"
-            >
-              {`${0}% Complete`}
-            </Typography>
-          </Box>
+              <Select
+                labelId="type-label"
+                value={type}
+                label="Type"
+              >
+                <MenuItem value="Learn">Learn</MenuItem>
+                <MenuItem value="Practice">Practice</MenuItem>
+                <MenuItem value="Implement">Implement</MenuItem>
+                <MenuItem value="Study">Study</MenuItem>
+              </Select>
+            </FormControl>
+          
+            <FormControl>
+              <InputLabel id="mode-label">Mode</InputLabel>
+
+              <Select
+                labelId="mode-label"
+                value={mode}
+                label="Mode"
+              >
+                {Object.values(types.ComponentMode).map((item, index) => (
+                  <MenuItem
+                    key={index}
+                    value={item}
+                  >
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Box>
+              <LinearProgress
+                variant="determinate"
+                value={0}
+              />
+
+              <Typography
+                variant="body2"
+              >
+                {`${0}% Complete`}
+              </Typography>
+            </Box>
+
+          </Stack>
         </Toolbar>
       </AppBar>
     </Box>
