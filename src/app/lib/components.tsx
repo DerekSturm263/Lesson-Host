@@ -32,6 +32,11 @@ import Dialog from '@mui/material/Dialog';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -47,51 +52,57 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 
-export function Header() {
+export function Header({ skill, mode, type }: { skill: types.Skill, mode: types.ComponentMode, type: string }) {
   return (
-    <div className="header">
-      <h3>
-        <Link
-          href="/"
-          target="_self"
-        >
-          MySkillStudy.com
-        </Link>
-      </h3>
-
-      <ol>
-        <Link
-          href="/learn"
-          target="_self"
-          rel="noopener noreferrer"
-        >
-          Learn
-        </Link>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
+            {skill.title}
+          </Typography>
           
-        <Link
-          href="/create"
-          target="_self"
-          rel="noopener noreferrer"
-        >
-          Create
-        </Link>
-      </ol>
+          <FormControl fullWidth>
+            <InputLabel id="type-label">Type</InputLabel>
+            <Select
+              labelId="type-label"
+              value={type}
+              label="Type"
+            >
+              <MenuItem value="Learn">Learn</MenuItem>
+              <MenuItem value="Practice">Practice</MenuItem>
+              <MenuItem value="Implement">Implement</MenuItem>
+              <MenuItem value="Study">Study</MenuItem>
+            </Select>
+          </FormControl>
+          
+          <FormControl fullWidth>
+            <InputLabel id="mode-label">Mode</InputLabel>
+            <Select
+              labelId="mode-label"
+              value={mode}
+              label="Mode"
+            >
+              {Object.values(types.ComponentMode).map((item, index) => (
+                <MenuItem
+                  value={item}
+                >
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-      <select name="selectLanguage" id="selectLanguage">
-        <option value="en">English</option>
-        <option value="nl">Dutch</option>
-        <option value="fr">French</option>
-        <option value="de">German</option>
-        <option value="hi">Hindi</option>
-        <option value="it">Italian</option>
-        <option value="ja">Japanese</option>
-        <option value="ko">Korean</option>
-        <option value="pl">Polish</option>
-        <option value="ru">Russian</option>
-        <option value="es">Spanish</option>
-        <option value="sv">Swedish</option>
-      </select>
-    </div>
+          <LinearProgress
+            variant="determinate"
+            value={0}
+          />
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }
 

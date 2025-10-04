@@ -25,16 +25,14 @@ export default async function Page({ params, searchParams }: Props) {
   const page = (
     <div>
       <main>
-        <div className="all">
-          {!hideHeader && <Header />}
+        <Header skill={skill} mode={mode as ComponentMode} type="Learn" />
 
-          <LearnPageContent
-            slug={slug}
-            skill={skill}
-            mode={mode as ComponentMode}
-            apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
-          />
-        </div>
+        <LearnPageContent
+          slug={slug}
+          skill={skill}
+          mode={mode as ComponentMode}
+          apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
+        />
       </main>
     </div>
   );

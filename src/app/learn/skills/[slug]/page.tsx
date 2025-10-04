@@ -28,7 +28,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        {!hideHeader && <Header />}
+        <Header skill={skill} mode={mode as ComponentMode} type="" />
 
         <SkillTitle skill={skill} mode={mode as ComponentMode} />
         <SkillDescription skill={skill} mode={mode as ComponentMode} />
