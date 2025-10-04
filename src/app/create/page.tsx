@@ -10,7 +10,6 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header />
         <h1 className="mainHeader">Create</h1>
 
         <div className="colButtons">

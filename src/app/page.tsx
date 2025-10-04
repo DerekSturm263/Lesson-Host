@@ -10,7 +10,6 @@ export default async function Home() {
   return (
     <div>
       <main>
-        <Header />
         <h1 className="mainHeader">Main page under construction. Be back soon!</h1>
       </main>
     </div>
