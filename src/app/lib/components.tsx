@@ -45,6 +45,7 @@ import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
+import Delete from '@mui/icons-material/Delete';
 
 export function Header() {
   return (
@@ -1088,62 +1089,14 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           )}
         </div>
 
-        <div className="col2">
-          {mode != types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => functions.rephrase(elementID)}
-              title="Rephrase text"
-            >
-              <Image
-                src="/icons/sparkle.png"
-                width={25}
-                height={25}
-                alt="Rephrase"
-              />
-              Rephrase
-            </button>
-          )}
-          
-          {mode != types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => functions.readAloud(elementID)}
-              title="Read text aloud"
-            >
-              <Image
-                src="/icons/speaker.png"
-                width={25}
-                height={25}
-                alt="Read Aloud"
-              />
-              Read Aloud
-            </button>
-          )}
-
-          {mode != types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => functions.reset(elementID)}
-              title="Reset text and interaction"
-            >
-              <Image
-                src="/icons/refresh.png"
-                width={25}
-                height={25}
-                alt="Reset"
-              />
-              Reset
-            </button>
-          )}
-
+        <Stack direction="row" spacing={1}>
+          <Chip icon={<AutoAwesome />} label="Rephrase" onclick={(e: any) => functions.rephrase(elementID)} />
+          <Chip icon={<VolumeUp />} label="Read Aloud" onclick={(e: any) => functions.readAloud(elementID)} />
+          <Chip icon={<Refresh />} label="Reset" onclick={(e: any) => functions.reset(elementID)} />
           {mode == types.ComponentMode.Edit && (
-            <div className="col2">
-              <button
-                onClick={(e) => removeElement(elementID.elementIndex)}
-              >
-                Delete
-              </button>
-            </div>
+            <Chip icon={<Delete />} label="Delete" onclick={(e: any) => removeElement(elementID.elementIndex)} />
           )}
-        </div>
+        </Stack>
       </div>
     </div>
   );
