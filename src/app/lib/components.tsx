@@ -40,6 +40,7 @@ import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -1082,10 +1083,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>
-        <IconButton>
-          <Fullscreen />
-        </IconButton>
-
         <div
           id={`text${helpers.getAbsoluteIndex(elementID)}`}
           data-lastnonthinkingtext={helpers.getElement(elementID).text}
@@ -1125,42 +1122,48 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             </Markdown>
           ))}
         </div>
-
-        <Box sx={{ flexGrow: 1 }}>
-          <Pagination count={elements.length} />
-
-          <Stack
-            direction="row"
-            spacing={1}
-          >
-            <Chip
-              icon={<AutoAwesome />}
-              label="Rephrase"
-              onClick={(e) => functions.rephrase(elementID)}
-            />
-
-            <Chip
-              icon={<VolumeUp />}
-              label="Read Aloud"
-              onClick={(e) => functions.readAloud(elementID)}
-            />
-
-            <Chip
-              icon={<Refresh />}
-              label="Reset"
-              onClick={(e) => functions.reset(elementID)}
-            />
-
-            {mode == types.ComponentMode.Edit && (
-              <Chip
-                icon={<Delete />}
-                label="Delete"
-                onClick={(e) => removeElement(elementID.elementIndex)}
-              />
-            )}
-          </Stack>
-        </Box>
       </CardContent>
+
+      <CardActions>
+        <Pagination count={elements.length} />
+
+        <Stack
+          direction="row"
+          spacing={1}
+        >
+          <Chip
+            icon={<AutoAwesome />}
+            label="Rephrase"
+            onClick={(e) => functions.rephrase(elementID)}
+          />
+
+          <Chip
+            icon={<VolumeUp />}
+            label="Read Aloud"
+            onClick={(e) => functions.readAloud(elementID)}
+          />
+
+          <Chip
+            icon={<Refresh />}
+            label="Reset"
+            onClick={(e) => functions.reset(elementID)}
+          />
+
+          <Chip
+            icon={<Fullscreen />}
+            label="Fullscreen"
+            onClick={(e) => {}}
+          />
+
+          {mode == types.ComponentMode.Edit && (
+            <Chip
+              icon={<Delete />}
+              label="Delete"
+              onClick={(e) => removeElement(elementID.elementIndex)}
+            />
+          )}
+        </Stack>
+      </CardActions>
     </Card>
   );
 }
