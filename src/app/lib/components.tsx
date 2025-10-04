@@ -929,7 +929,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           <Typography
             variant="body1"
           >
-            Press \"Run\" to execute your code. Any outputs or errors will be printed here
+            Press "Run" to execute your code. Any outputs or errors will be printed here
           </Typography>
 
           <Button
