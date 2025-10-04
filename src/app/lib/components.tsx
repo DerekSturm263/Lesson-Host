@@ -41,7 +41,6 @@ import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import CardHeader from '@mui/material/CardHeader';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -856,7 +855,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
 
   async function executeCode() {
     setOutput("Running...");
-    helpers.startThinking(elementID);
+    helpers.setThinking(elementID, true);
 
     const templateify = (text: string) =>
       `using System;
@@ -892,6 +891,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
 
     const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID));
     helpers.setText(elementID, feedback.feedback);
+    helpers.setThinking(elementID, false);
 
     functions.readAloud(elementID);
 
@@ -1055,10 +1055,15 @@ let globalIndex = 0;
 function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ text, setText ] = useState(helpers.getElement(elementID).text);
   const [ elements, setElements ] = useState(helpers.getChapter(elementID).elements);
+  const [ isThinking, setIsThinking ] = useState(false);
 
   useEffect(() => {
     window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
       setText((e as CustomEvent).detail);
+    });
+    
+    window.addEventListener(`updateThinking${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setIsThinking((e as CustomEvent).detail);
     });
   }, []);
 
@@ -1083,14 +1088,11 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
 
   return (
     <Card sx={{ minWidth: 275 }}>
-      <CardHeader>
-        <Pagination count={elements.length} />
-      </CardHeader>
-
       <CardContent>
+        {isThinking && <LinearProgress />}
+
         <div
           id={`text${helpers.getAbsoluteIndex(elementID)}`}
-          data-lastnonthinkingtext={helpers.getElement(elementID).text}
           className="text"
         >
           {(mode == types.ComponentMode.Edit ? (
@@ -1123,13 +1125,15 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
                 }
               }}*/
             >
-              {text}
+              {isThinking ? "Thinking..." : text}
             </Markdown>
           ))}
         </div>
       </CardContent>
 
       <CardActions>
+        <Pagination count={elements.length} />
+
         <Stack
           direction="row"
           spacing={1}

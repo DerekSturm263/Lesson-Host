@@ -83,9 +83,10 @@ export function loadGraph(elementID: types.ElementID) {
 }
 
 export async function rephrase(elementID: types.ElementID) {
-  helpers.startThinking(elementID);
+  helpers.setThinking(elementID, true);
   const newText = await rephraseText(helpers.getText(elementID));
   helpers.setText(elementID, newText);
+  helpers.setThinking(elementID, false);
 
   readAloud(elementID);
 }
@@ -118,9 +119,10 @@ export async function define(word: string) {
 }
 
 export async function submitShortAnswer(formData: FormData, elementID: types.ElementID) {
-  helpers.startThinking(elementID);
+  helpers.setThinking(elementID, true);
   const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID));
   helpers.setText(elementID, feedback.feedback);
+  helpers.setThinking(elementID, false);
 
   readAloud(elementID);
 
@@ -134,9 +136,10 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
   console.log(JSON.stringify(formData.getAll('response')));
   console.log(JSON.stringify(formData.get('response')));
 
-  helpers.startThinking(elementID);
+  helpers.setThinking(elementID, true);
   const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
   helpers.setText(elementID, feedback.feedback);
+  helpers.setThinking(elementID, false);
 
   readAloud(elementID);
 
@@ -149,9 +152,10 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
 export async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
   console.log(JSON.stringify(formData.get('response')));
 
-  helpers.startThinking(elementID);
+  helpers.setThinking(elementID, true);
   const feedback = await verifyTrueOrFalse(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<types.TrueOrFalse>(elementID));
   helpers.setText(elementID, feedback.feedback);
+  helpers.setThinking(elementID, false);
 
   readAloud(elementID);
 

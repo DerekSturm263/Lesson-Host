@@ -30,12 +30,12 @@ export function getText(elementID: types.ElementID): string {
 }
 
 // Sets text and doesn't update non-thinking text.
-export function startThinking(elementID: types.ElementID) {
+export function setThinking(elementID: types.ElementID, isThinking: boolean) {
   const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
   if (!parent)
     return;
 
-  window.dispatchEvent(new CustomEvent(`updateText${getAbsoluteIndex(elementID)}`, { detail: "*Thinking...*" }));
+  window.dispatchEvent(new CustomEvent(`updateThinking${getAbsoluteIndex(elementID)}`, { detail: isThinking }));
 }
 
 // Sets text and updates the non-thinking text.
