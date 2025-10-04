@@ -289,12 +289,6 @@ body {
   justify-content: center;
   flex-direction: column;
 
-  button {
-    background-image: linear-gradient(rgb(135, 135, 135), rgb(85, 85, 85));
-    width: 100%;
-    height: 40px;
-  }
-
   p {
     background-image: linear-gradient(45deg, rgb(0, 0, 0), rgb(25, 25, 25));
     color: white;
