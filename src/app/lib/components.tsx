@@ -88,6 +88,7 @@ export function Header({ skill, mode, type }: { skill: types.Skill, mode: types.
             >
               {Object.values(types.ComponentMode).map((item, index) => (
                 <MenuItem
+                  key={index}
                   value={item}
                 >
                   {item}
