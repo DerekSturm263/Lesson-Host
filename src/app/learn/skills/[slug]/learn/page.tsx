@@ -25,7 +25,7 @@ export default async function Page({ params, searchParams }: Props) {
   const page = (
     <div>
       <main>
-        <Header skill={skill} mode={mode as ComponentMode} type="Learn" />
+        <Header title={skill.title} mode={mode as ComponentMode} type="Learn" />
 
         <LearnPageContent
           slug={slug}

@@ -27,7 +27,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        {!hideHeader && <Header />}
+        <Header title={project.title} mode={mode as ComponentMode} type="" />
         
         <h1 className="mainHeader">{project.title}</h1>
       </main>

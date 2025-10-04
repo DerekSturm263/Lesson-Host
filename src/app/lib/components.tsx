@@ -52,7 +52,7 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 
-export function Header({ skill, mode, type }: { skill: types.Skill, mode: types.ComponentMode, type: string }) {
+export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -62,7 +62,7 @@ export function Header({ skill, mode, type }: { skill: types.Skill, mode: types.
             component="div"
             sx={{ flexGrow: 1 }}
           >
-            {skill.title}
+            {title}
           </Typography>
           
           <FormControl fullWidth>
