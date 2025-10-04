@@ -41,6 +41,7 @@ import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import CardHeader from '@mui/material/CardHeader';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -1082,6 +1083,10 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
 
   return (
     <Card sx={{ minWidth: 275 }}>
+      <CardHeader>
+        <Pagination count={elements.length} />
+      </CardHeader>
+
       <CardContent>
         <div
           id={`text${helpers.getAbsoluteIndex(elementID)}`}
@@ -1125,8 +1130,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       </CardContent>
 
       <CardActions>
-        <Pagination count={elements.length} />
-
         <Stack
           direction="row"
           spacing={1}
