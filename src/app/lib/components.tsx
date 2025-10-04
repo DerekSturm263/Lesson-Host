@@ -1095,7 +1095,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         ))}
       </div>
 
-      <div className="buttons">
+      <Box sx={{ flexGrow: 1 }}>
         <Pagination count={elements.length} />
 
         <Stack
