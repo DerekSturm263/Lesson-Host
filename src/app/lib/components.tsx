@@ -1087,13 +1087,12 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   globalIndex = 0;
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ flexGrow: 1 }}>
       <CardContent>
         {isThinking && <LinearProgress />}
 
-        <div
+        <Box
           id={`text${helpers.getAbsoluteIndex(elementID)}`}
-          className="text"
         >
           {(mode == types.ComponentMode.Edit ? (
             <TextField
@@ -1128,7 +1127,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               {isThinking ? "Thinking..." : text}
             </Markdown>
           ))}
-        </div>
+        </Box>
       </CardContent>
 
       <CardActions>
