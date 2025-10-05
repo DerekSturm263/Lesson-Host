@@ -160,26 +160,29 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
   return (
     <Drawer
-      sx={{ width: '15vw' }}
       variant="persistent"
       open={isOpen}
     >
-      <Typography
-        variant='h6'
-        sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '8px', marginBottom: '8px' }}
+      <Box
+        sx={{ width: 250 }}
       >
-        {label}
-      </Typography>
+        <Typography
+          variant='h6'
+          sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '8px', marginBottom: '8px' }}
+        >
+          {label}
+        </Typography>
 
-      <Divider />
+        <Divider />
 
-      <List>
-        {Children.map(children, child => 
-          <Fragment>
-            {child}
-          </Fragment>
-        )}
-      </List>
+        <List>
+          {Children.map(children, child => 
+            <Fragment>
+              {child}
+            </Fragment>
+          )}
+        </List>
+      </Box>
     </Drawer>
   );
 }
@@ -197,7 +200,6 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
   return (
     <ListItem
       secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
-      
     >
       <ListItemButton
         disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
