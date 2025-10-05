@@ -87,68 +87,70 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             {title}
           </Typography>
 
-            {mode == types.ComponentMode.View && (
-              <Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={0}
-                />
-
-                <Typography
-                  variant="body2"
-                >
-                  {`${0}% Complete`}
-                </Typography>
-              </Box>
-            )}
-
-            <FormControl
-              size="small"
+          {mode == types.ComponentMode.View && (
+            <Stack
+              direction='row'
             >
-              <InputLabel id="type-label">Type</InputLabel>
+              <LinearProgress
+                variant="determinate"
+                value={0}
+              />
 
-              <Select
-                labelId="type-label"
-                value={type}
-                label="Type"
+              <Typography
+                variant="body2"
               >
-                <MenuItem value="Learn">Learn</MenuItem>
-                <MenuItem value="Practice">Practice</MenuItem>
-                <MenuItem value="Implement">Implement</MenuItem>
-                <MenuItem value="Study">Study</MenuItem>
-              </Select>
-            </FormControl>
+                {`${0}% Complete`}
+              </Typography>
+            </Stack>
+          )}
+
+          <FormControl
+            size="small"
+          >
+            <InputLabel id="type-label">Type</InputLabel>
+
+            <Select
+              labelId="type-label"
+              value={type}
+              label="Type"
+            >
+              <MenuItem value="Learn">Learn</MenuItem>
+              <MenuItem value="Practice">Practice</MenuItem>
+              <MenuItem value="Implement">Implement</MenuItem>
+              <MenuItem value="Study">Study</MenuItem>
+            </Select>
+          </FormControl>
           
-            <FormControl
-              size="small"
+          <FormControl
+            size="small"
+          >
+            <InputLabel id="mode-label">Mode</InputLabel>
+
+            <Select
+              labelId="mode-label"
+              value={mode}
+              label="Mode"
             >
-              <InputLabel id="mode-label">Mode</InputLabel>
+              {Object.values(types.ComponentMode).map((item, index) => (
+                <MenuItem
+                  key={index}
+                  value={item}
+                >
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-              <Select
-                labelId="mode-label"
-                value={mode}
-                label="Mode"
-              >
-                {Object.values(types.ComponentMode).map((item, index) => (
-                  <MenuItem
-                    key={index}
-                    value={item}
-                  >
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {mode == types.ComponentMode.Edit && (
-              <Button
-                onClick={async (e) => { 
-                  //await saveSkillLearn(slug, skill.learn);
-                }}
-              >
-                Save
-              </Button>
-            )}
+          {mode == types.ComponentMode.Edit && (
+            <Button
+              onClick={async (e) => { 
+                //await saveSkillLearn(slug, skill.learn);
+              }}
+            >
+              Save
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
