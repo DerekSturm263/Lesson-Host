@@ -967,7 +967,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       >
         <Tabs
           value={tabIndex}
-          onChange={(e) => {}}
+          onChange={(e, value) => { setTabIndex(value); }}
           variant="scrollable"
           scrollButtons="auto"
         >
