@@ -145,7 +145,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
   return (
     <Box
       className="sidebar"
-      sx={{ width: '25vw' }}
+      sx={{ width: '15vw' }}
     >
       <h3>
         {label}
