@@ -252,8 +252,6 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
   const thisElement = { learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
 
-  console.log(JSON.stringify(thisElement));
-
   return (
     <Stack
       direction='row'
