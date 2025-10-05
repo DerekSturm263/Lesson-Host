@@ -46,6 +46,7 @@ import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Divider from '@mui/material/Divider';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -155,9 +156,13 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       variant="persistent"
       open={isOpen}
     >
-      <h3>
+      <Typography
+        variant='h3'
+      >
         {label}
-      </h3>
+      </Typography>
+
+      <Divider />
 
       <List>
         {Children.map(children, child => 
