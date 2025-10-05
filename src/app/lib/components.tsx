@@ -164,12 +164,12 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
 export function Element({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
-    <Container
+    <Stack
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
     >
       <Interaction elementID={elementID} mode={mode} />
       <Text elementID={elementID} mode={mode} />
-    </Container>
+    </Stack>
   );
 }
 
