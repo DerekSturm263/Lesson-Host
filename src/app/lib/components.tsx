@@ -155,7 +155,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       open={isOpen}
     >
       <Typography
-        variant='h2'
+        variant='h6'
       >
         {label}
       </Typography>
@@ -1021,9 +1021,11 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           </Button>
         </Stack>
 
-        <p>
+        <Typography
+          variant="body1"
+        >
           {output}
-        </p>
+        </Typography>
       </Box>
 
       
