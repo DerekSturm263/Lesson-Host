@@ -30,7 +30,6 @@ import Tab from '@mui/material/Tab';
 import MenuComponent from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
@@ -93,7 +92,10 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             spacing={2}
           >
             {mode == types.ComponentMode.View && (
-              <Box>
+              <Stack
+                direction="row"
+                spacing={1}
+              >
                 <LinearProgress
                   variant="determinate"
                   value={0}
@@ -104,7 +106,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
                 >
                   {`${0}% Complete`}
                 </Typography>
-              </Box>
+              </Stack>
             )}
 
             <FormControl>
