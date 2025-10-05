@@ -280,7 +280,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   return (
     <Stack
       direction='row'
-      sx={{ flexGrow: 1, width: '100vw' }}
+      sx={{ flexGrow: 1 }}
     >
       <Sidebar
         label="Chapters"
@@ -309,7 +309,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
       </Sidebar>
 
       <Stack
-        sx={{ flexGrow: 1, height: '100%' }}
+        sx={{ flexGrow: 1 }}
       >
         <Interaction
           elementID={thisElement}
@@ -1098,7 +1098,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   useEffect(() => {
     window.addEventListener(`updateText`, (e: Event) => {
       const newText = text;
-      console.log((e as CustomEvent).detail);
       newText[helpers.getAbsoluteIndex((e as CustomEvent).detail['id'])] = (e as CustomEvent).detail['text'];
       setText(newText);
     });
