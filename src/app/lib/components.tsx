@@ -228,7 +228,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
 
 export function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ progress, setProgress ] = useState(helpers.getProgress(elementID));
+  const [ progress, setProgress ] = useState(0);
 
   useEffect(() => {
     window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
