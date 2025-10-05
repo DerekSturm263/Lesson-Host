@@ -166,6 +166,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
   return (
     <Stack
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
+      sx={{ flexGrow: 1 }}
     >
       <Interaction elementID={elementID} mode={mode} />
       <Text elementID={elementID} mode={mode} />
@@ -432,6 +433,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   return (
     <Box
       data-type={type}
+      sx={{ flexGrow: 1, height: '75h' }}
     >
       {mode == types.ComponentMode.Edit && typeSwitcher}
 
