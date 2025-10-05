@@ -971,8 +971,9 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           variant="scrollable"
           scrollButtons="auto"
         >
-          {content.map(file => (
+          {content.map((file, index) => (
             <Tab
+              key={index}
               label={file.name}
             />
           ))}
