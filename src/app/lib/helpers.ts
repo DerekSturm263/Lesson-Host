@@ -24,19 +24,21 @@ export function getIsLastElement(elementID: types.ElementID): boolean {
 
 // Gets the last non-thinking text.
 export function getText(elementID: types.ElementID): string {
-  const parent = document.getElementById(`text${getAbsoluteIndex(elementID)}`);
+  const parent = document.getElementById(`text`);
 
   return parent?.firstChild?.firstChild?.textContent ?? '';
 }
 
 // Sets text and doesn't update non-thinking text.
 export function setThinking(elementID: types.ElementID, isThinking: boolean) {
-  window.dispatchEvent(new CustomEvent(`updateThinking${getAbsoluteIndex(elementID)}`, { detail: isThinking }));
+  window.dispatchEvent(new CustomEvent(`updatePagination`, { detail: false }));
+  window.dispatchEvent(new CustomEvent(`updateThinking`, { detail: isThinking }));
+  window.dispatchEvent(new CustomEvent(`updatePagination`, { detail: true }));
 }
 
 // Sets text and updates the non-thinking text.
 export function setText(elementID: types.ElementID, text: string) {
-  window.dispatchEvent(new CustomEvent(`updateText${getAbsoluteIndex(elementID)}`, { detail: text }));
+  window.dispatchEvent(new CustomEvent(`updateText`, { detail: { isThinking: text, id: elementID } }));
 }
 
 // Resets to the original text.

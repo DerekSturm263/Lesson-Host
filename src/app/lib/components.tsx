@@ -215,6 +215,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   const [ chapters, setChapters ] = useState(skill.learn.chapters);
   const [ currentChapter, setCurrentChapter ] = useState(0);
   const [ currentElement, setCurrentElement ] = useState(0);
+  const [ canTravel, setCanTravel ] = useState(true);
 
   function addChapter() {
     const newChapters = chapters;
@@ -251,6 +252,30 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   }
 
   const thisElement = { learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
+  const [ elements, setElements ] = useState(helpers.getChapter(thisElement).elements);
+
+  function addElement() {
+    const newElements = elements;
+    newElements.push({
+      type: types.ElementType.ShortAnswer,
+      text: "New element",
+      value: { correctAnswer: "" },
+      isComplete: true
+    });
+    setElements(newElements);
+  }
+
+  function removeElement(index: number) {
+    const newElements = elements;
+    newElements.splice(index, 1);
+    setElements(newElements);
+  }
+
+  useEffect(() => {
+    window.addEventListener(`updatePagination`, (e: Event) => {
+      setCanTravel((e as CustomEvent).detail);
+    });
+  }, []);
 
   return (
     <Stack
@@ -299,8 +324,19 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         <Pagination
           count={skill.learn.chapters[currentChapter].elements.length}
           page={currentElement + 1}
+          disabled={!canTravel}
           onChange={(e, value) => setCurrentElement(value - 1)}
         />
+        
+        {mode == types.ComponentMode.Edit && (
+          <Tooltip title="Delete this element">
+            <Chip
+              icon={<Delete />}
+              label="Delete"
+              onClick={(e) => removeElement(thisElement.elementIndex)}
+            />
+          </Tooltip>
+        )}
       </Stack>
     </Stack>
   );
@@ -1056,36 +1092,18 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
 let globalIndex = 0;
 
 function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ text, setText ] = useState(helpers.getElement(elementID).text);
-  const [ elements, setElements ] = useState(helpers.getChapter(elementID).elements);
+  const [ text, setText ] = useState(elementID.learn.chapters.map(chapter => chapter.elements.map(element => element.text)).flat());
   const [ isThinking, setIsThinking ] = useState(false);
 
   useEffect(() => {
-    window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+    window.addEventListener(`updateText`, (e: Event) => {
       setText((e as CustomEvent).detail);
     });
     
-    window.addEventListener(`updateThinking${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+    window.addEventListener(`updateThinking`, (e: Event) => {
       setIsThinking((e as CustomEvent).detail);
     });
   }, []);
-
-  function addElement() {
-    const newElements = elements;
-    newElements.push({
-      type: types.ElementType.ShortAnswer,
-      text: "New element",
-      value: { correctAnswer: "" },
-      isComplete: true
-    });
-    setElements(newElements);
-  }
-
-  function removeElement(index: number) {
-    const newElements = elements;
-    newElements.splice(index, 1);
-    setElements(newElements);
-  }
 
   globalIndex = 0;
 
@@ -1105,7 +1123,10 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             multiline
             value={text}
             onChange={(e) => {
-              setText(e.target.value);
+              const newText = text;
+              newText[helpers.getAbsoluteIndex(elementID)] = e.target.value;
+              setText(newText);
+
               helpers.getElement(elementID).text = e.target.value;
             }}
           />
@@ -1129,7 +1150,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               }
             }}*/
           >
-            {isThinking ? "Thinking..." : text}
+            {isThinking ? "Thinking..." : text[helpers.getAbsoluteIndex(elementID)]}
           </Markdown>
         ))}
       </CardContent>
@@ -1172,16 +1193,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
               onClick={(e) => {}}
             />
           </Tooltip>
-
-          {mode == types.ComponentMode.Edit && (
-            <Tooltip title="Delete this element">
-              <Chip
-                icon={<Delete />}
-                label="Delete"
-                onClick={(e) => removeElement(elementID.elementIndex)}
-              />
-            </Tooltip>
-          )}
         </Stack>
       </CardActions>
     </Card>
