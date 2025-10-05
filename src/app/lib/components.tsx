@@ -233,7 +233,10 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
             }}
           />
         ) : (
-          <ListItemText primary={title} />
+          <ListItemText
+            primary={title}
+            secondary={<LinearProgress variant="determinate" value={0} />}
+          />
         ))}
 
         {mode == types.ComponentMode.Edit && (
