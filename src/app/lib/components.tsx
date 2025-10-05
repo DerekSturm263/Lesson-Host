@@ -268,13 +268,9 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
     skill.learn.chapters = newChapters;
   }
 
-  if (mode == types.ComponentMode.View) {
-    for (let i = 0; i < chapters.length; ++i) {
-      for (let j = 0; j < chapters[i].elements.length; ++j) {
-        if (i != 0 || j != 0) {
-          chapters[i].elements[j].isComplete = false;
-        }
-      }
+  for (let i = 0; i < chapters.length; ++i) {
+    for (let j = 0; j < chapters[i].elements.length; ++j) {
+      chapters[i].elements[j].isComplete = mode != types.ComponentMode.View;
     }
   }
 
