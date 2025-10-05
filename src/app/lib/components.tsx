@@ -161,13 +161,13 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
 export function Element({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
-    <div
+    <Container
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
       className="element"
     >
       <Interaction elementID={elementID} mode={mode} />
       <Text elementID={elementID} mode={mode} />
-    </div>
+    </Container>
   );
 }
 
@@ -272,8 +272,12 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   }
 
   return (
-    <div className="content">
-      <Sidebar label="Chapters">
+    <Box
+      className="content"
+    >
+      <Sidebar
+        label="Chapters"
+      >
         {chapters.map((chapter, index) => (
           <ChapterButton
             key={index}
@@ -302,7 +306,9 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Sidebar>
 
-      <div className="elements">
+      <Box
+        className="elements"
+      >
         {chapters.map((chapter, cIndex) => (
           chapter.elements.map((element, eIndex) => (
             <Element
@@ -312,8 +318,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
             />
           ))
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -437,8 +443,8 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
   const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
 
   return (
-    <div
-      className="smallInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       <form
         action={(e) => functions.submitShortAnswer(e, elementID)}
@@ -470,7 +476,7 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
           </label>
         )}
       </form>
-    </div>
+    </Box>
   );
 }
 
@@ -500,8 +506,8 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
   }
 
   return (
-    <div
-      className="smallInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -564,7 +570,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
           disabled={isDisabled}
         />
       </form>
-    </div>
+    </Box>
   );
 }
 
@@ -631,8 +637,8 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
   const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect);
 
   return (
-    <div
-      className="smallInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -685,7 +691,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
           disabled={isDisabled}
         />
       </form>
-    </div>
+    </Box>
   );
 }
 
@@ -696,8 +702,8 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
   //const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
   
   return (
-    <div
-      className="smallInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       {/*<Reorder>
         {shuffledItemsLeft.map((item, index) => (
@@ -718,7 +724,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
           </li>
         ))}
       </Reorder>*/}
-    </div>
+    </Box>
   );
 }
 
@@ -730,8 +736,8 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
   }*/
 
   return (
-    <div
-      className="smallInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       {/*<Reorder>
         {items.map((item, index) => (
@@ -742,7 +748,7 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
           </li>
         ))}
       </Reorder>*/}
-    </div>
+    </Box>
   );
 }
 
@@ -765,8 +771,8 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
   }
 
   return (
-    <div
-      className="smallInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       {files.map((item, index) => (
         <FileItem
@@ -778,7 +784,7 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
           index={index}
         />
       ))}
-    </div>
+    </Box>
   );
 }
 
@@ -824,30 +830,30 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: typ
 
 function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
-    <div
-      className="fullscreenInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       
-    </div>
+    </Box>
   );
 }
 
 function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
-    <div
-      className="fullscreenInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
       onLoad={(e) => functions.loadGraph(elementID)}
-    ></div>
+    ></Box>
   );
 }
 
 function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
-    <div
-      className="fullscreenInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       
-    </div>
+    </Box>
   );
 }
 
@@ -907,8 +913,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
   }
 
   return (
-    <div
-      className="fullscreenInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       {mode == types.ComponentMode.Edit && (
         <label>
@@ -1009,7 +1015,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           />
         </label>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -1026,8 +1032,8 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
   const [ source, setSource ] = useState(helpers.getInteractionValue<types.IFrame>(elementID).source);
 
   return (
-    <div
-      className="fullscreenInteraction"
+    <Box
+      sx={{ flexGrow: 1, height: '75vh' }}
     >
       <iframe
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -1052,7 +1058,7 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
           />
         </label>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -1095,7 +1101,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   return (
     <Card
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ flexGrow: 1 }}
+      sx={{ flexGrow: 1, height: '25h' }}
     >
       <CardContent>
         {isThinking && <LinearProgress />}
