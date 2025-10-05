@@ -326,6 +326,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           page={currentElement + 1}
           disabled={!canTravel}
           onChange={(e, value) => setCurrentElement(value - 1)}
+          sx={{  }}
         />
         
         {mode == types.ComponentMode.Edit && (
@@ -342,15 +343,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   );
 }
 
-function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function TypeSwitcher({ elementID }: { elementID: types.ElementID }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
-  const [ isDisabled, setIsDisabled ] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
-    });
-  }, []);
 
   function setTypeAndUpdate(type: types.ElementType) {
     setType(type);
@@ -373,7 +367,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
     }
   }
 
-  const typeSwitcher = (
+  return (
     <FormControl
       size="small"
     >
@@ -396,69 +390,58 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
       </Select>
     </FormControl>
   );
+}
 
-  let interaction: JSX.Element = <></>;
+function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+  const [ type, setType ] = useState(helpers.getElement(elementID).type);
+  const [ isDisabled, setIsDisabled ] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
+      setIsDisabled((e as CustomEvent).detail);
+    });
+  }, []);
 
   switch (type) {
     case types.ElementType.ShortAnswer:
-      interaction = <ShortAnswer elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <ShortAnswer elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.MultipleChoice:
-      interaction = <MultipleChoice elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <MultipleChoice elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.TrueOrFalse:
-      interaction = <TrueOrFalse elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <TrueOrFalse elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Matching:
-      interaction = <Matching elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Matching elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Ordering:
-      interaction = <Ordering elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Ordering elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Files:
-      interaction = <Files elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Files elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Drawing:
-      interaction = <Drawing elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Drawing elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Graph:
-      interaction = <Graph elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Graph elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.DAW:
-      interaction = <DAW elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <DAW elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Codespace:
-      interaction = <Codespace elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Codespace elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.Engine:
-      interaction = <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
 
     case types.ElementType.IFrame:
-      interaction = <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
+      return <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
+
+    default:
+      return <></>
   }
-
-  return (
-    <Box
-      data-type={type}
-      sx={{ flexGrow: 1 }}
-    >
-      {mode == types.ComponentMode.Edit && typeSwitcher}
-
-      {interaction}
-    </Box>
-  )
 }
 
 
