@@ -153,17 +153,11 @@ export type IFrame = {
   source: string
 };
 
-export enum ElementState {
-  Locked = 'locked',
-  InProgress = 'inProgress',
-  Complete = 'complete'
-};
-
 export type Element = {
   type: ElementType,
   text: string,
-  value: ShortAnswer | MultipleChoice | TrueOrFalse | Matching | Ordering | Files | Drawing | Graph | DAW | Codespace | Engine | IFrame
-  state: ElementState
+  value: ShortAnswer | MultipleChoice | TrueOrFalse | Matching | Ordering | Files | Drawing | Graph | DAW | Codespace | Engine | IFrame,
+  isComplete: boolean
 };
 
 export type Chapter = {

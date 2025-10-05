@@ -4,33 +4,13 @@ import * as helpers from '../lib/helpers';
 import { FormEvent } from 'react';
 
 export function complete(elementID: types.ElementID) {
-  const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
-  for (let i = 0; i < dots.length; ++i) {
-    dots[i].dataset.iscomplete = "true";
-  }
-
-  if (helpers.getIsLastElement(elementID)) {
-    const thisButton = document.getElementById(`chapterButton${elementID.chapterIndex}`);
-
-    if (thisButton)
-      thisButton.dataset.iscomplete = "true";
-      
-    const thisCheckmark = document.getElementById(`chapterCheckmark${elementID.chapterIndex}`);
-
-    if (thisCheckmark)
-      thisCheckmark.dataset.iscomplete = "true";
-  }
+  elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].isComplete = true;
 
   const nextElement: types.ElementID = helpers.getIsLastElement(elementID) ?
     { learn: elementID.learn, chapterIndex: elementID.chapterIndex + 1, elementIndex: 0, keys: elementID.keys } :
     { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: elementID.elementIndex + 1, keys: elementID.keys };
-  
-  unlock(nextElement);
-}
 
-export function unlock(elementID: types.ElementID) {
-  window.dispatchEvent(new CustomEvent(`updateDots${helpers.getAbsoluteIndex(elementID)}`, { detail: types.ElementState.InProgress }));
-  window.dispatchEvent(new CustomEvent(`updateChapter${elementID.chapterIndex}`, { detail: types.ElementState.InProgress }));
+  window.dispatchEvent(new CustomEvent(`updateChapterProgress${nextElement.chapterIndex}`, { detail: helpers.getProgress(elementID) }));
 }
 
 export function loadGraph(elementID: types.ElementID) {

@@ -35,7 +35,6 @@ import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -54,7 +53,6 @@ import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Menu from '@mui/icons-material/Menu';
-import CheckCircle from '@mui/icons-material/CheckCircle';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
@@ -93,6 +91,8 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 }
 
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
+  const [ progress, setProgress ] = useState(0);
+
   return (
     <Fragment>
       <AppBar
@@ -115,7 +115,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             <Box>
               <LinearProgressWithLabel
                 variant="determinate"
-                value={0}
+                value={progress}
               />
             </Box>
           )}
@@ -222,11 +222,11 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
 
 export function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ state, setState ] = useState(helpers.getElement(elementID).state);
+  const [ progress, setProgress ] = useState(helpers.getProgress(elementID));
 
   useEffect(() => {
-    window.addEventListener(`updateChapter${elementID.chapterIndex}`, (e: Event) => {
-      setState((e as CustomEvent).detail);
+    window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
+      setProgress((e as CustomEvent).detail);
     });
   }, []);
 
@@ -235,15 +235,13 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
       secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : <Fragment></Fragment> }
     >
       <ListItemButton
-        id={`chapterButton${elementID.chapterIndex}`}
-        className='chapterButton'
-        disabled={state == types.ElementState.Locked}
+        disabled={progress < 0}
         selected={selected}
         onClick={onClick}
       >
         <ListItemText
           primary={title}
-          secondary={mode == types.ComponentMode.View ? <LinearProgress variant="determinate" value={0} /> : <Fragment></Fragment> }
+          secondary={mode == types.ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
         />
       </ListItemButton>
     </ListItem>
@@ -265,7 +263,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           type: types.ElementType.ShortAnswer,
           text: "New element",
           value: { correctAnswer: "" },
-          state: types.ElementState.Complete
+          isComplete: true
         }
       ]
     });
@@ -287,7 +285,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
     for (let i = 0; i < chapters.length; ++i) {
       for (let j = 0; j < chapters[i].elements.length; ++j) {
         if (i != 0 || j != 0) {
-          chapters[i].elements[j].state = types.ElementState.Locked;
+          chapters[i].elements[j].isComplete = false;
         }
       }
     }
@@ -1097,7 +1095,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       type: types.ElementType.ShortAnswer,
       text: "New element",
       value: { correctAnswer: "" },
-      state: types.ElementState.Complete
+      isComplete: true
     });
     setElements(newElements);
   }
