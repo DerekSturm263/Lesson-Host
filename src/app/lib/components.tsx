@@ -87,10 +87,6 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             {title}
           </Typography>
 
-          <Stack
-            direction="row"
-            spacing={2}
-          >
             {mode == types.ComponentMode.View && (
               <Box>
                 <LinearProgress
@@ -153,7 +149,6 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
                 Save
               </Button>
             )}
-          </Stack>
         </Toolbar>
       </AppBar>
     </Box>
