@@ -38,7 +38,7 @@ export function setThinking(elementID: types.ElementID, isThinking: boolean) {
 
 // Sets text and updates the non-thinking text.
 export function setText(elementID: types.ElementID, text: string) {
-  window.dispatchEvent(new CustomEvent(`updateText`, { detail: { isThinking: text, id: elementID } }));
+  window.dispatchEvent(new CustomEvent(`updateText`, { detail: { text, elementID } }));
 }
 
 // Resets to the original text.

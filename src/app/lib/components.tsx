@@ -1098,7 +1098,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   useEffect(() => {
     window.addEventListener(`updateText`, (e: Event) => {
       const newText = text;
-      newText[helpers.getAbsoluteIndex(elementID)] = (e as CustomEvent).detail;
+      newText[helpers.getAbsoluteIndex((e as CustomEvent).detail[1])] = (e as CustomEvent).detail[0];
       setText(newText);
     });
     
