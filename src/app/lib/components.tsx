@@ -126,18 +126,30 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               </Select>
             </FormControl>
 
-            <Box>
-              <LinearProgress
-                variant="determinate"
-                value={0}
-              />
-
-              <Typography
-                variant="body2"
+            {mode == types.ComponentMode.Edit && (
+              <Button
+                onClick={async (e) => { 
+                  //await saveSkillLearn(slug, skill.learn);
+                }}
               >
-                {`${0}% Complete`}
-              </Typography>
-            </Box>
+                Save
+              </Button>
+            )}
+
+            {mode == types.ComponentMode.View && (
+              <Box>
+                <LinearProgress
+                  variant="determinate"
+                  value={0}
+                />
+
+                <Typography
+                  variant="body2"
+                >
+                  {`${0}% Complete`}
+                </Typography>
+              </Box>
+            )}
           </Stack>
         </Toolbar>
       </AppBar>
@@ -282,7 +294,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   return (
     <Stack
       direction='row'
-      sx={{ flexGrow: 1 }}
+      sx={{ flexGrow: 1, width: '100vw' }}
     >
       <Sidebar
         label="Chapters"
@@ -297,21 +309,11 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         ))}
 
         {mode == types.ComponentMode.Edit && (
-          <button
+          <Button
             onClick={(e) => addChapter()}
           >
             New Chapter
-          </button>
-        )}
-
-        {mode == types.ComponentMode.Edit && (
-          <button
-            onClick={async (e) => { 
-              await saveSkillLearn(slug, skill.learn);
-            }}
-          >
-            Save
-          </button>
+          </Button>
         )}
       </Sidebar>
 
