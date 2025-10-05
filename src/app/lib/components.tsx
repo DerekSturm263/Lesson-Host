@@ -92,10 +92,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             spacing={2}
           >
             {mode == types.ComponentMode.View && (
-              <Stack
-                direction="row"
-                spacing={1}
-              >
+              <Box>
                 <LinearProgress
                   variant="determinate"
                   value={0}
@@ -106,7 +103,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
                 >
                   {`${0}% Complete`}
                 </Typography>
-              </Stack>
+              </Box>
             )}
 
             <FormControl>
@@ -249,13 +246,13 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
         ))}
 
         {mode == types.ComponentMode.Edit && (
-          <button
+          <Button
             onClick={(e) => {
               removeChapter(elementID.chapterIndex);
             }}
           >
             Delete
-          </button>
+          </Button>
         )}
       </ListItemButton>
     </ListItem>
