@@ -178,7 +178,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
   return (
     <Drawer
-      sx={{ flexGrow: 1, width: '15vw' }}
+      sx={{ width: '15vw' }}
       variant="persistent"
       open={isOpen}
     >
@@ -205,7 +205,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
   return (
     <Stack
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ width: '100%', height: '100%' }}
+      sx={{ flexGrow: 1, height: '100%' }}
     >
       <Interaction
         elementID={elementID}
@@ -1171,6 +1171,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       >
         <Pagination
           count={elements.length}
+          page={elementID.chapterIndex}
           onChange={(e, value) => functions.load({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: value, keys: elementID.keys })}
         />
 
