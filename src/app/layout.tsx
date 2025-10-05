@@ -1,14 +1,38 @@
 import { Metadata } from "next";
-import { Lexend } from "next/font/google";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
 import "./globals.css";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-const lexend = Lexend({
-  variable: "--font-lexend",
-  subsets: ["latin"],
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      light: '#43b1e4',
+      main: '#3490c2',
+      dark: '#265f8c',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#d8863c',
+      main: '#c26634',
+      dark: '#9c5f3d',
+      contrastText: '#fff',
+    },
+  },
+  typography: {
+    fontFamily: [
+      'Lexend',
+      'Roboto',
+      'Arial',
+      'Helvetica',
+      'sans-serif'
+    ].join(','),
+    fontSize: 12
+  }
 });
 
 export const metadata: Metadata = {
@@ -23,11 +47,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${lexend.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        
+        <body>
+          {children}
+        </body>
+      </ThemeProvider>
     </html>
   );
 }
