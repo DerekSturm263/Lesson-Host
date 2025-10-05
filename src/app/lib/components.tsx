@@ -143,7 +143,10 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
 
 export function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
   return (
-    <div className="sidebar">
+    <Box
+      className="sidebar"
+      sx={{ width: '25vw' }}
+    >
       <h3>
         {label}
       </h3>
@@ -155,7 +158,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
           </li>
         )}
       </ol>
-    </div>
+    </Box>
   );
 }
 
@@ -163,7 +166,6 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
   return (
     <Container
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
-      className="element"
     >
       <Interaction elementID={elementID} mode={mode} />
       <Text elementID={elementID} mode={mode} />
@@ -428,14 +430,13 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   }
 
   return (
-    <div
-      className="interaction"
+    <Container
       data-type={type}
     >
       {mode == types.ComponentMode.Edit && typeSwitcher}
 
       {interaction}
-    </div>
+    </Container>
   )
 }
 
@@ -589,7 +590,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
       />
 
       {(mode == types.ComponentMode.Edit ? (
-        <div>
+        <Box>
           <label>
             Is Correct:
             
@@ -623,7 +624,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
               }}
             />
           </label>
-        </div>
+        </Box>
       ) : (
         <Markdown>
           {value}
@@ -972,7 +973,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         height="100%"
       />
 
-      <div
+      <Box
         className="codeEditorRight"
       >
         <Stack
@@ -996,7 +997,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         <p>
           {output}
         </p>
-      </div>
+      </Box>
 
       
       {mode == types.ComponentMode.Edit && (
