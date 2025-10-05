@@ -33,40 +33,6 @@ export function unlock(elementID: types.ElementID) {
   window.dispatchEvent(new CustomEvent(`updateChapter${elementID.chapterIndex}`, { detail: types.ElementState.InProgress }));
 }
 
-export function load(elementID: types.ElementID) {
-  const content = document.getElementsByClassName('element') as HTMLCollectionOf<HTMLElement>;
-  const thisContent = document.getElementById(`element${helpers.getAbsoluteIndex(elementID)}`);
-    
-  for (let i = 0; i < content.length; ++i) {
-    content[i].style.display = "none";
-  }
-
-  if (thisContent)
-    thisContent.style.display = "flex";
-
-  const buttons = document.getElementsByClassName('chapterButton') as HTMLCollectionOf<HTMLButtonElement>;
-  const thisButton = document.getElementById(`chapterButton${elementID.chapterIndex}`);
-
-  for (let i = 0; i < buttons.length; ++i) {
-    buttons[i].dataset.isselected = "false";
-  }
-
-  if (thisButton)
-    thisButton.dataset.isselected = "true";
-
-  const dots = document.getElementsByClassName(`dot`) as HTMLCollectionOf<HTMLButtonElement>;
-  const theseDots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
-
-  for (let i = 0; i < dots.length; ++i) {
-    dots[i].dataset.isselected = "false";
-  }
-  for (let i = 0; i < theseDots.length; ++i) {
-    theseDots[i].dataset.isselected = "true";
-  }
-
-  readAloud(elementID);
-}
-
 export function loadGraph(elementID: types.ElementID) {
   const params = {
     "appName": helpers.getInteractionValue<types.Graph>(elementID).type,

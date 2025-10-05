@@ -225,8 +225,6 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
   const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
   useEffect(() => {
-    functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0, keys: elementID.keys });
-
     window.addEventListener(`updateChapter${elementID.chapterIndex}`, (e: Event) => {
       setState((e as CustomEvent).detail);
     });
@@ -239,11 +237,9 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
       <ListItemButton
         id={`chapterButton${elementID.chapterIndex}`}
         className='chapterButton'
-        title={`Load chapter ${elementID.chapterIndex + 1}`}
         disabled={state == types.ElementState.Locked}
-        data-iscomplete="false"
-        data-isselected="false"
         selected={selected}
+        onClick={onClick}
       >
         {(mode == types.ComponentMode.Edit ? (
           <TextField
