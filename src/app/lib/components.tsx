@@ -866,8 +866,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
   const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
   const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).correctOutput);
-
   const [ output, setOutput ] = useState("");
+  const [ value, setValue ] = useState(0);
 
   async function executeCode() {
     setOutput("Running...");
@@ -962,8 +962,15 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         </label>
       )}
 
-      <Box>
-        <Tabs value={0} onChange={(e) => {}}>
+      <Box
+        sx={{ flexGrow: 1, width: '70%' }}
+      >
+        <Tabs
+          value={value}
+          onChange={(e) => {}}
+          variant="scrollable"
+          scrollButtons="auto"
+        >
           <Tab label="File 1" />
           <Tab label="File 1" />
           <Tab label="File 1" />
@@ -980,13 +987,13 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
               helpers.getInteractionValue<types.Codespace>(elementID).content = e ?? '';
             }
           }}
-          width="60%"
+          width="100%"
           height="100%"
         />
       </Box>
 
       <Box
-        className="codeEditorRight"
+        sx={{ flexGrow: 1, width: '30%' }}
       >
         <Stack
           direction="row"
