@@ -62,7 +62,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
       sx={{ flexGrow: 1 }}
     >
       <AppBar
-        position="fixed"
+        position="static"
       >
         <Toolbar
           variant="dense"
