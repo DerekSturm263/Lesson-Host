@@ -328,7 +328,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           ))
         ))}
       </Box>
-    </Box>
+    </Stack>
   );
 }
 
