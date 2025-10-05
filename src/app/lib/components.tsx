@@ -1200,36 +1200,46 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
           direction="row"
           spacing={1}
         >
-          <Chip
-            icon={<AutoAwesome />}
-            label="Rephrase"
-            onClick={(e) => functions.rephrase(elementID)}
-          />
+          <Tooltip title="Rephrase the text in simpler terms">
+            <Chip
+              icon={<AutoAwesome />}
+              label="Rephrase"
+              onClick={(e) => functions.rephrase(elementID)}
+            />
+          </Tooltip>
 
-          <Chip
-            icon={<VolumeUp />}
-            label="Read Aloud"
-            onClick={(e) => functions.readAloud(elementID)}
-          />
+          <Tooltip title="Read the text out loud">
+            <Chip
+              icon={<VolumeUp />}
+              label="Read Aloud"
+              onClick={(e) => functions.readAloud(elementID)}
+            />
+          </Tooltip>
 
-          <Chip
-            icon={<Refresh />}
-            label="Reset"
-            onClick={(e) => functions.reset(elementID)}
-          />
+          <Tooltip title="Reset text back to its original state">
+            <Chip
+              icon={<Refresh />}
+              label="Reset"
+              onClick={(e) => functions.reset(elementID)}
+            />
+          </Tooltip>
 
-          <Chip
-            icon={<Fullscreen />}
-            label="Fullscreen"
-            onClick={(e) => {}}
-          />
+          <Tooltip title="Bring the text to the main focus">
+            <Chip
+              icon={<Fullscreen />}
+              label="Fullscreen"
+              onClick={(e) => {}}
+            />
+          </Tooltip>
 
           {mode == types.ComponentMode.Edit && (
-            <Chip
-              icon={<Delete />}
-              label="Delete"
-              onClick={(e) => removeElement(elementID.elementIndex)}
-            />
+            <Tooltip title="Delete this element">
+              <Chip
+                icon={<Delete />}
+                label="Delete"
+                onClick={(e) => removeElement(elementID.elementIndex)}
+              />
+            </Tooltip>
           )}
         </Stack>
       </CardActions>
