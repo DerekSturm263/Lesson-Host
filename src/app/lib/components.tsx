@@ -36,6 +36,7 @@ import Stack from '@mui/material/Stack';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -74,16 +75,14 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
           variant="dense"
         >
           <Typography
-            variant="h6"
-            component="div"
+            variant="h2"
             sx={{ flexGrow: 1 }}
           >
             MySkillStudy.com
           </Typography>
 
           <Typography
-            variant="h6"
-            component="div"
+            variant="h2"
             sx={{ flexGrow: 1 }}
           >
             {title}
@@ -139,7 +138,6 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
                 {`${0}% Complete`}
               </Typography>
             </Box>
-
           </Stack>
         </Toolbar>
       </AppBar>
@@ -166,9 +164,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
       <List>
         {Children.map(children, child => 
-          <ListItem>
-            {child}
-          </ListItem>
+          
         )}
       </List>
     </Drawer>
@@ -200,47 +196,43 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
   }, []);
 
   return (
-    <ListItemButton
-      id={`chapterButton${elementID.chapterIndex}`}
-      className='chapterButton'
-      title={`Load chapter ${elementID.chapterIndex + 1}`}
-      onClick={(e) => functions.load(elementID)}
-      disabled={state == types.ElementState.Locked}
-      data-iscomplete="false"
-      data-isselected="false"
+    <ListItem
+      secondaryAction={<CheckCircle />}
     >
-      {(mode == types.ComponentMode.Edit ? (
-        <input
-          type="text"
-          name="chapterTitle"
-          value={title}
-          onInput={(e) => {
-            setTitle(e.currentTarget.value);
-            helpers.getChapter(elementID).title = e.currentTarget.value;
-          }}
-        />
-      ) : (
-        <ListItemText primary={title} />
-      ))}
-
-      <Image
-        id={`chapterCheckmark${elementID.chapterIndex}`}
-        className="checkmark"
-        src="/icons/checkmark.png"
-        alt="Checkmark"
+      <ListItemButton
+        id={`chapterButton${elementID.chapterIndex}`}
+        className='chapterButton'
+        title={`Load chapter ${elementID.chapterIndex + 1}`}
+        onClick={(e) => functions.load(elementID)}
+        disabled={state == types.ElementState.Locked}
         data-iscomplete="false"
-      />
-      
-      {mode == types.ComponentMode.Edit && (
-        <button
-          onClick={(e) => {
-            removeChapter(elementID.chapterIndex);
-          }}
-        >
-          Delete
-        </button>
-      )}
-    </ListItemButton>
+        data-isselected="false"
+      >
+        {(mode == types.ComponentMode.Edit ? (
+          <input
+            type="text"
+            name="chapterTitle"
+            value={title}
+            onInput={(e) => {
+              setTitle(e.currentTarget.value);
+              helpers.getChapter(elementID).title = e.currentTarget.value;
+            }}
+          />
+        ) : (
+          <ListItemText primary={title} />
+        ))}
+
+        {mode == types.ComponentMode.Edit && (
+          <button
+            onClick={(e) => {
+              removeChapter(elementID.chapterIndex);
+            }}
+          >
+            Delete
+          </button>
+        )}
+      </ListItemButton>
+    </ListItem>
   );
 }
 
