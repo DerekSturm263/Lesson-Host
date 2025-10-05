@@ -18,7 +18,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Backdrop from '@mui/material/Backdrop';
 import Chip from '@mui/material/Chip';
 import AppBar from '@mui/material/AppBar';
@@ -62,6 +62,33 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+  return (
+    <Box
+      sx={{ display: 'flex', alignItems: 'center' }}
+    >
+      <Box
+        sx={{ width: '100%', mr: 1 }}
+      >
+        <LinearProgress
+          {...props}
+        />
+      </Box>
+
+      <Box
+        sx={{ minWidth: 35 }}
+      >
+        <Typography
+          variant="body2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`${Math.round(props.value)}% Complete`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   return (
     <Box
@@ -88,20 +115,12 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
           </Typography>
 
           {mode == types.ComponentMode.View && (
-            <Stack
-              direction='row'
-            >
-              <LinearProgress
+            <Box>
+              <LinearProgressWithLabel
                 variant="determinate"
                 value={0}
               />
-
-              <Typography
-                variant="body2"
-              >
-                {`${0}% Complete`}
-              </Typography>
-            </Stack>
+            </Box>
           )}
 
           <FormControl
