@@ -898,7 +898,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       json: {
         language: language,
         stdin: "",
-        files: content.map(item => isSimplified ? unsimplify(item) : item)
+        files: content.map(file => isSimplified ? unsimplify(file) : file)
       }
     }).json() as types.CodeResult;
 
@@ -971,9 +971,11 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="File 1" />
-          <Tab label="File 2" />
-          <Tab label="File 3" />
+          {content.map(file => (
+            <Tab
+              label={file.name}
+            />
+          ))}
         </Tabs>
 
         <Editor
