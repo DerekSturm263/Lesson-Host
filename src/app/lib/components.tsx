@@ -91,9 +91,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
+    <Fragment>
       <AppBar
         position="sticky"
       >
@@ -172,7 +170,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
           )}
         </Toolbar>
       </AppBar>
-    </Box>
+    </Fragment>
   );
 }
 
