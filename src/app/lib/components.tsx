@@ -75,14 +75,14 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
           variant="dense"
         >
           <Typography
-            variant="h2"
+            variant="h6"
             sx={{ flexGrow: 1 }}
           >
             MySkillStudy.com
           </Typography>
 
           <Typography
-            variant="h2"
+            variant="h6"
             sx={{ flexGrow: 1 }}
           >
             {title}
@@ -155,7 +155,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       open={isOpen}
     >
       <Typography
-        variant='h3'
+        variant='h2'
       >
         {label}
       </Typography>
@@ -199,7 +199,7 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
 
   return (
     <ListItem
-      secondaryAction={<CheckCircle />}
+      secondaryAction={ state == types.ElementState.Complete ? <CheckCircle /> : <Fragment></Fragment>}
     >
       <ListItemButton
         id={`chapterButton${elementID.chapterIndex}`}
