@@ -452,7 +452,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   return (
     <Box
       data-type={type}
-      sx={{ flexGrow: 1, height: '75h' }}
+      sx={{ flexGrow: 1 }}
     >
       {mode == types.ComponentMode.Edit && typeSwitcher}
 
@@ -1110,10 +1110,10 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   return (
     <Card
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ flexGrow: 1 }}
+      sx={{ height: '25vh', flexGrow: 1 }}
     >
       <CardContent
-        style={{ overflowY: 'auto' }}
+        style={{ flexGrow: 1, overflowY: 'auto' }}
       >
         {isThinking && <LinearProgress />}
 
@@ -1156,7 +1156,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       </CardContent>
 
       <CardActions
-        sx={{ justifyContent: 'end' }}
+        sx={{ height: '48px', overflowX: 'auto', justifyContent: 'end' }}
       >
         <Stack
           direction="row"
