@@ -92,6 +92,21 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             direction="row"
             spacing={2}
           >
+            {mode == types.ComponentMode.View && (
+              <Box>
+                <LinearProgress
+                  variant="determinate"
+                  value={0}
+                />
+
+                <Typography
+                  variant="body2"
+                >
+                  {`${0}% Complete`}
+                </Typography>
+              </Box>
+            )}
+
             <FormControl>
               <InputLabel id="type-label">Type</InputLabel>
 
@@ -134,21 +149,6 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               >
                 Save
               </Button>
-            )}
-
-            {mode == types.ComponentMode.View && (
-              <Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={0}
-                />
-
-                <Typography
-                  variant="body2"
-                >
-                  {`${0}% Complete`}
-                </Typography>
-              </Box>
             )}
           </Stack>
         </Toolbar>
