@@ -232,7 +232,7 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
 
   return (
     <ListItem
-      secondaryAction={ mode != types.ComponentMode.Edit ? state == types.ElementState.Complete ? <CheckCircle /> : <Fragment></Fragment> : <IconButton><MoreVert /></IconButton> }
+      secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : <Fragment></Fragment> }
     >
       <ListItemButton
         id={`chapterButton${elementID.chapterIndex}`}
