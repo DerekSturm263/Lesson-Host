@@ -36,7 +36,7 @@ export async function createSkill(): Promise<[ types.Skill, ObjectId ]> {
               value: {
                 correctAnswer: ""
               },
-              state: types.ElementState.Complete
+              isComplete: true
             }
           ]
         }
