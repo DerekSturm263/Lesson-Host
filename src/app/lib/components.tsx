@@ -106,7 +106,9 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               </Box>
             )}
 
-            <FormControl>
+            <FormControl
+              size="small"
+            >
               <InputLabel id="type-label">Type</InputLabel>
 
               <Select
@@ -121,7 +123,9 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               </Select>
             </FormControl>
           
-            <FormControl>
+            <FormControl
+              size="small"
+            >
               <InputLabel id="mode-label">Mode</InputLabel>
 
               <Select
