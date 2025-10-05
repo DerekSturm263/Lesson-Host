@@ -191,8 +191,15 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
       id={`element${helpers.getAbsoluteIndex(elementID)}`}
       sx={{ width: '100%', height: '100%' }}
     >
-      <Interaction elementID={elementID} mode={mode} />
-      <Text elementID={elementID} mode={mode} />
+      <Interaction
+        elementID={elementID}
+        mode={mode}
+      />
+      
+      <Text
+        elementID={elementID}
+        mode={mode}
+      />
     </Stack>
   );
 }
@@ -320,7 +327,9 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Sidebar>
 
-      <Box>
+      <Box
+        sx={{ width: '100%', height: '100%' }}
+      >
         {chapters.map((chapter, cIndex) => (
           chapter.elements.map((element, eIndex) => (
             <Element
