@@ -2,10 +2,10 @@
 
 import { createTheme } from '@mui/material/styles';
 
-import '@fontsource/Lexend/300.css';
-import '@fontsource/Lexend/400.css';
-import '@fontsource/Lexend/500.css';
-import '@fontsource/Lexend/700.css';
+import '@fontsource/lexend/300.css';
+import '@fontsource/lexend/400.css';
+import '@fontsource/lexend/500.css';
+import '@fontsource/lexend/700.css';
 
 const theme = createTheme({
   palette: {
