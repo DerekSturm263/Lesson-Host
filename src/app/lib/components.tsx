@@ -98,9 +98,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
       <AppBar
         position="sticky"
       >
-        <Toolbar
-          variant="dense"
-        >
+        <Toolbar>
           <Typography
             variant="h6"
           >
