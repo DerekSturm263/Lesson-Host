@@ -160,7 +160,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
   return (
     <Drawer
-      variant="persistent"
+      variant="permanent"
       open={isOpen}
     >
       <Box
