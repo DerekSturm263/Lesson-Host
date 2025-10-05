@@ -121,7 +121,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             <Box>
               <LinearProgressWithLabel
                 variant="determinate"
-                value={progress}
+                value={progress * 100}
               />
             </Box>
           )}
@@ -241,7 +241,7 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
       secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : <Fragment></Fragment> }
     >
       <ListItemButton
-        disabled={progress < 0}
+        disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
         selected={selected}
         onClick={onClick}
       >

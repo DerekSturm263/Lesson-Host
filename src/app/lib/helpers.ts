@@ -60,6 +60,9 @@ export function getLessonProgress(elementID: types.ElementID) {
 }
 
 export function getChapterProgress(elementID: types.ElementID) {
+  if (elementID.chapterIndex < 0)
+    return 1;
+
   const elementCount = elementID.learn.chapters[elementID.chapterIndex].elements.length;
   const elementsCompleted = elementID.learn.chapters[elementID.chapterIndex].elements.filter(element => element.isComplete).length;
 
