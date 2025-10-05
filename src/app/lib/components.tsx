@@ -280,8 +280,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   }
 
   return (
-    <Box
-      className="content"
+    <Container
+      sx={{ flexGrow: 1 }}
     >
       <Sidebar
         label="Chapters"
@@ -967,7 +967,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       )}
 
       <Box
-        sx={{ flexGrow: 1, width: '70%' }}
+        sx={{ flexGrow: 1, width: '65%' }}
       >
         <Tabs
           value={tabIndex}
@@ -1001,7 +1001,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       </Box>
 
       <Box
-        sx={{ flexGrow: 1, width: '30%' }}
+        sx={{ flexGrow: 1, width: '35%' }}
       >
         <Stack
           direction="row"
