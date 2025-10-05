@@ -10,7 +10,8 @@ export function complete(elementID: types.ElementID) {
     { learn: elementID.learn, chapterIndex: elementID.chapterIndex + 1, elementIndex: 0, keys: elementID.keys } :
     { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: elementID.elementIndex + 1, keys: elementID.keys };
 
-  window.dispatchEvent(new CustomEvent(`updateChapterProgress${nextElement.chapterIndex}`, { detail: helpers.getProgress(elementID) }));
+  window.dispatchEvent(new CustomEvent(`updateChapterProgress${nextElement.chapterIndex}`, { detail: helpers.getChapterProgress(elementID) }));
+  window.dispatchEvent(new CustomEvent(`updateLessonProgress${nextElement.chapterIndex}`, { detail: helpers.getLessonProgress(elementID) }));
 }
 
 export function loadGraph(elementID: types.ElementID) {

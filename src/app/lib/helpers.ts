@@ -52,9 +52,16 @@ export function getInteractionValue<T>(elementID: types.ElementID): T {
   return getElement(elementID).value as T;
 }
 
-export function getProgress(elementID: types.ElementID) {
+export function getLessonProgress(elementID: types.ElementID) {
   const elementCount = elementID.learn.chapters.reduce((sum, chapter) => sum += chapter.elements.length, 0);
   const elementsCompleted = elementID.learn.chapters.reduce((sum, chapter) => sum += chapter.elements.filter(element => element.isComplete).length, 0);
+
+  return elementsCompleted / elementCount;
+}
+
+export function getChapterProgress(elementID: types.ElementID) {
+  const elementCount = elementID.learn.chapters[elementID.chapterIndex].elements.length;
+  const elementsCompleted = elementID.learn.chapters[elementID.chapterIndex].elements.filter(element => element.isComplete).length;
 
   return elementsCompleted / elementCount;
 }

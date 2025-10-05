@@ -93,6 +93,12 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   const [ progress, setProgress ] = useState(0);
 
+  useEffect(() => {
+    window.addEventListener(`updateLessonProgress`, (e: Event) => {
+      setProgress((e as CustomEvent).detail);
+    });
+  }, []);
+
   return (
     <Fragment>
       <AppBar
