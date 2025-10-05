@@ -6,7 +6,6 @@ import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
 import { saveSkillLearn, createSkill, createProject, createCourse } from './database';
 import Image from 'next/image';
-import Link from 'next/link';
 import Markdown from 'react-markdown';
 import ky from 'ky';
 import * as functions from '../lib/functions';
@@ -62,33 +61,6 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
-
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
-  return (
-    <Box
-      sx={{ display: 'flex', alignItems: 'center' }}
-    >
-      <Box
-        sx={{ width: '100%', mr: 1 }}
-      >
-        <LinearProgress
-          {...props}
-        />
-      </Box>
-
-      <Box
-        sx={{ minWidth: 35 }}
-      >
-        <Typography
-          variant="body2"
-          sx={{ color: 'text.secondary' }}
-        >
-          {`${Math.round(props.value)}% Complete`}
-        </Typography>
-      </Box>
-    </Box>
-  );
-}
 
 
 
@@ -279,6 +251,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   }
 
   const thisElement = { learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
+
+  console.log(JSON.stringify(thisElement));
 
   return (
     <Stack
@@ -1237,6 +1211,33 @@ function WordWrapper({ text }: { text: string }) {
 
 
 // Miscellaneous.
+
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+  return (
+    <Box
+      sx={{ display: 'flex', alignItems: 'center' }}
+    >
+      <Box
+        sx={{ width: '100%', mr: 1 }}
+      >
+        <LinearProgress
+          {...props}
+        />
+      </Box>
+
+      <Box
+        sx={{ minWidth: 35 }}
+      >
+        <Typography
+          variant="body2"
+          sx={{ color: 'text.secondary' }}
+        >
+          {`${Math.round(props.value)}% Complete`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
 
 export function CreateSkillButton() {
   return (
