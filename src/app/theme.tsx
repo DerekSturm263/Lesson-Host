@@ -20,7 +20,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Lexend',
+      '"Lexend"',
       'Arial',
       'Helvetica',
       'sans-serif'
