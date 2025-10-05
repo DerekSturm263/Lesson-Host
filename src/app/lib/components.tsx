@@ -458,7 +458,7 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       <form
         action={(e) => functions.submitShortAnswer(e, elementID)}
@@ -521,7 +521,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -652,7 +652,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -717,7 +717,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
   
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       {/*<Reorder>
         {shuffledItemsLeft.map((item, index) => (
@@ -751,7 +751,7 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       {/*<Reorder>
         {items.map((item, index) => (
@@ -786,7 +786,7 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       {files.map((item, index) => (
         <FileItem
@@ -845,7 +845,7 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: typ
 function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       
     </Box>
@@ -855,7 +855,7 @@ function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, 
 function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
       onLoad={(e) => functions.loadGraph(elementID)}
     ></Box>
   );
@@ -864,7 +864,7 @@ function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
 function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       
     </Box>
@@ -928,7 +928,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
 
   return (
     <Stack
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
       direction='row'
     >
       {mode == types.ComponentMode.Edit && (
@@ -1069,7 +1069,7 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '75vh' }}
+      sx={{ flexGrow: 1, height: '70vh' }}
     >
       <iframe
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -1137,7 +1137,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   return (
     <Card
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ flexGrow: 1, height: '25h' }}
+      sx={{ flexGrow: 1 }}
     >
       <CardContent
         style={{ overflowY: 'auto' }}
