@@ -207,25 +207,6 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
   );
 }
 
-export function Element({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  return (
-    <Stack
-      id={`element${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ flexGrow: 1, height: '100%' }}
-    >
-      <Interaction
-        elementID={elementID}
-        mode={mode}
-      />
-      
-      <Text
-        elementID={elementID}
-        mode={mode}
-      />
-    </Stack>
-  );
-}
-
 export function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
   const [ progress, setProgress ] = useState(0);
@@ -297,6 +278,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
     }
   }
 
+  const thisElement = { learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
+
   return (
     <Stack
       direction='row'
@@ -328,16 +311,25 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Sidebar>
 
-      <Element
-        elementID={{ learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] }}
-        mode={mode}
-      />
+      <Stack
+        sx={{ flexGrow: 1, height: '100%' }}
+      >
+        <Interaction
+          elementID={thisElement}
+          mode={mode}
+        />
       
-      <Pagination
-        count={skill.learn.chapters[currentChapter].elements.length}
-        page={currentElement + 1}
-        onChange={(e, value) => setCurrentElement(value)}
-      />
+        <Text
+          elementID={thisElement}
+          mode={mode}
+        />
+      
+        <Pagination
+          count={skill.learn.chapters[currentChapter].elements.length}
+          page={currentElement + 1}
+          onChange={(e, value) => setCurrentElement(value)}
+        />
+      </Stack>
     </Stack>
   );
 }
