@@ -979,7 +979,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         </label>
       )}
 
-      <Box
+      <Stack
         sx={{ flexGrow: 1, width: '65%' }}
       >
         <Tabs
@@ -1011,7 +1011,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
             }
           }}
         />
-      </Box>
+      </Stack>
 
       <Box
         sx={{ flexGrow: 1 }}
