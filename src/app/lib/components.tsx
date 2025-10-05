@@ -78,7 +78,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
   return (
     <Fragment>
       <AppBar
-        position="sticky"
+        position="fixed"
       >
         <Toolbar>
           <Typography
@@ -163,6 +163,8 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       variant="permanent"
       open={isOpen}
     >
+      <Toolbar />
+
       <Box
         sx={{ width: 250 }}
       >
@@ -311,6 +313,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           </Button>
         )}
       </Sidebar>
+
+      <Toolbar />
 
       <Stack
         sx={{ flexGrow: 1 }}
