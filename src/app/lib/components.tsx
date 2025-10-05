@@ -165,7 +165,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       sx={{
         width: 250,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: 250, boxSizing: 'border-box' },
+        [`& .MuiDrawer-paper`]: { width: 250, boxSizing: 'border-box' }
       }}
     >
       <Toolbar />
@@ -289,9 +289,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   }, []);
 
   return (
-    <Stack
-      direction='row'
-      sx={{ flexGrow: 1 }}
+    <Box
+      display='flex'
     >
       <Sidebar
         label="Chapters"
@@ -352,7 +351,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           </Tooltip>
         )}
       </Stack>
-    </Stack>
+    </Box>
   );
 }
 
