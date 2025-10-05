@@ -164,7 +164,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
       <List>
         {Children.map(children, child => 
-          
+          child
         )}
       </List>
     </Drawer>
