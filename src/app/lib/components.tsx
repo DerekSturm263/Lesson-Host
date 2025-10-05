@@ -211,9 +211,7 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
           }}
         />
       ) : (
-        <h4>
-          {title}
-        </h4>
+        <ListItemText primary={title} />
       ))}
 
       <Image
