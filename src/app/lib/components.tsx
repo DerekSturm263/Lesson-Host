@@ -1007,7 +1007,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       </Box>
 
       <Box
-        sx={{ flexGrow: 1, width: '35%' }}
+        sx={{ flexGrow: 1 }}
       >
         <Stack
           direction="row"
