@@ -166,6 +166,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
     >
       <Typography
         variant='h6'
+        sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '8px', marginBottom: '8px' }}
       >
         {label}
       </Typography>
@@ -195,7 +196,8 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
 
   return (
     <ListItem
-      secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : <Fragment></Fragment> }
+      secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
+      
     >
       <ListItemButton
         disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
@@ -453,7 +455,7 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       <TextField
         label="Write your response here. Press enter to submit"
@@ -512,7 +514,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -633,7 +635,7 @@ function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.Element
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
@@ -698,7 +700,7 @@ function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID,
   
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       {/*<Reorder>
         {shuffledItemsLeft.map((item, index) => (
@@ -732,7 +734,7 @@ function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID,
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       {/*<Reorder>
         {items.map((item, index) => (
@@ -767,7 +769,7 @@ function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       {files.map((item, index) => (
         <FileItem
@@ -826,7 +828,7 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: typ
 function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       
     </Box>
@@ -836,7 +838,7 @@ function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, 
 function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
       onLoad={(e) => functions.loadGraph(elementID)}
     ></Box>
   );
@@ -845,7 +847,7 @@ function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, is
 function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       
     </Box>
@@ -909,7 +911,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
 
   return (
     <Stack
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
       direction='row'
     >
       {mode == types.ComponentMode.Edit && (
@@ -1043,7 +1045,7 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
 
   return (
     <Box
-      sx={{ flexGrow: 1, height: '70vh' }}
+      sx={{ flexGrow: 1 }}
     >
       <iframe
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
