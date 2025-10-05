@@ -100,14 +100,12 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
         >
           <Typography
             variant="h6"
-            sx={{ flexGrow: 1 }}
           >
             MySkillStudy.com
           </Typography>
 
           <Typography
             variant="h6"
-            sx={{ flexGrow: 1 }}
           >
             {title}
           </Typography>
