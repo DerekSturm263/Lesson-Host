@@ -220,7 +220,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
   );
 }
 
-export function ChapterButton({ elementID, mode, onClick, removeChapter }: { elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
+export function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
   const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
@@ -243,6 +243,7 @@ export function ChapterButton({ elementID, mode, onClick, removeChapter }: { ele
         disabled={state == types.ElementState.Locked}
         data-iscomplete="false"
         data-isselected="false"
+        selected={selected}
       >
         {(mode == types.ComponentMode.Edit ? (
           <TextField
@@ -317,6 +318,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
       >
         {chapters.map((chapter, index) => (
           <ChapterButton
+            selected={currentChapter == index}
             key={index}
             elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] }}
             mode={mode}
