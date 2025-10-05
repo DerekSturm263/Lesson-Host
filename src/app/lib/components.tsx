@@ -1032,20 +1032,16 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
 
       
       {mode == types.ComponentMode.Edit && (
-        <label>
-          Correct Output:
-
-          <textarea
-            name="correctOutput"
-            value={correctOutput}
-            rows={20}
-            cols={30}
-            onChange={(e) => {
-              setCorrectOutput(e.target.value);
-              helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.target.value;
-            }}
-          />
-        </label>
+        <TextField
+          label="Correct Output"
+          name="correctOutput"
+          value={correctOutput}
+          multiline
+          onChange={(e) => {
+            setCorrectOutput(e.target.value);
+            helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.target.value;
+          }}
+        />
       )}
     </Stack>
   );
