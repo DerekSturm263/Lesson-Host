@@ -166,7 +166,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       <Toolbar />
 
       <Box
-        sx={{ width: 250 }}
+        sx={{ width: '250px', overflow: 'auto' }}
       >
         <Typography
           variant='h6'
