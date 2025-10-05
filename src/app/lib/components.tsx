@@ -90,6 +90,10 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
+
+
+// Core.
+
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   const [ progress, setProgress ] = useState(0);
 
@@ -362,24 +366,27 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   }
 
   const typeSwitcher = (
-    <label>
-      Type:
+    <FormControl
+      size="small"
+    >
+      <InputLabel id="type-label">Type</InputLabel>
 
-      <select
-        name="selectType"
+      <Select
+        labelId="type-label"
         value={type}
+        label="Type"
         onChange={(e) => setTypeAndUpdate(e.target.value as types.ElementType)}
       >
         {(Object.values(types.ElementType).map((item, index) => (
-          <option
+          <MenuItem
             key={index}
             value={item}
           >
             {item}
-          </option>
+          </MenuItem>
         )))}
-      </select>
-    </label>
+      </Select>
+    </FormControl>
   );
 
   let interaction: JSX.Element = <></>;
@@ -445,6 +452,10 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
     </Box>
   )
 }
+
+
+
+// Interactions.
 
 function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
@@ -1066,6 +1077,10 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
   );
 }
 
+
+
+// Text.
+
 let globalIndex = 0;
 
 function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
@@ -1218,6 +1233,10 @@ function WordWrapper({ text }: { text: string }) {
     </>
   );
 }
+
+
+
+// Miscellaneous.
 
 export function CreateSkillButton() {
   return (
