@@ -9,7 +9,6 @@ import '@fontsource/lexend/700.css';
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
     primary: {
       light: '#43b1e4',
       main: '#3490c2',
