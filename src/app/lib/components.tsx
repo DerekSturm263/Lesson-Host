@@ -1171,7 +1171,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       >
         <Pagination
           count={elements.length}
-          page={elementID.chapterIndex}
+          page={elementID.elementIndex}
           onChange={(e, value) => functions.load({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: value, keys: elementID.keys })}
         />
 
