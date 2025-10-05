@@ -280,7 +280,8 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   }
 
   return (
-    <Container
+    <Stack
+      direction='row'
       sx={{ flexGrow: 1 }}
     >
       <Sidebar
