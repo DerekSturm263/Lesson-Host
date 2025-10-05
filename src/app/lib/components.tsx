@@ -161,7 +161,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
 
   return (
     <Drawer
-      sx={{ width: '15vw' }}
+      sx={{ flexGrow: 1, width: '15vw' }}
       variant="persistent"
       open={isOpen}
     >
