@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX } from 'react';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { verifyCodespace } from './generate';
@@ -220,7 +220,7 @@ export function Element({ elementID, mode }: { elementID: types.ElementID, mode:
   );
 }
 
-export function ChapterButton({ elementID, mode, removeChapter }: { elementID: types.ElementID, mode: types.ComponentMode, removeChapter: (index: number) => void }) {
+export function ChapterButton({ elementID, mode, onClick, removeChapter }: { elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
   const [ state, setState ] = useState(helpers.getElement(elementID).state);
 
@@ -240,7 +240,6 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
         id={`chapterButton${elementID.chapterIndex}`}
         className='chapterButton'
         title={`Load chapter ${elementID.chapterIndex + 1}`}
-        onClick={(e) => functions.load(elementID)}
         disabled={state == types.ElementState.Locked}
         data-iscomplete="false"
         data-isselected="false"
@@ -267,6 +266,8 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
 
 export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, skill: types.Skill, mode: types.ComponentMode, apiKey: string }) {
   const [ chapters, setChapters ] = useState(skill.learn.chapters);
+  const [ currentChapter, setCurrentChapter ] = useState(0);
+  const [ currentElement, setCurrentElement ] = useState(0);
 
   function addChapter() {
     const newChapters = chapters;
@@ -320,6 +321,10 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
             elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] }}
             mode={mode}
             removeChapter={removeChapter}
+            onClick={(e) => {
+              setCurrentChapter(index);
+              setCurrentElement(0);
+            }}
           />
         ))}
 
@@ -332,19 +337,16 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Sidebar>
 
-      <Box
-        sx={{ width: '100%', height: '100%' }}
-      >
-        {chapters.map((chapter, cIndex) => (
-          chapter.elements.map((element, eIndex) => (
-            <Element
-              key={`${cIndex}:${eIndex}`}
-              elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] }}
-              mode={mode}
-            />
-          ))
-        ))}
-      </Box>
+      <Element
+        elementID={{ learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] }}
+        mode={mode}
+      />
+      
+      <Pagination
+        count={skill.learn.chapters[currentChapter].elements.length}
+        page={currentElement}
+        onChange={(e, value) => setCurrentElement(value)}
+      />
     </Stack>
   );
 }
@@ -1169,12 +1171,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       <CardActions
         sx={{ justifyContent: 'space-between' }}
       >
-        <Pagination
-          count={elements.length}
-          page={elementID.elementIndex}
-          onChange={(e, value) => functions.load({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: value, keys: elementID.keys })}
-        />
-
         <Stack
           direction="row"
           spacing={1}
