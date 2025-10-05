@@ -1186,7 +1186,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         ))}
       </CardContent>
 
-      <CardActions>
+      <CardActions
+        sx={{ justifyContent: 'space-between' }}
+      >
         <Pagination
           count={elements.length}
           onChange={(e, value) => functions.load({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: value, keys: elementID.keys })}
@@ -1195,7 +1197,6 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         <Stack
           direction="row"
           spacing={1}
-          sx={{ justifyContent: 'space-between' }}
         >
           <Chip
             icon={<AutoAwesome />}
