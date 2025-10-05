@@ -140,6 +140,18 @@ export type Codespace = {
   correctOutput: string | undefined
 };
 
+// export type Codespace = {
+//   language: CodespaceLanguage,
+//   content: CodespaceFile[],
+//   isSimplified: boolean,
+//   correctOutput: string | undefined
+// };
+
+// export type CodespaceFile = {
+//   fileName: string,
+//   content: string
+// }
+
 export type Engine = {
   placeholder: boolean
 };

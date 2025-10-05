@@ -26,6 +26,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Drawer from '@mui/material/Drawer';
 import Pagination from '@mui/material/Pagination';
 import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import MenuComponent from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
@@ -961,20 +962,28 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         </label>
       )}
 
-      <Editor
-        defaultLanguage={language}
-        defaultValue={content}
-        theme="vs-dark"
-        onChange={(e) => {
-          setContent(e ?? '');
+      <Box>
+        <Tabs value={0} onChange={(e) => {}}>
+          <Tab label="File 1" />
+          <Tab label="File 1" />
+          <Tab label="File 1" />
+        </Tabs>
 
-          if (mode == types.ComponentMode.Edit) {
-            helpers.getInteractionValue<types.Codespace>(elementID).content = e ?? '';
-          }
-        }}
-        width="60%"
-        height="100%"
-      />
+        <Editor
+          defaultLanguage={language}
+          defaultValue={content}
+          theme="vs-dark"
+          onChange={(e) => {
+            setContent(e ?? '');
+
+            if (mode == types.ComponentMode.Edit) {
+              helpers.getInteractionValue<types.Codespace>(elementID).content = e ?? '';
+            }
+          }}
+          width="60%"
+          height="100%"
+        />
+      </Box>
 
       <Box
         className="codeEditorRight"
