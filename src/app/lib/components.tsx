@@ -1110,10 +1110,10 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   return (
     <Card
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ height: '25vh', flexGrow: 1 }}
+      sx={{ flexGrow: 1 }}
     >
       <CardContent
-        style={{ flexGrow: 1, overflowY: 'auto' }}
+        style={{ height: '20vh', overflowY: 'auto' }}
       >
         {isThinking && <LinearProgress />}
 
@@ -1156,7 +1156,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       </CardContent>
 
       <CardActions
-        sx={{ height: '48px', overflowX: 'auto', justifyContent: 'end' }}
+        sx={{ justifyContent: 'end' }}
       >
         <Stack
           direction="row"
