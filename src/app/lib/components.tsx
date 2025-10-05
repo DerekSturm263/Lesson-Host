@@ -147,9 +147,13 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
 }
 
 export function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
+  const [ isOpen, setIsOpen ] = useState(true);
+
   return (
     <Drawer
       sx={{ width: '15vw', flexShrink: 0 }}
+      variant="persistent"
+      open={isOpen}
     >
       <h3>
         {label}
