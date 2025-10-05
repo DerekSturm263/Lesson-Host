@@ -430,13 +430,13 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
   }
 
   return (
-    <Container
+    <Box
       data-type={type}
     >
       {mode == types.ComponentMode.Edit && typeSwitcher}
 
       {interaction}
-    </Container>
+    </Box>
   )
 }
 
@@ -914,8 +914,9 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
   }
 
   return (
-    <Box
+    <Stack
       sx={{ flexGrow: 1, height: '75vh' }}
+      direction='row'
     >
       {mode == types.ComponentMode.Edit && (
         <label>
@@ -1016,7 +1017,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
           />
         </label>
       )}
-    </Box>
+    </Stack>
   );
 }
 
@@ -1104,7 +1105,9 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
       sx={{ flexGrow: 1, height: '25h' }}
     >
-      <CardContent>
+      <CardContent
+        style={{ overflowY: 'auto' }}
+      >
         {isThinking && <LinearProgress />}
 
         {(mode == types.ComponentMode.Edit ? (
