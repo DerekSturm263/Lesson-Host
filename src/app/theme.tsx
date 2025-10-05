@@ -24,8 +24,7 @@ const theme = createTheme({
       'Arial',
       'Helvetica',
       'sans-serif'
-    ].join(','),
-    fontSize: 12
+    ].join(',')
   }
 });
 
