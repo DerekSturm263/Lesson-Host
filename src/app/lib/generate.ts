@@ -231,7 +231,7 @@ export async function verifyTrueOrFalse(question: string, userResponse: boolean,
   return { isValid: isCorrect, feedback: response.text ?? '' } as Verification
 }
 
-export async function verifyCodespace(instructions: string, content: string, result: types.CodeResult, value: types.Codespace): Promise<Verification> {
+export async function verifyCodespace(instructions: string, content: types.CodespaceFile[], result: types.CodeResult, value: types.Codespace): Promise<Verification> {
   let isValid = false;
   let contents = '';
 

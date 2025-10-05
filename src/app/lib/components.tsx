@@ -861,28 +861,33 @@ function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDi
   );
 }
 
+function unsimplify(file: types.CodespaceFile) {
+  return {
+    name: file.name,
+    content: `using System;
+
+    public class Program
+    {
+      public static void Main(string[] args)
+      {
+        ${file.content}
+      }
+    }`
+  };
+}
+
 function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
   const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
   const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).correctOutput);
   const [ output, setOutput ] = useState("");
-  const [ value, setValue ] = useState(0);
+  const [ tabIndex, setTabIndex ] = useState(0);
+  const file = content[tabIndex];
 
   async function executeCode() {
     setOutput("Running...");
     helpers.setThinking(elementID, true);
-
-    const templateify = (text: string) =>
-      `using System;
-
-      public class Program
-      {
-        public static void Main(string[] args)
-        {
-          ${text}
-        }
-      }`;
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
@@ -893,12 +898,7 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       json: {
         language: language,
         stdin: "",
-        files: [
-          {
-            name: "code.cs",
-            content: isSimplified ? templateify(content) : content
-          }
-        ]
+        files: content.map(item => isSimplified ? unsimplify(item) : item)
       }
     }).json() as types.CodeResult;
 
@@ -966,29 +966,30 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
         sx={{ flexGrow: 1, width: '70%' }}
       >
         <Tabs
-          value={value}
+          value={tabIndex}
           onChange={(e) => {}}
           variant="scrollable"
           scrollButtons="auto"
         >
           <Tab label="File 1" />
-          <Tab label="File 1" />
-          <Tab label="File 1" />
+          <Tab label="File 2" />
+          <Tab label="File 3" />
         </Tabs>
 
         <Editor
+          path={file.name}
           defaultLanguage={language}
-          defaultValue={content}
+          defaultValue={file.content}
           theme="vs-dark"
           onChange={(e) => {
-            setContent(e ?? '');
+            const newContent = content;
+            newContent[tabIndex].content = e ?? '';
+            setContent(newContent);
 
             if (mode == types.ComponentMode.Edit) {
-              helpers.getInteractionValue<types.Codespace>(elementID).content = e ?? '';
+              helpers.getInteractionValue<types.Codespace>(elementID).content[tabIndex].content = e ?? '';
             }
           }}
-          width="100%"
-          height="100%"
         />
       </Box>
 
