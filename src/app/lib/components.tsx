@@ -1099,7 +1099,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
     window.addEventListener(`updateText`, (e: Event) => {
       const newText = text;
       console.log((e as CustomEvent).detail);
-      newText[helpers.getAbsoluteIndex((e as CustomEvent).detail[1])] = (e as CustomEvent).detail[0];
+      newText[helpers.getAbsoluteIndex((e as CustomEvent).detail['id'])] = (e as CustomEvent).detail['text'];
       setText(newText);
     });
     
