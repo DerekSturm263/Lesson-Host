@@ -241,21 +241,10 @@ export function ChapterButton({ selected, elementID, mode, onClick, removeChapte
         selected={selected}
         onClick={onClick}
       >
-        {(mode == types.ComponentMode.Edit ? (
-          <TextField
-            name="chapterTitle"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              helpers.getChapter(elementID).title = e.target.value;
-            }}
-          />
-        ) : (
-          <ListItemText
-            primary={title}
-            secondary={<LinearProgress variant="determinate" value={0} />}
-          />
-        ))}
+        <ListItemText
+          primary={title}
+          secondary={mode == types.ComponentMode.View ? <LinearProgress variant="determinate" value={0} /> : <Fragment></Fragment> }
+        />
       </ListItemButton>
     </ListItem>
   );
