@@ -323,7 +323,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         <Pagination
           count={skill.learn.chapters[currentChapter].elements.length}
           page={currentElement + 1}
-          onChange={(e, value) => setCurrentElement(value)}
+          onChange={(e, value) => setCurrentElement(value - 1)}
         />
       </Stack>
     </Stack>
