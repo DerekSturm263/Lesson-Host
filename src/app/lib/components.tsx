@@ -162,11 +162,16 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
     <Drawer
       variant="permanent"
       open={isOpen}
+      sx={{
+        width: 250,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: { width: 250, boxSizing: 'border-box' },
+      }}
     >
       <Toolbar />
 
       <Box
-        sx={{ width: '250px', overflow: 'auto' }}
+        sx={{  overflow: 'auto' }}
       >
         <Typography
           variant='h6'
