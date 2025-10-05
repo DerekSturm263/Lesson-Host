@@ -1,6 +1,7 @@
 import { verifyShortAnswer, verifyMultipleChoice, verifyTrueOrFalse, rephraseText } from './generate';
 import * as types from '../lib/types';
 import * as helpers from '../lib/helpers';
+import { FormEvent } from 'react';
 
 export function complete(elementID: types.ElementID) {
   const dots = document.getElementsByClassName(`dot${helpers.getAbsoluteIndex(elementID)}`) as HTMLCollectionOf<HTMLButtonElement>;
@@ -118,9 +119,9 @@ export async function define(word: string) {
   const data = JSON.parse(await response.json());
 }
 
-export async function submitShortAnswer(formData: FormData, elementID: types.ElementID) {
-  helpers.setThinking(elementID, true);
-  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.get('response')?.toString() ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID));
+export async function submitShortAnswer(formData: FormEvent<HTMLDivElement>, elementID: types.ElementID) {
+  /*helpers.setThinking(elementID, true);
+  const feedback = await verifyShortAnswer(helpers.getElement(elementID).text, formData.target.value ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -129,7 +130,7 @@ export async function submitShortAnswer(formData: FormData, elementID: types.Ele
   if (feedback.isValid) {
     window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
     complete(elementID);
-  }
+  }*/
 }
 
 export async function submitMultipleChoice(formData: FormData, elementID: types.ElementID) {

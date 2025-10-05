@@ -472,31 +472,32 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
     <Box
       sx={{ flexGrow: 1, height: '70vh' }}
     >
-      <form
-        action={(e) => functions.submitShortAnswer(e, elementID)}
-      >
+      <TextField
+        label="Write your response here. Press enter to submit"
+        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        name="response"
+        autoComplete="off"
+        disabled={isDisabled}
+        onSubmit={(e) => functions.submitShortAnswer(e, elementID)}
+      />
+
+      <Button>
+        Submit
+      </Button>
+
+      {mode == types.ComponentMode.Edit && (
         <TextField
-          id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-          name="response"
-          placeholder="Write your response here. Press enter to submit"
+          label="Correct Answer"
+          name="correctAnswer"
           autoComplete="off"
           disabled={isDisabled}
+          value={correctAnswer}
+          onChange={(e) => {
+            setCorrectAnswer(e.target.value)
+            helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.target.value;
+          }}
         />
-
-        {mode == types.ComponentMode.Edit && (
-          <TextField
-            label="Correct Answer"
-            name="correctAnswer"
-            autoComplete="off"
-            disabled={isDisabled}
-            value={correctAnswer}
-            onChange={(e) => {
-              setCorrectAnswer(e.target.value)
-              helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.target.value;
-            }}
-          />
-        )}
-      </form>
+      )}
     </Box>
   );
 }
