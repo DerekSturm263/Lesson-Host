@@ -33,6 +33,10 @@ import Dialog from '@mui/material/Dialog';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Select from '@mui/material/Select';
@@ -144,22 +148,21 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
 
 export function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
   return (
-    <Box
-      className="sidebar"
-      sx={{ width: '15vw' }}
+    <Drawer
+      sx={{ width: '15vw', flexShrink: 0 }}
     >
       <h3>
         {label}
       </h3>
 
-      <ol>
+      <List>
         {Children.map(children, child => 
-          <li>
+          <ListItem>
             {child}
-          </li>
+          </ListItem>
         )}
-      </ol>
-    </Box>
+      </List>
+    </Drawer>
   );
 }
 
@@ -188,7 +191,7 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
   }, []);
 
   return (
-    <button
+    <ListItemButton
       id={`chapterButton${elementID.chapterIndex}`}
       className='chapterButton'
       title={`Load chapter ${elementID.chapterIndex + 1}`}
@@ -230,7 +233,7 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
           Delete
         </button>
       )}
-    </button>
+    </ListItemButton>
   );
 }
 
