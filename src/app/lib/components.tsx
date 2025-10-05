@@ -1195,6 +1195,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
         <Stack
           direction="row"
           spacing={1}
+          sx={{ justifyContent: 'space-between' }}
         >
           <Chip
             icon={<AutoAwesome />}
