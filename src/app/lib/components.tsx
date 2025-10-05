@@ -47,6 +47,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Divider from '@mui/material/Divider';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -61,6 +63,7 @@ import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
+import MoreVert from '@mui/icons-material/MoreVert';
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -233,7 +236,7 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
 
   return (
     <ListItem
-      secondaryAction={ state == types.ElementState.Complete ? <CheckCircle /> : <Fragment></Fragment>}
+      secondaryAction={ mode != types.ComponentMode.Edit ? state == types.ElementState.Complete ? <CheckCircle /> : <Fragment></Fragment> : <MoreVert/> }
     >
       <ListItemButton
         id={`chapterButton${elementID.chapterIndex}`}
@@ -245,13 +248,12 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
         data-isselected="false"
       >
         {(mode == types.ComponentMode.Edit ? (
-          <input
-            type="text"
+          <TextField
             name="chapterTitle"
             value={title}
-            onInput={(e) => {
-              setTitle(e.currentTarget.value);
-              helpers.getChapter(elementID).title = e.currentTarget.value;
+            onChange={(e) => {
+              setTitle(e.target.value);
+              helpers.getChapter(elementID).title = e.target.value;
             }}
           />
         ) : (
@@ -260,16 +262,6 @@ export function ChapterButton({ elementID, mode, removeChapter }: { elementID: t
             secondary={<LinearProgress variant="determinate" value={0} />}
           />
         ))}
-
-        {mode == types.ComponentMode.Edit && (
-          <Button
-            onClick={(e) => {
-              removeChapter(elementID.chapterIndex);
-            }}
-          >
-            Delete
-          </Button>
-        )}
       </ListItemButton>
     </ListItem>
   );
@@ -397,7 +389,7 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
       <select
         name="selectType"
         value={type}
-        onChange={(e) => setTypeAndUpdate(e.currentTarget.value as types.ElementType)}
+        onChange={(e) => setTypeAndUpdate(e.target.value as types.ElementType)}
       >
         {(Object.values(types.ElementType).map((item, index) => (
           <option
@@ -485,9 +477,8 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
       <form
         action={(e) => functions.submitShortAnswer(e, elementID)}
       >
-        <input
+        <TextField
           id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-          type="text"
           name="response"
           placeholder="Write your response here. Press enter to submit"
           autoComplete="off"
@@ -495,21 +486,17 @@ function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.Element
         />
 
         {mode == types.ComponentMode.Edit && (
-          <label>
-            Correct Answer:
-
-            <input
-              type="text"
-              name="correctAnswer"
-              autoComplete="off"
-              disabled={isDisabled}
-              value={correctAnswer}
-              onInput={(e) => {
-                setCorrectAnswer(e.currentTarget.value)
-                helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.currentTarget.value;
-              }}
-            />
-          </label>
+          <TextField
+            label="Correct Answer"
+            name="correctAnswer"
+            autoComplete="off"
+            disabled={isDisabled}
+            value={correctAnswer}
+            onChange={(e) => {
+              setCorrectAnswer(e.target.value)
+              helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.target.value;
+            }}
+          />
         )}
       </form>
     </Box>
@@ -569,7 +556,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
             <select
               name="selectType"
               value={type}
-              onChange={(e) => setType(e.currentTarget.value as types.MultipleChoiceType)}
+              onChange={(e) => setType(e.target.value as types.MultipleChoiceType)}
             >
               {(Object.values(types.MultipleChoiceType).map((item, index) => (
                 <option
@@ -584,20 +571,17 @@ function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.Elem
         )}
         
         {mode == types.ComponentMode.Edit && (
-          <label>
-            Needs All Correct:
-
-            <input
-              type="checkbox"
+          <FormControlLabel label="Needs All Correct" control={
+            <Checkbox
               name="needsAllCorrect"
               id="needsAllCorrect"
               checked={needsAllCorrect}
-              onInput={(e) => {
-                setNeedsAllCorrect(e.currentTarget.checked);
-                helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect = e.currentTarget.checked;
+              onChange={(e) => {
+                setNeedsAllCorrect(e.target.checked);
+                helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect = e.target.checked;
               }}
-            />
-          </label>
+            />}
+          />
         )}
 
         <input
@@ -626,39 +610,32 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
 
       {(mode == types.ComponentMode.Edit ? (
         <Box>
-          <label>
-            Is Correct:
-            
-            <input
-              type="checkbox"
+          <FormControlLabel label="Is Correct" control={
+            <Checkbox
               name="isCorrect"
               checked={isCorrect}
-              onInput={(e) => {
-                setIsCorrect(e.currentTarget.checked);
+              onChange={(e) => {
+                setIsCorrect(e.target.checked);
 
                 if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].isCorrect = e.currentTarget.checked;
+                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].isCorrect = e.target.checked;
                 }
               }}
-            />
-          </label>
+            />}
+          />
           
-          <label>
-            Value:
-
-            <input
-              type="text"
-              name="value"
-              value={value}
-              onInput={(e) => {
-                setValue(e.currentTarget.value);
-                
-                if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].value = e.currentTarget.value;
-                }
-              }}
-            />
-          </label>
+          <TextField
+            label="Value"
+            name="value"
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              
+              if (mode == types.ComponentMode.Edit) {
+                helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].value = e.target.value;
+              }
+            }}
+          />
         </Box>
       ) : (
         <Markdown>
@@ -961,8 +938,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
             name="selectType"
             value={language}
             onChange={(e) => {
-              setLanguage(e.currentTarget.value as types.CodespaceLanguage);
-              helpers.getInteractionValue<types.Codespace>(elementID).language = e.currentTarget.value as types.CodespaceLanguage;
+              setLanguage(e.target.value as types.CodespaceLanguage);
+              helpers.getInteractionValue<types.Codespace>(elementID).language = e.target.value as types.CodespaceLanguage;
             }}
           >
             {(Object.values(types.CodespaceLanguage).map((item, index) => (
@@ -978,20 +955,17 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
       )}
 
       {mode == types.ComponentMode.Edit && (
-        <label>
-          Is Simplified:
-
-          <input
-            type="checkbox"
+        <FormControlLabel label="Is Simplified" control={
+          <Checkbox
             name="isSimplified"
             id="isSimplified"
             checked={isSimplified}
-            onInput={(e) => {
-              setIsSimplified(e.currentTarget.checked);
-              helpers.getInteractionValue<types.Codespace>(elementID).isSimplified = e.currentTarget.checked;
+            onChange={(e) => {
+              setIsSimplified(e.target.checked);
+              helpers.getInteractionValue<types.Codespace>(elementID).isSimplified = e.target.checked;
             }}
-          />
-        </label>
+          />}
+        />
       )}
 
       <Stack
@@ -1067,8 +1041,8 @@ function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID
             rows={20}
             cols={30}
             onChange={(e) => {
-              setCorrectOutput(e.currentTarget.value);
-              helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.currentTarget.value;
+              setCorrectOutput(e.target.value);
+              helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.target.value;
             }}
           />
         </label>
@@ -1100,21 +1074,17 @@ function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, i
       ></iframe>
 
       {mode == types.ComponentMode.Edit && (
-        <label>
-          Source:
-
-          <input
-            type="text"
-            name="source"
-            autoComplete="off"
-            disabled={isDisabled}
-            value={source}
-            onInput={(e) => {
-              setSource(e.currentTarget.value);
-              helpers.getInteractionValue<types.IFrame>(elementID).source = e.currentTarget.value;
-            }}
-          />
-        </label>
+        <TextField
+          label="Source"
+          name="source"
+          autoComplete="off"
+          disabled={isDisabled}
+          value={source}
+          onChange={(e) => {
+            setSource(e.target.value);
+            helpers.getInteractionValue<types.IFrame>(elementID).source = e.target.value;
+          }}
+        />
       )}
     </Box>
   );
@@ -1172,8 +1142,8 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
             multiline
             value={text}
             onChange={(e) => {
-              setText(e.currentTarget.value);
-              helpers.getElement(elementID).text = e.currentTarget.value;
+              setText(e.target.value);
+              helpers.getElement(elementID).text = e.target.value;
             }}
           />
         ) : (
@@ -1329,20 +1299,16 @@ export function SkillTitle({ skill, mode }: { skill: types.Skill, mode: types.Co
   );
 
   const input = (
-    <label>
-      Title:
-
-      <input
-        type="text"
-        name="title"
-        autoComplete="off"
-        value={title}
-        onInput={(e) => {
-          setTitle(e.currentTarget.value)
-          skill.title = e.currentTarget.value;
-        }}
-      />
-    </label>
+    <TextField
+      label="Title"
+      name="title"
+      autoComplete="off"
+      value={title}
+      onChange={(e) => {
+        setTitle(e.target.value)
+        skill.title = e.target.value;
+      }}
+    />
   );
 
   return mode == types.ComponentMode.Edit ? input : header;
@@ -1360,20 +1326,15 @@ export function SkillDescription({ skill, mode }: { skill: types.Skill, mode: ty
   );
 
   const input = (
-    <label>
-      Description:
-
-      <input
-        type="text"
-        name="description"
-        autoComplete="off"
-        value={description}
-        onInput={(e) => {
-          setDescription(e.currentTarget.value)
-          skill.description = e.currentTarget.value;
-        }}
-      />
-    </label>
+    <TextField
+      label="Description"
+      autoComplete="off"
+      value={description}
+      onChange={(e) => {
+        setDescription(e.target.value)
+        skill.description = e.target.value;
+      }}
+    />
   );
 
   return mode == types.ComponentMode.Edit ? input : header;
