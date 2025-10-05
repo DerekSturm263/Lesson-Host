@@ -1169,7 +1169,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       </CardContent>
 
       <CardActions
-        sx={{ justifyContent: 'space-between' }}
+        sx={{ justifyContent: 'end' }}
       >
         <Stack
           direction="row"
