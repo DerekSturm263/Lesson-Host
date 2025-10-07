@@ -75,8 +75,11 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
     <Fragment>
       <AppBar
         position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar>
+        <Toolbar
+          sx={{ display: 'flex', justifyContent: 'space-between' }}
+        >
           <Typography
             variant="h6"
           >
@@ -94,6 +97,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               <LinearProgressWithLabel
                 variant="determinate"
                 value={progress * 100}
+                sx={{ width: '150px' }}
               />
             </Box>
           )}
@@ -159,9 +163,9 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       variant="permanent"
       open={isOpen}
       sx={{
-        width: 250,
+        width: 300,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: 250, boxSizing: 'border-box' }
+        [`& .MuiDrawer-paper`]: { width: 30, boxSizing: 'border-box' }
       }}
     >
       <Toolbar />
@@ -171,7 +175,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       >
         <Typography
           variant='h6'
-          sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '8px', marginBottom: '8px' }}
+          sx={{ marginTop: '8px', marginBottom: '8px', textAlign: 'center' }}
         >
           {label}
         </Typography>
@@ -259,6 +263,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   return (
     <Box
       display='flex'
+      sx={{ height: '100vh' }}
     >
       <Sidebar
         label="Chapters"
@@ -286,11 +291,11 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Sidebar>
 
-      <Toolbar />
-
       <Stack
         sx={{ flexGrow: 1 }}
       >
+        <Toolbar />
+
         <Interaction
           elementID={thisElement}
           mode={mode}
@@ -306,7 +311,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           page={currentElement + 1}
           disabled={!canTravel}
           onChange={(e, value) => setCurrentElement(value - 1)}
-          sx={{  }}
+          sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
         />
         
         {mode == types.ComponentMode.Edit && (
@@ -581,7 +586,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
       sx={{ display: 'flex', alignItems: 'center' }}
     >
       <Box
-        sx={{ width: '100%', mr: 1 }}
+        sx={{ width: '60%', mr: 1 }}
       >
         <LinearProgress
           {...props}
@@ -589,11 +594,10 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
       </Box>
 
       <Box
-        sx={{ minWidth: 35 }}
+        sx={{ flex: 1 }}
       >
         <Typography
           variant="body2"
-          sx={{ color: 'text.secondary' }}
         >
           {`${Math.round(props.value)}% Complete`}
         </Typography>
