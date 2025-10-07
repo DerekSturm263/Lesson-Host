@@ -1,12 +1,10 @@
 import { SchemaUnion } from "@google/genai";
 import { JSX } from "react";
 
-export interface Interaction { }
-
 export type Element = {
   type: string,
   text: string,
-  value: Interaction,
+  value: unknown,
   isComplete: boolean
 };
 
@@ -424,7 +422,7 @@ export type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export interface InteractionProps {
+export type InteractionProps = {
   elementID: ElementID,
   isDisabled: boolean,
   mode: ComponentMode
@@ -433,7 +431,7 @@ export interface InteractionProps {
 export type InteractionPackage = {
   id: string,
   prettyName: string,
-  defaultValue: any,
+  defaultValue: unknown,
   schema: SchemaUnion,
   Component: (props: InteractionProps) => JSX.Element
 }
