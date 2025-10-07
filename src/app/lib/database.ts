@@ -1,3 +1,5 @@
+'use server'
+
 import { MongoClient, ObjectId } from 'mongodb';
 import { Skill, Project, Course, Learn, Practice, Implement, Study } from '@/app/lib/types';
 
