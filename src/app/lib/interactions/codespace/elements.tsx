@@ -265,7 +265,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
       )}
 
       <Stack
-        sx={{ flexGrow: 1, width: '65%' }}
+        sx={{ flexGrow: 1, width: '60%' }}
       >
         <Tabs
           value={tabIndex}
