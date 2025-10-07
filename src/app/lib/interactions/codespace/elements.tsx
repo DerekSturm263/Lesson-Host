@@ -306,7 +306,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           spacing={1}
         >
           <Typography
-            variant="body1"
+            variant="body2"
           >
             Press Run to execute your code. Any outputs or errors will be printed below
           </Typography>
@@ -314,6 +314,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           <Button
             startIcon={<PlayArrow />}
             onClick={executeCode}
+            sx={{ width: '150px' }}
           >
             Run
           </Button>
