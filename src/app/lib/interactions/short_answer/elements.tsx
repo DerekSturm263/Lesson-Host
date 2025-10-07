@@ -59,7 +59,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           disabled={isDisabled}
           value={correctAnswer}
           onChange={(e) => {
-            let value = e.target.value === "" ? null : e.target.value;
+            const value = e.target.value === "" ? null : e.target.value;
             setCorrectAnswer(value);
             helpers.getInteractionValue<InteractionType>(elementID).correctAnswer = value;
           }}
