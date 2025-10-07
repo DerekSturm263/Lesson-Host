@@ -330,7 +330,8 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         </Stack>
 
         <Typography
-          variant="body1"
+          variant="body2"
+          sx={{ margin: '8px', fontFamily: 'monospace' }}
         >
           {isRunning && <LinearProgress />}
 

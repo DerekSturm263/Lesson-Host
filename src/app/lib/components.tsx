@@ -430,7 +430,7 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
       sx={{ flexGrow: 1 }}
     >
       <CardContent
-        style={{ height: '22vh', overflowY: 'auto' }}
+        style={{ height: '20vh', overflowY: 'auto' }}
       >
         {isThinking && <LinearProgress />}
 
