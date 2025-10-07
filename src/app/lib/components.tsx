@@ -449,7 +449,7 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
           />
         ) : (
           <Markdown
-            /*components={{
+            components={{
               strong({ node, children }) {
                 return <strong><WordWrapper text={String(children)} /></strong>
               },
@@ -465,7 +465,7 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
               code({ node, children }) {
                 return <code><WordWrapper text={String(children)} /></code>
               }
-            }}*/
+            }}
           >
             {isThinking ? "Thinking..." : text[helpers.getAbsoluteIndex(elementID)]}
           </Markdown>

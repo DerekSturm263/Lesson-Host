@@ -12,7 +12,7 @@ export function complete(elementID: ElementID) {
   window.dispatchEvent(new CustomEvent(`updateChapterProgress${elementID.chapterIndex}`, { detail: helpers.getChapterProgress(elementID) }));
   window.dispatchEvent(new CustomEvent(`updateLessonProgress`, { detail: helpers.getLessonProgress(elementID) }));
 
-  window.dispatchEvent(new CustomEvent(`updateChapterProgress${nextElement.chapterIndex}`, { detail: helpers.getChapterProgress(elementID) }));
+  window.dispatchEvent(new CustomEvent(`updateChapterProgress${nextElement.chapterIndex}`, { detail: helpers.getChapterProgress(nextElement) }));
 }
 
 export async function rephrase(elementID: ElementID) {
