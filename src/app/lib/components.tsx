@@ -448,27 +448,11 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
             }}
           />
         ) : (
-          <Markdown
-            components={{
-              strong({ node, children }) {
-                return <strong><WordWrapper text={String(children)} /></strong>
-              },
-              i({ node, children }) {
-                return <i><WordWrapper text={String(children)} /></i>
-              },
-              p({ node, children }) {
-                return <WordWrapper text={String(children)} />
-              },
-              li({ node, children }) {
-                return <li><WordWrapper text={String(children)} /></li>
-              },
-              code({ node, children }) {
-                return <code><WordWrapper text={String(children)} /></code>
-              }
-            }}
+          <Typography
+            component={Markdown}
           >
             {isThinking ? "Thinking..." : text[helpers.getAbsoluteIndex(elementID)]}
-          </Markdown>
+          </Typography>
         ))}
       </CardContent>
 
