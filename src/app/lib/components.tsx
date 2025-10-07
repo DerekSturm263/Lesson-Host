@@ -165,7 +165,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       sx={{
         width: 300,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: 30, boxSizing: 'border-box' }
+        [`& .MuiDrawer-paper`]: { width: 300, boxSizing: 'border-box' }
       }}
     >
       <Toolbar />
