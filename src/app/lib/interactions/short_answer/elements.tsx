@@ -45,7 +45,9 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         onSubmit={(e) => submit(e, elementID)}
       />
 
-      <Button>
+      <Button
+        variant="contained"
+      >
         Submit
       </Button>
 

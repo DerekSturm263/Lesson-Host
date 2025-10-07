@@ -111,69 +111,80 @@ export function Header({ title, mode, type }: { title: string, mode: ComponentMo
             MySkillStudy.com
           </Typography>
 
-          <Typography
-            variant="h6"
+          <Stack
+            direction="row"
+            spacing={2}
           >
-            {title}
-          </Typography>
-
-          {mode == ComponentMode.View && (
-            <Box>
-              <LinearProgressWithLabel
-                variant="determinate"
-                value={progress * 100}
-                sx={{ width: '150px' }}
-              />
-            </Box>
-          )}
-
-          <FormControl
-            size="small"
-          >
-            <InputLabel id="type-label">Type</InputLabel>
-
-            <Select
-              labelId="type-label"
-              value={type}
-              label="Type"
+            <Typography
+              variant="h6"
             >
-              <MenuItem value="Learn">Learn</MenuItem>
-              <MenuItem value="Practice">Practice</MenuItem>
-              <MenuItem value="Implement">Implement</MenuItem>
-              <MenuItem value="Study">Study</MenuItem>
-            </Select>
-          </FormControl>
+              {title}
+            </Typography>
+
+            {mode == ComponentMode.View && (
+              <Box>
+                <LinearProgressWithLabel
+                  variant="determinate"
+                  value={progress * 100}
+                  sx={{ width: '150px' }}
+                />
+              </Box>
+            )}
+          </Stack>
+
+          <Stack
+            direction="row"
+            spacing={2}
+          >
+            <FormControl
+              size="small"
+            >
+              <InputLabel id="type-label">Type</InputLabel>
+
+              <Select
+                labelId="type-label"
+                value={type}
+                label="Type"
+              >
+                <MenuItem value="Learn">Learn</MenuItem>
+                <MenuItem value="Practice">Practice</MenuItem>
+                <MenuItem value="Implement">Implement</MenuItem>
+                <MenuItem value="Study">Study</MenuItem>
+              </Select>
+            </FormControl>
           
-          <FormControl
-            size="small"
-          >
-            <InputLabel id="mode-label">Mode</InputLabel>
-
-            <Select
-              labelId="mode-label"
-              value={mode}
-              label="Mode"
+            <FormControl
+              size="small"
             >
-              {Object.values(ComponentMode).map((item, index) => (
-                <MenuItem
-                  key={index}
-                  value={item}
-                >
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              <InputLabel id="mode-label">Mode</InputLabel>
 
-          {mode == ComponentMode.Edit && (
-            <Button
-              onClick={async (e) => { 
-                //await saveSkillLearn(slug, skill.learn);
-              }}
-            >
-              Save
-            </Button>
-          )}
+              <Select
+                labelId="mode-label"
+                value={mode}
+                label="Mode"
+              >
+                {Object.values(ComponentMode).map((item, index) => (
+                  <MenuItem
+                    key={index}
+                    value={item}
+                  >
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {mode == ComponentMode.Edit && (
+              <Button
+                variant="contained"
+                onClick={async (e) => { 
+                  //await saveSkillLearn(slug, skill.learn);
+                }}
+              >
+                Save
+              </Button>
+            )}
+          </Stack>
         </Toolbar>
       </AppBar>
     </Fragment>
@@ -337,6 +348,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
         {mode == ComponentMode.Edit && (
           <Button
+            variant="contained"
             onClick={(e) => addChapter()}
           >
             New Chapter

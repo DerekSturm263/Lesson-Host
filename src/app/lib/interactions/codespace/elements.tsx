@@ -304,16 +304,19 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         <Stack
           direction="row"
           spacing={1}
+          sx={{ height: '48px' }}
         >
           <Typography
             variant="body2"
             sx={{ textAlign: 'center' }}
           >
             Press Run to execute your code
+            <br />
             All output and errors will be printed below
           </Typography>
 
           <Button
+            variant="contained"
             startIcon={<PlayArrow />}
             onClick={executeCode}
             sx={{ width: '150px' }}
