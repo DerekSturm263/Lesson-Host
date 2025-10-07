@@ -114,7 +114,6 @@ export function Header({ title, mode, type }: { title: string, mode: ComponentMo
           <Stack
             direction="row"
             spacing={2}
-            sx={{ margin: 'auto' }}
           >
             <Typography
               variant="h6"
@@ -123,7 +122,9 @@ export function Header({ title, mode, type }: { title: string, mode: ComponentMo
             </Typography>
 
             {mode == ComponentMode.View && (
-              <Box>
+              <Box
+                sx={{ margin: 'auto' }}
+              >
                 <LinearProgressWithLabel
                   variant="determinate"
                   value={progress * 100}
