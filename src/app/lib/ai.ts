@@ -1,3 +1,5 @@
+'use server'
+
 import { GoogleGenAI, HarmBlockThreshold, HarmCategory, SchemaUnion, Type } from '@google/genai';
 
 const apiKey: string = process.env.GEMINI_API_KEY ?? '';
