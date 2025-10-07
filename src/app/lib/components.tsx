@@ -430,7 +430,7 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
       sx={{ flexGrow: 1 }}
     >
       <CardContent
-        style={{ height: '20vh', overflowY: 'auto' }}
+        style={{ height: '22vh', overflowY: 'auto' }}
       >
         {isThinking && <LinearProgress />}
 
@@ -581,7 +581,8 @@ function WordWrapper({ text }: { text: string }) {
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
     <Box
-      sx={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
+      sx={{ display: 'flex', alignItems: 'center' }}
+      style={{ margin: 'auto' }}
     >
       <Box
         sx={{ width: '60%', mr: 1 }}
