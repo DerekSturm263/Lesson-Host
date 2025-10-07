@@ -10,11 +10,11 @@ import { Type } from '@google/genai';
 import * as helpers from "@/app/lib/helpers";
 
 export type InteractionType = {
-  correctAnswer: string | undefined
+  correctAnswer: string | null
 };
 
 const defaultValue: InteractionType = {
-  correctAnswer: undefined
+  correctAnswer: null
 }
 
 const schema = {
@@ -59,8 +59,9 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           disabled={isDisabled}
           value={correctAnswer}
           onChange={(e) => {
-            setCorrectAnswer(e.target.value)
-            helpers.getInteractionValue<InteractionType>(elementID).correctAnswer = e.target.value;
+            let value = e.target.value === "" ? null : e.target.value;
+            setCorrectAnswer(value);
+            helpers.getInteractionValue<InteractionType>(elementID).correctAnswer = value;
           }}
         />
       )}

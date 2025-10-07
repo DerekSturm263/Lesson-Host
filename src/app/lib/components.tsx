@@ -67,7 +67,6 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
-import { TypeAnimation } from 'react-type-animation';
 
 
 

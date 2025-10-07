@@ -190,6 +190,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
   const [ output, setOutput ] = useState("");
   const [ tabIndex, setTabIndex ] = useState(0);
   const [ isRunning, setIsRunning ] = useState(false);
+  
   const file = content[tabIndex];
 
   async function executeCode() {
