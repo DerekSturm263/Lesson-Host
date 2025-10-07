@@ -67,6 +67,7 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
+import { TypeAnimation } from 'react-type-animation';
 
 
 
@@ -543,8 +544,8 @@ function getInteractionPackage(type: string): InteractionPackage {
 // Miscellaneous.
 
 let globalIndex = 0;
-
-function WordWrapper({ text }: { text: string }) {
+/*
+function WordWrapper({ children }: { children?: React.ReactNode }) {
   return (
     <>
       {text.split(/\s+/).map((word, i) => (
@@ -561,7 +562,7 @@ function WordWrapper({ text }: { text: string }) {
     </>
   );
 }
-
+*/
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
     <Box
