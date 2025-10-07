@@ -1,162 +1,9 @@
-export enum ElementType {
-  ShortAnswer = 'shortAnswer',
-  MultipleChoice = 'multipleChoice',
-  TrueOrFalse = 'trueOrFalse',
-  Matching = 'matching',
-  Ordering = 'ordering',
-  Files = 'files',
-  Drawing = 'drawing',
-  Graph = 'graph',
-  DAW = 'daw',
-  Codespace = 'codespace',
-  Engine = 'engine',
-  IFrame = 'iFrame'
-};
-
-export type ShortAnswer = {
-  correctAnswer: string | undefined
-};
-
-export type MultipleChoiceItem = {
-  value: string,
-  isCorrect: boolean
-};
-
-export enum MultipleChoiceType {
-  Radio = 'radio',
-  Checkbox = 'checkbox'
-}
-
-export type MultipleChoice = {
-  items: MultipleChoiceItem[],
-  type: MultipleChoiceType,
-  needsAllCorrect: boolean
-};
-
-export type TrueOrFalse = {
-  isCorrect: boolean
-};
-
-export type MatchingItem = {
-  leftSide: string,
-  rightSide: string
-};
-
-export type Matching = {
-  items: MatchingItem[]
-};
-
-export type Ordering = {
-  correctOrder: string[]
-};
-
-export type File = {
-  source: string,
-  isDownloadable: boolean
-};
-
-export type Files = {
-  files: File[]
-};
-
-export type Drawing = {
-  placeholder: boolean
-};
-
-export type Graph = {
-  type: string,
-  fileName: string
-};
-
-export type DAW = {
-  placeholder: boolean
-};
-
-export enum CodespaceLanguage {
-  Java = 'java',
-  Python = 'python',
-  C = 'c',
-  CPP = 'cpp',
-  NodeJS = 'nodejs',
-  JavaScript = 'javascript',
-  Groovy = 'groovy',
-  JShell = 'jshell',
-  Haskell = 'haskell',
-  TCL = 'tcl',
-  Lua = 'lua',
-  Ada = 'ada',
-  CommonLisp = 'commonlisp',
-  D = 'd',
-  Elixir = 'elixir',
-  Erlang = 'erlang',
-  FSharp = 'fsharp',
-  Fortran = 'fortran',
-  Assembly = 'assembly',
-  Scala = 'scala',
-  PHP = 'php',
-  Python2 = 'python2',
-  CSharp = 'csharp',
-  Perl = 'perl',
-  Ruby = 'ruby',
-  Go = 'go',
-  R = 'r',
-  Racket = 'racket',
-  OCaml = 'ocaml',
-  VB = 'vb',
-  Basic = 'basic',
-  Bash = 'bash',
-  Clojure = 'clojure',
-  TypeScript = 'typescript',
-  Cobol = 'cobol',
-  Kotlin = 'kotlin',
-  Pascal = 'pascal',
-  Prolog = 'prolog',
-  Rust = 'rust',
-  Swift = 'swift',
-  ObjectiveC = 'objectivec',
-  Octave = 'octave',
-  Text = 'text',
-  BrainFK = 'brainfk',
-  CoffeeScript = 'coffeescript',
-  EJS = 'ejs',
-  Dart = 'dart',
-  Deno = 'deno',
-  Bun = 'bun',
-  MySQL = 'mysql',
-  Oracle = 'oracle',
-  PostgreSQL = 'postgresql',
-  MongoDB = 'mongodb',
-  SQLite = 'sqlite',
-  Redis = 'redis',
-  MariaDB = 'mariadb',
-  PLSQL = 'plsql',
-  SQLServer = 'sqlserver'
-};
-
-export type Codespace = {
-  language: CodespaceLanguage,
-  content: CodespaceFile[],
-  isSimplified: boolean,
-  correctOutput: string | undefined
-};
-
-export type CodespaceFile = {
-  name: string,
-  content: string
-}
-
-export type Engine = {
-  placeholder: boolean
-};
-
-export type IFrame = {
-  source: string
-};
+export interface Interaction { }
 
 export type Element = {
-  type: ElementType,
+  type: string,
   text: string,
-  value: ShortAnswer | MultipleChoice | TrueOrFalse | Matching | Ordering | Files | Drawing | Graph | DAW | Codespace | Engine | IFrame,
+  value: Interaction,
   isComplete: boolean
 };
 
@@ -563,21 +410,6 @@ export type ElementID = {
   keys: string[]
 };
 
-export enum CodeStatus {
-  Success = 'success',
-  Failed = 'failed'
-};
-
-export type CodeResult = {
-  stdout: string | undefined,
-  stderr: string | undefined,
-  exception: string | undefined,
-  executionTime: number,
-  limitPerMonthRemaining: number,
-  status: CodeStatus,
-  error: string | undefined
-};
-
 export enum ComponentMode {
   View = 'view',
   Edit = 'edit',
@@ -587,4 +419,10 @@ export enum ComponentMode {
 export type Props = {
   params: Promise<{ slug: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export interface InteractionProps {
+  elementID: ElementID,
+  isDisabled: boolean,
+  mode: ComponentMode
 }

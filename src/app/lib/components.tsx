@@ -2,15 +2,11 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler } from 'react';
 import { useEffect } from 'react';
-import { Editor } from '@monaco-editor/react';
-import { verifyCodespace } from './generate';
 import { saveSkillLearn, createSkill, createProject, createCourse } from './database';
-import Image from 'next/image';
 import Markdown from 'react-markdown';
-import ky from 'ky';
-import * as functions from '../lib/functions';
-import * as types from '../lib/types';
-import * as helpers from '../lib/helpers';
+import * as functions from '@/app/lib/functions';
+import * as types from '@/app/lib/types';
+import * as helpers from '@/app/lib/helpers';
 
 import Button from '@mui/material/Button';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -24,8 +20,6 @@ import AppBar from '@mui/material/AppBar';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Drawer from '@mui/material/Drawer';
 import Pagination from '@mui/material/Pagination';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import MenuComponent from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
@@ -66,6 +60,8 @@ import MoreVert from '@mui/icons-material/MoreVert';
 
 // Core.
 
+let globalIndex = 0;
+
 export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
   const [ progress, setProgress ] = useState(0);
 
@@ -79,8 +75,11 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
     <Fragment>
       <AppBar
         position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Toolbar>
+        <Toolbar
+          sx={{ display: 'flex', justifyContent: 'space-between' }}
+        >
           <Typography
             variant="h6"
           >
@@ -98,6 +97,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               <LinearProgressWithLabel
                 variant="determinate"
                 value={progress * 100}
+                sx={{ width: '150px' }}
               />
             </Box>
           )}
@@ -163,9 +163,9 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       variant="permanent"
       open={isOpen}
       sx={{
-        width: 250,
+        width: 300,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: 250, boxSizing: 'border-box' }
+        [`& .MuiDrawer-paper`]: { width: 300, boxSizing: 'border-box' }
       }}
     >
       <Toolbar />
@@ -175,7 +175,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       >
         <Typography
           variant='h6'
-          sx={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '8px', marginBottom: '8px' }}
+          sx={{ marginTop: '8px', marginBottom: '8px', textAlign: 'center' }}
         >
           {label}
         </Typography>
@@ -191,34 +191,6 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
         </List>
       </Box>
     </Drawer>
-  );
-}
-
-export function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
-  const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ progress, setProgress ] = useState(0);
-
-  useEffect(() => {
-    window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
-      setProgress((e as CustomEvent).detail);
-    });
-  }, []);
-
-  return (
-    <ListItem
-      secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
-    >
-      <ListItemButton
-        disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
-        selected={selected}
-        onClick={onClick}
-      >
-        <ListItemText
-          primary={title}
-          secondary={mode == types.ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
-        />
-      </ListItemButton>
-    </ListItem>
   );
 }
 
@@ -291,6 +263,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   return (
     <Box
       display='flex'
+      sx={{ height: '100vh' }}
     >
       <Sidebar
         label="Chapters"
@@ -318,11 +291,11 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Sidebar>
 
-      <Toolbar />
-
       <Stack
         sx={{ flexGrow: 1 }}
       >
+        <Toolbar />
+
         <Interaction
           elementID={thisElement}
           mode={mode}
@@ -338,7 +311,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           page={currentElement + 1}
           disabled={!canTravel}
           onChange={(e, value) => setCurrentElement(value - 1)}
-          sx={{  }}
+          sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
         />
         
         {mode == types.ComponentMode.Edit && (
@@ -352,6 +325,34 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
         )}
       </Stack>
     </Box>
+  );
+}
+
+function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
+  const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
+  const [ progress, setProgress ] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
+      setProgress((e as CustomEvent).detail);
+    });
+  }, []);
+
+  return (
+    <ListItem
+      secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
+    >
+      <ListItemButton
+        disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
+        selected={selected}
+        onClick={onClick}
+      >
+        <ListItemText
+          primary={title}
+          secondary={mode == types.ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
+        />
+      </ListItemButton>
+    </ListItem>
   );
 }
 
@@ -404,6 +405,36 @@ function TypeSwitcher({ elementID }: { elementID: types.ElementID }) {
   );
 }
 
+import ShortAnswer from './interactions/short_answer/elements';
+import MultipleChoice from './interactions/multiple_choice/elements';
+import TrueOrFalse from './interactions/true_or_false/elements';
+import Matching from './interactions/matching/elements';
+import Ordering from './interactions/ordering/elements';
+import Files from './interactions/files/elements';
+import Drawing from './interactions/drawing/elements';
+import Graph from './interactions/graph/elements';
+import DAW from './interactions/daw/elements';
+import Codespace from './interactions/codespace/elements';
+import Engine from './interactions/engine/elements';
+import IFrame from './interactions/iframe/elements';
+
+const interactionMap = (props: types.InteractionProps): Element | undefined => {
+  return {
+    "shortAnswer": <ShortAnswer {...props} />,
+    "multipleChoice": <MultipleChoice {...props} />,
+    "trueOrFalse": <TrueOrFalse {...props} />,
+    "matching": <Matching {...props} />,
+    "ordering": <Ordering {...props} />,
+    "files": <Files {...props} />,
+    "drawing": <Drawing {...props} />,
+    "graph": <Graph {...props} />,
+    "daw": <DAW {...props} />,
+    "codespace": <Codespace {...props} />,
+    "engine": <Engine {...props} />,
+    "iframe": <IFrame {...props} />
+  }[helpers.getElement(props.elementID).type];
+}
+
 function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
   const [ isDisabled, setIsDisabled ] = useState(false);
@@ -414,677 +445,8 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
     });
   }, []);
 
-  switch (type) {
-    case types.ElementType.ShortAnswer:
-      return <ShortAnswer elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.MultipleChoice:
-      return <MultipleChoice elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.TrueOrFalse:
-      return <TrueOrFalse elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Matching:
-      return <Matching elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Ordering:
-      return <Ordering elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Files:
-      return <Files elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Drawing:
-      return <Drawing elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Graph:
-      return <Graph elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.DAW:
-      return <DAW elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Codespace:
-      return <Codespace elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.Engine:
-      return <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    case types.ElementType.IFrame:
-      return <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-
-    default:
-      return <></>
-  }
+  return interactionMap({ elementID: elementID, isDisabled: isDisabled, mode: mode });
 }
-
-
-
-// Interactions.
-
-function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      <TextField
-        label="Write your response here. Press enter to submit"
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        name="response"
-        autoComplete="off"
-        disabled={isDisabled}
-        onSubmit={(e) => functions.submitShortAnswer(e, elementID)}
-      />
-
-      <Button>
-        Submit
-      </Button>
-
-      {mode == types.ComponentMode.Edit && (
-        <TextField
-          label="Correct Answer"
-          name="correctAnswer"
-          autoComplete="off"
-          disabled={isDisabled}
-          value={correctAnswer}
-          onChange={(e) => {
-            setCorrectAnswer(e.target.value)
-            helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.target.value;
-          }}
-        />
-      )}
-    </Box>
-  );
-}
-
-function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ type, setType ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).type);
-  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
-
-  const [ items, setItems ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).items);
-
-  /*if (mode != types.ComponentMode.Edit) {
-    setItems(items.sort(item => Math.random() - 0.5));
-  }*/
-
-  function addItem() {
-    const newItems = items;
-    newItems.push({
-      value: "New Multiple Choice Item",
-      isCorrect: false
-    });
-    setItems(newItems);
-  }
-
-  function removeItem(index: number) {
-    const newItems = items;
-    newItems.splice(index, 1);
-    setItems(newItems);
-  }
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      <form
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        className='multipleOptions'
-        action={(e) => functions.submitMultipleChoice(e, elementID)}
-      >
-        {items.map((item, index) => (
-          <MultipleChoiceItem
-            key={index}
-            elementID={elementID}
-            isDisabled={isDisabled}
-            mode={mode}
-            item={item}
-            index={index}
-            type={type}
-          />
-        ))}
-
-        {mode == types.ComponentMode.Edit && (
-          <label>
-            Type:
-
-            <select
-              name="selectType"
-              value={type}
-              onChange={(e) => setType(e.target.value as types.MultipleChoiceType)}
-            >
-              {(Object.values(types.MultipleChoiceType).map((item, index) => (
-                <option
-                  key={index}
-                  value={item}
-                >
-                  {item}
-                </option>
-              )))}
-            </select>
-          </label>
-        )}
-        
-        {mode == types.ComponentMode.Edit && (
-          <FormControlLabel label="Needs All Correct" control={
-            <Checkbox
-              name="needsAllCorrect"
-              id="needsAllCorrect"
-              checked={needsAllCorrect}
-              onChange={(e) => {
-                setNeedsAllCorrect(e.target.checked);
-                helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect = e.target.checked;
-              }}
-            />}
-          />
-        )}
-
-        <input
-          type="submit"
-          name="submit"
-          disabled={isDisabled}
-        />
-      </form>
-    </Box>
-  );
-}
-
-function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.MultipleChoiceItem, index: number, type: types.MultipleChoiceType }) {
-  const [ value, setValue ] = useState(item.value);
-  const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
-
-  return (
-    <label>
-      <input
-        type={type}
-        name="response"
-        id={value}
-        value={isCorrect.toString()}
-        disabled={isDisabled}
-      />
-
-      {(mode == types.ComponentMode.Edit ? (
-        <Box>
-          <FormControlLabel label="Is Correct" control={
-            <Checkbox
-              name="isCorrect"
-              checked={isCorrect}
-              onChange={(e) => {
-                setIsCorrect(e.target.checked);
-
-                if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].isCorrect = e.target.checked;
-                }
-              }}
-            />}
-          />
-          
-          <TextField
-            label="Value"
-            name="value"
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              
-              if (mode == types.ComponentMode.Edit) {
-                helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].value = e.target.value;
-              }
-            }}
-          />
-        </Box>
-      ) : (
-        <Markdown>
-          {value}
-        </Markdown>
-      ))}
-    </label>
-  );
-}
-
-function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect);
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      <form
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        className='multipleOptions'
-        action={(e) => functions.submitTrueOrFalse(e, elementID)}
-      >
-        <label>
-          <input
-            type="radio"
-            name="response"
-            id="true"
-            value="true"
-            disabled={isDisabled}
-            checked={mode == types.ComponentMode.Edit && isCorrect}
-            onChange={(e) => {
-              setIsCorrect(true);
-
-              if (mode == types.ComponentMode.Edit) {
-                helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect = true;
-              }
-            }}
-          />
-
-          True
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            name="response"
-            id="false"
-            value="false"
-            disabled={isDisabled}
-            checked={mode == types.ComponentMode.Edit && !isCorrect}
-            onChange={(e) => {
-              setIsCorrect(false);
-              
-              if (mode == types.ComponentMode.Edit) {
-                helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect = false;
-              }
-            }}
-          />
-
-          False
-        </label>
-
-        <input
-          type="submit"
-          name="submit"
-          disabled={isDisabled}
-        />
-      </form>
-    </Box>
-  );
-}
-
-function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<types.Matching>(elementID).items);
-  
-  //const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
-  //const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
-  
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      {/*<Reorder>
-        {shuffledItemsLeft.map((item, index) => (
-          <li
-            key={index}
-          >
-            {item}
-          </li>
-        ))}
-      </Reorder>
-
-      <Reorder>
-        {shuffledItemsRight.map((item, index) => (
-          <li
-            key={index}
-          >
-            {item}
-          </li>
-        ))}
-      </Reorder>*/}
-    </Box>
-  );
-}
-
-function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
-
-  /*if (mode != types.ComponentMode.Edit) {
-    setItems(items.sort(item => Math.random() - 0.5));
-  }*/
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      {/*<Reorder>
-        {items.map((item, index) => (
-          <li
-            key={index}
-          >
-            {item}
-          </li>
-        ))}
-      </Reorder>*/}
-    </Box>
-  );
-}
-
-function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ files, setFiles ] = useState(helpers.getInteractionValue<types.Files>(elementID).files);
-
-  function addFile() {
-    const newFiles = files;
-    newFiles.push({
-      source: "",
-      isDownloadable: false
-    });
-    setFiles(newFiles);
-  }
-
-  function removeFile(index: number) {
-    const newFiles = files;
-    newFiles.splice(index, 1);
-    setFiles(newFiles);
-  }
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      {files.map((item, index) => (
-        <FileItem
-          key={index}
-          elementID={elementID}
-          isDisabled={isDisabled}
-          mode={mode}
-          item={item}
-          index={index}
-        />
-      ))}
-    </Box>
-  );
-}
-
-function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.File, index: number }) {
-  const [ source, setSource ] = useState(item.source);
-  const [ isDownloadable, setIsDownloadable ] = useState(item.isDownloadable);
-  
-  const fileType = source.substring(source.length - 3) == "png" ? ("png") :
-  source.substring(source.length - 3) == "mp4" ? ("mp4") :
-  source.substring(source.length - 3) == "mp3" ? ("mp3") : "other";
-
-  switch (fileType) {
-    case "png":
-      return (
-        <Image
-          src={item.source}
-          alt={item.source}
-        />
-      );
-
-    case "mp4":
-      return (
-        <video
-          src={item.source}
-          controls
-        ></video>
-      );
-
-    case "mp3":
-      return (
-        <audio
-          src={item.source}
-          controls
-        ></audio>
-      );
-
-    case "other":
-      return (
-        <></>
-      );
-  }
-}
-
-function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      
-    </Box>
-  );
-}
-
-function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-      onLoad={(e) => functions.loadGraph(elementID)}
-    ></Box>
-  );
-}
-
-function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      
-    </Box>
-  );
-}
-
-function unsimplify(file: types.CodespaceFile) {
-  return {
-    name: file.name,
-    content: `using System;
-
-    public class Program
-    {
-      public static void Main(string[] args)
-      {
-        ${file.content}
-      }
-    }`
-  };
-}
-
-function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
-  const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
-  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
-  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).correctOutput);
-  const [ output, setOutput ] = useState("");
-  const [ tabIndex, setTabIndex ] = useState(0);
-  const file = content[tabIndex];
-
-  async function executeCode() {
-    setOutput("Running...");
-    helpers.setThinking(elementID, true);
-
-    const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
-      headers: {
-        'x-rapidapi-key': elementID.keys[0],
-        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
-        'Content-Type': 'application/json',
-      },
-      json: {
-        language: language,
-        stdin: "",
-        files: content.map(file => isSimplified ? unsimplify(file) : file)
-      }
-    }).json() as types.CodeResult;
-
-    const output = `${response.stdout ?? ''}\n${response.stderr ?? ''}`;
-    setOutput(output.trim() == '' ? 'Program did not output anything' : output);
-
-    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID));
-    helpers.setText(elementID, feedback.feedback);
-    helpers.setThinking(elementID, false);
-
-    functions.readAloud(elementID);
-
-    if (feedback.isValid) {
-      functions.complete(elementID);
-    }
-  }
-
-  return (
-    <Stack
-      sx={{ flexGrow: 1 }}
-      direction='row'
-    >
-      {mode == types.ComponentMode.Edit && (
-        <label>
-          Language:
-
-          <select
-            name="selectType"
-            value={language}
-            onChange={(e) => {
-              setLanguage(e.target.value as types.CodespaceLanguage);
-              helpers.getInteractionValue<types.Codespace>(elementID).language = e.target.value as types.CodespaceLanguage;
-            }}
-          >
-            {(Object.values(types.CodespaceLanguage).map((item, index) => (
-              <option
-                key={index}
-                value={item}
-              >
-                {item}
-              </option>
-            )))}
-          </select>
-        </label>
-      )}
-
-      {mode == types.ComponentMode.Edit && (
-        <FormControlLabel label="Is Simplified" control={
-          <Checkbox
-            name="isSimplified"
-            id="isSimplified"
-            checked={isSimplified}
-            onChange={(e) => {
-              setIsSimplified(e.target.checked);
-              helpers.getInteractionValue<types.Codespace>(elementID).isSimplified = e.target.checked;
-            }}
-          />}
-        />
-      )}
-
-      <Stack
-        sx={{ flexGrow: 1, width: '65%' }}
-      >
-        <Tabs
-          value={tabIndex}
-          onChange={(e, value) => { setTabIndex(value); }}
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          {content.map((file, index) => (
-            <Tab
-              key={index}
-              label={file.name}
-            />
-          ))}
-        </Tabs>
-
-        <Editor
-          path={file.name}
-          defaultLanguage={language}
-          defaultValue={file.content}
-          theme="vs-dark"
-          onChange={(e) => {
-            const newContent = content;
-            newContent[tabIndex].content = e ?? '';
-            setContent(newContent);
-
-            if (mode == types.ComponentMode.Edit) {
-              helpers.getInteractionValue<types.Codespace>(elementID).content[tabIndex].content = e ?? '';
-            }
-          }}
-        />
-      </Stack>
-
-      <Box
-        sx={{ flexGrow: 1 }}
-      >
-        <Stack
-          direction="row"
-          spacing={1}
-        >
-          <Typography
-            variant="body1"
-          >
-            Press Run to execute your code. Any outputs or errors will be printed below
-          </Typography>
-
-          <Button
-            startIcon={<PlayArrow />}
-            onClick={executeCode}
-          >
-            Run
-          </Button>
-        </Stack>
-
-        <Typography
-          variant="body1"
-        >
-          {output}
-        </Typography>
-      </Box>
-
-      
-      {mode == types.ComponentMode.Edit && (
-        <TextField
-          label="Correct Output"
-          name="correctOutput"
-          value={correctOutput}
-          multiline
-          onChange={(e) => {
-            setCorrectOutput(e.target.value);
-            helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.target.value;
-          }}
-        />
-      )}
-    </Stack>
-  );
-}
-
-function Engine({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <iframe
-      className="fullscreenInteraction"
-      src="https://editor.godotengine.org/releases/latest/"
-    ></iframe>
-  );
-}
-
-function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ source, setSource ] = useState(helpers.getInteractionValue<types.IFrame>(elementID).source);
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-    >
-      <iframe
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        className="fullscreenInteraction"
-        src={source}
-      ></iframe>
-
-      {mode == types.ComponentMode.Edit && (
-        <TextField
-          label="Source"
-          name="source"
-          autoComplete="off"
-          disabled={isDisabled}
-          value={source}
-          onChange={(e) => {
-            setSource(e.target.value);
-            helpers.getInteractionValue<types.IFrame>(elementID).source = e.target.value;
-          }}
-        />
-      )}
-    </Box>
-  );
-}
-
-
-
-// Text.
-
-let globalIndex = 0;
 
 function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   const [ text, setText ] = useState(elementID.learn.chapters.map(chapter => chapter.elements.map(element => element.text)).flat());
@@ -1224,7 +586,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
       sx={{ display: 'flex', alignItems: 'center' }}
     >
       <Box
-        sx={{ width: '100%', mr: 1 }}
+        sx={{ width: '60%', mr: 1 }}
       >
         <LinearProgress
           {...props}
@@ -1232,11 +594,10 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
       </Box>
 
       <Box
-        sx={{ minWidth: 35 }}
+        sx={{ flex: 1 }}
       >
         <Typography
           variant="body2"
-          sx={{ color: 'text.secondary' }}
         >
           {`${Math.round(props.value)}% Complete`}
         </Typography>

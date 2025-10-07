@@ -31,7 +31,7 @@ export async function createSkill(): Promise<[ types.Skill, ObjectId ]> {
           title: "New Chapter",
           elements: [
             {
-              type: types.ElementType.ShortAnswer,
+              type: "",
               text: "New element",
               value: {
                 correctAnswer: ""
