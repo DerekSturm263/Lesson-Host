@@ -3,15 +3,35 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import { ComponentMode, InteractionProps } from '@/app/lib/types';
+import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
+import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 
-type IFrame = {
+export type InteractionType = {
   source: string
 };
 
-export default function IFrame({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ source, setSource ] = useState(helpers.getInteractionValue<IFrame>(elementID).source);
+const defaultValue: InteractionType = {
+  source: ""
+}
+
+const schema = {
+  type: Type.OBJECT,
+  properties: {
+    source: {
+      type: Type.STRING
+    }
+  },
+  required: [
+    "source"
+  ],
+  propertyOrdering: [
+    "source"
+  ]
+};
+
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ source, setSource ] = useState(helpers.getInteractionValue<InteractionType>(elementID).source);
 
   return (
     <Box
@@ -32,10 +52,20 @@ export default function IFrame({ elementID, isDisabled, mode }: InteractionProps
           value={source}
           onChange={(e) => {
             setSource(e.target.value);
-            helpers.getInteractionValue<IFrame>(elementID).source = e.target.value;
+            helpers.getInteractionValue<InteractionType>(elementID).source = e.target.value;
           }}
         />
       )}
     </Box>
   );
 }
+
+const interaction: InteractionPackage = {
+  id: "iframe",
+  prettyName: "IFrame",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

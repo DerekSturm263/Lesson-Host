@@ -1,6 +1,7 @@
 import generateText, { ModelType, Verification, verificationSchema } from "@/app/lib/ai";
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
+import { complete, readAloud } from "@/app/lib/functions";
 import * as helpers from '@/app/lib/helpers';
 
 export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {

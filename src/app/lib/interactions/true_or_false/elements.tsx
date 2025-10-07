@@ -3,24 +3,45 @@
 import Box from '@mui/material/Box';
 import submit from './functions';
 import { useState } from 'react';
-import { ComponentMode, InteractionProps } from '@/app/lib/types';
+import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
 import * as helpers from '@/app/lib/helpers';
+import { Type } from '@google/genai';
+import { FormControl } from '@mui/material';
 
-type TrueOrFalse = {
+export type InteractionType = {
   isCorrect: boolean
 };
 
-export default function TrueOrFalse({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<TrueOrFalse>(elementID).isCorrect);
+const defaultValue: InteractionType = {
+  isCorrect: true
+}
+
+const schema = {
+  type: Type.OBJECT,
+  properties: {
+    isCorrect: {
+      type: Type.BOOLEAN
+    }
+  },
+  required: [
+    "isCorrect"
+  ],
+  propertyOrdering: [
+    "isCorrect"
+  ]
+};
+
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<InteractionType>(elementID).isCorrect);
 
   return (
     <Box
       sx={{ flexGrow: 1 }}
     >
-      <form
+      <FormControl
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
         className='multipleOptions'
-        action={(e) => submit(e, elementID)}
+        onSubmit={(e) => submit(e, elementID)}
       >
         <label>
           <input
@@ -34,7 +55,7 @@ export default function TrueOrFalse({ elementID, isDisabled, mode }: Interaction
               setIsCorrect(true);
 
               if (mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<TrueOrFalse>(elementID).isCorrect = true;
+                helpers.getInteractionValue<InteractionType>(elementID).isCorrect = true;
               }
             }}
           />
@@ -54,7 +75,7 @@ export default function TrueOrFalse({ elementID, isDisabled, mode }: Interaction
               setIsCorrect(false);
               
               if (mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<TrueOrFalse>(elementID).isCorrect = false;
+                helpers.getInteractionValue<InteractionType>(elementID).isCorrect = false;
               }
             }}
           />
@@ -67,7 +88,17 @@ export default function TrueOrFalse({ elementID, isDisabled, mode }: Interaction
           name="submit"
           disabled={isDisabled}
         />
-      </form>
+      </FormControl>
     </Box>
   );
 }
+
+const interaction: InteractionPackage = {
+  id: "trueOrFalse",
+  prettyName: "True or False",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

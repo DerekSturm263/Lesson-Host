@@ -2,10 +2,23 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
+import { ElementID, ComponentMode, InteractionPackage, Skill } from '@/app/lib/types';
 import Markdown from 'react-markdown';
 import * as functions from '@/app/lib/functions';
-import * as types from '@/app/lib/types';
 import * as helpers from '@/app/lib/helpers';
+
+import ShortAnswer from './interactions/short_answer/elements';
+import MultipleChoice from './interactions/multiple_choice/elements';
+import TrueOrFalse from './interactions/true_or_false/elements';
+import Matching from './interactions/matching/elements';
+import Ordering from './interactions/ordering/elements';
+import Files from './interactions/files/elements';
+import Drawing from './interactions/drawing/elements';
+import Graph from './interactions/graph/elements';
+import DAW from './interactions/daw/elements';
+import Codespace from './interactions/codespace/elements';
+import Engine from './interactions/engine/elements';
+import IFrame from './interactions/iframe/elements';
 
 import Button from '@mui/material/Button';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -59,9 +72,22 @@ import MoreVert from '@mui/icons-material/MoreVert';
 
 // Core.
 
-let globalIndex = 0;
+const interactionMap: Record<string, InteractionPackage> = {
+  "shortAnswer": ShortAnswer,
+  "multipleChoice": MultipleChoice,
+  "trueOrFalse": TrueOrFalse,
+  "matching": Matching,
+  "ordering": Ordering,
+  "files": Files,
+  "drawing": Drawing,
+  "graph": Graph,
+  "daw": DAW,
+  "codespace": Codespace,
+  "engine": Engine,
+  "iframe": IFrame
+};
 
-export function Header({ title, mode, type }: { title: string, mode: types.ComponentMode, type: string }) {
+export function Header({ title, mode, type }: { title: string, mode: ComponentMode, type: string }) {
   const [ progress, setProgress ] = useState(0);
 
   useEffect(() => {
@@ -91,7 +117,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             {title}
           </Typography>
 
-          {mode == types.ComponentMode.View && (
+          {mode == ComponentMode.View && (
             <Box>
               <LinearProgressWithLabel
                 variant="determinate"
@@ -128,7 +154,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
               value={mode}
               label="Mode"
             >
-              {Object.values(types.ComponentMode).map((item, index) => (
+              {Object.values(ComponentMode).map((item, index) => (
                 <MenuItem
                   key={index}
                   value={item}
@@ -139,7 +165,7 @@ export function Header({ title, mode, type }: { title: string, mode: types.Compo
             </Select>
           </FormControl>
 
-          {mode == types.ComponentMode.Edit && (
+          {mode == ComponentMode.Edit && (
             <Button
               onClick={async (e) => { 
                 //await saveSkillLearn(slug, skill.learn);
@@ -193,7 +219,35 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
   );
 }
 
-export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, skill: types.Skill, mode: types.ComponentMode, apiKey: string }) {
+function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: ElementID, mode: ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
+  const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
+  const [ progress, setProgress ] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
+      setProgress((e as CustomEvent).detail);
+    });
+  }, []);
+
+  return (
+    <ListItem
+      secondaryAction={ mode == ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
+    >
+      <ListItemButton
+        disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
+        selected={selected}
+        onClick={onClick}
+      >
+        <ListItemText
+          primary={title}
+          secondary={mode == ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
+        />
+      </ListItemButton>
+    </ListItem>
+  );
+}
+
+export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, skill: Skill, mode: ComponentMode, apiKey: string }) {
   const [ chapters, setChapters ] = useState(skill.learn.chapters);
   const [ currentChapter, setCurrentChapter ] = useState(0);
   const [ currentElement, setCurrentElement ] = useState(0);
@@ -206,9 +260,9 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
       title: "New Chapter",
       elements: [
         {
-          type: types.ElementType.ShortAnswer,
+          type: "",
           text: "New element",
-          value: { correctAnswer: "" },
+          value: { },
           isComplete: true
         }
       ]
@@ -229,7 +283,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
   for (let i = 0; i < chapters.length; ++i) {
     for (let j = 0; j < chapters[i].elements.length; ++j) {
-      chapters[i].elements[j].isComplete = mode != types.ComponentMode.View;
+      chapters[i].elements[j].isComplete = mode != ComponentMode.View;
     }
   }
 
@@ -239,9 +293,9 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   function addElement() {
     const newElements = elements;
     newElements.push({
-      type: types.ElementType.ShortAnswer,
+      type: "",
       text: "New element",
-      value: { correctAnswer: "" },
+      value: { },
       isComplete: true
     });
     setElements(newElements);
@@ -281,7 +335,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           />
         ))}
 
-        {mode == types.ComponentMode.Edit && (
+        {mode == ComponentMode.Edit && (
           <Button
             onClick={(e) => addChapter()}
           >
@@ -313,7 +367,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
           sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
         />
         
-        {mode == types.ComponentMode.Edit && (
+        {mode == ComponentMode.Edit && (
           <Tooltip title="Delete this element">
             <Chip
               icon={<Delete />}
@@ -327,114 +381,7 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   );
 }
 
-function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: types.ElementID, mode: types.ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
-  const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ progress, setProgress ] = useState(0);
-
-  useEffect(() => {
-    window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
-      setProgress((e as CustomEvent).detail);
-    });
-  }, []);
-
-  return (
-    <ListItem
-      secondaryAction={ mode == types.ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
-    >
-      <ListItemButton
-        disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
-        selected={selected}
-        onClick={onClick}
-      >
-        <ListItemText
-          primary={title}
-          secondary={mode == types.ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
-        />
-      </ListItemButton>
-    </ListItem>
-  );
-}
-
-function TypeSwitcher({ elementID }: { elementID: types.ElementID }) {
-  const [ type, setType ] = useState(helpers.getElement(elementID).type);
-
-  function setTypeAndUpdate(type: types.ElementType) {
-    setType(type);
-    helpers.getElement(elementID).type = type;
-
-    switch (type) {
-      case types.ElementType.ShortAnswer:
-        helpers.getElement(elementID).value = {
-          correctAnswer: ""
-        };
-        break;
-        
-      case types.ElementType.MultipleChoice:
-        helpers.getElement(elementID).value = {
-          items: [],
-          type: types.MultipleChoiceType.Radio,
-          needsAllCorrect: false
-        };
-        break;
-    }
-  }
-
-  return (
-    <FormControl
-      size="small"
-    >
-      <InputLabel id="type-label">Type</InputLabel>
-
-      <Select
-        labelId="type-label"
-        value={type}
-        label="Type"
-        onChange={(e) => setTypeAndUpdate(e.target.value as types.ElementType)}
-      >
-        {(Object.values(types.ElementType).map((item, index) => (
-          <MenuItem
-            key={index}
-            value={item}
-          >
-            {item}
-          </MenuItem>
-        )))}
-      </Select>
-    </FormControl>
-  );
-}
-
-import ShortAnswer from './interactions/short_answer/elements';
-import MultipleChoice from './interactions/multiple_choice/elements';
-import TrueOrFalse from './interactions/true_or_false/elements';
-import Matching from './interactions/matching/elements';
-import Ordering from './interactions/ordering/elements';
-import Files from './interactions/files/elements';
-import Drawing from './interactions/drawing/elements';
-import Graph from './interactions/graph/elements';
-import DAW from './interactions/daw/elements';
-import Codespace from './interactions/codespace/elements';
-import Engine from './interactions/engine/elements';
-import IFrame from './interactions/iframe/elements';
-
-const interactionMap = (props: types.InteractionProps): Element | undefined => {
-  return {
-    "shortAnswer": <ShortAnswer {...props} />,
-    "multipleChoice": <MultipleChoice {...props} />,
-    "trueOrFalse": <TrueOrFalse {...props} />,
-    "matching": <Matching {...props} />,
-    "ordering": <Ordering {...props} />,
-    "files": <Files {...props} />,
-    "drawing": <Drawing {...props} />,
-    "graph": <Graph {...props} />,
-    "daw": <DAW {...props} />,
-    "codespace": <Codespace {...props} />,
-    "engine": <Engine {...props} />,
-    "iframe": <IFrame {...props} />
-  }[helpers.getElement(props.elementID).type];
-}
-
-function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Interaction({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
   const [ isDisabled, setIsDisabled ] = useState(false);
 
@@ -444,10 +391,10 @@ function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: ty
     });
   }, []);
 
-  return interactionMap({ elementID: elementID, isDisabled: isDisabled, mode: mode });
+  return getInteractionPackage(type).Component({ elementID, isDisabled, mode });
 }
 
-function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
+function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }) {
   const [ text, setText ] = useState(elementID.learn.chapters.map(chapter => chapter.elements.map(element => element.text)).flat());
   const [ isThinking, setIsThinking ] = useState(false);
 
@@ -475,7 +422,7 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
       >
         {isThinking && <LinearProgress />}
 
-        {(mode == types.ComponentMode.Edit ? (
+        {(mode == ComponentMode.Edit ? (
           <TextField
             label="Text"
             multiline
@@ -557,6 +504,50 @@ function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.Com
   );
 }
 
+function TypeSwitcher({ elementID }: { elementID: ElementID }) {
+  const [ type, setType ] = useState(helpers.getElement(elementID).type);
+
+  function setTypeAndUpdate(type: string) {
+    setType(type);
+    helpers.getElement(elementID).type = type;
+    helpers.getElement(elementID).value = getInteractionPackage(type).defaultValue;
+  }
+
+  return (
+    <FormControl
+      size="small"
+    >
+      <InputLabel id="type-label">Type</InputLabel>
+
+      <Select
+        labelId="type-label"
+        value={type}
+        label="Type"
+        onChange={(e) => setTypeAndUpdate(e.target.value)}
+      >
+        {(Object.values(interactionMap).map((item, index) => (
+          <MenuItem
+            key={index}
+            value={item.id}
+          >
+            {item.prettyName}
+          </MenuItem>
+        )))}
+      </Select>
+    </FormControl>
+  );
+}
+
+function getInteractionPackage(type: string): InteractionPackage {
+  return (interactionMap)[type];
+}
+
+
+
+// Miscellaneous.
+
+let globalIndex = 0;
+
 function WordWrapper({ text }: { text: string }) {
   return (
     <>
@@ -574,10 +565,6 @@ function WordWrapper({ text }: { text: string }) {
     </>
   );
 }
-
-
-
-// Miscellaneous.
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
@@ -644,7 +631,7 @@ export function CreateCourseButton() {
   );
 }
 
-export function SkillTitle({ skill, mode }: { skill: types.Skill, mode: types.ComponentMode }) {
+export function SkillTitle({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ title, setTitle ] = useState(skill.title);
 
   const header = (
@@ -668,10 +655,10 @@ export function SkillTitle({ skill, mode }: { skill: types.Skill, mode: types.Co
     />
   );
 
-  return mode == types.ComponentMode.Edit ? input : header;
+  return mode == ComponentMode.Edit ? input : header;
 }
 
-export function SkillDescription({ skill, mode }: { skill: types.Skill, mode: types.ComponentMode }) {
+export function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (
@@ -694,5 +681,5 @@ export function SkillDescription({ skill, mode }: { skill: types.Skill, mode: ty
     />
   );
 
-  return mode == types.ComponentMode.Edit ? input : header;
+  return mode == ComponentMode.Edit ? input : header;
 }

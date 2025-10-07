@@ -5,15 +5,32 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import submit from "./functions";
 import { useState } from 'react';
-import { ElementID, ComponentMode, InteractionProps } from "../../types";
-import * as helpers from "../../helpers";
+import { ComponentMode, InteractionProps, InteractionPackage } from "@/app/lib/types";
+import { Type } from '@google/genai';
+import * as helpers from "@/app/lib/helpers";
 
-type ShortAnswer = {
+export type InteractionType = {
   correctAnswer: string | undefined
 };
 
-export default function ShortAnswer({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<ShortAnswer>(elementID).correctAnswer);
+const defaultValue: InteractionType = {
+  correctAnswer: undefined
+}
+
+const schema = {
+  type: Type.OBJECT,
+  properties: {
+    correctAnswer: {
+      type: Type.STRING
+    }
+  },
+  propertyOrdering: [
+    "correctAnswer"
+  ]
+};
+
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctAnswer);
 
   return (
     <Box
@@ -41,10 +58,20 @@ export default function ShortAnswer({ elementID, isDisabled, mode }: Interaction
           value={correctAnswer}
           onChange={(e) => {
             setCorrectAnswer(e.target.value)
-            helpers.getInteractionValue<ShortAnswer>(elementID).correctAnswer = e.target.value;
+            helpers.getInteractionValue<InteractionType>(elementID).correctAnswer = e.target.value;
           }}
         />
       )}
     </Box>
   );
 }
+
+const interaction: InteractionPackage = {
+  id: "shortAnswer",
+  prettyName: "Short Answer",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

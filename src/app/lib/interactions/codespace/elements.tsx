@@ -13,10 +13,19 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import verify from './functions';
 import { Editor } from '@monaco-editor/react';
-import { ComponentMode, InteractionProps } from '@/app/lib/types';
+import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { useState } from 'react';
 import { readAloud, complete } from '@/app/lib/functions';
+import { Type } from '@google/genai';
+import { CodeResult } from './functions';
 import * as helpers from '@/app/lib/helpers';
+
+export type InteractionType = {
+  language: CodespaceLanguage,
+  content: CodespaceFile[],
+  isSimplified: boolean,
+  correctOutput: string | undefined
+};
 
 enum CodespaceLanguage {
   Java = 'java',
@@ -79,38 +88,105 @@ enum CodespaceLanguage {
   SQLServer = 'sqlserver'
 };
 
-type Codespace = {
-  language: CodespaceLanguage,
-  content: CodespaceFile[],
-  isSimplified: boolean,
-  correctOutput: string | undefined
-};
-
-type CodespaceFile = {
+export type CodespaceFile = {
   name: string,
   content: string
 }
 
-enum CodeStatus {
-  Success = 'success',
-  Failed = 'failed'
+const defaultValue: InteractionType = {
+  language: CodespaceLanguage.JavaScript,
+  content: [
+    {
+      name: 'Main.js',
+      content: 'console.log("Hello, world!");'
+    }
+  ],
+  isSimplified: false,
+  correctOutput: undefined
+}
+
+const schema = {
+  type: Type.OBJECT,
+  properties: {
+    language: {
+      type: Type.STRING,
+      enum: [
+        "csharp",
+        "javascript",
+        "python",
+        "c",
+        "cpp",
+        "java",
+        "php",
+        "html",
+        "ruby",
+        "react",
+        "nodejs",
+        "assembly",
+        "lua",
+        "haskell",
+        "perl",
+        "fortran",
+        "go",
+        "scala",
+        "typescript",
+        "swift",
+        "rust",
+        "kotlin",
+        "cobol",
+        "mysql",
+        "jquery",
+        "angular"
+      ]
+    },
+    content: {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          name: {
+            type: Type.STRING
+          },
+          content: {
+            type: Type.STRING
+          }
+        },
+        required: [
+          "name",
+          "content"
+        ],
+        propertyOrdering: [
+          "name",
+          "content"
+        ]
+      },
+      minItems: 1
+    },
+    isSimplified: {
+      type: Type.BOOLEAN
+    },
+    correctOutput: {
+      type: Type.STRING
+    }
+  },
+  required: [
+    "language",
+    "content",
+    "isSimplified"
+  ],
+  propertyOrdering: [
+    "language",
+    "content",
+    "isSimplified",
+    "correctOutput"
+  ]
 };
 
-type CodeResult = {
-  stdout: string | undefined,
-  stderr: string | undefined,
-  exception: string | undefined,
-  executionTime: number,
-  limitPerMonthRemaining: number,
-  status: CodeStatus,
-  error: string | undefined
-};
-
-export default function Codespace({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ language, setLanguage ] = useState(helpers.getInteractionValue<Codespace>(elementID).language);
-  const [ content, setContent ] = useState(helpers.getInteractionValue<Codespace>(elementID).content);
-  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<Codespace>(elementID).isSimplified);
-  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<Codespace>(elementID).correctOutput);
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ language, setLanguage ] = useState(helpers.getInteractionValue<InteractionType>(elementID).language);
+  const [ content, setContent ] = useState(helpers.getInteractionValue<InteractionType>(elementID).content);
+  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<InteractionType>(elementID).isSimplified);
+  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctOutput);
   const [ output, setOutput ] = useState("");
   const [ tabIndex, setTabIndex ] = useState(0);
   const file = content[tabIndex];
@@ -135,7 +211,7 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
     const output = `${response.stdout ?? ''}\n${response.stderr ?? ''}`;
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
 
-    const feedback = await verify(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<Codespace>(elementID));
+    const feedback = await verify(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<InteractionType>(elementID));
     helpers.setText(elementID, feedback.feedback);
     helpers.setThinking(elementID, false);
 
@@ -160,7 +236,7 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
             value={language}
             onChange={(e) => {
               setLanguage(e.target.value as CodespaceLanguage);
-              helpers.getInteractionValue<Codespace>(elementID).language = e.target.value as CodespaceLanguage;
+              helpers.getInteractionValue<InteractionType>(elementID).language = e.target.value as CodespaceLanguage;
             }}
           >
             {(Object.values(CodespaceLanguage).map((item, index) => (
@@ -183,7 +259,7 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
             checked={isSimplified}
             onChange={(e) => {
               setIsSimplified(e.target.checked);
-              helpers.getInteractionValue<Codespace>(elementID).isSimplified = e.target.checked;
+              helpers.getInteractionValue<InteractionType>(elementID).isSimplified = e.target.checked;
             }}
           />}
         />
@@ -217,7 +293,7 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
             setContent(newContent);
 
             if (mode == ComponentMode.Edit) {
-              helpers.getInteractionValue<Codespace>(elementID).content[tabIndex].content = e ?? '';
+              helpers.getInteractionValue<InteractionType>(elementID).content[tabIndex].content = e ?? '';
             }
           }}
         />
@@ -260,7 +336,7 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
           multiline
           onChange={(e) => {
             setCorrectOutput(e.target.value);
-            helpers.getInteractionValue<Codespace>(elementID).correctOutput = e.target.value;
+            helpers.getInteractionValue<InteractionType>(elementID).correctOutput = e.target.value;
           }}
         />
       )}
@@ -282,3 +358,13 @@ function unsimplify(file: CodespaceFile) {
     }`
   };
 }
+
+const interaction: InteractionPackage = {
+  id: "codespace",
+  prettyName: "Codespace",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

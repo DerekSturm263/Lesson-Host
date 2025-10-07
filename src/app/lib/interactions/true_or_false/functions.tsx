@@ -1,6 +1,8 @@
 import generateText, { ModelType, Verification } from "@/app/lib/ai";
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
+import { InteractionType } from "./elements";
+import { complete, readAloud } from "@/app/lib/functions";
 import * as helpers from '@/app/lib/helpers';
 
 // Todo: Try making function and have return bool for if correct or not
@@ -8,7 +10,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   console.log(JSON.stringify(formData.get('response')));
 
   helpers.setThinking(elementID, true);
-  const feedback = await verify(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<types.TrueOrFalse>(elementID));
+  const feedback = await verify(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<InteractionType>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -20,7 +22,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   }
 }
 
-async function verify(question: string, userResponse: boolean, value: types.TrueOrFalse): Promise<Verification> {
+async function verify(question: string, userResponse: boolean, value: InteractionType): Promise<Verification> {
   const isCorrect = userResponse == value.isCorrect;
 
   const response = await generateText({

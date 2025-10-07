@@ -2,15 +2,42 @@
 
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import { InteractionProps } from "../../types";
+import { InteractionPackage, InteractionProps } from "../../types";
+import { Type } from '@google/genai';
 import * as helpers from "../../helpers";
 
-type Ordering = {
+export type InteractionType = {
   correctOrder: string[]
 };
 
-export default function Ordering({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<Ordering>(elementID).correctOrder);
+const defaultValue: InteractionType = {
+  correctOrder: [
+    "New Item"
+  ]
+}
+
+const schema = {
+  type: Type.OBJECT,
+  properties: {
+    items: {
+      type: Type.ARRAY,
+      items: {
+        type: Type.STRING
+      },
+      minItems: 2,
+      maxItems: 6
+    }
+  },
+  required: [
+    "items"
+  ],
+  propertyOrdering: [
+    "items"
+  ]
+};
+
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctOrder);
 
   /*if (mode != types.ComponentMode.Edit) {
     setItems(items.sort(item => Math.random() - 0.5));
@@ -32,3 +59,13 @@ export default function Ordering({ elementID, isDisabled, mode }: InteractionPro
     </Box>
   );
 }
+
+const interaction: InteractionPackage = {
+  id: "ordering",
+  prettyName: "Ordering",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

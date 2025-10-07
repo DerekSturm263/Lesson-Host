@@ -1,11 +1,13 @@
 import generateText, { ModelType, Verification, verificationSchema } from "@/app/lib/ai";
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
+import { InteractionType } from "./elements";
+import { complete, readAloud } from "@/app/lib/functions";
 import * as helpers from '@/app/lib/helpers';
 
 export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
   helpers.setThinking(elementID, true);
-  const feedback = await verify(helpers.getElement(elementID).text, formData.target.value ?? '', helpers.getInteractionValue<types.ShortAnswer>(elementID));
+  const feedback = await verify(helpers.getElement(elementID).text, formData.target.value ?? '', helpers.getInteractionValue<InteractionType>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -17,7 +19,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   }
 }
 
-async function verify(question: string, userResponse: string, value: types.ShortAnswer): Promise<Verification> {
+async function verify(question: string, userResponse: string, value: InteractionType): Promise<Verification> {
   let response: string;
   
   if (value.correctAnswer == null || value.correctAnswer == "") {

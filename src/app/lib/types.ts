@@ -1,3 +1,6 @@
+import { SchemaUnion } from "@google/genai";
+import { JSX } from "react";
+
 export interface Interaction { }
 
 export type Element = {
@@ -425,4 +428,12 @@ export interface InteractionProps {
   elementID: ElementID,
   isDisabled: boolean,
   mode: ComponentMode
+}
+
+export type InteractionPackage = {
+  id: string,
+  prettyName: string,
+  defaultValue: any,
+  schema: SchemaUnion,
+  Component: (props: InteractionProps) => JSX.Element
 }

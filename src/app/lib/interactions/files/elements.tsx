@@ -2,21 +2,67 @@
 
 import Box from '@mui/material/Box';
 import Image from 'next/image';
-import { ElementID, ComponentMode, InteractionProps } from "@/app/lib/types";
+import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from "@/app/lib/types";
 import { useState } from "react";
+import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
+
+export type InteractionType = {
+  files: File[]
+};
 
 type File = {
   source: string,
   isDownloadable: boolean
 };
 
-type Files = {
-  files: File[]
+const defaultValue: InteractionType = {
+  files: [
+    {
+      source: "",
+      isDownloadable: false
+    }
+  ]
+}
+
+const schema = {
+  type: Type.OBJECT,
+  properties: {
+    files: {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          source: {
+            type: Type.STRING
+          },
+          isDownloadable: {
+            type: Type.BOOLEAN
+          }
+        },
+        required: [
+          "source",
+          "isDownloadable"
+        ],
+        propertyOrdering: [
+          "source",
+          "isDownloadable"
+        ]
+      },
+      minItems: 1,
+      maxItems: 3
+    }
+  },
+  required: [
+    "files"
+  ],
+  propertyOrdering: [
+    "files"
+  ]
 };
 
-export default function Files({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ files, setFiles ] = useState(helpers.getInteractionValue<Files>(elementID).files);
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ files, setFiles ] = useState(helpers.getInteractionValue<InteractionType>(elementID).files);
 
   function addFile() {
     const newFiles = files;
@@ -90,3 +136,13 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
       );
   }
 }
+
+const interaction: InteractionPackage = {
+  id: "files",
+  prettyName: "Files",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

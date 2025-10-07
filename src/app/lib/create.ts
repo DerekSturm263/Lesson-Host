@@ -1,28 +1,8 @@
 'use server'
 
-import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
+import { ModelType } from '@/app/lib/ai';
 import * as schemas from './schemas';
 import * as types from './types';
-
-
-const safetySettings = [
-  {
-    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-  },
-  {
-    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-  },
-  {
-    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-  },
-  {
-    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-    threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-  }
-];
 
 enum InteractionType {
   Drawing = 'Drawing',
@@ -39,7 +19,7 @@ type SkillPrompt = {
 
 async function chooseSkillType(skillPrompt: SkillPrompt): Promise<InteractionType> {
   const response = await ai.models.generateContent({
-    model: model,
+    model: ModelType.Smart,
     contents: 
       `TASK:
       Pick an interaction type based on a lesson's given TOPIC and CHAPTERS.
@@ -72,7 +52,7 @@ async function chooseSkillType(skillPrompt: SkillPrompt): Promise<InteractionTyp
 
 async function generateSkillLearn(skillPrompt: SkillPrompt, type: InteractionType): Promise<types.Learn> {
   const response = await ai.models.generateContent({
-    model: model,
+    model: ModelType.Smart,
     contents: 
       `TASK:
       Create an interactive self-paced lesson based on the <INPUT> section. The <INPUT> section defines this lesson's TOPIC and CHAPTERS.

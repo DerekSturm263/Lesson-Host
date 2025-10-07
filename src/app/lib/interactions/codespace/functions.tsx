@@ -1,6 +1,22 @@
-import generateText, { ModelType, Verification } from "@/app/lib/ai";
+import generateText, { ModelType, Verification } from '@/app/lib/ai';
+import { InteractionType, CodespaceFile } from './elements';
 
-export default async function verify(instructions: string, content: types.CodespaceFile[], result: types.CodeResult, value: types.Codespace): Promise<Verification> {
+enum CodeStatus {
+  Success = 'success',
+  Failed = 'failed'
+};
+
+export type CodeResult = {
+  stdout: string | undefined,
+  stderr: string | undefined,
+  exception: string | undefined,
+  executionTime: number,
+  limitPerMonthRemaining: number,
+  status: CodeStatus,
+  error: string | undefined
+};
+
+export default async function verify(instructions: string, content: CodespaceFile[], result: CodeResult, value: InteractionType): Promise<Verification> {
   let isValid = false;
   let contents = '';
 

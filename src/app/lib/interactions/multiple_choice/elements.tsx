@@ -9,8 +9,9 @@ import submit from './functions';
 import { useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps } from '@/app/lib/types';
 import * as helpers from '@/app/lib/helpers';
+import { Type } from '@google/genai';
 
-type MultipleChoiceItem = {
+export type MultipleChoiceItem = {
   value: string,
   isCorrect: boolean
 };
@@ -24,6 +25,42 @@ type MultipleChoice = {
   items: MultipleChoiceItem[],
   type: MultipleChoiceType,
   needsAllCorrect: boolean
+};
+
+const multipleChoiceSchema = {
+  type: Type.OBJECT,
+  properties: {
+    choices: {
+      type: Type.OBJECT,
+      properties: {
+        value: {
+          type: Type.STRING
+        },
+        isCorrect: {
+          type: Type.BOOLEAN
+        }
+      },
+      required: [
+        "value",
+        "isCorrect"
+      ],
+      propertyOrdering: [
+        "value",
+        "isCorrect"
+      ]
+    },
+    needsAllCorrect: {
+      type: Type.BOOLEAN
+    }
+  },
+  required: [
+    "choices",
+    "needsAllCorrect"
+  ],
+  propertyOrdering: [
+    "choices",
+    "needsAllCorrect"
+  ]
 };
 
 export default function MultipleChoice({ elementID, isDisabled, mode }: InteractionProps) {

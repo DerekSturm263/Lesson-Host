@@ -34,7 +34,7 @@ export function readAloud(elementID: ElementID) {
   //synth.speak(utterance);
 }
 
-export function reset(elementID: types.ElementID) {
+export function reset(elementID: ElementID) {
   helpers.resetText(elementID);
 
   // Todo: Reset interaction value too
