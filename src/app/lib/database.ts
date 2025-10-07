@@ -4,7 +4,6 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { Skill, Project, Course, Learn, Practice, Implement, Study } from '@/app/lib/types';
 
 const uri: string = process.env.MONGODB_URI ?? '';
-
 const client = new MongoClient(uri, {
   serverSelectionTimeoutMS: 120000,
   connectTimeoutMS: 120000
