@@ -3,6 +3,7 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import submit from "./functions";
 import { useState } from 'react';
 import { ComponentMode, InteractionProps, InteractionPackage } from "@/app/lib/types";
@@ -31,25 +32,31 @@ const schema = {
 
 function Component({ elementID, isDisabled, mode }: InteractionProps) {
   const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctAnswer);
+  const [ userResponse, setUserResponse ] = useState("");
 
   return (
     <Box
       sx={{ flexGrow: 1 }}
     >
-      <TextField
-        label="Write your response here. Press enter to submit"
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        name="response"
-        autoComplete="off"
-        disabled={isDisabled}
-        onSubmit={(e) => submit(e, elementID)}
-      />
-
-      <Button
-        variant="contained"
+      <Stack
+        direction="row"
       >
-        Submit
-      </Button>
+        <TextField
+          label="Write your response here. Press enter to submit"
+          id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+          name="response"
+          autoComplete="off"
+          disabled={isDisabled}
+          onChange={(e) => setUserResponse(e.target.value)}
+        />
+
+        <Button
+          variant="contained"
+          onClick={(e) => submit(userResponse, elementID)}
+        >
+          Submit
+        </Button>
+      </Stack>
 
       {mode == ComponentMode.Edit && (
         <TextField

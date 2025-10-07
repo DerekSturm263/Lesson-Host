@@ -6,9 +6,9 @@ import { InteractionType } from "./elements";
 import { complete, readAloud } from "@/app/lib/functions";
 import * as helpers from '@/app/lib/helpers';
 
-export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
-  /*helpers.setThinking(elementID, true);
-  const feedback = await verify(helpers.getElement(elementID).text, formData.target.value ?? '', helpers.getInteractionValue<InteractionType>(elementID));
+export default async function submit(userResponse: string, elementID: ElementID) {
+  helpers.setThinking(elementID, true);
+  const feedback = await verify(helpers.getElement(elementID).text, userResponse, helpers.getInteractionValue<InteractionType>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -17,7 +17,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   if (feedback.isValid) {
     window.dispatchEvent(new CustomEvent(`updateupdateInteraction`, { detail: true }));
     complete(elementID);
-  }*/
+  }
 }
 
 async function verify(question: string, userResponse: string, value: InteractionType): Promise<Verification> {
