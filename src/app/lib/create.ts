@@ -1,6 +1,5 @@
-'use server'
-
-import generateText, { ModelType } from '@/app/lib/ai';
+import generateText from "@/app/lib/ai/functions";
+import { ModelType } from "@/app/lib/ai/types";
 import * as schemas from '@/app/lib/schemas';
 import * as types from '@/app/lib/types';
 

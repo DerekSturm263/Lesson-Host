@@ -1,4 +1,4 @@
-import { rephraseText } from '@/app/lib/ai';
+import { rephraseText } from '@/app/lib/ai/functions';
 import { ElementID } from '@/app/lib/types';
 import * as helpers from '@/app/lib/helpers';
 

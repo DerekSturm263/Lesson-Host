@@ -1,4 +1,5 @@
-import generateText, { ModelType, Verification } from "@/app/lib/ai";
+import generateText from "@/app/lib/ai/functions";
+import { ModelType, Verification } from "@/app/lib/ai/types";
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
 import { InteractionType } from "./elements";

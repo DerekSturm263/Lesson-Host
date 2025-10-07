@@ -1,6 +1,7 @@
 'use server'
 
-import { GoogleGenAI, HarmBlockThreshold, HarmCategory, SchemaUnion, Type } from '@google/genai';
+import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
+import { ModelType, Payload } from './types';
 
 const ai = new GoogleGenAI({});
 
@@ -37,46 +38,6 @@ const safetySettings = [
   }
 ];
 
-export enum ModelType {
-  Smart = 'gemini-2.5-pro',
-  Quick = 'gemini-2.5-flash-lite',
-  QuickSpeed = 'gemini-2.5-flash-preview-tts'
-}
-
-export type Payload = {
-  model: ModelType,
-  prompt: string,
-  mimeType?: string,
-  schema?: SchemaUnion,
-  systemInstruction?: string,
-  overrideInstruction?: string
-}
-
-export type Verification = {
-  isValid: boolean;
-  feedback: string;
-};
-
-export const verificationSchema = {
-  type: Type.OBJECT,
-  properties: {
-    isValid: {
-      type: Type.BOOLEAN
-    },
-    feedback: {
-      type: Type.STRING
-    }
-  },
-  required: [
-    "isValid",
-    "feedback"
-  ],
-  propertyOrdering: [
-    "isValid",
-    "feedback"
-  ]
-};
-
 export default async function generateText(payload: Payload): Promise<string> {
   const response = await ai.models.generateContent({
     model: payload.model,
@@ -99,7 +60,7 @@ export async function rephraseText(text: string): Promise<string> {
     prompt:
     `TASK:
     Rephrase a given TEXT. 
-            
+    
     TEXT:
     ${text}`,
     systemInstruction: `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.`
