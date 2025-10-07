@@ -311,7 +311,8 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         >
           <Typography
             variant="body2"
-            sx={{ textAlign: 'center', flexGrow: 1, margin: 'auto' }}
+            sx={{ textAlign: 'center', flexGrow: 1 }}
+            style={{ margin: 'auto' }}
           >
             Press Run to execute your code
             <br />

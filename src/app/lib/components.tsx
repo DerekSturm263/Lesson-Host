@@ -122,9 +122,7 @@ export function Header({ title, mode, type }: { title: string, mode: ComponentMo
             </Typography>
 
             {mode == ComponentMode.View && (
-              <Box
-                sx={{ margin: 'auto' }}
-              >
+              <Box>
                 <LinearProgressWithLabel
                   variant="determinate"
                   value={progress * 100}
@@ -583,7 +581,7 @@ function WordWrapper({ text }: { text: string }) {
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
     <Box
-      sx={{ display: 'flex', alignItems: 'center' }}
+      sx={{ display: 'flex', alignItems: 'center', margin: 'auto' }}
     >
       <Box
         sx={{ width: '60%', mr: 1 }}
