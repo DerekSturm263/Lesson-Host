@@ -307,8 +307,10 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         >
           <Typography
             variant="body2"
+            sx={{ textAlign: 'center' }}
           >
-            Press Run to execute your code. Any outputs or errors will be printed below
+            Press Run to execute your code
+            All output and errors will be printed below
           </Typography>
 
           <Button
