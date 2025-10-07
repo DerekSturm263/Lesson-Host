@@ -1,9 +1,14 @@
-export async function submitMultipleChoice(formData: FormData, elementID: types.ElementID) {
+import generateText, { ModelType, Verification, verificationSchema } from "@/app/lib/ai";
+import { ElementID } from "@/app/lib/types";
+import { FormEvent } from "react";
+import * as helpers from '@/app/lib/helpers';
+
+export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
   console.log(JSON.stringify(formData.getAll('response')));
   console.log(JSON.stringify(formData.get('response')));
 
   helpers.setThinking(elementID, true);
-  const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
+  const feedback = await verify(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -15,7 +20,7 @@ export async function submitMultipleChoice(formData: FormData, elementID: types.
   }
 }
 
-export async function verifyMultipleChoice(question: string, userResponse: string[], value: types.MultipleChoice): Promise<Verification> {
+async function verify(question: string, userResponse: string[], value: types.MultipleChoice): Promise<Verification> {
   let isValid = false;
   let contents = '';
   
@@ -56,19 +61,26 @@ export async function verifyMultipleChoice(question: string, userResponse: strin
       `;
   }
 
-  const response = await ai.models.generateContent({
-    model: textModel,
-    contents: contents,
-    config: {
-      temperature: 0,
-      systemInstruction: [
-        `You are a high school tutor. You evaluate a student's SELECTIONS on a multiple choice QUESTION and give them proper FEEDBACK based on whether or not their selections are correct. You will be told whether or not the student is correct, all you need to do is give the FEEDBACK.
-        
-        ${globalSystemInstruction}`
-      ],
-      safetySettings: safetySettings
-    }
+  const response = await generateText({
+    model: ModelType.Quick,
+    prompt: contents,
+    systemInstruction: `You are a high school tutor. You evaluate a student's SELECTIONS on a multiple choice QUESTION and give them proper FEEDBACK based on whether or not their selections are correct. You will be told whether or not the student is correct, all you need to do is give the FEEDBACK.`
   });
 
-  return { isValid: isValid, feedback: response.text ?? '' } as Verification
+  return {
+    isValid: isValid,
+    feedback: response
+  };
+}
+
+function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
+  if (arr1.length !== arr2.length)
+    return false;
+
+  for (let i = 0; i < arr1.length; ++i) {
+    if (arr1[i] !== arr2[i])
+      return false;
+  }
+
+  return true;
 }

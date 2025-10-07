@@ -3,16 +3,16 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import submit from "./functions";
 import { useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps } from "../../types";
-import { submitShortAnswer } from "../../functions";
 import * as helpers from "../../helpers";
 
 type ShortAnswer = {
   correctAnswer: string | undefined
 };
 
-function ShortAnswer({ elementID, isDisabled, mode }: InteractionProps) {
+export default function ShortAnswer({ elementID, isDisabled, mode }: InteractionProps) {
   const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<ShortAnswer>(elementID).correctAnswer);
 
   return (
@@ -25,7 +25,7 @@ function ShortAnswer({ elementID, isDisabled, mode }: InteractionProps) {
         name="response"
         autoComplete="off"
         disabled={isDisabled}
-        onSubmit={(e) => submitShortAnswer(e, elementID)}
+        onSubmit={(e) => submit(e, elementID)}
       />
 
       <Button>
@@ -48,5 +48,3 @@ function ShortAnswer({ elementID, isDisabled, mode }: InteractionProps) {
     </Box>
   );
 }
-
-export default ShortAnswer;

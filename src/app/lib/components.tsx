@@ -1,8 +1,7 @@
 'use client'
 
-import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler } from 'react';
-import { useEffect } from 'react';
-import { saveSkillLearn, createSkill, createProject, createCourse } from './database';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
+import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
 import Markdown from 'react-markdown';
 import * as functions from '@/app/lib/functions';
 import * as types from '@/app/lib/types';

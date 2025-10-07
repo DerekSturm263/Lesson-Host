@@ -5,9 +5,9 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Markdown from 'react-markdown';
+import submit from './functions';
 import { useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps } from '@/app/lib/types';
-import { submitMultipleChoice } from '@/app/lib/functions';
 import * as helpers from '@/app/lib/helpers';
 
 type MultipleChoiceItem = {
@@ -26,7 +26,7 @@ type MultipleChoice = {
   needsAllCorrect: boolean
 };
 
-function MultipleChoice({ elementID, isDisabled, mode }: InteractionProps) {
+export default function MultipleChoice({ elementID, isDisabled, mode }: InteractionProps) {
   const [ type, setType ] = useState(helpers.getInteractionValue<MultipleChoice>(elementID).type);
   const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<MultipleChoice>(elementID).needsAllCorrect);
 
@@ -58,7 +58,7 @@ function MultipleChoice({ elementID, isDisabled, mode }: InteractionProps) {
       <form
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
         className='multipleOptions'
-        action={(e) => submitMultipleChoice(e, elementID)}
+        action={(e) => submit(e, elementID)}
       >
         {items.map((item, index) => (
           <MultipleChoiceItem
@@ -168,5 +168,3 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
     </label>
   );
 }
-
-export default MultipleChoice;

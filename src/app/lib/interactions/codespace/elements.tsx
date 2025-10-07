@@ -11,8 +11,8 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import PlayArrow from '@mui/icons-material/PlayArrow';
+import verify from './functions';
 import { Editor } from '@monaco-editor/react';
-import { verifyCodespace } from '@/app/lib/generate';
 import { ComponentMode, InteractionProps } from '@/app/lib/types';
 import { useState } from 'react';
 import { readAloud, complete } from '@/app/lib/functions';
@@ -106,21 +106,6 @@ type CodeResult = {
   error: string | undefined
 };
 
-function unsimplify(file: CodespaceFile) {
-  return {
-    name: file.name,
-    content: `using System;
-
-    public class Program
-    {
-      public static void Main(string[] args)
-      {
-        ${file.content}
-      }
-    }`
-  };
-}
-
 export default function Codespace({ elementID, isDisabled, mode }: InteractionProps) {
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<Codespace>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<Codespace>(elementID).content);
@@ -150,7 +135,7 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
     const output = `${response.stdout ?? ''}\n${response.stderr ?? ''}`;
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
 
-    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<Codespace>(elementID));
+    const feedback = await verify(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<Codespace>(elementID));
     helpers.setText(elementID, feedback.feedback);
     helpers.setThinking(elementID, false);
 
@@ -281,4 +266,19 @@ export default function Codespace({ elementID, isDisabled, mode }: InteractionPr
       )}
     </Stack>
   );
+}
+
+function unsimplify(file: CodespaceFile) {
+  return {
+    name: file.name,
+    content: `using System;
+
+    public class Program
+    {
+      public static void Main(string[] args)
+      {
+        ${file.content}
+      }
+    }`
+  };
 }

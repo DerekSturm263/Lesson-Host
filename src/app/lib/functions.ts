@@ -1,36 +1,21 @@
-import { verifyShortAnswer, verifyMultipleChoice, verifyTrueOrFalse, rephraseText } from './generate';
-import * as types from '../lib/types';
-import * as helpers from '../lib/helpers';
-import { FormEvent } from 'react';
+import { rephraseText } from '@/app/lib/ai';
+import { ElementID } from '@/app/lib/types';
+import * as helpers from '@/app/lib/helpers';
 
-export function complete(elementID: types.ElementID) {
+export function complete(elementID: ElementID) {
   elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].isComplete = true;
 
-  const nextElement: types.ElementID = helpers.getIsLastElement(elementID) ?
+  const nextElement: ElementID = helpers.getIsLastElement(elementID) ?
     { learn: elementID.learn, chapterIndex: elementID.chapterIndex + 1, elementIndex: 0, keys: elementID.keys } :
     { learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: elementID.elementIndex + 1, keys: elementID.keys };
 
   window.dispatchEvent(new CustomEvent(`updateChapterProgress${elementID.chapterIndex}`, { detail: helpers.getChapterProgress(elementID) }));
   window.dispatchEvent(new CustomEvent(`updateLessonProgress`, { detail: helpers.getLessonProgress(elementID) }));
+
+  window.dispatchEvent(new CustomEvent(`updateChapterProgress${nextElement.chapterIndex}`, { detail: helpers.getChapterProgress(elementID) }));
 }
 
-export function loadGraph(elementID: types.ElementID) {
-  const params = {
-    "appName": helpers.getInteractionValue<types.Graph>(elementID).type,
-    "width": 1067,
-    "height": 600,
-    "showToolBar": false,
-    "showAlgebraInput": true,
-    "showMenuBar": false,
-    "filename": helpers.getInteractionValue<types.Graph>(elementID).fileName,
-    "scaleContainerClass": "interaction"
-  };
-
-  //const applet = new GGBApplet(params, true);
-  //applet.inject(`interaction${elementIndex}`);
-}
-
-export async function rephrase(elementID: types.ElementID) {
+export async function rephrase(elementID: ElementID) {
   helpers.setThinking(elementID, true);
   const newText = await rephraseText(helpers.getText(elementID));
   helpers.setText(elementID, newText);
@@ -39,7 +24,9 @@ export async function rephrase(elementID: types.ElementID) {
   readAloud(elementID);
 }
 
-export function readAloud(elementID: types.ElementID) {
+export function readAloud(elementID: ElementID) {
+  // Todo: Add better audio integration/UX
+
   //const synth = window.speechSynthesis;
   //const utterance = new SpeechSynthesisUtterance(helpers.getText(elementID));
   //utterance.voice = synth.getVoices()[0];
@@ -50,11 +37,7 @@ export function readAloud(elementID: types.ElementID) {
 export function reset(elementID: types.ElementID) {
   helpers.resetText(elementID);
 
-  switch (helpers.getElement(elementID).type) {
-    case types.ElementType.Graph:
-      loadGraph(elementID);
-      break;
-  }
+  // Todo: Reset interaction value too
 }
 
 export async function define(word: string) {
@@ -64,4 +47,5 @@ export async function define(word: string) {
   }
 
   const data = JSON.parse(await response.json());
+  // Todo: Return defintion in dialog box
 }

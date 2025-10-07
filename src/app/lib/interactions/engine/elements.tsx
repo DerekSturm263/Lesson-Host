@@ -6,7 +6,7 @@ type Engine = {
   placeholder: boolean
 };
 
-function Engine({ elementID, isDisabled, mode }: InteractionProps) {
+export default function Engine({ elementID, isDisabled, mode }: InteractionProps) {
   return (
     <iframe
       className="fullscreenInteraction"
@@ -14,5 +14,3 @@ function Engine({ elementID, isDisabled, mode }: InteractionProps) {
     ></iframe>
   );
 }
-
-export default Engine;

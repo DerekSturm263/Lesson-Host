@@ -4,9 +4,6 @@ import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
 import * as schemas from './schemas';
 import * as types from './types';
 
-const ai = new GoogleGenAI({});
-
-const model = 'gemini-2.5-pro';
 
 const safetySettings = [
   {

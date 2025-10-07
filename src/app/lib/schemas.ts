@@ -1,24 +1,6 @@
 import { Type } from "@google/genai";
 
-export const responseSchema = {
-  type: Type.OBJECT,
-  properties: {
-    isValid: {
-      type: Type.BOOLEAN
-    },
-    feedback: {
-      type: Type.STRING
-    }
-  },
-  required: [
-    "isValid",
-    "feedback"
-  ],
-  propertyOrdering: [
-    "isValid",
-    "feedback"
-  ]
-};
+
 
 export const embedTypeSchema = {
   type: Type.STRING,

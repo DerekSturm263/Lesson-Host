@@ -7,7 +7,7 @@ type Drawing = {
   placeholder: boolean
 };
 
-function Drawing({ elementID, isDisabled, mode }: InteractionProps) {
+export default function Drawing({ elementID, isDisabled, mode }: InteractionProps) {
   return (
     <Box
       sx={{ flexGrow: 1 }}
@@ -16,5 +16,3 @@ function Drawing({ elementID, isDisabled, mode }: InteractionProps) {
     </Box>
   );
 }
-
-export default Drawing;

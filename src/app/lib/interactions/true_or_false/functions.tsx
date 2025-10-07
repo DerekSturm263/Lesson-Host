@@ -1,8 +1,14 @@
-export default async function submitTrueOrFalse(formData: FormData, elementID: types.ElementID) {
+import generateText, { ModelType, Verification } from "@/app/lib/ai";
+import { ElementID } from "@/app/lib/types";
+import { FormEvent } from "react";
+import * as helpers from '@/app/lib/helpers';
+
+// Todo: Try making function and have return bool for if correct or not
+export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
   console.log(JSON.stringify(formData.get('response')));
 
   helpers.setThinking(elementID, true);
-  const feedback = await verifyTrueOrFalse(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<types.TrueOrFalse>(elementID));
+  const feedback = await verify(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<types.TrueOrFalse>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -14,12 +20,12 @@ export default async function submitTrueOrFalse(formData: FormData, elementID: t
   }
 }
 
-async function verifyTrueOrFalse(question: string, userResponse: boolean, value: types.TrueOrFalse): Promise<Verification> {
+async function verify(question: string, userResponse: boolean, value: types.TrueOrFalse): Promise<Verification> {
   const isCorrect = userResponse == value.isCorrect;
 
-  const response = await ai.models.generateContent({
-    model: textModel,
-    contents:
+  const response = await generateText({
+    model: ModelType.Quick,
+    prompt:
     `TASK:
     ${isCorrect ?
       `The student's response was correct. Congratulate the student on getting their answer right. Review how the QUESTION was solved and why the user's RESPONSE was correct.` :
@@ -33,16 +39,11 @@ async function verifyTrueOrFalse(question: string, userResponse: boolean, value:
 
     CORRECT ANSWER:
     ${value.isCorrect}`,
-    config: {
-      temperature: 0,
-      systemInstruction: [
-        `You are a high school tutor. You evaluate a student's RESPONSE to a true/false QUESTION and give them proper FEEDBACK based on whether or not their response is correct. You will be told whether or not the response is correct, all you need to do is give the FEEDBACK.
-        
-        ${globalSystemInstruction}`
-      ],
-      safetySettings: safetySettings
-    }
+    systemInstruction: `You are a high school tutor. You evaluate a student's RESPONSE to a true/false QUESTION and give them proper FEEDBACK based on whether or not their response is correct. You will be told whether or not the response is correct, all you need to do is give the FEEDBACK.`
   });
 
-  return { isValid: isCorrect, feedback: response.text ?? '' } as Verification
+  return {
+    isValid: isCorrect,
+    feedback: response
+  };
 }

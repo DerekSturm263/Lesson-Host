@@ -1,4 +1,6 @@
-export async function verifyCodespace(instructions: string, content: types.CodespaceFile[], result: types.CodeResult, value: types.Codespace): Promise<Verification> {
+import generateText, { ModelType, Verification } from "@/app/lib/ai";
+
+export default async function verify(instructions: string, content: types.CodespaceFile[], result: types.CodeResult, value: types.Codespace): Promise<Verification> {
   let isValid = false;
   let contents = '';
 
@@ -71,22 +73,14 @@ export async function verifyCodespace(instructions: string, content: types.Codes
       ${instructions}`;
   }
 
-  const response = await ai.models.generateContent({
-    model: textModel,
-    contents: contents,
-    config: {
-      temperature: 0,
-      systemInstruction: [
-        `You are a computer science tutor for a ${value.language} programming class. You evaluate one or more of a student's code FILE and give them proper FEEDBACK based on whether or not their code produces a given output. You will be told whether or not the code works and matches the output, all you need to do is give the FEEDBACK.
-
-        ${globalSystemInstruction}`
-      ],
-      safetySettings: safetySettings
-    }
+  const response = await generateText({
+    model: ModelType.Quick,
+    prompt: contents,
+    systemInstruction: `You are a computer science tutor for a ${value.language} programming class. You evaluate one or more of a student's code FILE and give them proper FEEDBACK based on whether or not their code produces a given output. You will be told whether or not the code works and matches the output, all you need to do is give the FEEDBACK.`
   });
 
   return {
     isValid: isValid,
-    feedback: response.text ?? ''
+    feedback: response
   };
 }

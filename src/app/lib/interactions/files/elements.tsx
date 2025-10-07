@@ -15,7 +15,7 @@ type Files = {
   files: File[]
 };
 
-function Files({ elementID, isDisabled, mode }: InteractionProps) {
+export default function Files({ elementID, isDisabled, mode }: InteractionProps) {
   const [ files, setFiles ] = useState(helpers.getInteractionValue<Files>(elementID).files);
 
   function addFile() {
@@ -90,5 +90,3 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
       );
   }
 }
-
-export default Files;

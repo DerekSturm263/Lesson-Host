@@ -9,7 +9,7 @@ type Ordering = {
   correctOrder: string[]
 };
 
-function Ordering({ elementID, isDisabled, mode }: InteractionProps) {
+export default function Ordering({ elementID, isDisabled, mode }: InteractionProps) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<Ordering>(elementID).correctOrder);
 
   /*if (mode != types.ComponentMode.Edit) {
@@ -32,5 +32,3 @@ function Ordering({ elementID, isDisabled, mode }: InteractionProps) {
     </Box>
   );
 }
-
-export default Ordering;

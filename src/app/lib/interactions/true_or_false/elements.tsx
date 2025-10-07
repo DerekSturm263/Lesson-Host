@@ -1,9 +1,9 @@
 'use client'
 
 import Box from '@mui/material/Box';
+import submit from './functions';
 import { useState } from 'react';
 import { ComponentMode, InteractionProps } from '@/app/lib/types';
-import submit from './functions';
 import * as helpers from '@/app/lib/helpers';
 
 type TrueOrFalse = {

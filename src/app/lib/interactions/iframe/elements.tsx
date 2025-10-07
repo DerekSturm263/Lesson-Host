@@ -10,7 +10,7 @@ type IFrame = {
   source: string
 };
 
-function IFrame({ elementID, isDisabled, mode }: InteractionProps) {
+export default function IFrame({ elementID, isDisabled, mode }: InteractionProps) {
   const [ source, setSource ] = useState(helpers.getInteractionValue<IFrame>(elementID).source);
 
   return (
@@ -39,5 +39,3 @@ function IFrame({ elementID, isDisabled, mode }: InteractionProps) {
     </Box>
   );
 }
-
-export default IFrame;

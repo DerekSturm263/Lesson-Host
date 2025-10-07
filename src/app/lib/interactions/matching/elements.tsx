@@ -14,7 +14,7 @@ type Matching = {
   items: MatchingItem[]
 };
 
-function Matching({ elementID, isDisabled, mode }: InteractionProps) {
+export default function Matching({ elementID, isDisabled, mode }: InteractionProps) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<Matching>(elementID).items);
   
   //const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
@@ -46,5 +46,3 @@ function Matching({ elementID, isDisabled, mode }: InteractionProps) {
     </Box>
   );
 }
-
-export default Matching;

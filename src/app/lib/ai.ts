@@ -1,16 +1,9 @@
-'use server'
-
-import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
-import * as schemas from './schemas';
-import * as types from './types'
+import { GoogleGenAI, HarmBlockThreshold, HarmCategory, SchemaUnion, Type } from '@google/genai';
 
 const ai = new GoogleGenAI({});
 
-const textModel = 'gemini-2.5-flash-lite';
-const ttsModel = 'gemini-2.5-flash-preview-tts';
-
 const globalSystemInstruction =
-  `Your response should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level. Keep your response as concise as possible without sacrificing usefulness.
+`Your response should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level. Keep your response as concise as possible without sacrificing usefulness.
 
   Wherever applicable, use technical documentation techniques. These should be included to make the text easy to follow and to highlight important information, terminology, formulas, syntaxes, etc. When doing this, use Markdown formatting. Remember that you need to sound like someone speaking, so don't include tables, headers, or other tags that may seem unnatural for spoken language. Here are some valid techniques to use:
   - Bold Text
@@ -42,52 +35,72 @@ const safetySettings = [
   }
 ];
 
-type Verification = {
+export enum ModelType {
+  Smart = 'gemini-2.5-pro',
+  Quick = 'gemini-2.5-flash-lite',
+  QuickSpeed = 'gemini-2.5-flash-preview-tts'
+}
+
+export type Payload = {
+  model: ModelType,
+  prompt: string,
+  mimeType?: string,
+  schema?: SchemaUnion,
+  systemInstruction: string
+}
+
+export type Verification = {
   isValid: boolean;
   feedback: string;
 };
 
+export const verificationSchema = {
+  type: Type.OBJECT,
+  properties: {
+    isValid: {
+      type: Type.BOOLEAN
+    },
+    feedback: {
+      type: Type.STRING
+    }
+  },
+  required: [
+    "isValid",
+    "feedback"
+  ],
+  propertyOrdering: [
+    "isValid",
+    "feedback"
+  ]
+};
 
-
-
-
-function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
-  if (arr1.length !== arr2.length)
-    return false;
-
-  for (let i = 0; i < arr1.length; ++i) {
-    if (arr1[i] !== arr2[i])
-      return false;
-  }
-
-  return true;
-}
-
-
-
-
-
-export async function rephraseText(text: string): Promise<string> {
+export default async function generateText(payload: Payload): Promise<string> {
   const response = await ai.models.generateContent({
-    model: textModel,
-    contents:
-      `TASK:
-      Rephrase a given TEXT. 
-            
-      TEXT:
-      ${text}`,
+    model: payload.model,
+    contents: payload.prompt,
     config: {
       temperature: 0,
-      systemInstruction: [
-        `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.
-  
-        ${globalSystemInstruction}`
-      ],
+      responseMimeType: payload.mimeType ?? 'text/plain',
+      responseSchema: payload.schema ?? undefined,
+      systemInstruction: [ payload.systemInstruction, globalSystemInstruction ],
       safetySettings: safetySettings
     }
   });
-
+  
   return response.text ?? '';
+}
+
+export async function rephraseText(text: string): Promise<string> {
+  return generateText({
+    model: ModelType.Quick,
+    prompt:
+    `TASK:
+    Rephrase a given TEXT. 
+            
+    TEXT:
+    ${text}`,
+    systemInstruction: `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.`
+  });
 }
 
 /*export async function readTextAloud(text: string): Promise<Buffer<ArrayBufferLike>> {
