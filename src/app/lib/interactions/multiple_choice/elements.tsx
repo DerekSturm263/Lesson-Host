@@ -7,11 +7,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Markdown from 'react-markdown';
 import submit from './functions';
 import { useState } from 'react';
-import { ElementID, ComponentMode, InteractionProps } from '@/app/lib/types';
-import * as helpers from '@/app/lib/helpers';
+import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from '@/app/lib/types';
 import { Type } from '@google/genai';
+import * as helpers from '@/app/lib/helpers';
 
-export type MultipleChoiceItem = {
+export type InteractionType = {
+  items: MultipleChoiceItem[],
+  type: MultipleChoiceType,
+  needsAllCorrect: boolean
+};
+
+type MultipleChoiceItem = {
   value: string,
   isCorrect: boolean
 };
@@ -21,13 +27,18 @@ enum MultipleChoiceType {
   Checkbox = 'checkbox'
 }
 
-type MultipleChoice = {
-  items: MultipleChoiceItem[],
-  type: MultipleChoiceType,
-  needsAllCorrect: boolean
-};
+const defaultValue: InteractionType = {
+  items: [
+    {
+      value: "New Item",
+      isCorrect: true
+    }
+  ],
+  type: MultipleChoiceType.Radio,
+  needsAllCorrect: true
+}
 
-const multipleChoiceSchema = {
+const schema = {
   type: Type.OBJECT,
   properties: {
     choices: {
@@ -63,11 +74,11 @@ const multipleChoiceSchema = {
   ]
 };
 
-export default function MultipleChoice({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ type, setType ] = useState(helpers.getInteractionValue<MultipleChoice>(elementID).type);
-  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<MultipleChoice>(elementID).needsAllCorrect);
+function Component({ elementID, isDisabled, mode }: InteractionProps) {
+  const [ type, setType ] = useState(helpers.getInteractionValue<InteractionType>(elementID).type);
+  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<InteractionType>(elementID).needsAllCorrect);
 
-  const [ items, setItems ] = useState(helpers.getInteractionValue<MultipleChoice>(elementID).items);
+  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(elementID).items);
 
   /*if (mode != types.ComponentMode.Edit) {
     setItems(items.sort(item => Math.random() - 0.5));
@@ -138,7 +149,7 @@ export default function MultipleChoice({ elementID, isDisabled, mode }: Interact
               checked={needsAllCorrect}
               onChange={(e) => {
                 setNeedsAllCorrect(e.target.checked);
-                helpers.getInteractionValue<MultipleChoice>(elementID).needsAllCorrect = e.target.checked;
+                helpers.getInteractionValue<InteractionType>(elementID).needsAllCorrect = e.target.checked;
               }}
             />}
           />
@@ -178,7 +189,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
                 setIsCorrect(e.target.checked);
 
                 if (mode == ComponentMode.Edit) {
-                  helpers.getInteractionValue<MultipleChoice>(elementID).items[index].isCorrect = e.target.checked;
+                  helpers.getInteractionValue<InteractionType>(elementID).items[index].isCorrect = e.target.checked;
                 }
               }}
             />}
@@ -192,7 +203,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
               setValue(e.target.value);
               
               if (mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<MultipleChoice>(elementID).items[index].value = e.target.value;
+                helpers.getInteractionValue<InteractionType>(elementID).items[index].value = e.target.value;
               }
             }}
           />
@@ -205,3 +216,13 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
     </label>
   );
 }
+
+const interaction: InteractionPackage = {
+  id: "multipleChoice",
+  prettyName: "Multiple Choice",
+  defaultValue: defaultValue,
+  schema: schema,
+  Component: Component
+};
+
+export default interaction;

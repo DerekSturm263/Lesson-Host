@@ -2,6 +2,7 @@ import generateText, { ModelType, Verification, verificationSchema } from "@/app
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
 import { complete, readAloud } from "@/app/lib/functions";
+import { InteractionType } from "./elements";
 import * as helpers from '@/app/lib/helpers';
 
 export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
@@ -9,7 +10,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   console.log(JSON.stringify(formData.get('response')));
 
   helpers.setThinking(elementID, true);
-  const feedback = await verify(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
+  const feedback = await verify(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<InteractionType>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
 
@@ -21,7 +22,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   }
 }
 
-async function verify(question: string, userResponse: string[], value: types.MultipleChoice): Promise<Verification> {
+async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {
   let isValid = false;
   let contents = '';
   

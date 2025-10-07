@@ -1,6 +1,6 @@
 'use server'
 
-import { ModelType } from '@/app/lib/ai';
+import generateText, { ModelType } from '@/app/lib/ai';
 import * as schemas from './schemas';
 import * as types from './types';
 
@@ -18,104 +18,91 @@ type SkillPrompt = {
 };
 
 async function chooseSkillType(skillPrompt: SkillPrompt): Promise<InteractionType> {
-  const response = await ai.models.generateContent({
+  const response = await generateText({
     model: ModelType.Smart,
-    contents: 
-      `TASK:
-      Pick an interaction type based on a lesson's given TOPIC and CHAPTERS.
+    prompt:
+    `TASK:
+    Pick an interaction type based on a lesson's given TOPIC and CHAPTERS.
       
-      TOPIC:
-      ${skillPrompt.topic}
+    TOPIC:
+    ${skillPrompt.topic}
       
-      CHAPTERS:
-      ${skillPrompt.chapters.join(', ')}`
-    ,
-    config: {
-      temperature: 0,
-      responseMimeType: 'text/x.enum',
-      responseSchema: schemas.embedTypeSchema,
-      systemInstruction: [
-        `You are an lesson plan classifier. You take lesson topics and decide which of the following interaction types they should use: 'Drawing', 'Graph', 'DAW', 'Codespace', or 'Engine'.
+    CHAPTERS:
+    ${skillPrompt.chapters.join(', ')}`,
+    mimeType: 'text/x.enum',
+    schema: schemas.embedTypeSchema,
+    overrideInstruction:
+    `You are an lesson plan classifier. You take lesson topics and decide which of the following interaction types they should use: 'Drawing', 'Graph', 'DAW', 'Codespace', or 'Engine'.
         
-        - For art-related topics (such as Color Theory, The Principles of Animation, etc.), you should pick 'Drawing'.
-        - For math-related topics (such as The Distance Formula, Logarithms, etc.), you should pick 'Graph'.
-        - For audio-related topics (such as Chord Progressions, Scales, etc.), you should pick 'DAW'.
-        - For programming-related topics (such as Functions, Console I/O, etc.), you should pick 'Codespace'.
-        - For game design-related topics (such as Level Pacing, Design Pillars, etc.), you should pick 'Engine'.`
-      ],
-      safetySettings: safetySettings
-    }
+    - For art-related topics (such as Color Theory, The Principles of Animation, etc.), you should pick 'Drawing'.
+    - For math-related topics (such as The Distance Formula, Logarithms, etc.), you should pick 'Graph'.
+    - For audio-related topics (such as Chord Progressions, Scales, etc.), you should pick 'DAW'.
+    - For programming-related topics (such as Functions, Console I/O, etc.), you should pick 'Codespace'.
+    - For game design-related topics (such as Level Pacing, Design Pillars, etc.), you should pick 'Engine'.`
   });
 
-  return (response.text ?? '') as InteractionType;
+  return response as InteractionType;
 }
 
 async function generateSkillLearn(skillPrompt: SkillPrompt, type: InteractionType): Promise<types.Learn> {
-  const response = await ai.models.generateContent({
+  const response = await generateText({
     model: ModelType.Smart,
-    contents: 
-      `TASK:
-      Create an interactive self-paced lesson based on the <INPUT> section. The <INPUT> section defines this lesson's TOPIC and CHAPTERS.
-      Refer to the <INSTRUCTIONS> section to see exactly how this lesson should be structured.
-      Refer to the <EXAMPLE> section to see an example INPUT and OUTPUT.
+    prompt:
+    `TASK:
+    Create an interactive self-paced lesson based on the <INPUT> section. The <INPUT> section defines this lesson's TOPIC and CHAPTERS.
+    Refer to the <INSTRUCTIONS> section to see exactly how this lesson should be structured.
+    Refer to the <EXAMPLE> section to see an example INPUT and OUTPUT.
       
+    <INPUT>
+
+      TOPIC:
+      ${skillPrompt.topic}
+
+      CHAPTERS:
+      Introduction, ${skillPrompt.chapters.join(', ')}, Recap, Exit Ticket
+
+    </INPUT>
+
+    <INSTRUCTIONS>
+        
+      ${generateLearnInstructions(skillPrompt, type)}
+
+    </INSTRUCTIONS>
+
+    <EXAMPLE>
+
       <INPUT>
 
-        TOPIC:
-        ${skillPrompt.topic}
-
-        CHAPTERS:
-        Introduction, ${skillPrompt.chapters.join(', ')}, Recap, Exit Ticket
+        ${getExampleInput(type)}
 
       </INPUT>
 
-      <INSTRUCTIONS>
+      <OUTPUT>
+
+        ${await getExampleLearnOutput(type)}
+
+      </OUTPUT>
+
+    </EXAMPLE>`,
+    mimeType: 'application/json',
+    schema: schemas.skillSchema,
+    overrideInstruction:
+    `You are an expert lesson planner.
         
-        ${generateLearnInstructions(skillPrompt, type)}
-
-      </INSTRUCTIONS>
-
-      <EXAMPLE>
-
-        <INPUT>
-
-          ${getExampleInput(type)}
-
-        </INPUT>
-
-        <OUTPUT>
-
-          ${await getExampleLearnOutput(type)}
-
-        </OUTPUT>
-
-      </EXAMPLE>
-      `
-    ,
-    config: {
-      temperature: 0,
-      responseMimeType: 'application/json',
-      responseSchema: schemas.skillSchema,
-      systemInstruction: [
-        `You are an expert lesson planner.
+    Your lesson should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level.
         
-        Your lesson should read like it's being spoken out loud by a professional. The audience is a Video Game Production student. Assume that they have no prior knowledge on the subject since they are a beginner. When using complex or technical jargon, make sure to define it immediately in easy-to-understand terms. Assume that the user reads at a 10th grade level.
-        
-        Wherever applicable, use technical documentation techniques. These should be included to make the text easy to follow and to highlight important information, terminology, formulas, syntaxes, etc. When doing this, use Markdown formatting. Remember that you need to sound like someone speaking, so don't include tables, headers, or other tags that may seem unnatural for spoken language. Here are some valid techniques to use:
-        - Bold Text
-        - Italics
-        - Unordered Lists
-        - Ordered Lists
-        - Line Breaks
+    Wherever applicable, use technical documentation techniques. These should be included to make the text easy to follow and to highlight important information, terminology, formulas, syntaxes, etc. When doing this, use Markdown formatting. Remember that you need to sound like someone speaking, so don't include tables, headers, or other tags that may seem unnatural for spoken language. Here are some valid techniques to use:
+    - Bold Text
+    - Italics
+    - Unordered Lists
+    - Ordered Lists
+    - Line Breaks
 
-        Code blocks should always be surrounded by triple backticks. Short pieces of code (including types and keywords) should always be surrounded by single backticks.
-        Math formulas, equations, and variables should always be written using LATEX formatting.`
-      ],
-      safetySettings: safetySettings
-    }
+    Code blocks should always be surrounded by triple backticks. Short pieces of code (including types and keywords) should always be surrounded by single backticks.
+    Math formulas, equations, and variables should always be written using LATEX formatting.`
   });
 
-  return JSON.parse(response.text ?? '') as types.Learn;
+  return JSON.parse(response) as types.Learn;
 }
 
 function generateLearnInstructions(skillPrompt: SkillPrompt, type: InteractionType): string {
