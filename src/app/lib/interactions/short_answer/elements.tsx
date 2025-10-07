@@ -40,19 +40,22 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
     >
       <Stack
         direction="row"
+        spacing={2}
       >
         <TextField
           label="Write your response here. Press enter to submit"
-          id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
           name="response"
           autoComplete="off"
           disabled={isDisabled}
+          value={userResponse}
           onChange={(e) => setUserResponse(e.target.value)}
+          sx={{ flexGrow: 1 }}
         />
 
         <Button
           variant="contained"
           onClick={(e) => submit(userResponse, elementID)}
+          sx={{ width: '120px' }}
         >
           Submit
         </Button>
@@ -63,7 +66,6 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           label="Correct Answer"
           name="correctAnswer"
           autoComplete="off"
-          disabled={isDisabled}
           value={correctAnswer}
           onChange={(e) => {
             const value = e.target.value === "" ? null : e.target.value;

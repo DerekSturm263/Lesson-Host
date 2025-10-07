@@ -1,7 +1,6 @@
 import generateText from "@/app/lib/ai/functions";
 import { ModelType, Verification, verificationSchema } from "@/app/lib/ai/types";
 import { ElementID } from "@/app/lib/types";
-import { FormEvent } from "react";
 import { InteractionType } from "./elements";
 import { complete, readAloud } from "@/app/lib/functions";
 import * as helpers from '@/app/lib/helpers';
@@ -15,7 +14,7 @@ export default async function submit(userResponse: string, elementID: ElementID)
   readAloud(elementID);
 
   if (feedback.isValid) {
-    window.dispatchEvent(new CustomEvent(`updateupdateInteraction`, { detail: true }));
+    window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
     complete(elementID);
   }
 }
