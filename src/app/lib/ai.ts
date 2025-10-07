@@ -83,7 +83,7 @@ export default async function generateText(payload: Payload): Promise<string> {
       temperature: 0,
       responseMimeType: payload.mimeType ?? 'text/plain',
       responseSchema: payload.schema ?? undefined,
-      systemInstruction: payload.overrideInstruction ?? [ payload.systemInstruction, globalSystemInstruction ],
+      systemInstruction: payload.overrideInstruction ?? [ payload.systemInstruction ?? '', globalSystemInstruction ],
       safetySettings: safetySettings
     }
   });
