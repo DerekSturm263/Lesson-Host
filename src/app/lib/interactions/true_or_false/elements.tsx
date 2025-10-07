@@ -2,11 +2,11 @@
 
 import Box from '@mui/material/Box';
 import submit from './functions';
+import FormControl from '@mui/material/FormControl';
 import { useState } from 'react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
-import * as helpers from '@/app/lib/helpers';
 import { Type } from '@google/genai';
-import { FormControl } from '@mui/material';
+import * as helpers from '@/app/lib/helpers';
 
 export type InteractionType = {
   isCorrect: boolean

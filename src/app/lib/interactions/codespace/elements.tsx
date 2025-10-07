@@ -11,13 +11,12 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import PlayArrow from '@mui/icons-material/PlayArrow';
-import verify from './functions';
+import verify, { CodeResult } from './functions';
 import { Editor } from '@monaco-editor/react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { useState } from 'react';
 import { readAloud, complete } from '@/app/lib/functions';
 import { Type } from '@google/genai';
-import { CodeResult } from './functions';
 import * as helpers from '@/app/lib/helpers';
 
 export type InteractionType = {

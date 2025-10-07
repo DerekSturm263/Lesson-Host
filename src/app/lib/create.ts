@@ -1,8 +1,8 @@
 'use server'
 
 import generateText, { ModelType } from '@/app/lib/ai';
-import * as schemas from './schemas';
-import * as types from './types';
+import * as schemas from '@/app/lib/schemas';
+import * as types from '@/app/lib/types';
 
 enum InteractionType {
   Drawing = 'Drawing',

@@ -3,6 +3,7 @@
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Markdown from 'react-markdown';
 import submit from './functions';
@@ -10,7 +11,6 @@ import { useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
-import { FormControl } from '@mui/material';
 
 export type InteractionType = {
   items: MultipleChoiceItem[],
