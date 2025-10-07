@@ -395,16 +395,22 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 }
 
 function Interaction({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }) {
-  const [ type, setType ] = useState(helpers.getElement(elementID).type);
-  const [ isDisabled, setIsDisabled ] = useState(false);
+  const [ type, setType ] = useState(elementID.learn.chapters.map(chapter => chapter.elements.map(element => element.type)).flat());
+  const [ isDisabled, setIsDisabled ] = useState(Array<boolean>(type.length).fill(false));
 
   useEffect(() => {
-    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
+    window.addEventListener(`updateInteraction`, (e: Event) => {
+      const newIsDisabled = isDisabled;
+      isDisabled[helpers.getAbsoluteIndex((e as CustomEvent).detail['id'])] = (e as CustomEvent).detail['isDisabled'];
+      setIsDisabled(newIsDisabled);
     });
   }, []);
 
-  return getInteractionPackage(type).Component({ elementID, isDisabled, mode });
+  return getInteractionPackage(type[helpers.getAbsoluteIndex(elementID)]).Component({
+    elementID: elementID,
+    isDisabled: isDisabled[helpers.getAbsoluteIndex(elementID)],
+    mode: mode
+  });
 }
 
 function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }) {
@@ -563,6 +569,7 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
   );
 }
 */
+
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
     <Box

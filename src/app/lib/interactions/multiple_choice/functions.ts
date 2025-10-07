@@ -18,7 +18,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   readAloud(elementID);
 
   if (feedback.isValid) {
-    window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
+    window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
     complete(elementID);
   }*/
 }
