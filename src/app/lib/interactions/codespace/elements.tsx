@@ -331,7 +331,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
 
         <Typography
           variant="body2"
-          sx={{ margin: '8px', fontFamily: 'monospace' }}
+          sx={{ margin: '16px', fontFamily: 'monospace' }}
         >
           {isRunning && <LinearProgress />}
 
