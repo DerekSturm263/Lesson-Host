@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import LinearProgress from '@mui/material/LinearProgress';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import verify, { CodeResult } from './functions';
 import { Editor } from '@monaco-editor/react';
@@ -188,10 +189,11 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
   const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctOutput);
   const [ output, setOutput ] = useState("");
   const [ tabIndex, setTabIndex ] = useState(0);
+  const [ isRunning, setIsRunning ] = useState(false);
   const file = content[tabIndex];
 
   async function executeCode() {
-    setOutput("Running...");
+    setIsRunning(true);
     helpers.setThinking(elementID, true);
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
@@ -209,6 +211,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
 
     const output = `${response.stdout ?? ''}\n${response.stderr ?? ''}`;
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
+    setIsRunning(false);
 
     const feedback = await verify(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<InteractionType>(elementID));
     helpers.setText(elementID, feedback.feedback);
@@ -319,7 +322,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
             variant="contained"
             startIcon={<PlayArrow />}
             onClick={executeCode}
-            sx={{ width: '150px' }}
+            sx={{ width: '120px' }}
           >
             Run
           </Button>
@@ -328,7 +331,9 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         <Typography
           variant="body1"
         >
-          {output}
+          {isRunning && <LinearProgress />}
+
+          {isRunning ? 'Running...' : output}
         </Typography>
       </Box>
 
