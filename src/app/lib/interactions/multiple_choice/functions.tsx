@@ -6,7 +6,7 @@ import { InteractionType } from "./elements";
 import * as helpers from '@/app/lib/helpers';
 
 export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
-  console.log(JSON.stringify(formData.getAll('response')));
+  /*console.log(JSON.stringify(formData.getAll('response')));
   console.log(JSON.stringify(formData.get('response')));
 
   helpers.setThinking(elementID, true);
@@ -19,7 +19,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   if (feedback.isValid) {
     window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
     complete(elementID);
-  }
+  }*/
 }
 
 async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {

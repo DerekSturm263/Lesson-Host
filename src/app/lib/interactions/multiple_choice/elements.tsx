@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
+import { FormControl } from '@mui/material';
 
 export type InteractionType = {
   items: MultipleChoiceItem[],
@@ -103,10 +104,10 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
     <Box
       sx={{ flexGrow: 1 }}
     >
-      <form
+      <FormControl
         id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
         className='multipleOptions'
-        action={(e) => submit(e, elementID)}
+        onSubmit={(e) => submit(e, elementID)}
       >
         {items.map((item, index) => (
           <MultipleChoiceItem
@@ -160,7 +161,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           name="submit"
           disabled={isDisabled}
         />
-      </form>
+      </FormControl>
     </Box>
   );
 }

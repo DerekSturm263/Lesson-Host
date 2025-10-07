@@ -7,7 +7,7 @@ import * as helpers from '@/app/lib/helpers';
 
 // Todo: Try making function and have return bool for if correct or not
 export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
-  console.log(JSON.stringify(formData.get('response')));
+  /*console.log(JSON.stringify(formData.get('response')));
 
   helpers.setThinking(elementID, true);
   const feedback = await verify(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<InteractionType>(elementID));
@@ -19,7 +19,7 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   if (feedback.isValid) {
     window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
     complete(elementID);
-  }
+  }*/
 }
 
 async function verify(question: string, userResponse: boolean, value: InteractionType): Promise<Verification> {
