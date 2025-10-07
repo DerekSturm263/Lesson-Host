@@ -1,0 +1,74 @@
+export async function submitMultipleChoice(formData: FormData, elementID: types.ElementID) {
+  console.log(JSON.stringify(formData.getAll('response')));
+  console.log(JSON.stringify(formData.get('response')));
+
+  helpers.setThinking(elementID, true);
+  const feedback = await verifyMultipleChoice(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<types.MultipleChoice>(elementID));
+  helpers.setText(elementID, feedback.feedback);
+  helpers.setThinking(elementID, false);
+
+  readAloud(elementID);
+
+  if (feedback.isValid) {
+    window.dispatchEvent(new CustomEvent(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, { detail: true }));
+    complete(elementID);
+  }
+}
+
+export async function verifyMultipleChoice(question: string, userResponse: string[], value: types.MultipleChoice): Promise<Verification> {
+  let isValid = false;
+  let contents = '';
+  
+  const correctAnswers = value.items.filter(item => item.isCorrect).map(item => item.value);
+  if ((!value.needsAllCorrect && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
+    // Got at least one right answer, and either doesn't need all correct or got them all correct.
+    isValid = true;
+
+    contents =
+      `TASK:
+      The student's selections were correct. Congratulate the student on getting their answer right. Review their SELECTION(S) to recap how the QUESTION was solved and why their selections were correct.
+
+      QUESTION:
+      ${question}
+
+      SELECTION(S):
+      ${userResponse.join(', ')}
+
+      CORRECT ANSWER(S):
+      ${correctAnswers.join(', ')}
+      `;
+  } else {
+    // Didn't get any right answers.
+    isValid = false;
+    
+    contents =
+      `TASK:
+      The student's selections were incorrect. View the student's SELECTION(S) and the original QUESTION and give the student feedback on why their selections aren't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER(S).
+
+      QUESTION:
+      ${question}
+
+      SELECTION(S):
+      ${userResponse.join(', ')}
+
+      CORRECT ANSWER(S):
+      ${correctAnswers.join(', ')}
+      `;
+  }
+
+  const response = await ai.models.generateContent({
+    model: textModel,
+    contents: contents,
+    config: {
+      temperature: 0,
+      systemInstruction: [
+        `You are a high school tutor. You evaluate a student's SELECTIONS on a multiple choice QUESTION and give them proper FEEDBACK based on whether or not their selections are correct. You will be told whether or not the student is correct, all you need to do is give the FEEDBACK.
+        
+        ${globalSystemInstruction}`
+      ],
+      safetySettings: safetySettings
+    }
+  });
+
+  return { isValid: isValid, feedback: response.text ?? '' } as Verification
+}
