@@ -269,9 +269,9 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   const [ currentChapter, setCurrentChapter ] = useState(0);
   const [ currentElement, setCurrentElement ] = useState(0);
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
+  const [ elements, setElements ] = useState(learn.chapters.map(chapter => chapter.elements.map(element => element)).flat());
   const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
   const [ interactionsEnabled, setInteractionsEnabled ] = useState(Array<boolean>(elementsUnlocked.length));
-  const [ types, setTypes ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.type)).flat());
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
@@ -349,12 +349,22 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
       >
         <Toolbar />
 
-        <Interaction
-          elementID={thisElement}
-          isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(thisElement)]}
-          setText={setText}
-          mode={mode}
-        />
+        {elements.map((element, index) => {
+          const elementID = { learn: learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] }
+
+          return (
+            <Box
+              sx={{ display: elementID.chapterIndex == currentChapter && elementID.elementIndex == currentElement ? 'block' : 'none' }}
+            >
+              <Interaction
+                elementID={elementID}
+                isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(elementID)]}
+                setText={setText}
+                mode={mode}
+              />
+            </Box>
+          );
+        })}
       
         <Text
           elementID={thisElement}
