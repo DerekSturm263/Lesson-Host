@@ -70,7 +70,8 @@ import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
-import { PaginationItem } from '@mui/material';
+import PaginationItem from '@mui/material/PaginationItem';
+
 
 
 // Core.
