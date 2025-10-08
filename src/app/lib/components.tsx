@@ -416,13 +416,14 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   );
 }
 
-function Interaction({ elementID, isDisabled, setText, mode }: InteractionProps) {
-  return interactionMap[helpers.getElement(elementID).type].Component({
-    elementID: elementID,
-    isDisabled: isDisabled,
-    setText: setText,
-    mode: mode
-  });
+function Interaction(props: InteractionProps) {
+  const Component = interactionMap[helpers.getElement(props.elementID).type].Component;
+
+  return (
+    <Component
+      {...props}
+    />
+  );
 }
 
 function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode }) {
