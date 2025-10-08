@@ -1,26 +1,8 @@
 import generateText from "@/app/lib/ai/functions";
 import { ModelType, Verification } from "@/app/lib/ai/types";
-import { ElementID } from "@/app/lib/types";
-import { FormEvent } from "react";
 import { InteractionType } from "./elements";
-import * as helpers from '@/app/lib/helpers';
 
-export default async function submit(formData: FormEvent<HTMLDivElement>, elementID: ElementID) {
-  /*console.log(JSON.stringify(formData.getAll('response')));
-  console.log(JSON.stringify(formData.get('response')));
-
-  helpers.setThinking(elementID, true);
-  const feedback = await verify(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<InteractionType>(elementID));
-  helpers.setText(elementID, feedback.feedback);
-  helpers.setThinking(elementID, false);
-
-  if (feedback.isValid) {
-    window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
-    complete(elementID);
-  }*/
-}
-
-async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {
+export default async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {
   let isValid = false;
   let contents = '';
   

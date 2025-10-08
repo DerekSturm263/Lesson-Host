@@ -6,7 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Markdown from 'react-markdown';
-import submit from './functions';
+import verify from './functions';
 import { useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from '@/app/lib/types';
 import { Type } from '@google/genai';
@@ -78,12 +78,23 @@ const schema = {
 function Component(props: InteractionProps) {
   const [ type, setType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).type);
   const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).needsAllCorrect);
-
   const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
 
-  /*if (mode != types.ComponentMode.Edit) {
-    setItems(items.sort(item => Math.random() - 0.5));
-  }*/
+  async function submit() {
+    helpers.setThinking(props.elementID, true);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
+
+    // TODO: Fix
+    const feedback = await verify(helpers.getElement(props.elementID).text, [ "" ], helpers.getInteractionValue<InteractionType>(props.elementID));
+    props.setText(feedback.feedback);
+    helpers.setThinking(props.elementID, false);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
+
+    if (feedback.isValid) {
+      window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
+      helpers.completeElement(props.elementID);
+    }
+  }
 
   function addItem() {
     const newItems = items;
@@ -107,7 +118,7 @@ function Component(props: InteractionProps) {
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
-        onSubmit={(e) => submit(e, props.elementID)}
+        onSubmit={(e) => submit()}
       >
         {items.map((item, index) => (
           <MultipleChoiceItem

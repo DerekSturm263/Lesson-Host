@@ -1,7 +1,7 @@
 'use client'
 
 import Box from '@mui/material/Box';
-import submit from './functions';
+import verify from './functions';
 import FormControl from '@mui/material/FormControl';
 import { useState } from 'react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
@@ -34,6 +34,21 @@ const schema = {
 function Component(props: InteractionProps) {
   const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect);
 
+  async function submit() {
+    helpers.setThinking(props.elementID, true);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
+
+    const feedback = await verify(helpers.getElement(props.elementID).text, isCorrect, helpers.getInteractionValue<InteractionType>(props.elementID));
+    props.setText(feedback.feedback);
+    helpers.setThinking(props.elementID, false);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
+
+    if (feedback.isValid) {
+      window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
+      helpers.completeElement(props.elementID);
+    }
+  }
+
   return (
     <Box
       sx={{ flexGrow: 1 }}
@@ -41,7 +56,7 @@ function Component(props: InteractionProps) {
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
-        onSubmit={(e) => submit(e, props.elementID)}
+        onSubmit={(e) => submit()}
       >
         <label>
           <input
