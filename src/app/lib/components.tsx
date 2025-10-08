@@ -390,11 +390,11 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
           count={helpers.getChapter(currentElement).elements.length}
           page={currentElement.elementIndex + 1}
           disabled={!isNavigationEnabled}
-          onChange={(e, value) => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: value - 1, keys: [ apiKey ] })}
           renderItem={(item) => (
             <PaginationItem
               {...item}
               disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
+              onClick={() => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: [ apiKey ] })}
             />
           )}
           sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
