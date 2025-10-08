@@ -30,22 +30,22 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
-  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctAnswer);
+function Component(props: InteractionProps) {
+  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).correctAnswer);
   const [ userResponse, setUserResponse ] = useState("");
 
   async function submit() {
-    helpers.setThinking(elementID, true);
+    helpers.setThinking(props.elementID, true);
     window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
 
-    const feedback = await verify(helpers.getElement(elementID).text, userResponse, helpers.getInteractionValue<InteractionType>(elementID));
-    setText(feedback.feedback);
-    helpers.setThinking(elementID, false);
+    const feedback = await verify(helpers.getElement(props.elementID).text, userResponse, helpers.getInteractionValue<InteractionType>(props.elementID));
+    props.setText(feedback.feedback);
+    helpers.setThinking(props.elementID, false);
     window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
 
     if (feedback.isValid) {
       window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
-      helpers.completeElement(elementID);
+      helpers.completeElement(props.elementID);
     }
   }
 
@@ -77,7 +77,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
         </Button>
       </Stack>
 
-      {mode == ComponentMode.Edit && (
+      {props.mode == ComponentMode.Edit && (
         <TextField
           label="Correct Answer"
           name="correctAnswer"
@@ -86,7 +86,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
           onChange={(e) => {
             const value = e.target.value === "" ? null : e.target.value;
             setCorrectAnswer(value);
-            helpers.getInteractionValue<InteractionType>(elementID).correctAnswer = value;
+            helpers.getInteractionValue<InteractionType>(props.elementID).correctAnswer = value;
           }}
         />
       )}

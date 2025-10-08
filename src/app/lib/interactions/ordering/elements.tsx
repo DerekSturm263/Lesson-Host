@@ -36,8 +36,8 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctOrder);
+function Component(props: InteractionProps) {
+  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).correctOrder);
 
   /*if (mode != types.ComponentMode.Edit) {
     setItems(items.sort(item => Math.random() - 0.5));

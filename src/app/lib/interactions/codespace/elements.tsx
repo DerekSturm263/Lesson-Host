@@ -181,11 +181,11 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
-  const [ language, setLanguage ] = useState(helpers.getInteractionValue<InteractionType>(elementID).language);
-  const [ content, setContent ] = useState(helpers.getInteractionValue<InteractionType>(elementID).content);
-  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<InteractionType>(elementID).isSimplified);
-  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctOutput);
+function Component(props: InteractionProps) {
+  const [ language, setLanguage ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).language);
+  const [ content, setContent ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).content);
+  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).isSimplified);
+  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).correctOutput);
   const [ output, setOutput ] = useState("");
   const [ tabIndex, setTabIndex ] = useState(0);
   const [ isRunning, setIsRunning ] = useState(false);
@@ -194,12 +194,12 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
 
   async function submit() {
     setIsRunning(true);
-    helpers.setThinking(elementID, true);
+    helpers.setThinking(props.elementID, true);
     window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
-        'x-rapidapi-key': elementID.keys[0],
+        'x-rapidapi-key': props.elementID.keys[0],
         'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
         'Content-Type': 'application/json',
       },
@@ -214,13 +214,13 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
     setIsRunning(false);
 
-    const feedback = await verify(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<InteractionType>(elementID));
-    setText(feedback.feedback);
-    helpers.setThinking(elementID, false);
+    const feedback = await verify(helpers.getElement(props.elementID).text, content, response, helpers.getInteractionValue<InteractionType>(props.elementID));
+    props.setText(feedback.feedback);
+    helpers.setThinking(props.elementID, false);
     window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
 
     if (feedback.isValid) {
-      helpers.completeElement(elementID);
+      helpers.completeElement(props.elementID);
     }
   }
 
@@ -229,7 +229,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
       sx={{ flexGrow: 1 }}
       direction='row'
     >
-      {mode == ComponentMode.Edit && (
+      {props.mode == ComponentMode.Edit && (
         <label>
           Language:
 
@@ -238,7 +238,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
             value={language}
             onChange={(e) => {
               setLanguage(e.target.value as CodespaceLanguage);
-              helpers.getInteractionValue<InteractionType>(elementID).language = e.target.value as CodespaceLanguage;
+              helpers.getInteractionValue<InteractionType>(props.elementID).language = e.target.value as CodespaceLanguage;
             }}
           >
             {(Object.values(CodespaceLanguage).map((item, index) => (
@@ -253,7 +253,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
         </label>
       )}
 
-      {mode == ComponentMode.Edit && (
+      {props.mode == ComponentMode.Edit && (
         <FormControlLabel label="Is Simplified" control={
           <Checkbox
             name="isSimplified"
@@ -261,7 +261,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
             checked={isSimplified}
             onChange={(e) => {
               setIsSimplified(e.target.checked);
-              helpers.getInteractionValue<InteractionType>(elementID).isSimplified = e.target.checked;
+              helpers.getInteractionValue<InteractionType>(props.elementID).isSimplified = e.target.checked;
             }}
           />}
         />
@@ -294,8 +294,8 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
             newContent[tabIndex].content = e ?? '';
             setContent(newContent);
 
-            if (mode == ComponentMode.Edit) {
-              helpers.getInteractionValue<InteractionType>(elementID).content[tabIndex].content = e ?? '';
+            if (props.mode == ComponentMode.Edit) {
+              helpers.getInteractionValue<InteractionType>(props.elementID).content[tabIndex].content = e ?? '';
             }
           }}
         />
@@ -346,7 +346,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
       </Box>
 
       
-      {mode == ComponentMode.Edit && (
+      {props.mode == ComponentMode.Edit && (
         <TextField
           label="Correct Output"
           name="correctOutput"
@@ -354,7 +354,7 @@ function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
           multiline
           onChange={(e) => {
             setCorrectOutput(e.target.value);
-            helpers.getInteractionValue<InteractionType>(elementID).correctOutput = e.target.value;
+            helpers.getInteractionValue<InteractionType>(props.elementID).correctOutput = e.target.value;
           }}
         />
       )}

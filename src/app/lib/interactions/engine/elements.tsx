@@ -24,7 +24,7 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
+function Component(props: InteractionProps) {
   return (
     <iframe
       className="fullscreenInteraction"

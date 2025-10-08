@@ -60,8 +60,8 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(elementID).items);
+function Component(props: InteractionProps) {
+  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
   
   //const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
   //const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];

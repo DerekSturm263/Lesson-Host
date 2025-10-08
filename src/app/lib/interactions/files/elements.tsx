@@ -61,8 +61,8 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ files, setFiles ] = useState(helpers.getInteractionValue<InteractionType>(elementID).files);
+function Component(props: InteractionProps) {
+  const [ files, setFiles ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).files);
 
   function addFile() {
     const newFiles = files;
@@ -86,9 +86,9 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
       {files.map((item, index) => (
         <FileItem
           key={index}
-          elementID={elementID}
-          isDisabled={isDisabled}
-          mode={mode}
+          elementID={props.elementID}
+          isDisabled={props.isDisabled}
+          mode={props.mode}
           item={item}
           index={index}
         />

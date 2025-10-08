@@ -31,17 +31,17 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<InteractionType>(elementID).isCorrect);
+function Component(props: InteractionProps) {
+  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect);
 
   return (
     <Box
       sx={{ flexGrow: 1 }}
     >
       <FormControl
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
-        onSubmit={(e) => submit(e, elementID)}
+        onSubmit={(e) => submit(e, props.elementID)}
       >
         <label>
           <input
@@ -49,13 +49,13 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
             name="response"
             id="true"
             value="true"
-            disabled={isDisabled}
-            checked={mode == ComponentMode.Edit && isCorrect}
+            disabled={props.isDisabled}
+            checked={props.mode == ComponentMode.Edit && isCorrect}
             onChange={(e) => {
               setIsCorrect(true);
 
-              if (mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<InteractionType>(elementID).isCorrect = true;
+              if (props.mode == ComponentMode.Edit) {
+                helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect = true;
               }
             }}
           />
@@ -69,13 +69,13 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
             name="response"
             id="false"
             value="false"
-            disabled={isDisabled}
-            checked={mode == ComponentMode.Edit && !isCorrect}
+            disabled={props.isDisabled}
+            checked={props.mode == ComponentMode.Edit && !isCorrect}
             onChange={(e) => {
               setIsCorrect(false);
               
-              if (mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<InteractionType>(elementID).isCorrect = false;
+              if (props.mode == ComponentMode.Edit) {
+                helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect = false;
               }
             }}
           />
@@ -86,7 +86,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         <input
           type="submit"
           name="submit"
-          disabled={isDisabled}
+          disabled={props.isDisabled}
         />
       </FormControl>
     </Box>

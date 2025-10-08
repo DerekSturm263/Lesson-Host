@@ -75,11 +75,11 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ type, setType ] = useState(helpers.getInteractionValue<InteractionType>(elementID).type);
-  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<InteractionType>(elementID).needsAllCorrect);
+function Component(props: InteractionProps) {
+  const [ type, setType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).type);
+  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).needsAllCorrect);
 
-  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(elementID).items);
+  const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
 
   /*if (mode != types.ComponentMode.Edit) {
     setItems(items.sort(item => Math.random() - 0.5));
@@ -105,23 +105,23 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
       sx={{ flexGrow: 1 }}
     >
       <FormControl
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
-        onSubmit={(e) => submit(e, elementID)}
+        onSubmit={(e) => submit(e, props.elementID)}
       >
         {items.map((item, index) => (
           <MultipleChoiceItem
             key={index}
-            elementID={elementID}
-            isDisabled={isDisabled}
-            mode={mode}
+            elementID={props.elementID}
+            isDisabled={props.isDisabled}
+            mode={props.mode}
             item={item}
             index={index}
             type={type}
           />
         ))}
 
-        {mode == ComponentMode.Edit && (
+        {props.mode == ComponentMode.Edit && (
           <label>
             Type:
 
@@ -142,7 +142,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           </label>
         )}
         
-        {mode == ComponentMode.Edit && (
+        {props.mode == ComponentMode.Edit && (
           <FormControlLabel label="Needs All Correct" control={
             <Checkbox
               name="needsAllCorrect"
@@ -150,7 +150,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
               checked={needsAllCorrect}
               onChange={(e) => {
                 setNeedsAllCorrect(e.target.checked);
-                helpers.getInteractionValue<InteractionType>(elementID).needsAllCorrect = e.target.checked;
+                helpers.getInteractionValue<InteractionType>(props.elementID).needsAllCorrect = e.target.checked;
               }}
             />}
           />
@@ -159,7 +159,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
         <input
           type="submit"
           name="submit"
-          disabled={isDisabled}
+          disabled={props.isDisabled}
         />
       </FormControl>
     </Box>

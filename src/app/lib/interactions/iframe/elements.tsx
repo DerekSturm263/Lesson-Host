@@ -30,29 +30,29 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
-  const [ source, setSource ] = useState(helpers.getInteractionValue<InteractionType>(elementID).source);
+function Component(props: InteractionProps) {
+  const [ source, setSource ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).source);
 
   return (
     <Box
       sx={{ flexGrow: 1 }}
     >
       <iframe
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
+        id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className="fullscreenInteraction"
         src={source}
       ></iframe>
 
-      {mode == ComponentMode.Edit && (
+      {props.mode == ComponentMode.Edit && (
         <TextField
           label="Source"
           name="source"
           autoComplete="off"
-          disabled={isDisabled}
+          disabled={props.isDisabled}
           value={source}
           onChange={(e) => {
             setSource(e.target.value);
-            helpers.getInteractionValue<InteractionType>(elementID).source = e.target.value;
+            helpers.getInteractionValue<InteractionType>(props.elementID).source = e.target.value;
           }}
         />
       )}
