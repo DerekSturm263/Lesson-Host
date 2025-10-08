@@ -76,6 +76,21 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 // Core.
 
+const interactionMap: Record<string, InteractionPackage> = {
+  "shortAnswer": ShortAnswer,
+  "multipleChoice": MultipleChoice,
+  "trueOrFalse": TrueOrFalse,
+  "matching": Matching,
+  "ordering": Ordering,
+  "files": Files,
+  "drawing": Drawing,
+  "graph": Graph,
+  "daw": DAW,
+  "codespace": Codespace,
+  "engine": Engine,
+  "iframe": IFrame
+};
+
 export function Header({ title, mode, type }: { title: string, mode: ComponentMode, type: string }) {
   const [ progress, setProgress ] = useState(0);
 
@@ -402,7 +417,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
 }
 
 function Interaction({ elementID, isDisabled, setText, mode }: InteractionProps) {
-  return getInteractionPackage(helpers.getElement(elementID).type).Component({
+  return interactionMap[helpers.getElement(elementID).type].Component({
     elementID: elementID,
     isDisabled: isDisabled,
     setText: setText,
@@ -550,13 +565,13 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
   );
 }
 
-/*function TypeSwitcher({ elementID }: { elementID: ElementID }) {
+function TypeSwitcher({ elementID }: { elementID: ElementID }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
 
   function setTypeAndUpdate(type: string) {
     setType(type);
     helpers.getElement(elementID).type = type;
-    helpers.getElement(elementID).value = getInteractionPackage(type).defaultValue;
+    helpers.getElement(elementID).value = interactionMap[type].defaultValue;
   }
 
   return (
@@ -582,23 +597,6 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
       </Select>
     </FormControl>
   );
-}*/
-
-function getInteractionPackage(type: string): InteractionPackage {
-  return {
-    "shortAnswer": ShortAnswer,
-    "multipleChoice": MultipleChoice,
-    "trueOrFalse": TrueOrFalse,
-    "matching": Matching,
-    "ordering": Ordering,
-    "files": Files,
-    "drawing": Drawing,
-    "graph": Graph,
-    "daw": DAW,
-    "codespace": Codespace,
-    "engine": Engine,
-    "iframe": IFrame
-  }[type] ?? ShortAnswer;
 }
 
 
