@@ -76,21 +76,6 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 // Core.
 
-const interactionMap: Record<string, InteractionPackage> = {
-  "shortAnswer": ShortAnswer,
-  "multipleChoice": MultipleChoice,
-  "trueOrFalse": TrueOrFalse,
-  "matching": Matching,
-  "ordering": Ordering,
-  "files": Files,
-  "drawing": Drawing,
-  "graph": Graph,
-  "daw": DAW,
-  "codespace": Codespace,
-  "engine": Engine,
-  "iframe": IFrame
-};
-
 export function Header({ title, mode, type }: { title: string, mode: ComponentMode, type: string }) {
   const [ progress, setProgress ] = useState(0);
 
@@ -565,7 +550,7 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
   );
 }
 
-function TypeSwitcher({ elementID }: { elementID: ElementID }) {
+/*function TypeSwitcher({ elementID }: { elementID: ElementID }) {
   const [ type, setType ] = useState(helpers.getElement(elementID).type);
 
   function setTypeAndUpdate(type: string) {
@@ -597,10 +582,23 @@ function TypeSwitcher({ elementID }: { elementID: ElementID }) {
       </Select>
     </FormControl>
   );
-}
+}*/
 
 function getInteractionPackage(type: string): InteractionPackage {
-  return interactionMap[type];
+  return {
+    "shortAnswer": ShortAnswer,
+    "multipleChoice": MultipleChoice,
+    "trueOrFalse": TrueOrFalse,
+    "matching": Matching,
+    "ordering": Ordering,
+    "files": Files,
+    "drawing": Drawing,
+    "graph": Graph,
+    "daw": DAW,
+    "codespace": Codespace,
+    "engine": Engine,
+    "iframe": IFrame
+  }[type] ?? ShortAnswer;
 }
 
 
@@ -627,7 +625,7 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
         <span
           key={i}
           className="word"
-          onDoubleClick={(e) => functions.define(word)}
+          onDoubleClick={(e) => define(word)}
           title="Double click to define this word"
           style={{"--index": `${globalIndex++ / 8}s`} as React.CSSProperties}
         >
