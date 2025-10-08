@@ -284,17 +284,19 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   }
 
   useEffect(() => {
+    console.log(JSON.stringify(elementsUnlocked));
+
     window.addEventListener(`updateElement`, (e: Event) => {
-      const newStatesEnabled = elementsUnlocked;
-      newStatesEnabled[helpers.getAbsoluteIndex(thisElement) + 1] = (e as CustomEvent).detail;
-      setElementsUnlocked(newStatesEnabled);
+      const newElementsUnlocked = elementsUnlocked;
+      newElementsUnlocked[helpers.getAbsoluteIndex(thisElement) + 1] = (e as CustomEvent).detail;
+      setElementsUnlocked(newElementsUnlocked);
 
       if (mode == ComponentMode.View) {
         setSnackbarText("Good job! You can now move onto the next page");
         setIsSnackbarOpen(true);
       }
 
-      console.log(JSON.stringify(newStatesEnabled));
+      console.log(JSON.stringify(newElementsUnlocked));
     });
 
     window.addEventListener('updatePagination', (e: Event) => {
