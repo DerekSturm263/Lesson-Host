@@ -361,6 +361,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
                 isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(elementID)]}
                 setText={setText}
                 mode={mode}
+                key={index}
               />
             </Box>
           );
