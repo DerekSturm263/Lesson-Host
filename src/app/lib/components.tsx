@@ -350,7 +350,14 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
       >
         <Toolbar />
 
-        {chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
+        <Interaction
+          elementID={thisElement}
+          isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(thisElement)]}
+          setText={setText}
+          mode={mode}
+        />
+
+        {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
           const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
 
           return (
@@ -366,7 +373,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
               />
             </Box>
           );
-        }))}
+        }))*/}
       
         <Text
           elementID={thisElement}
