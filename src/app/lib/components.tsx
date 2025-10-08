@@ -269,7 +269,6 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   const [ currentChapter, setCurrentChapter ] = useState(0);
   const [ currentElement, setCurrentElement ] = useState(0);
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
-  const [ elements, setElements ] = useState(learn.chapters.map(chapter => chapter.elements.map(element => element)).flat());
   const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
   const [ interactionsEnabled, setInteractionsEnabled ] = useState(Array<boolean>(elementsUnlocked.length));
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
@@ -322,17 +321,19 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
         {chapters.map((chapter, index) => {
           const chapterFirstElement = { learn: learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] };
 
-          return (<ChapterButton
-            isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
-            selected={currentChapter == index}
-            key={index}
-            elementID={chapterFirstElement}
-            mode={mode}
-            onClick={(e) => {
-              setCurrentChapter(index);
-              setCurrentElement(0);
-            }}
-          />);
+          return (
+            <ChapterButton
+              isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
+              selected={currentChapter == index}
+              key={index}
+              elementID={chapterFirstElement}
+              mode={mode}
+              onClick={(e) => {
+                setCurrentChapter(index);
+                setCurrentElement(0);
+              }}
+            />
+          );
         })}
 
         {mode == ComponentMode.Edit && (
@@ -349,13 +350,13 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
       >
         <Toolbar />
 
-        {elements.map((element, index) => {
-          const elementID = { learn: learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] }
+        {chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
+          const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
 
           return (
             <Box
               sx={{ display: elementID.chapterIndex == currentChapter && elementID.elementIndex == currentElement ? 'block' : 'none' }}
-              key={index}
+              key={helpers.getAbsoluteIndex(elementID)}
             >
               <Interaction
                 elementID={elementID}
@@ -365,7 +366,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
               />
             </Box>
           );
-        })}
+        }))}
       
         <Text
           elementID={thisElement}
