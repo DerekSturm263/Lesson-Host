@@ -15,8 +15,7 @@ import PlayArrow from '@mui/icons-material/PlayArrow';
 import verify, { CodeResult } from './functions';
 import { Editor } from '@monaco-editor/react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
-import { useState } from 'react';
-import { readAloud, complete } from '@/app/lib/functions';
+import { Fragment, useState } from 'react';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 
@@ -182,7 +181,7 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
+function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<InteractionType>(elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<InteractionType>(elementID).content);
   const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<InteractionType>(elementID).isSimplified);
@@ -193,9 +192,10 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
   
   const file = content[tabIndex];
 
-  async function executeCode() {
+  async function submit() {
     setIsRunning(true);
     helpers.setThinking(elementID, true);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
@@ -215,13 +215,12 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
     setIsRunning(false);
 
     const feedback = await verify(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<InteractionType>(elementID));
-    helpers.setText(elementID, feedback.feedback);
+    setText(feedback.feedback);
     helpers.setThinking(elementID, false);
-
-    readAloud(elementID);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
 
     if (feedback.isValid) {
-      complete(elementID);
+      helpers.completeElement(elementID);
     }
   }
 
@@ -323,8 +322,9 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           <Button
             variant="contained"
             startIcon={<PlayArrow />}
-            onClick={executeCode}
+            onClick={submit}
             sx={{ width: '120px' }}
+            disabled={isRunning}
           >
             Run
           </Button>
@@ -334,7 +334,12 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
           variant="body2"
           sx={{ margin: '16px', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}
         >
-          {isRunning && <LinearProgress />}
+          {isRunning && (
+            <Fragment>
+              <LinearProgress />
+              <br />
+            </Fragment>
+          )}
 
           {isRunning ? 'Running...' : output}
         </Typography>

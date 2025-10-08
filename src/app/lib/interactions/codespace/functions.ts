@@ -30,7 +30,7 @@ export default async function verify(instructions: string, content: CodespaceFil
       The student's code did not compile. View the attached FILE and ERROR(S) and give the student feedback on what they should do to make their code compile. Afterwards, review the original INSTRUCTIONS with the student to make sure they understand what they're supposed to do.
 
       FILE:
-      ${content}
+      ${content.map(item => item.content).join()}
 
       ERROR(S):
       ${result.stderr}
@@ -46,7 +46,7 @@ export default async function verify(instructions: string, content: CodespaceFil
       The code compiled and ran successfully, although this code wasn't made by the student. It was just an example for the student to run and examine the output. View the attached FILE and explain to the student how it ties back to the TEXT and produces the OUTPUT. Keep your explanation as short as possible, it just needs to introduce the user to the topic.
 
       FILE:
-      ${content}
+      ${content.map(item => item.content).join()}
 
       TEXT:
       ${instructions}
@@ -65,7 +65,7 @@ export default async function verify(instructions: string, content: CodespaceFil
       ${value.correctOutput}
 
       FILE:
-      ${content}
+      ${content.map(item => item.content).join()}
 
       USER'S OUTPUT:
       ${result.stdout}
@@ -84,7 +84,7 @@ export default async function verify(instructions: string, content: CodespaceFil
       ${value.correctOutput}
 
       FILE:
-      ${content}
+      ${content.map(item => item.content).join()}
 
       INSTRUCTIONS:
       ${instructions}`;

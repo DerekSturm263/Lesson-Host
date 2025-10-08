@@ -54,19 +54,6 @@ export default async function generateText(payload: Payload): Promise<string> {
   return response.text ?? '';
 }
 
-export async function rephraseText(text: string): Promise<string> {
-  return generateText({
-    model: ModelType.Quick,
-    prompt:
-    `TASK:
-    Rephrase a given TEXT. 
-    
-    TEXT:
-    ${text}`,
-    systemInstruction: `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.`
-  });
-}
-
 /*export async function readTextAloud(text: string): Promise<Buffer<ArrayBufferLike>> {
     const response = await ai.models.generateContent({
         model: ttsModel,

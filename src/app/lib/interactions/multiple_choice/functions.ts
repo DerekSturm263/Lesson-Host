@@ -2,7 +2,6 @@ import generateText from "@/app/lib/ai/functions";
 import { ModelType, Verification } from "@/app/lib/ai/types";
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
-import { complete, readAloud } from "@/app/lib/functions";
 import { InteractionType } from "./elements";
 import * as helpers from '@/app/lib/helpers';
 
@@ -14,8 +13,6 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   const feedback = await verify(helpers.getElement(elementID).text, formData.getAll('response').map(item => item.toString()), helpers.getInteractionValue<InteractionType>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
-
-  readAloud(elementID);
 
   if (feedback.isValid) {
     window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));

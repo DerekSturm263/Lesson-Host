@@ -2,9 +2,10 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill } from '@/app/lib/types';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps } from '@/app/lib/types';
+import { ModelType } from './ai/types';
 import Markdown from 'react-markdown';
-import * as functions from '@/app/lib/functions';
+import generateText from './ai/functions';
 import * as helpers from '@/app/lib/helpers';
 
 import ShortAnswer from './interactions/short_answer/elements';
@@ -67,7 +68,9 @@ import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
-
+import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
+import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
+import { PaginationItem } from '@mui/material';
 
 
 // Core.
@@ -211,7 +214,7 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
       >
         <Typography
           variant='h6'
-          sx={{ marginTop: '8px', marginBottom: '8px', textAlign: 'center' }}
+          sx={{ margin: 'auto', textAlign: 'center', height: '48px', alignContent: 'center' }}
         >
           {label}
         </Typography>
@@ -230,13 +233,15 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
   );
 }
 
-function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { selected: boolean, elementID: ElementID, mode: ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined, removeChapter: (index: number) => void }) {
+function ChapterButton({ selected, elementID, isDisabled, mode, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ progress, setProgress ] = useState(0);
+  const [ completedElements, setCompletedElements ] = useState(Array<boolean>(helpers.getChapter(elementID).elements.length));
 
   useEffect(() => {
     window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
-      setProgress((e as CustomEvent).detail);
+      const newCompletedElements = completedElements;
+      newCompletedElements[(e as CustomEvent).detail] = true;
+      setCompletedElements(newCompletedElements);
     });
   }, []);
 
@@ -245,82 +250,63 @@ function ChapterButton({ selected, elementID, mode, onClick, removeChapter }: { 
       secondaryAction={ mode == ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
     >
       <ListItemButton
-        disabled={helpers.getChapterProgress({ learn: elementID.learn, chapterIndex: elementID.chapterIndex - 1, elementIndex: 0, keys: elementID.keys }) < 1}
+        disabled={isDisabled}
         selected={selected}
         onClick={onClick}
       >
         <ListItemText
           primary={title}
-          secondary={mode == ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
+          secondary={mode == ComponentMode.View ? <LinearProgress variant="determinate" value={(completedElements.filter(item => item).length / helpers.getChapter(elementID).elements.length) * 100} /> : <Fragment></Fragment> }
         />
       </ListItemButton>
     </ListItem>
   );
 }
 
-export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, skill: Skill, mode: ComponentMode, apiKey: string }) {
-  const [ chapters, setChapters ] = useState(skill.learn.chapters);
+export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
+  const [ chapters, setChapters ] = useState(learn.chapters);
   const [ currentChapter, setCurrentChapter ] = useState(0);
   const [ currentElement, setCurrentElement ] = useState(0);
-  const [ canTravel, setCanTravel ] = useState(true);
+  const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
+  const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
+  const [ interactionsEnabled, setInteractionsEnabled ] = useState(Array<boolean>(elementsUnlocked.length));
+  const [ types, setTypes ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.type)).flat());
+  const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
+  const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
+  const [ snackbarText, setSnackbarText ] = useState("");
 
-  function addChapter() {
-    const newChapters = chapters;
+  const thisElement = { learn: learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
 
-    newChapters.push({
-      title: "New Chapter",
-      elements: [
-        {
-          type: "",
-          text: "New element",
-          value: { },
-          isComplete: true
-        }
-      ]
-    });
-    setChapters(newChapters);
-
-    skill.learn.chapters = newChapters;
-  }
-
-  function removeChapter(index: number) {
-    const newChapters = chapters;
-    
-    chapters.splice(index, 1);
-    setChapters(newChapters);
-
-    skill.learn.chapters = newChapters;
-  }
-
-  for (let i = 0; i < chapters.length; ++i) {
-    for (let j = 0; j < chapters[i].elements.length; ++j) {
-      chapters[i].elements[j].isComplete = mode != ComponentMode.View;
-    }
-  }
-
-  const thisElement = { learn: skill.learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
-  const [ elements, setElements ] = useState(helpers.getChapter(thisElement).elements);
-
-  function addElement() {
-    const newElements = elements;
-    newElements.push({
-      type: "",
-      text: "New element",
-      value: { },
-      isComplete: true
-    });
-    setElements(newElements);
-  }
-
-  function removeElement(index: number) {
-    const newElements = elements;
-    newElements.splice(index, 1);
-    setElements(newElements);
+  function setText(value: string) {
+    const newTexts = texts;
+    newTexts[helpers.getAbsoluteIndex(thisElement)] = value;
+    setTexts(newTexts);
   }
 
   useEffect(() => {
-    window.addEventListener(`updatePagination`, (e: Event) => {
-      setCanTravel((e as CustomEvent).detail);
+    window.addEventListener(`updateElement`, (e: Event) => {
+      const newStatesEnabled = elementsUnlocked;
+      newStatesEnabled[helpers.getAbsoluteIndex(thisElement) + 1] = (e as CustomEvent).detail;
+      setElementsUnlocked(newStatesEnabled);
+
+      setSnackbarText("Good job! You can now move onto the next page");
+      setIsSnackbarOpen(true);
+    });
+
+    window.addEventListener('updatePagination', (e: Event) => {
+      setIsNavigationEnabled((e as CustomEvent).detail);
+    });
+    
+    window.addEventListener(`updateInteraction`, (e: Event) => {
+      const newIsDisabled = interactionsEnabled;
+      newIsDisabled[helpers.getAbsoluteIndex(thisElement)] = (e as CustomEvent).detail;
+      setInteractionsEnabled(newIsDisabled);
+    });
+
+    window.addEventListener(`updateText`, (e: Event) => {
+      const newTexts = texts;
+      newTexts[helpers.getAbsoluteIndex(thisElement)] = (e as CustomEvent).detail;
+      setTexts((e as CustomEvent).detail);
     });
   }, []);
 
@@ -332,24 +318,25 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
       <Sidebar
         label="Chapters"
       >
-        {chapters.map((chapter, index) => (
-          <ChapterButton
+        {chapters.map((chapter, index) => {
+          const chapterFirstElement = { learn: learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] };
+
+          return (<ChapterButton
+            isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
             selected={currentChapter == index}
             key={index}
-            elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] }}
+            elementID={chapterFirstElement}
             mode={mode}
-            removeChapter={removeChapter}
             onClick={(e) => {
               setCurrentChapter(index);
               setCurrentElement(0);
             }}
-          />
-        ))}
+          />);
+        })}
 
         {mode == ComponentMode.Edit && (
           <Button
             variant="contained"
-            onClick={(e) => addChapter()}
           >
             New Chapter
           </Button>
@@ -363,20 +350,44 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
 
         <Interaction
           elementID={thisElement}
+          isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(thisElement)]}
+          setText={setText}
           mode={mode}
         />
       
         <Text
           elementID={thisElement}
+          text={texts[helpers.getAbsoluteIndex(thisElement)]}
+          setText={setText}
           mode={mode}
         />
       
         <Pagination
-          count={skill.learn.chapters[currentChapter].elements.length}
+          count={learn.chapters[currentChapter].elements.length}
           page={currentElement + 1}
-          disabled={!canTravel}
+          disabled={!isNavigationEnabled}
           onChange={(e, value) => setCurrentElement(value - 1)}
+          renderItem={(item) => (
+            <PaginationItem
+              {...item}
+              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > learn.chapters[currentChapter].elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
+            />
+          )}
           sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
+        />
+
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          autoHideDuration={3000}
+          open={isSnackbarOpen}
+          message={snackbarText}
+          onClose={(e, reason?) => {
+            if (reason === 'clickaway') {
+              return;
+            }
+
+            setIsSnackbarOpen(false);
+          }}
         />
         
         {mode == ComponentMode.Edit && (
@@ -384,7 +395,6 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
             <Chip
               icon={<Delete />}
               label="Delete"
-              onClick={(e) => removeElement(thisElement.elementIndex)}
             />
           </Tooltip>
         )}
@@ -393,47 +403,75 @@ export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, 
   );
 }
 
-function Interaction({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }) {
-  const [ type, setType ] = useState(elementID.learn.chapters.map(chapter => chapter.elements.map(element => element.type)).flat());
-  const [ isDisabled, setIsDisabled ] = useState(Array<boolean>(type.length).fill(false));
-
-  useEffect(() => {
-    window.addEventListener(`updateInteraction`, (e: Event) => {
-      const newIsDisabled = isDisabled;
-      isDisabled[helpers.getAbsoluteIndex((e as CustomEvent).detail['id'])] = (e as CustomEvent).detail['isDisabled'];
-      setIsDisabled(newIsDisabled);
-    });
-  }, []);
-
-  return getInteractionPackage(type[helpers.getAbsoluteIndex(elementID)]).Component({
+function Interaction({ elementID, isDisabled, setText, mode }: InteractionProps) {
+  return getInteractionPackage(helpers.getElement(elementID).type).Component({
     elementID: elementID,
-    isDisabled: isDisabled[helpers.getAbsoluteIndex(elementID)],
+    isDisabled: isDisabled,
+    setText: setText,
     mode: mode
   });
 }
 
-function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }) {
-  const [ text, setText ] = useState(elementID.learn.chapters.map(chapter => chapter.elements.map(element => element.text)).flat());
+function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode }) {
   const [ isThinking, setIsThinking ] = useState(false);
+  const [ doAutoReadAloud, setDoAutoReadAloud ] = useState(true);
 
   useEffect(() => {
-    window.addEventListener(`updateText`, (e: Event) => {
-      const newText = text;
-      newText[helpers.getAbsoluteIndex((e as CustomEvent).detail['id'])] = (e as CustomEvent).detail['text'];
-      setText(newText);
-    });
-    
     window.addEventListener(`updateThinking`, (e: Event) => {
       setIsThinking((e as CustomEvent).detail);
     });
+    
+    window.addEventListener(`updateText`, (e: Event) => {
+      readAloud();
+    });
   }, []);
+
+  async function rephrase() {
+    setIsThinking(true);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
+
+    const newText = await generateText({
+      model: ModelType.Quick,
+      prompt:
+      `TASK:
+      Rephrase a given TEXT. 
+      
+      TEXT:
+      ${text}`,
+      systemInstruction: `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.`
+    });
+    
+    setText(newText);
+    setIsThinking(false);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
+  
+    if (doAutoReadAloud)
+      readAloud();
+  }
+
+  async function readAloud() {
+    // Todo: Add better audio integration/UX
+  
+    //const synth = window.speechSynthesis;
+    //const utterance = new SpeechSynthesisUtterance(helpers.getText(elementID));
+    //utterance.voice = synth.getVoices()[0];
+  
+    //synth.speak(utterance);
+  }
+
+  async function toggleAutoReadAloud() {
+    setDoAutoReadAloud(!doAutoReadAloud);
+  }
+
+  async function reset() {
+    setText(helpers.getElement(elementID).text);
+  }
 
   globalIndex = 0;
 
   return (
     <Card
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
-      sx={{ flexGrow: 1 }}
     >
       <CardContent
         style={{ height: '20vh', overflowY: 'auto' }}
@@ -446,19 +484,14 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
             multiline
             value={text}
             onChange={(e) => {
-              const newText = text;
-              newText[helpers.getAbsoluteIndex(elementID)] = e.target.value;
-              setText(newText);
-
+              setText(e.target.value);
               helpers.getElement(elementID).text = e.target.value;
             }}
           />
         ) : (
-          <Typography
-            component={Markdown}
-          >
-            {isThinking ? "Thinking..." : text[helpers.getAbsoluteIndex(elementID)]}
-          </Typography>
+          <Markdown>
+            {isThinking ? "Thinking..." : text}
+          </Markdown>
         ))}
       </CardContent>
 
@@ -469,35 +502,48 @@ function Text({ elementID, mode }: { elementID: ElementID, mode: ComponentMode }
           direction="row"
           spacing={1}
         >
-          <Tooltip title="Rephrase the text in simpler terms">
+          <Tooltip title="Rephrase this text in simpler terms">
             <Chip
               icon={<AutoAwesome />}
               label="Rephrase"
-              onClick={(e) => functions.rephrase(elementID)}
+              onClick={(e) => rephrase()}
+              disabled={isThinking}
             />
           </Tooltip>
 
-          <Tooltip title="Read the text out loud">
+          <Tooltip title="Read this text out loud">
             <Chip
               icon={<VolumeUp />}
               label="Read Aloud"
-              onClick={(e) => functions.readAloud(elementID)}
+              onClick={(e) => readAloud()}
+              disabled={isThinking}
             />
           </Tooltip>
 
-          <Tooltip title="Reset text back to its original state">
+          <Tooltip title={`Turn ${doAutoReadAloud ? "off" : "on"} immediately reading new text aloud`}>
+            <Chip
+              icon={doAutoReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
+              label={`Turn ${doAutoReadAloud ? "Off" : "On"} Auto Read`}
+              onClick={(e) => toggleAutoReadAloud()}
+              disabled={isThinking}
+            />
+          </Tooltip>
+
+          <Tooltip title="Reset this element back to its original state">
             <Chip
               icon={<Refresh />}
               label="Reset"
-              onClick={(e) => functions.reset(elementID)}
+              onClick={(e) => reset()}
+              disabled={isThinking}
             />
           </Tooltip>
 
-          <Tooltip title="Bring the text to the main focus">
+          <Tooltip title="Bring this text to the main focus">
             <Chip
               icon={<Fullscreen />}
               label="Fullscreen"
               onClick={(e) => {}}
+              disabled={isThinking}
             />
           </Tooltip>
         </Stack>
@@ -541,7 +587,7 @@ function TypeSwitcher({ elementID }: { elementID: ElementID }) {
 }
 
 function getInteractionPackage(type: string): InteractionPackage {
-  return (interactionMap)[type];
+  return interactionMap[type];
 }
 
 
@@ -549,11 +595,22 @@ function getInteractionPackage(type: string): InteractionPackage {
 // Miscellaneous.
 
 let globalIndex = 0;
-/*
+
 function WordWrapper({ children }: { children?: React.ReactNode }) {
+  async function define(word: string) {
+    const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word);
+  
+    if (!response.ok) {
+      console.error(`Could not define ${word}`);
+    }
+
+    const data = JSON.parse(await response.json());
+    // Todo: Return defintion in dialog box
+  }
+
   return (
-    <>
-      {text.split(/\s+/).map((word, i) => (
+    <Fragment>
+      {/*{text.split(/\s+/).map((word, i) => (
         <span
           key={i}
           className="word"
@@ -563,11 +620,10 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
         >
           {word}{" "}
         </span>
-      ))}
-    </>
+      ))}*/}
+    </Fragment>
   );
 }
-*/
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (

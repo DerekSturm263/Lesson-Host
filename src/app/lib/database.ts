@@ -34,8 +34,7 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
               text: "New element",
               value: {
                 correctAnswer: ""
-              },
-              isComplete: true
+              }
             }
           ]
         }

@@ -1,14 +1,14 @@
-import * as types from "./types";
+import { ElementID, Chapter, Element } from "./types";
 
-export function getChapter(elementID: types.ElementID): types.Chapter {
+export function getChapter(elementID: ElementID): Chapter {
   return elementID.learn.chapters[elementID.chapterIndex];
 }
 
-export function getElement(elementID: types.ElementID): types.Element {
+export function getElement(elementID: ElementID): Element {
   return getChapter(elementID).elements[elementID.elementIndex];
 }
 
-export function getAbsoluteIndex(elementID: types.ElementID): number {
+export function getAbsoluteIndex(elementID: ElementID): number {
   let index = 0;
 
   for (let i = 0; i < elementID.chapterIndex; ++i) {
@@ -18,55 +18,24 @@ export function getAbsoluteIndex(elementID: types.ElementID): number {
   return index + elementID.elementIndex;
 }
 
-export function getIsLastElement(elementID: types.ElementID): boolean {
+export function getIsLastElement(elementID: ElementID): boolean {
   return getChapter(elementID).elements.length - 1 == elementID.elementIndex;
 }
 
-// Gets the last non-thinking text.
-export function getText(elementID: types.ElementID): string {
-  const parent = document.getElementById(`text`);
-
-  return parent?.firstChild?.firstChild?.textContent ?? '';
+export function setThinking(elementID: ElementID, isThinking: boolean) {
+  window.dispatchEvent(new CustomEvent('updateThinking', { detail: isThinking }));
 }
 
-// Sets text and doesn't update non-thinking text.
-export function setThinking(elementID: types.ElementID, isThinking: boolean) {
-  window.dispatchEvent(new CustomEvent(`updatePagination`, { detail: false }));
-  window.dispatchEvent(new CustomEvent(`updateThinking`, { detail: isThinking }));
-  window.dispatchEvent(new CustomEvent(`updatePagination`, { detail: true }));
-}
-
-// Sets text and updates the non-thinking text.
-export function setText(elementID: types.ElementID, text: string) {
-  window.dispatchEvent(new CustomEvent(`updateText`, { detail: { text: text, id: elementID } }));
-}
-
-// Resets to the original text.
-export function resetText(elementID: types.ElementID) {
-  setText(elementID, getElement(elementID).text);
-}
-
-export function getInteractionElement<T>(elementID: types.ElementID, func: (value: T) => void) {
-  func(document.getElementById(`interaction${getAbsoluteIndex(elementID)}`) as T);
-}
-
-export function getInteractionValue<T>(elementID: types.ElementID): T {
+export function getInteractionValue<T>(elementID: ElementID): T {
   return getElement(elementID).value as T;
 }
 
-export function getLessonProgress(elementID: types.ElementID) {
-  const elementCount = elementID.learn.chapters.reduce((sum, chapter) => sum += chapter.elements.length, 0);
-  const elementsCompleted = elementID.learn.chapters.reduce((sum, chapter) => sum += chapter.elements.filter(element => element.isComplete).length, 0);
+export function completeElement(elementID: ElementID) {
+  window.dispatchEvent(new CustomEvent(`updateElement`, { detail: true }));
 
-  return elementsCompleted / elementCount;
-}
+  const lessonAmount = 0.2;
 
-export function getChapterProgress(elementID: types.ElementID) {
-  if (elementID.chapterIndex < 0)
-    return 1;
-
-  const elementCount = elementID.learn.chapters[elementID.chapterIndex].elements.length;
-  const elementsCompleted = elementID.learn.chapters[elementID.chapterIndex].elements.filter(element => element.isComplete).length;
-
-  return elementsCompleted / elementCount;
+  window.dispatchEvent(new CustomEvent(`updateChapterProgress${elementID.chapterIndex}`, { detail: elementID.elementIndex }));
+  window.dispatchEvent(new CustomEvent('updateLessonProgress', { detail: lessonAmount }));
+  window.dispatchEvent(new CustomEvent('updateElement', { detail: true }));
 }

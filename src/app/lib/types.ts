@@ -4,8 +4,7 @@ import { JSX } from "react";
 export type Element = {
   type: string,
   text: string,
-  value: unknown,
-  isComplete: boolean
+  value: unknown
 };
 
 export type Chapter = {
@@ -425,6 +424,7 @@ export type Props = {
 export type InteractionProps = {
   elementID: ElementID,
   isDisabled: boolean,
+  setText: (val: string) => void,
   mode: ComponentMode
 }
 

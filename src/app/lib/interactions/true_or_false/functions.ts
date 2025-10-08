@@ -3,7 +3,6 @@ import { ModelType, Verification } from "@/app/lib/ai/types";
 import { ElementID } from "@/app/lib/types";
 import { FormEvent } from "react";
 import { InteractionType } from "./elements";
-import { complete, readAloud } from "@/app/lib/functions";
 import * as helpers from '@/app/lib/helpers';
 
 // Todo: Try making function and have return bool for if correct or not
@@ -14,8 +13,6 @@ export default async function submit(formData: FormEvent<HTMLDivElement>, elemen
   const feedback = await verify(helpers.getElement(elementID).text, formData.get('response')?.toString().toLowerCase() == "true", helpers.getInteractionValue<InteractionType>(elementID));
   helpers.setText(elementID, feedback.feedback);
   helpers.setThinking(elementID, false);
-
-  readAloud(elementID);
 
   if (feedback.isValid) {
     window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));

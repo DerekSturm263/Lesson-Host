@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import submit from "./functions";
+import verify from "./functions";
 import { useState } from 'react';
 import { ComponentMode, InteractionProps, InteractionPackage } from "@/app/lib/types";
 import { Type } from '@google/genai';
@@ -30,23 +30,39 @@ const schema = {
   ]
 };
 
-function Component({ elementID, isDisabled, mode }: InteractionProps) {
+function Component({ elementID, isDisabled, setText, mode }: InteractionProps) {
   const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<InteractionType>(elementID).correctAnswer);
   const [ userResponse, setUserResponse ] = useState("");
 
+  async function submit() {
+    helpers.setThinking(elementID, true);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
+
+    const feedback = await verify(helpers.getElement(elementID).text, userResponse, helpers.getInteractionValue<InteractionType>(elementID));
+    setText(feedback.feedback);
+    helpers.setThinking(elementID, false);
+    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
+
+    if (feedback.isValid) {
+      window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
+      helpers.completeElement(elementID);
+    }
+  }
+
   return (
     <Box
-      sx={{ flexGrow: 1 }}
+      sx={{ flexGrow: 1, alignContent: 'center' }}
     >
       <Stack
         direction="row"
         spacing={2}
+        sx={{ marginLeft: '150px', marginRight: '150px' }}
       >
         <TextField
-          label="Write your response here. Press enter to submit"
+          label="Write your response here"
           name="response"
           autoComplete="off"
-          disabled={isDisabled}
+          disabled={false}
           value={userResponse}
           onChange={(e) => setUserResponse(e.target.value)}
           sx={{ flexGrow: 1 }}
@@ -54,7 +70,7 @@ function Component({ elementID, isDisabled, mode }: InteractionProps) {
 
         <Button
           variant="contained"
-          onClick={(e) => submit(userResponse, elementID)}
+          onClick={(e) => submit()}
           sx={{ width: '120px' }}
         >
           Submit

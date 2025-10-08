@@ -29,7 +29,7 @@ export default async function Page({ params, searchParams }: Props) {
 
         <LearnPageContent
           slug={slug}
-          skill={skill}
+          learn={skill.learn}
           mode={mode as ComponentMode}
           apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
         />
