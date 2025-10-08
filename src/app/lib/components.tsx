@@ -91,15 +91,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, mode, type }: { title: string, mode: ComponentMode, type: string }) {
-  const [ progress, setProgress ] = useState(0);
-
-  useEffect(() => {
-    window.addEventListener(`updateLessonProgress`, (e: Event) => {
-      setProgress((e as CustomEvent).detail);
-    });
-  }, []);
-
+export function Header({ title, mode, type, progress }: { title: string, mode: ComponentMode, type: string, progress: number }) {
   return (
     <Fragment>
       <AppBar
@@ -264,10 +256,11 @@ function ChapterButton({ selected, elementID, isDisabled, mode, onClick }: { sel
   );
 }
 
-export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
+export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
   const [ chapters, setChapters ] = useState(learn.chapters);
   const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
+  // TODO: Change to mark completed instead of unlocked
   const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
@@ -309,114 +302,118 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   }, []);
 
   return (
-    <Box
-      display='flex'
-      sx={{ height: '100vh' }}
-    >
-      <Sidebar
-        label="Chapters"
+    <Fragment>
+      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={} />
+
+      <Box
+        display='flex'
+        sx={{ height: '100vh' }}
       >
-        {chapters.map((chapter, index) => {
-          const chapterFirstElement = { learn: learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] };
+        <Sidebar
+          label="Chapters"
+        >
+          {chapters.map((chapter, index) => {
+            const chapterFirstElement = { learn: learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] };
 
-          return (
-            <ChapterButton
-              isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
-              selected={currentElement.chapterIndex == index}
-              key={index}
-              elementID={chapterFirstElement}
-              mode={mode}
-              onClick={(e) => {
-                setCurrentElement(chapterFirstElement);
-              }}
-            />
-          );
-        })}
-
-        {mode == ComponentMode.Edit && (
-          <Button
-            variant="contained"
-          >
-            New Chapter
-          </Button>
-        )}
-      </Sidebar>
-
-      <Stack
-        sx={{ flexGrow: 1 }}
-      >
-        <Toolbar />
-
-        <Interaction
-          elementID={currentElement}
-          isDisabled={mode == ComponentMode.View && !elementsUnlocked[helpers.getAbsoluteIndex(currentElement) + 1]}
-          setText={setText}
-          mode={mode}
-        />
-
-        {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
-          const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
-
-          return (
-            <Box
-              sx={{ display: cIndex == currentChapter && eIndex == currentElement ? 'block' : 'none' }}
-              key={helpers.getAbsoluteIndex(elementID)}
-            >
-              <Interaction
-                elementID={elementID}
-                isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(elementID)]}
-                setText={setText}
+            return (
+              <ChapterButton
+                isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
+                selected={currentElement.chapterIndex == index}
+                key={index}
+                elementID={chapterFirstElement}
                 mode={mode}
+                onClick={(e) => {
+                  setCurrentElement(chapterFirstElement);
+                }}
               />
-            </Box>
-          );
-        }))*/}
-      
-        <Text
-          elementID={currentElement}
-          text={texts[helpers.getAbsoluteIndex(currentElement)]}
-          setText={setText}
-          mode={mode}
-        />
-      
-        <Pagination
-          count={helpers.getChapter(currentElement).elements.length}
-          page={currentElement.elementIndex + 1}
-          disabled={!isNavigationEnabled}
-          renderItem={(item) => (
-            <PaginationItem
-              {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
-              onClick={() => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: [ apiKey ] })}
-            />
+            );
+          })}
+
+          {mode == ComponentMode.Edit && (
+            <Button
+              variant="contained"
+            >
+              New Chapter
+            </Button>
           )}
-          sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
-        />
+        </Sidebar>
 
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          autoHideDuration={3000}
-          open={isSnackbarOpen}
-          message={snackbarText}
-          onClose={(e, reason?) => {
-            if (reason === 'clickaway') {
-              return;
-            }
+        <Stack
+          sx={{ flexGrow: 1 }}
+        >
+          <Toolbar />
 
-            setIsSnackbarOpen(false);
-          }}
-        />
+          <Interaction
+            elementID={currentElement}
+            isDisabled={mode == ComponentMode.View && elementsUnlocked[helpers.getAbsoluteIndex(currentElement) - 1]}
+            setText={setText}
+            mode={mode}
+          />
+
+          {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
+            const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
+
+            return (
+              <Box
+                sx={{ display: cIndex == currentChapter && eIndex == currentElement ? 'block' : 'none' }}
+                key={helpers.getAbsoluteIndex(elementID)}
+              >
+                <Interaction
+                  elementID={elementID}
+                  isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(elementID)]}
+                  setText={setText}
+                  mode={mode}
+                />
+              </Box>
+            );
+          }))*/}
+      
+          <Text
+            elementID={currentElement}
+            text={texts[helpers.getAbsoluteIndex(currentElement)]}
+            setText={setText}
+            mode={mode}
+          />
+      
+          <Pagination
+            count={helpers.getChapter(currentElement).elements.length}
+            page={currentElement.elementIndex + 1}
+            disabled={!isNavigationEnabled}
+            renderItem={(item) => (
+              <PaginationItem
+                {...item}
+                disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
+                onClick={() => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: [ apiKey ] })}
+              />
+            )}
+            sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
+          />
+
+          <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            autoHideDuration={3000}
+            open={isSnackbarOpen}
+            message={snackbarText}
+            onClose={(e, reason?) => {
+              if (reason === 'clickaway') {
+                return;
+              }
+
+              setIsSnackbarOpen(false);
+            }}
+          />
         
-        {mode == ComponentMode.Edit && (
-          <Tooltip title="Delete this element">
-            <Chip
-              icon={<Delete />}
-              label="Delete"
-            />
-          </Tooltip>
-        )}
-      </Stack>
-    </Box>
+          {mode == ComponentMode.Edit && (
+            <Tooltip title="Delete this element">
+              <Chip
+                icon={<Delete />}
+                label="Delete"
+              />
+            </Tooltip>
+          )}
+        </Stack>
+      </Box>
+    </Fragment>
   );
 }
 
