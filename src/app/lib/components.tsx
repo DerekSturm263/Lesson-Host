@@ -298,9 +298,9 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
     });
     
     window.addEventListener(`updateInteraction`, (e: Event) => {
-      const newIsDisabled = interactionsEnabled;
-      newIsDisabled[helpers.getAbsoluteIndex(thisElement)] = (e as CustomEvent).detail;
-      setInteractionsEnabled(newIsDisabled);
+      const newInteractionsEnabled = interactionsEnabled;
+      newInteractionsEnabled[helpers.getAbsoluteIndex(thisElement)] = (e as CustomEvent).detail;
+      setInteractionsEnabled(newInteractionsEnabled);
     });
 
     window.addEventListener(`updateText`, (e: Event) => {

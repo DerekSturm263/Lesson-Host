@@ -91,7 +91,6 @@ function Component(props: InteractionProps) {
     window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
 
     if (feedback.isValid) {
-      window.dispatchEvent(new CustomEvent(`updateInteraction`, { detail: true }));
       helpers.completeElement(props.elementID);
     }
   }
