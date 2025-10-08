@@ -355,13 +355,13 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
           return (
             <Box
               sx={{ display: elementID.chapterIndex == currentChapter && elementID.elementIndex == currentElement ? 'block' : 'none' }}
+              key={index}
             >
               <Interaction
                 elementID={elementID}
                 isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(elementID)]}
                 setText={setText}
                 mode={mode}
-                key={index}
               />
             </Box>
           );
