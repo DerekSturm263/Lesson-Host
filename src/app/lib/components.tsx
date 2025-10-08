@@ -284,6 +284,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   }
 
   useEffect(() => {
+    console.log(helpers.getAbsoluteIndex(thisElement));
     console.log(JSON.stringify(elementsUnlocked));
 
     window.addEventListener(`updateElement`, (e: Event) => {
@@ -296,6 +297,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
         setIsSnackbarOpen(true);
       }
 
+      console.log(helpers.getAbsoluteIndex(thisElement));
       console.log(JSON.stringify(newElementsUnlocked));
     });
 
