@@ -289,8 +289,12 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
       newStatesEnabled[helpers.getAbsoluteIndex(thisElement) + 1] = (e as CustomEvent).detail;
       setElementsUnlocked(newStatesEnabled);
 
-      setSnackbarText("Good job! You can now move onto the next page");
-      setIsSnackbarOpen(true);
+      if (mode == ComponentMode.View) {
+        setSnackbarText("Good job! You can now move onto the next page");
+        setIsSnackbarOpen(true);
+      }
+
+      console.log(JSON.stringify(newStatesEnabled));
     });
 
     window.addEventListener('updatePagination', (e: Event) => {

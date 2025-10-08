@@ -23,6 +23,7 @@ export type InteractionType = {
   language: CodespaceLanguage,
   content: CodespaceFile[],
   isSimplified: boolean,
+  allowNewFiles: boolean,
   correctOutput: string | undefined
 };
 
@@ -101,6 +102,7 @@ const defaultValue: InteractionType = {
     }
   ],
   isSimplified: false,
+  allowNewFiles: false,
   correctOutput: undefined
 }
 
