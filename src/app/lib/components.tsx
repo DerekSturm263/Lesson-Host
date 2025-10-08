@@ -355,7 +355,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
 
           return (
             <Box
-              sx={{ display: elementID.chapterIndex == currentChapter && elementID.elementIndex == currentElement ? 'block' : 'none' }}
+              sx={{ display: cIndex == currentChapter && eIndex == currentElement ? 'block' : 'none' }}
               key={helpers.getAbsoluteIndex(elementID)}
             >
               <Interaction
