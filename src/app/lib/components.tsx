@@ -266,8 +266,7 @@ function ChapterButton({ selected, elementID, isDisabled, mode, onClick }: { sel
 
 export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
   const [ chapters, setChapters ] = useState(learn.chapters);
-  const [ currentChapter, setCurrentChapter ] = useState(0);
-  const [ currentElement, setCurrentElement ] = useState(0);
+  const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
   const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
   const [ interactionsEnabled, setInteractionsEnabled ] = useState(Array<boolean>(elementsUnlocked.length));
@@ -275,21 +274,19 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
 
-  const thisElement = { learn: learn, chapterIndex: currentChapter, elementIndex: currentElement, keys: [ apiKey ] };
-
   function setText(value: string) {
     const newTexts = texts;
-    newTexts[helpers.getAbsoluteIndex(thisElement)] = value;
+    newTexts[helpers.getAbsoluteIndex(currentElement)] = value;
     setTexts(newTexts);
   }
 
   useEffect(() => {
-    console.log(thisElement);
+    console.log(currentElement);
     console.log(JSON.stringify(elementsUnlocked));
 
     window.addEventListener(`updateElement`, (e: Event) => {
       const newElementsUnlocked = elementsUnlocked;
-      newElementsUnlocked[helpers.getAbsoluteIndex(thisElement) + 1] = (e as CustomEvent).detail;
+      newElementsUnlocked[helpers.getAbsoluteIndex(currentElement) + 1] = (e as CustomEvent).detail;
       setElementsUnlocked(newElementsUnlocked);
 
       if (mode == ComponentMode.View) {
@@ -297,7 +294,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
         setIsSnackbarOpen(true);
       }
 
-      console.log(thisElement);
+      console.log(currentElement);
       console.log(JSON.stringify(newElementsUnlocked));
     });
 
@@ -307,13 +304,13 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
     
     window.addEventListener(`updateInteraction`, (e: Event) => {
       const newInteractionsEnabled = interactionsEnabled;
-      newInteractionsEnabled[helpers.getAbsoluteIndex(thisElement)] = (e as CustomEvent).detail;
+      newInteractionsEnabled[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
       setInteractionsEnabled(newInteractionsEnabled);
     });
 
     window.addEventListener(`updateText`, (e: Event) => {
       const newTexts = texts;
-      newTexts[helpers.getAbsoluteIndex(thisElement)] = (e as CustomEvent).detail;
+      newTexts[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
       setTexts((e as CustomEvent).detail);
     });
   }, []);
@@ -332,13 +329,12 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
           return (
             <ChapterButton
               isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
-              selected={currentChapter == index}
+              selected={currentElement.chapterIndex == index}
               key={index}
               elementID={chapterFirstElement}
               mode={mode}
               onClick={(e) => {
-                setCurrentChapter(index);
-                setCurrentElement(0);
+                setCurrentElement(chapterFirstElement);
               }}
             />
           );
@@ -359,8 +355,8 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
         <Toolbar />
 
         <Interaction
-          elementID={thisElement}
-          isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(thisElement)]}
+          elementID={currentElement}
+          isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(currentElement)]}
           setText={setText}
           mode={mode}
         />
@@ -384,21 +380,21 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
         }))*/}
       
         <Text
-          elementID={thisElement}
-          text={texts[helpers.getAbsoluteIndex(thisElement)]}
+          elementID={currentElement}
+          text={texts[helpers.getAbsoluteIndex(currentElement)]}
           setText={setText}
           mode={mode}
         />
       
         <Pagination
-          count={learn.chapters[currentChapter].elements.length}
-          page={currentElement + 1}
+          count={helpers.getChapter(currentElement).elements.length}
+          page={currentElement.elementIndex + 1}
           disabled={!isNavigationEnabled}
-          onChange={(e, value) => setCurrentElement(value - 1)}
+          onChange={(e, value) => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: value - 1, keys: [ apiKey ] })}
           renderItem={(item) => (
             <PaginationItem
               {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > learn.chapters[currentChapter].elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
+              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
             />
           )}
           sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
