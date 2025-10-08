@@ -269,7 +269,6 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
   const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
   const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
-  const [ interactionsEnabled, setInteractionsEnabled ] = useState(Array<boolean>(elementsUnlocked.length));
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
@@ -302,12 +301,6 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
       setIsNavigationEnabled((e as CustomEvent).detail);
     });
     
-    window.addEventListener(`updateInteraction`, (e: Event) => {
-      const newInteractionsEnabled = interactionsEnabled;
-      newInteractionsEnabled[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
-      setInteractionsEnabled(newInteractionsEnabled);
-    });
-
     window.addEventListener(`updateText`, (e: Event) => {
       const newTexts = texts;
       newTexts[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
@@ -356,7 +349,7 @@ export function LearnPageContent({ slug, learn, mode, apiKey }: { slug: string, 
 
         <Interaction
           elementID={currentElement}
-          isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(currentElement)]}
+          isDisabled={mode == ComponentMode.View && !elementsUnlocked[helpers.getAbsoluteIndex(currentElement) + 1]}
           setText={setText}
           mode={mode}
         />
