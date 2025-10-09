@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header title={""} mode={ComponentMode.View} type="" progress={100} />
+        <Header title={""} mode={ComponentMode.Master} type="" progress={100} />
 
         <h1 className="mainHeader">Learn</h1>
 

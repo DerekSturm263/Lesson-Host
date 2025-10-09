@@ -11,7 +11,7 @@ export default async function Home() {
   return (
     <div>
       <main>
-        <Header title={""} mode={ComponentMode.View} type="" progress={100} />
+        <Header title={""} mode={ComponentMode.Master} type="" progress={100} />
 
         <h1 className="mainHeader">Main page under construction. Be back soon!</h1>
       </main>
