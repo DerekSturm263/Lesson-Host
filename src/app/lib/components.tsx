@@ -303,7 +303,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
   return (
     <Fragment>
-      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={} />
+      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={100} />
 
       <Box
         display='flex'
