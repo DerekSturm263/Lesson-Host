@@ -473,7 +473,7 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
       audioConfig: { audioEncoding: 'MP3' }
     }
 
-    const stream = await client.streamingSynthesize();
+    const stream = client.streamingSynthesize();
 
     stream.on('data', (response) => { console.log(response) });
     stream.on('error', (err) => { throw(err) });
