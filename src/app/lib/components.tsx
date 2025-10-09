@@ -438,7 +438,8 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
     });
     
     window.addEventListener(`updateText`, (e: Event) => {
-      readAloud();
+      if (doAutoReadAloud)
+        readAloud();
     });
   }, []);
 
