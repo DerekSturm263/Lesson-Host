@@ -25,7 +25,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header title={skill.title} mode={mode as ComponentMode} type="Implement" progress={100} />
+        <Header title={skill.title} mode={mode as ComponentMode} type="Implement" progress={1} />
       </main>
     </div>
   );

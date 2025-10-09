@@ -6,6 +6,7 @@ import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, Interaction
 import { ModelType } from './ai/types';
 import Markdown from 'react-markdown';
 import generateText from './ai/functions';
+import textToSpeech from '@google-cloud/text-to-speech';
 import * as helpers from '@/app/lib/helpers';
 
 import ShortAnswer from './interactions/short_answer/elements';
@@ -76,6 +77,7 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 // Core.
 
+const client = new textToSpeech.TextToSpeechClient();
 const interactionMap: Record<string, InteractionPackage> = {
   "shortAnswer": ShortAnswer,
   "multipleChoice": MultipleChoice,
@@ -303,7 +305,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
   return (
     <Fragment>
-      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={100} />
+      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={1} />
 
       <Box
         display='flex'
@@ -465,13 +467,19 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
   }
 
   async function readAloud() {
-    // Todo: Add better audio integration/UX
-  
-    //const synth = window.speechSynthesis;
-    //const utterance = new SpeechSynthesisUtterance(helpers.getText(elementID));
-    //utterance.voice = synth.getVoices()[0];
-  
-    //synth.speak(utterance);
+    const request = {
+      input: { text: text },
+      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
+      audioConfig: { audioEncoding: 'MP3' }
+    }
+
+    const stream = await client.streamingSynthesize();
+
+    stream.on('data', (response) => { console.log(response) });
+    stream.on('error', (err) => { throw(err) });
+    stream.on('end', () => { });
+    stream.write(request);
+    stream.end();
   }
 
   async function toggleAutoReadAloud() {
