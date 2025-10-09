@@ -3,10 +3,10 @@
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
 import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps } from '@/app/lib/types';
-import { ModelType } from './ai/types';
+import { ModelType } from '@/app/lib/ai/types';
 import Markdown from 'react-markdown';
-import generateText from './ai/functions';
-import textToSpeech from '@google-cloud/text-to-speech';
+import generateText from '@/app/lib/ai/functions';
+import speakText from '@/app/lib/tts/functions'
 import * as helpers from '@/app/lib/helpers';
 
 import ShortAnswer from './interactions/short_answer/elements';
@@ -77,7 +77,6 @@ import PaginationItem from '@mui/material/PaginationItem';
 
 // Core.
 
-const client = new textToSpeech.TextToSpeechClient();
 const interactionMap: Record<string, InteractionPackage> = {
   "shortAnswer": ShortAnswer,
   "multipleChoice": MultipleChoice,
@@ -467,19 +466,7 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
   }
 
   async function readAloud() {
-    const request = {
-      input: { text: text },
-      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
-      audioConfig: { audioEncoding: 'MP3' }
-    }
-
-    const stream = client.streamingSynthesize();
-
-    stream.on('data', (response) => { console.log(response) });
-    stream.on('error', (err) => { throw(err) });
-    stream.on('end', () => { });
-    stream.write(request);
-    stream.end();
+    speakText(text);
   }
 
   async function toggleAutoReadAloud() {
