@@ -4,7 +4,7 @@ import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 
 const client = new TextToSpeechClient();
 
-export default function speakText(text: string) {
+export default async function speakText(text: string) {
   const request = {
     input: { text: text },
     voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
