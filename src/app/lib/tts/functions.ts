@@ -10,6 +10,7 @@ export default async function speakText(text: string) {
     voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
     audioConfig: { audioEncoding: 'MP3' }
   };
+  
 
   const stream = client.streamingSynthesize();
   client.synthesizeSpeech()
