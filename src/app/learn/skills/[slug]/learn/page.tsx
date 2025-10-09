@@ -1,5 +1,5 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { Header, LearnPageContent } from '@/app/lib/components';
+import { LearnPageContent } from '@/app/lib/components';
 import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 

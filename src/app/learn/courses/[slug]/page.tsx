@@ -27,7 +27,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header title={course.title} mode={mode as ComponentMode} type="" />
+        <Header title={course.title} mode={mode as ComponentMode} type="" progress={100} />
 
         <h1 className="mainHeader">{course.title}</h1>
       </main>

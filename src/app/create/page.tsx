@@ -10,6 +10,8 @@ export default function Page() {
   return (
     <div>
       <main>
+        <Header title={""} mode={ComponentMode.View} type="" progress={100} />
+
         <h1 className="mainHeader">Create</h1>
 
         <div className="colButtons">

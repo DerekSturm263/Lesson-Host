@@ -1,5 +1,6 @@
-import { Header } from '@/app/lib/components';
 import { Metadata } from 'next';
+import { ComponentMode } from './lib/types';
+import { Header } from './lib/components';
 
 export const metadata: Metadata = {
   title: 'Home | MySkillStudy.com',
@@ -10,6 +11,8 @@ export default async function Home() {
   return (
     <div>
       <main>
+        <Header title={""} mode={ComponentMode.View} type="" progress={100} />
+
         <h1 className="mainHeader">Main page under construction. Be back soon!</h1>
       </main>
     </div>

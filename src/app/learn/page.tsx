@@ -1,5 +1,6 @@
 import { Header } from '@/app/lib/components';
 import { Metadata } from 'next';
+import { ComponentMode } from '../lib/types';
 
 export const metadata: Metadata = {
   title: 'View | MySkillStudy.com',
@@ -10,6 +11,8 @@ export default function Page() {
   return (
     <div>
       <main>
+        <Header title={""} mode={ComponentMode.View} type="" progress={100} />
+
         <h1 className="mainHeader">Learn</h1>
 
         <form

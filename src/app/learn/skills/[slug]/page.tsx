@@ -28,7 +28,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header title={skill.title} mode={mode as ComponentMode} type="" />
+        <Header title={skill.title} mode={mode as ComponentMode} type="" progress={100} />
 
         <SkillTitle skill={skill} mode={mode as ComponentMode} />
         <SkillDescription skill={skill} mode={mode as ComponentMode} />
