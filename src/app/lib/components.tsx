@@ -302,7 +302,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
   }, []);
 
   return (
-    <Fragment>
+    <>
       <Header title={title} mode={mode as ComponentMode} type="Learn" progress={100} />
 
       <Box
@@ -413,7 +413,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
           )}
         </Stack>
       </Box>
-    </Fragment>
+    </>
   );
 }
 
