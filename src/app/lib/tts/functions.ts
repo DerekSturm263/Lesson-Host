@@ -10,16 +10,12 @@ export default async function speakText(text: string) {
     voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
     audioConfig: { audioEncoding: 'MP3' }
   };
-  
 
   const stream = client.streamingSynthesize();
-  client.synthesizeSpeech()
 
   stream.on('data', (response) => { console.log(response) });
   stream.on('error', (err) => { throw(err) });
   stream.on('end', () => { });
   stream.write(request);
   stream.end();
-
-  console.log(text);
 }
