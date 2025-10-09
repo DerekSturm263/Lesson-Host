@@ -11,11 +11,6 @@ export default async function speakText(text: string) {
     audioConfig: { audioEncoding: 'MP3' }
   };
 
-  const stream = client.streamingSynthesize();
-
-  stream.on('data', (response) => { console.log(response) });
-  stream.on('error', (err) => { throw(err) });
-  stream.on('end', () => { });
-  stream.write(request);
-  stream.end();
+  const response = client.synthesizeSpeech(request);
+  console.log(response);
 }
