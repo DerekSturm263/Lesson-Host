@@ -353,7 +353,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
                 key={index}
                 elementID={chapterFirstElement}
                 mode={mode}
-                progress={elementsCompleted.reduce((sum, element, index) => sum += (index >= helpers.getAbsoluteIndex(chapterFirstElement) && index < helpers.getAbsoluteIndex(chapterFirstElement) + chapter.elements.length) ? 1 : 0, 0) / chapter.elements.length}
+                progress={elementsCompleted.reduce((sum, element, index) => sum += element && (index >= helpers.getAbsoluteIndex(chapterFirstElement) && index < helpers.getAbsoluteIndex(chapterFirstElement) + chapter.elements.length) ? 1 : 0, 0) / chapter.elements.length}
                 onClick={(e) => {
                   setCurrentElement(chapterFirstElement);
                 }}
@@ -408,7 +408,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
             mode={mode}
             isThinking={isThinking}
             setText={setText}
-            setIsThinking={setIsThinking}
+            setIsThinking={setIsThinkingSmart}
             readAloud={readAloud}
             toggleAutoReadAloud={toggleAutoReadAloud}
             reset={reset}
