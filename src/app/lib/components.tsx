@@ -235,17 +235,8 @@ export function Sidebar({ children, label }: { children?: React.ReactNode, label
   );
 }
 
-function ChapterButton({ selected, elementID, isDisabled, mode, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
+function ChapterButton({ selected, elementID, isDisabled, mode, progress, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, progress: number, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ completedElements, setCompletedElements ] = useState(Array<boolean>(helpers.getChapter(elementID).elements.length));
-
-  useEffect(() => {
-    window.addEventListener(`updateChapterProgress${elementID.chapterIndex}`, (e: Event) => {
-      const newCompletedElements = completedElements;
-      newCompletedElements[(e as CustomEvent).detail] = true;
-      setCompletedElements(newCompletedElements);
-    });
-  }, []);
 
   return (
     <ListItem
@@ -258,7 +249,7 @@ function ChapterButton({ selected, elementID, isDisabled, mode, onClick }: { sel
       >
         <ListItemText
           primary={title}
-          secondary={mode == ComponentMode.View ? <LinearProgress variant="determinate" value={(completedElements.filter(item => item).length / helpers.getChapter(elementID).elements.length) * 100} /> : <Fragment></Fragment> }
+          secondary={mode == ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
         />
       </ListItemButton>
     </ListItem>
@@ -332,6 +323,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
                 key={index}
                 elementID={chapterFirstElement}
                 mode={mode}
+                progress={elementsCompleted.reduce((sum, element, index) => sum += (index >= helpers.getAbsoluteIndex(chapterFirstElement) && index < helpers.getAbsoluteIndex(chapterFirstElement) + chapter.elements.length) ? 1 : 0, 0) / chapter.elements.length}
                 onClick={(e) => {
                   setCurrentElement(chapterFirstElement);
                 }}
