@@ -343,7 +343,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
 
         <DialogContent>
           <DialogContentText>
-            Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS.
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
           </DialogContentText>
         </DialogContent>
       </Dialog>
