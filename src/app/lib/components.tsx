@@ -507,7 +507,7 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
       </CardContent>
 
       <CardActions
-        sx={{ justifyContent: 'end' }}
+        sx={{ justifyContent: 'space-between' }}
       >
         <Pagination
           count={helpers.getChapter(elementID).elements.length}
