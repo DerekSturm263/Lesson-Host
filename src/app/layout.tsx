@@ -13,15 +13,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
       <html lang="en">
         <ThemeProvider theme={theme}>
-          {/*<CssBaseline />*/}
+          <CssBaseline />
           
-          <CookiesProvider
-            defaultSetOptions={{ path: '/' }}
-          >
             <body>
               {children}
             </body>
-          </CookiesProvider>
         </ThemeProvider>
       </html>
   );

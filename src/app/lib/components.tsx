@@ -4,7 +4,7 @@ import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, us
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
 import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
-import { useCookies } from 'react-cookie';
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 import Markdown from 'react-markdown';
 import generateText from '@/app/lib/ai/functions';
@@ -304,7 +304,9 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
   }, []);
 
   return (
-    <Fragment>
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
       <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length} />
 
       <Box
@@ -404,7 +406,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
           )}
         </Stack>
       </Box>
-    </Fragment>
+    </CookiesProvider>
   );
 }
 
