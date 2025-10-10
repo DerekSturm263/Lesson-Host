@@ -125,7 +125,8 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
               <LinearProgress
                 variant="determinate"
                 value={progress * 100}
-                sx={{ width: '200px', marginTop: '4px' }}
+                sx={{ width: '200px' }}
+                style={{ marginTop: '6px' }}
               />
             )}
           </Stack>
