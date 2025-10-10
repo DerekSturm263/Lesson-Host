@@ -135,7 +135,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           <Stack
             direction="row"
             spacing={2}
-            sx={{ width: '300px' }}
+            sx={{ width: '300px', justifyContent: 'flex-end' }}
           >
             <FormControl
               size="small"
@@ -653,28 +653,20 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
-    <Box
+    <Stack
       sx={{ display: 'flex', alignItems: 'center' }}
       style={{ margin: 'auto' }}
     >
-      <Box
-        sx={{ width: '60%', mr: 1 }}
-      >
-        <LinearProgress
-          {...props}
-        />
-      </Box>
+      <LinearProgress
+        {...props}
+      />
 
-      <Box
-        sx={{ flex: 1 }}
+      <Typography
+        variant="body2"
       >
-        <Typography
-          variant="body2"
-        >
-          {`${Math.round(props.value)}% Complete`}
-        </Typography>
-      </Box>
-    </Box>
+        {`${Math.round(props.value)}% Complete`}
+      </Typography>
+    </Stack>
   );
 }
 
