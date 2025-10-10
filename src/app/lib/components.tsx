@@ -112,7 +112,6 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           </Typography>
 
           <Stack
-            direction="row"
             spacing={2}
           >
             <Typography
