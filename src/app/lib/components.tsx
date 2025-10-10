@@ -526,7 +526,7 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
           renderItem={(item) => (
             <PaginationItem
               {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || ((item.page ?? 0) != 1 && !elementsCompleted[(item.page ?? 0) - 2])}
+              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || (!elementsCompleted[(item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
               onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
             />
           )}
