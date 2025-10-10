@@ -72,7 +72,7 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import PaginationItem from '@mui/material/PaginationItem';
-import { useCookies } from 'react-cookie';
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 
 
@@ -482,98 +482,100 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
   globalIndex = 0;
 
   return (
-    <Card
-      id={`text${helpers.getAbsoluteIndex(elementID)}`}
-    >
-      <CardContent
-        style={{ height: '20vh', overflowY: 'auto' }}
+    <CookiesProvider>
+      <Card
+        id={`text${helpers.getAbsoluteIndex(elementID)}`}
       >
-        {isThinking && <LinearProgress />}
-
-        {(mode == ComponentMode.Edit ? (
-          <TextField
-            label="Text"
-            multiline
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              helpers.getElement(elementID).text = e.target.value;
-            }}
-          />
-        ) : (
-          <Markdown>
-            {isThinking ? "Thinking..." : text}
-          </Markdown>
-        ))}
-      </CardContent>
-
-      <CardActions
-        sx={{ justifyContent: 'space-between' }}
-      >
-        <Pagination
-          count={helpers.getChapter(elementID).elements.length}
-          page={elementID.elementIndex + 1}
-          disabled={!isNavigationEnabled}
-          renderItem={(item) => (
-            <PaginationItem
-              {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || !elementsCompleted[(item.page ?? 0)]}
-              onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
-            />
-          )}
-        />
-
-        <Stack
-          direction="row"
-          spacing={1}
+        <CardContent
+          style={{ height: '20vh', overflowY: 'auto' }}
         >
-          <Tooltip title="Rephrase this text in simpler terms">
-            <Chip
-              icon={<AutoAwesome />}
-              label="Rephrase"
-              onClick={(e) => rephrase()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+          {isThinking && <LinearProgress />}
 
-          <Tooltip title="Read this text out loud">
-            <Chip
-              icon={<VolumeUp />}
-              label="Read Aloud"
-              onClick={(e) => readAloud()}
-              disabled={isThinking}
+          {(mode == ComponentMode.Edit ? (
+            <TextField
+              label="Text"
+              multiline
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+                helpers.getElement(elementID).text = e.target.value;
+              }}
             />
-          </Tooltip>
+          ) : (
+            <Markdown>
+              {isThinking ? "Thinking..." : text}
+            </Markdown>
+          ))}
+        </CardContent>
 
-          <Tooltip title={`Turn ${cookies.autoReadAloud ? "off" : "on"} immediately reading new text aloud`}>
-            <Chip
-              icon={cookies.autoReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
-              label={`Turn ${cookies.autoReadAloud ? "Off" : "On"} Auto Read`}
-              onClick={(e) => toggleAutoReadAloud()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+        <CardActions
+          sx={{ justifyContent: 'space-between' }}
+        >
+          <Pagination
+            count={helpers.getChapter(elementID).elements.length}
+            page={elementID.elementIndex + 1}
+            disabled={!isNavigationEnabled}
+            renderItem={(item) => (
+              <PaginationItem
+                {...item}
+                disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || !elementsCompleted[(item.page ?? 0)]}
+                onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
+              />
+            )}
+          />
 
-          <Tooltip title="Reset this element back to its original state">
-            <Chip
-              icon={<Refresh />}
-              label="Reset"
-              onClick={(e) => reset()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+          <Stack
+            direction="row"
+            spacing={1}
+          >
+            <Tooltip title="Rephrase this text in simpler terms">
+              <Chip
+                icon={<AutoAwesome />}
+                label="Rephrase"
+                onClick={(e) => rephrase()}
+                disabled={isThinking}
+              />
+            </Tooltip>
 
-          <Tooltip title="Bring this text to the main focus">
-            <Chip
-              icon={<Fullscreen />}
-              label="Fullscreen"
-              onClick={(e) => {}}
-              disabled={isThinking}
-            />
-          </Tooltip>
-        </Stack>
-      </CardActions>
-    </Card>
+            <Tooltip title="Read this text out loud">
+              <Chip
+                icon={<VolumeUp />}
+                label="Read Aloud"
+                onClick={(e) => readAloud()}
+                disabled={isThinking}
+              />
+            </Tooltip>
+
+            <Tooltip title={`Turn ${cookies.autoReadAloud ? "off" : "on"} immediately reading new text aloud`}>
+              <Chip
+                icon={cookies.autoReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
+                label={`Turn ${cookies.autoReadAloud ? "Off" : "On"} Auto Read`}
+                onClick={(e) => toggleAutoReadAloud()}
+                disabled={isThinking}
+              />
+            </Tooltip>
+
+            <Tooltip title="Reset this element back to its original state">
+              <Chip
+                icon={<Refresh />}
+                label="Reset"
+                onClick={(e) => reset()}
+                disabled={isThinking}
+              />
+            </Tooltip>
+
+            <Tooltip title="Bring this text to the main focus">
+              <Chip
+                icon={<Fullscreen />}
+                label="Fullscreen"
+                onClick={(e) => {}}
+                disabled={isThinking}
+              />
+            </Tooltip>
+          </Stack>
+        </CardActions>
+      </Card>
+    </CookiesProvider>
   );
 }
 
