@@ -281,7 +281,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
     window.addEventListener(`updateElement`, (e: Event) => {
       const newElementsCompleted = elementsCompleted;
-      newElementsCompleted[helpers.getAbsoluteIndex(currentElement) + 1] = (e as CustomEvent).detail;
+      newElementsCompleted[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
       setElementsCompleted(newElementsCompleted);
 
       if (mode == ComponentMode.View) {
