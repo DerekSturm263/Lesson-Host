@@ -4,7 +4,7 @@ import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, us
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
 import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
-import { CookiesProvider, useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 
 import Markdown from 'react-markdown';
 import generateText from '@/app/lib/ai/functions';
@@ -483,9 +483,6 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
   globalIndex = 0;
 
   return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
     <Card
       id={`text${helpers.getAbsoluteIndex(elementID)}`}
     >
@@ -578,7 +575,6 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
         </Stack>
       </CardActions>
     </Card>
-    </CookiesProvider>
   );
 }
 
