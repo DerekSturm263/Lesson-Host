@@ -261,8 +261,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
   const [ chapters, setChapters ] = useState(learn.chapters);
   const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
-  // TODO: Change to mark completed instead of unlocked
-  const [ elementsUnlocked, setElementsUnlocked ] = useState(learn.chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => (cIndex == 0 && eIndex == 0) || mode != ComponentMode.View)).flat());
+  const [ elementsCompleted, setElementsCompleted ] = useState(Array<boolean>(learn.chapters.reduce((sum, chapter) => sum + chapter.elements.length, 0)));
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
@@ -275,12 +274,12 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
   useEffect(() => {
     console.log(currentElement);
-    console.log(JSON.stringify(elementsUnlocked));
+    console.log(JSON.stringify(elementsCompleted));
 
     window.addEventListener(`updateElement`, (e: Event) => {
-      const newElementsUnlocked = elementsUnlocked;
-      newElementsUnlocked[helpers.getAbsoluteIndex(currentElement) + 1] = (e as CustomEvent).detail;
-      setElementsUnlocked(newElementsUnlocked);
+      const newElementsCompleted = elementsCompleted;
+      newElementsCompleted[helpers.getAbsoluteIndex(currentElement) + 1] = (e as CustomEvent).detail;
+      setElementsCompleted(newElementsCompleted);
 
       if (mode == ComponentMode.View) {
         setSnackbarText("Good job! You can now move onto the next page");
@@ -288,7 +287,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
       }
 
       console.log(currentElement);
-      console.log(JSON.stringify(newElementsUnlocked));
+      console.log(JSON.stringify(newElementsCompleted));
     });
 
     window.addEventListener('updatePagination', (e: Event) => {
@@ -304,7 +303,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
   return (
     <Fragment>
-      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsUnlocked.filter((element) => element).length / elementsUnlocked.length} />
+      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length} />
 
       <Box
         display='flex'
@@ -318,7 +317,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
             return (
               <ChapterButton
-                isDisabled={!isNavigationEnabled || !elementsUnlocked[helpers.getAbsoluteIndex(chapterFirstElement)]}
+                isDisabled={!isNavigationEnabled || !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1]}
                 selected={currentElement.chapterIndex == index}
                 key={index}
                 elementID={chapterFirstElement}
@@ -346,7 +345,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
           <Interaction
             elementID={currentElement}
-            isDisabled={mode == ComponentMode.View && elementsUnlocked[helpers.getAbsoluteIndex(currentElement) - 1]}
+            isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
             setText={setText}
             mode={mode}
           />
@@ -383,7 +382,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
             renderItem={(item) => (
               <PaginationItem
                 {...item}
-                disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsUnlocked[(item.page ?? 0) - 1]}
+                disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsCompleted[(item.page ?? 0)]}
                 onClick={() => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: [ apiKey ] })}
               />
             )}
