@@ -304,7 +304,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
   return (
     <Fragment>
-      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={1} />
+      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsUnlocked.filter((element) => element).length / elementsUnlocked.length} />
 
       <Box
         display='flex'
@@ -467,7 +467,19 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
   }
 
   async function readAloud() {
-    speakText(text);
+    const request = {
+      input: { text: text },
+      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
+      audioConfig: { audioEncoding: 'MP3' }
+    };
+
+    const stream = await speakText(text);
+
+    stream.on('data', (response) => { console.log(response) });
+    stream.on('error', (err) => { throw(err) });
+    stream.on('end', () => { });
+    stream.write(request);
+    stream.end();
   }
 
   async function toggleAutoReadAloud() {
