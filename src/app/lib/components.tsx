@@ -74,7 +74,11 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import PaginationItem from '@mui/material/PaginationItem';
-import { DialogContent, DialogContentText, DialogTitle, Link } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Link from '@mui/material/Link';
 
 
 
@@ -335,7 +339,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
   return (
     <Fragment>
       <Dialog
-        open={true}
+        open={elementsCompleted.filter(element => element).length == elementsCompleted.length}
       >
         <DialogTitle>
           Lesson Complete!
@@ -343,9 +347,17 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
 
         <DialogContent>
           <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS.\nNext up: Practice this skill to earn a higher score on the rubric."}
           </DialogContentText>
         </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={(e) => {  }}
+          >
+            Practice Skill
+          </Button>
+        </DialogActions>
       </Dialog>
 
       <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length} />
