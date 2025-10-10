@@ -322,7 +322,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
             return (
               <ChapterButton
-                isDisabled={!isNavigationEnabled || !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1]}
+                isDisabled={!isNavigationEnabled || (index != 0 && !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1])}
                 selected={currentElement.chapterIndex == index}
                 key={index}
                 elementID={chapterFirstElement}
