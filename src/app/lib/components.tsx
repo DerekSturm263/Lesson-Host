@@ -264,6 +264,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
+  const [ isThinking, setIsThinking ] = useState(false);
   const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
 
   function setText(value: string) {
@@ -273,6 +274,11 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
     
     if (cookies.autoReadAloud)
       readAloud();
+  }
+
+  function setIsThinkingSmart(isThinking: boolean) {
+    setIsThinking(isThinking);
+    setIsNavigationEnabled(!isThinking);
   }
 
   async function readAloud() {
@@ -299,28 +305,16 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
     setText(helpers.getElement(currentElement).text);
   }
 
-  useEffect(() => {
-    console.log(currentElement);
-    console.log(JSON.stringify(elementsCompleted));
+  function complete(isComplete: boolean) {
+    const newElementsCompleted = elementsCompleted;
+    newElementsCompleted[helpers.getAbsoluteIndex(currentElement)] = isComplete;
+    setElementsCompleted(newElementsCompleted);
 
-    window.addEventListener(`updateElement`, (e: Event) => {
-      const newElementsCompleted = elementsCompleted;
-      newElementsCompleted[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
-      setElementsCompleted(newElementsCompleted);
-
-      if (mode == ComponentMode.View) {
-        setSnackbarText("Good job! You can now move onto the next page");
-        setIsSnackbarOpen(true);
-      }
-
-      console.log(currentElement);
-      console.log(JSON.stringify(newElementsCompleted));
-    });
-
-    window.addEventListener('updatePagination', (e: Event) => {
-      setIsNavigationEnabled((e as CustomEvent).detail);
-    });
-  }, []);
+    if (mode == ComponentMode.View) {
+      setSnackbarText("Good job! You can now move onto the next page");
+      setIsSnackbarOpen(true);
+    }
+  }
 
   return (
     <CookiesProvider
@@ -370,8 +364,10 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
           <Interaction
             elementID={currentElement}
             isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
-            setText={setText}
             mode={mode}
+            setText={setText}
+            setIsThinking={setIsThinkingSmart}
+            setComplete={complete}
           />
 
           {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
@@ -396,7 +392,9 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
             elementID={currentElement}
             text={texts[helpers.getAbsoluteIndex(currentElement)]}
             mode={mode}
+            isThinking={isThinking}
             setText={setText}
+            setIsThinking={setIsThinking}
             readAloud={readAloud}
             toggleAutoReadAloud={toggleAutoReadAloud}
             reset={reset}
@@ -444,18 +442,9 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, cookies, setText, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], setCurrentElement: (element: ElementID) => void, cookies: { autoReadAloud?: any } }) {
-  const [ isThinking, setIsThinking ] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener(`updateThinking`, (e: Event) => {
-      setIsThinking((e as CustomEvent).detail);
-    });
-  }, []);
-
+function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, cookies, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, cookies: { autoReadAloud?: any } }) {
   async function rephrase() {
     setIsThinking(true);
-    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
 
     const newText = await generateText({
       model: ModelType.Quick,
@@ -470,7 +459,6 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, c
     
     setText(newText);
     setIsThinking(false);
-    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
   }
 
   globalIndex = 0;

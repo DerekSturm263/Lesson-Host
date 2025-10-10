@@ -424,8 +424,10 @@ export type Props = {
 export type InteractionProps = {
   elementID: ElementID,
   isDisabled: boolean,
+  mode: ComponentMode,
   setText: (val: string) => void,
-  mode: ComponentMode
+  setIsThinking: (val: boolean) => void,
+  setComplete: (val: boolean) => void
 }
 
 export type InteractionPackage = {

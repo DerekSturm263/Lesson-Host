@@ -22,14 +22,6 @@ export function getIsLastElement(elementID: ElementID): boolean {
   return getChapter(elementID).elements.length - 1 == elementID.elementIndex;
 }
 
-export function setThinking(elementID: ElementID, isThinking: boolean) {
-  window.dispatchEvent(new CustomEvent('updateThinking', { detail: isThinking }));
-}
-
 export function getInteractionValue<T>(elementID: ElementID): T {
   return getElement(elementID).value as T;
-}
-
-export function completeElement(elementID: ElementID) {
-  window.dispatchEvent(new CustomEvent('updateElement', { detail: true }));
 }

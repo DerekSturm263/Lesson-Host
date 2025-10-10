@@ -196,8 +196,7 @@ function Component(props: InteractionProps) {
 
   async function submit() {
     setIsRunning(true);
-    helpers.setThinking(props.elementID, true);
-    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
+    props.setIsThinking(true);
 
     const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
       headers: {
@@ -218,11 +217,10 @@ function Component(props: InteractionProps) {
 
     const feedback = await verify(helpers.getElement(props.elementID).text, content, response, helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
-    helpers.setThinking(props.elementID, false);
-    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
+    props.setIsThinking(false);
 
     if (feedback.isValid) {
-      helpers.completeElement(props.elementID);
+      props.setComplete(true);
     }
   }
 

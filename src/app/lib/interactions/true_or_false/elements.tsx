@@ -35,16 +35,14 @@ function Component(props: InteractionProps) {
   const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect);
 
   async function submit() {
-    helpers.setThinking(props.elementID, true);
-    window.dispatchEvent(new CustomEvent('updatePagination', { detail: false }));
+    props.setIsThinking(true);
 
     const feedback = await verify(helpers.getElement(props.elementID).text, isCorrect, helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
-    helpers.setThinking(props.elementID, false);
-    window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
+    props.setIsThinking(false);
 
     if (feedback.isValid) {
-      helpers.completeElement(props.elementID);
+      props.setComplete(true);
     }
   }
 
