@@ -401,7 +401,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
             isNavigationEnabled={isNavigationEnabled}
             elementsCompleted={elementsCompleted}
             setCurrentElement={setCurrentElement}
-            cookies={cookies}
+            doReadAloud={cookies.autoReadAloud}
           />
 
           <Snackbar
@@ -442,7 +442,7 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, cookies, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, cookies: { autoReadAloud?: any } }) {
+function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean }) {
   async function rephrase() {
     setIsThinking(true);
 
@@ -527,10 +527,10 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
             />
           </Tooltip>
 
-          <Tooltip title={`Turn ${cookies.autoReadAloud ? "off" : "on"} immediately reading new text aloud`}>
+          <Tooltip title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}>
             <Chip
-              icon={cookies.autoReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
-              label={`Turn ${cookies.autoReadAloud ? "Off" : "On"} Auto Read`}
+              icon={doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
+              label={`Turn ${doReadAloud ? "Off" : "On"} Auto Read`}
               onClick={(e) => toggleAutoReadAloud()}
               disabled={isThinking}
             />
