@@ -72,6 +72,7 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import PaginationItem from '@mui/material/PaginationItem';
+import { useCookies } from 'react-cookie';
 
 
 
@@ -418,7 +419,8 @@ function Interaction(props: InteractionProps) {
 
 function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCompleted, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], setCurrentElement: (element: ElementID) => void }) {
   const [ isThinking, setIsThinking ] = useState(false);
-  const [ doAutoReadAloud, setDoAutoReadAloud ] = useState(true);
+  const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
+  const [ doAutoReadAloud, setDoAutoReadAloud ] = useState(cookies.autoReadAloud as boolean);
 
   useEffect(() => {
     window.addEventListener(`updateThinking`, (e: Event) => {
@@ -472,6 +474,8 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
 
   async function toggleAutoReadAloud() {
     setDoAutoReadAloud(!doAutoReadAloud);
+
+    setCookie('autoReadAloud', doAutoReadAloud);
   }
 
   async function reset() {

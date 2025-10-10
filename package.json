@@ -26,6 +26,7 @@
     "next": "15.4.6",
     "npm": "^11.6.1",
     "react": "19.1.0",
+    "react-cookie": "^8.0.1",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",
     "react-type-animation": "^3.2.0"
