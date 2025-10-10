@@ -419,7 +419,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
           />
 
           <Snackbar
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
             autoHideDuration={3000}
             open={isSnackbarOpen}
             message={snackbarText}
@@ -513,7 +513,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
           renderItem={(item) => (
             <PaginationItem
               {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || (!elementsCompleted[(item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
+              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || (!elementsCompleted[helpers.getAbsoluteIndex(elementID) + (item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
               onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
             />
           )}
