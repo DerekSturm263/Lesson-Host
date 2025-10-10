@@ -74,6 +74,7 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import PaginationItem from '@mui/material/PaginationItem';
+import { Link } from '@mui/material';
 
 
 
@@ -104,12 +105,13 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
         <Toolbar
           sx={{ display: 'flex', justifyContent: 'space-between' }}
         >
-          <Typography
+          <Link
             variant="h6"
             sx={{ width: '300px' }}
+            href="./"
           >
             MySkillStudy.com
-          </Typography>
+          </Link>
 
           <Stack
             spacing={2}
@@ -521,7 +523,7 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
           renderItem={(item) => (
             <PaginationItem
               {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || !elementsCompleted[(item.page ?? 0)]}
+              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || !elementsCompleted[(item.page ?? 0) - 1]}
               onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
             />
           )}
