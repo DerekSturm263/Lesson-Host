@@ -122,13 +122,11 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
             </Typography>
 
             {mode == ComponentMode.View && (
-              <Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={progress * 100}
-                  sx={{ width: '200px', marginTop: '4px' }}
-                />
-              </Box>
+              <LinearProgress
+                variant="determinate"
+                value={progress * 100}
+                sx={{ width: '200px' }}
+              />
             )}
           </Stack>
 
