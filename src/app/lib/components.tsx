@@ -108,7 +108,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           <Link
             variant="h6"
             sx={{ width: '300px' }}
-            href="./"
+            href="/"
           >
             MySkillStudy.com
           </Link>
@@ -116,12 +116,13 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           <Stack
             spacing={2}
           >
-            <Typography
+            <Link
               variant="h6"
               sx={{ textAlign: 'center' }}
+              href="./"
             >
               {title}
-            </Typography>
+            </Link>
 
             {mode == ComponentMode.View && (
               <LinearProgress
@@ -147,6 +148,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
                 labelId="type-label"
                 value={type}
                 label="Type"
+                onChange={(e, value) => {}}
               >
                 <MenuItem value="Learn">Learn</MenuItem>
                 <MenuItem value="Practice">Practice</MenuItem>
@@ -164,6 +166,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
                 labelId="mode-label"
                 value={mode}
                 label="Mode"
+                onChange={(e, value) => {}}
               >
                 {Object.values(ComponentMode).map((item, index) => (
                   <MenuItem
