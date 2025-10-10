@@ -1,5 +1,3 @@
-'use client'
-
 import { Metadata } from "next";
 import { ThemeProvider } from '@mui/material/styles';
 import { CookiesProvider } from 'react-cookie';
@@ -13,18 +11,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
       <html lang="en">
         <ThemeProvider theme={theme}>
           <CssBaseline />
-        
-          <body>
-            {children}
-          </body>
+          
+          <CookiesProvider
+            defaultSetOptions={{ path: '/' }}
+          >
+            <body>
+              {children}
+            </body>
+          </CookiesProvider>
         </ThemeProvider>
       </html>
-    </CookiesProvider>
   );
 }
