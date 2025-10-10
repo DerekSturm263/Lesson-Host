@@ -1,3 +1,5 @@
+'use client'
+
 import { Metadata } from "next";
 import { ThemeProvider } from '@mui/material/styles';
 import { CookiesProvider } from 'react-cookie';
