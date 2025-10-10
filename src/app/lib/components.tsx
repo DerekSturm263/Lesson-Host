@@ -74,7 +74,7 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import PaginationItem from '@mui/material/PaginationItem';
-import { Link } from '@mui/material';
+import { DialogContent, DialogContentText, DialogTitle, Link } from '@mui/material';
 
 
 
@@ -322,18 +322,32 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
   }
 
   function complete(isComplete: boolean) {
+    if (mode == ComponentMode.View && !elementsCompleted[helpers.getAbsoluteIndex(currentElement)]) {
+      setSnackbarText("Good job! Click the next page to continue");
+      setIsSnackbarOpen(true);
+    }
+
     const newElementsCompleted = elementsCompleted;
     newElementsCompleted[helpers.getAbsoluteIndex(currentElement)] = isComplete;
     setElementsCompleted(newElementsCompleted);
-
-    if (mode == ComponentMode.View) {
-      setSnackbarText("Good job! You can now move onto the next page");
-      setIsSnackbarOpen(true);
-    }
   }
 
   return (
     <Fragment>
+      <Dialog
+        open={true}
+      >
+        <DialogTitle>
+          Lesson Complete!
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS.
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+
       <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length} />
 
       <Box

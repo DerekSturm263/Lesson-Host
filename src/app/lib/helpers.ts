@@ -18,10 +18,6 @@ export function getAbsoluteIndex(elementID: ElementID): number {
   return index + elementID.elementIndex;
 }
 
-export function getIsLastElement(elementID: ElementID): boolean {
-  return getChapter(elementID).elements.length - 1 == elementID.elementIndex;
-}
-
 export function getInteractionValue<T>(elementID: ElementID): T {
   return getElement(elementID).value as T;
 }
