@@ -264,11 +264,39 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
+  const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
 
   function setText(value: string) {
     const newTexts = texts;
     newTexts[helpers.getAbsoluteIndex(currentElement)] = value;
     setTexts(newTexts);
+    
+    if (cookies.autoReadAloud)
+      readAloud();
+  }
+
+  async function readAloud() {
+    const request = {
+      input: { text: texts[helpers.getAbsoluteIndex(currentElement)] },
+      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
+      audioConfig: { audioEncoding: 'MP3' }
+    };
+
+    const stream = await speakText();
+
+    stream.on('data', (response) => { console.log(response) });
+    stream.on('error', (err) => { throw(err) });
+    stream.on('end', () => { });
+    stream.write(request);
+    stream.end();
+  }
+
+  async function toggleAutoReadAloud() {
+    setCookie('autoReadAloud', !cookies.autoReadAloud, { path: '/' });
+  }
+
+  async function reset() {
+    setText(helpers.getElement(currentElement).text);
   }
 
   useEffect(() => {
@@ -291,12 +319,6 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
 
     window.addEventListener('updatePagination', (e: Event) => {
       setIsNavigationEnabled((e as CustomEvent).detail);
-    });
-    
-    window.addEventListener(`updateText`, (e: Event) => {
-      const newTexts = texts;
-      newTexts[helpers.getAbsoluteIndex(currentElement)] = (e as CustomEvent).detail;
-      setTexts((e as CustomEvent).detail);
     });
   }, []);
 
@@ -373,11 +395,15 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
           <Text
             elementID={currentElement}
             text={texts[helpers.getAbsoluteIndex(currentElement)]}
-            setText={setText}
             mode={mode}
+            setText={setText}
+            readAloud={readAloud}
+            toggleAutoReadAloud={toggleAutoReadAloud}
+            reset={reset}
             isNavigationEnabled={isNavigationEnabled}
             elementsCompleted={elementsCompleted}
             setCurrentElement={setCurrentElement}
+            cookies={cookies}
           />
 
           <Snackbar
@@ -418,18 +444,12 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCompleted, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], setCurrentElement: (element: ElementID) => void }) {
+function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, cookies, setText, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], setCurrentElement: (element: ElementID) => void, cookies: { autoReadAloud?: any } }) {
   const [ isThinking, setIsThinking ] = useState(false);
-  const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
 
   useEffect(() => {
     window.addEventListener(`updateThinking`, (e: Event) => {
       setIsThinking((e as CustomEvent).detail);
-    });
-    
-    window.addEventListener(`updateText`, (e: Event) => {
-      if (cookies.autoReadAloud)
-        readAloud();
     });
   }, []);
 
@@ -451,33 +471,6 @@ function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCom
     setText(newText);
     setIsThinking(false);
     window.dispatchEvent(new CustomEvent('updatePagination', { detail: true }));
-  
-    if (cookies.autoReadAloud)
-      readAloud();
-  }
-
-  async function readAloud() {
-    const request = {
-      input: { text: text },
-      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
-      audioConfig: { audioEncoding: 'MP3' }
-    };
-
-    const stream = await speakText(text);
-
-    stream.on('data', (response) => { console.log(response) });
-    stream.on('error', (err) => { throw(err) });
-    stream.on('end', () => { });
-    stream.write(request);
-    stream.end();
-  }
-
-  async function toggleAutoReadAloud() {
-    setCookie('autoReadAloud', !cookies.autoReadAloud, { path: '/' });
-  }
-
-  async function reset() {
-    setText(helpers.getElement(elementID).text);
   }
 
   globalIndex = 0;

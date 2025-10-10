@@ -31,9 +31,5 @@ export function getInteractionValue<T>(elementID: ElementID): T {
 }
 
 export function completeElement(elementID: ElementID) {
-  const lessonAmount = 0.2;
-
-  window.dispatchEvent(new CustomEvent(`updateChapterProgress${elementID.chapterIndex}`, { detail: elementID.elementIndex }));
-  window.dispatchEvent(new CustomEvent('updateLessonProgress', { detail: lessonAmount }));
   window.dispatchEvent(new CustomEvent('updateElement', { detail: true }));
 }
