@@ -106,6 +106,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
         >
           <Typography
             variant="h6"
+            sx={{ width: '300px' }}
           >
             MySkillStudy.com
           </Typography>
@@ -134,6 +135,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           <Stack
             direction="row"
             spacing={2}
+            sx={{ width: '300px' }}
           >
             <FormControl
               size="small"
