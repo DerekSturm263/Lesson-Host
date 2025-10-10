@@ -1,5 +1,5 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { LearnPageContent } from '@/app/lib/components';
+import { LearnContent } from '@/app/lib/components';
 import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
@@ -25,7 +25,7 @@ export default async function Page({ params, searchParams }: Props) {
   const page = (
     <div>
       <main>
-        <LearnPageContent
+        <LearnContent
           slug={slug}
           title={skill.title}
           learn={skill.learn}

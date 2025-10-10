@@ -107,7 +107,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
         >
           <Link
             variant="h6"
-            sx={{ width: '300px' }}
+            sx={{ width: '300px', textDecoration: 'none' }}
             href="/"
           >
             MySkillStudy.com
@@ -118,7 +118,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           >
             <Link
               variant="h6"
-              sx={{ textAlign: 'center' }}
+              sx={{ textAlign: 'center', textDecoration: 'none' }}
               href="./"
             >
               {title}
@@ -256,7 +256,23 @@ function ChapterButton({ selected, elementID, isDisabled, mode, progress, onClic
   );
 }
 
-export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
+export function LearnContent({ slug, title, learn, mode, apiKey }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <LearnContentNoCookies
+        slug={slug}
+        title={title}
+        learn={learn}
+        mode={mode}
+        apiKey={apiKey}
+      ></LearnContentNoCookies>
+    </CookiesProvider>
+  );
+}
+
+function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
   const [ chapters, setChapters ] = useState(learn.chapters);
   const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
@@ -317,9 +333,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
   }
 
   return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
+    <Fragment>
       <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length} />
 
       <Box
@@ -428,7 +442,7 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
           )}
         </Stack>
       </Box>
-    </CookiesProvider>
+    </Fragment>
   );
 }
 
