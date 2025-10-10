@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { ComponentMode } from './lib/types';
 import { Header } from './lib/components';
+import { CookiesProvider } from 'react-cookie';
 
 export const metadata: Metadata = {
   title: 'Home | MySkillStudy.com',
@@ -9,12 +10,16 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return (
-    <div>
-      <main>
-        <Header title={""} mode={ComponentMode.Master} type="" progress={1} />
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <div>
+        <main>
+          <Header title={""} mode={ComponentMode.Master} type="" progress={1} />
 
-        <h1 className="mainHeader">Main page under construction. Be back soon!</h1>
-      </main>
-    </div>
+          <h1 className="mainHeader">Main page under construction. Be back soon!</h1>
+        </main>
+      </div>
+    </CookiesProvider>
   );
 }
