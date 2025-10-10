@@ -116,16 +116,17 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           >
             <Typography
               variant="h6"
+              sx={{ textAlign: 'center' }}
             >
               {title}
             </Typography>
 
             {mode == ComponentMode.View && (
               <Box>
-                <LinearProgressWithLabel
+                <LinearProgress
                   variant="determinate"
                   value={progress * 100}
-                  sx={{ width: '150px' }}
+                  sx={{ width: '200px' }}
                 />
               </Box>
             )}
