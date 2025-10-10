@@ -420,7 +420,7 @@ function Interaction(props: InteractionProps) {
 function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCompleted, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], setCurrentElement: (element: ElementID) => void }) {
   const [ isThinking, setIsThinking ] = useState(false);
   const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
-  const [ doAutoReadAloud, setDoAutoReadAloud ] = useState(cookies.autoReadAloud as boolean);
+  const [ doAutoReadAloud, setDoAutoReadAloud ] = useState(cookies.autoReadAloud ?? false);
 
   useEffect(() => {
     window.addEventListener(`updateThinking`, (e: Event) => {
