@@ -373,20 +373,9 @@ export function LearnPageContent({ slug, title, learn, mode, apiKey }: { slug: s
             text={texts[helpers.getAbsoluteIndex(currentElement)]}
             setText={setText}
             mode={mode}
-          />
-      
-          <Pagination
-            count={helpers.getChapter(currentElement).elements.length}
-            page={currentElement.elementIndex + 1}
-            disabled={!isNavigationEnabled}
-            renderItem={(item) => (
-              <PaginationItem
-                {...item}
-                disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(currentElement).elements.length || !elementsCompleted[(item.page ?? 0)]}
-                onClick={() => setCurrentElement({ learn: learn, chapterIndex: currentElement.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: [ apiKey ] })}
-              />
-            )}
-            sx={{ position: 'fixed', bottom: '8px', alignSelf: 'left' }}
+            isNavigationEnabled={isNavigationEnabled}
+            elementsCompleted={elementsCompleted}
+            setCurrentElement={setCurrentElement}
           />
 
           <Snackbar
@@ -427,7 +416,7 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode }) {
+function Text({ elementID, text, setText, mode, isNavigationEnabled, elementsCompleted, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], setCurrentElement: (element: ElementID) => void }) {
   const [ isThinking, setIsThinking ] = useState(false);
   const [ doAutoReadAloud, setDoAutoReadAloud ] = useState(true);
 
@@ -520,6 +509,19 @@ function Text({ elementID, text, setText, mode }: { elementID: ElementID, text: 
       <CardActions
         sx={{ justifyContent: 'end' }}
       >
+        <Pagination
+          count={helpers.getChapter(elementID).elements.length}
+          page={elementID.elementIndex + 1}
+          disabled={!isNavigationEnabled}
+          renderItem={(item) => (
+            <PaginationItem
+              {...item}
+              disabled={!isNavigationEnabled || (item.page ?? 0) < 1 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || !elementsCompleted[(item.page ?? 0)]}
+              onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
+            />
+          )}
+        />
+
         <Stack
           direction="row"
           spacing={1}
