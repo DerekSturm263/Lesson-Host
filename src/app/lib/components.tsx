@@ -25,18 +25,14 @@ import Engine from './interactions/engine/elements';
 import IFrame from './interactions/iframe/elements';
 
 import Button from '@mui/material/Button';
-import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import Backdrop from '@mui/material/Backdrop';
 import Chip from '@mui/material/Chip';
 import AppBar from '@mui/material/AppBar';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Drawer from '@mui/material/Drawer';
 import Pagination from '@mui/material/Pagination';
-import MenuComponent from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
@@ -55,19 +51,16 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Menu from '@mui/icons-material/Menu';
-import PlayArrow from '@mui/icons-material/PlayArrow';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import Create from '@mui/icons-material/Create';
+import VerifiedUser from '@mui/icons-material/VerifiedUser';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
@@ -144,9 +137,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
             spacing={2}
             sx={{ width: '300px', justifyContent: 'flex-end' }}
           >
-            <FormControl
-              size="small"
-            >
+            <FormControl>
               <InputLabel id="mode-label">Mode</InputLabel>
 
               <Select
@@ -194,7 +185,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
                   value="Certify"
                 >
                   <ListItemIcon>
-                    <School />
+                    <VerifiedUser />
                   </ListItemIcon>
 
                   <ListItemText>
