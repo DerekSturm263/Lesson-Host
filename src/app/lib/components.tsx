@@ -72,7 +72,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Link from '@mui/material/Link';
-import { ListItemIcon } from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 
 
@@ -150,13 +150,17 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
                 <MenuItem
                   value="Learn"
                 >
-                  <ListItemIcon>
-                    <School />
-                  </ListItemIcon>
+                  <ListItemButton
+                    href="./learn"
+                  >
+                    <ListItemIcon>
+                      <School />
+                    </ListItemIcon>
 
-                  <ListItemText>
-                    Learn
-                  </ListItemText>
+                    <ListItemText>
+                      Learn
+                    </ListItemText>
+                  </ListItemButton>
                 </MenuItem>
 
                 <MenuItem
