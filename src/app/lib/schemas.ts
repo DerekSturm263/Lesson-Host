@@ -134,7 +134,7 @@ export const skillSchema = {
     implement: {
       type: Type.STRING
     },
-    study: {
+    certify: {
       type: Type.STRING
     }
   },
@@ -144,7 +144,7 @@ export const skillSchema = {
     "learn",
     "practice",
     "implement",
-    "study"
+    "certify"
   ],
   propertyOrdering: [
     "title",
@@ -152,6 +152,6 @@ export const skillSchema = {
     "learn",
     "practice",
     "implement",
-    "study"
+    "certify"
   ]
 }

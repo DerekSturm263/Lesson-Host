@@ -8,7 +8,7 @@ import { Metadata, ResolvingMetadata } from 'next';
   const skill = await getSkill(slug);
 
   return {
-    title: `Study ${skill.title} | MySkillStudy.com`,
+    title: `Certify ${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
 }*/
@@ -25,7 +25,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header title={skill.title} mode={mode as ComponentMode} type="Study" progress={1} />
+        <Header title={skill.title} mode={mode as ComponentMode} type="Certify" progress={1} />
       </main>
     </div>
   );

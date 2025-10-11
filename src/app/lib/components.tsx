@@ -79,6 +79,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Link from '@mui/material/Link';
+import { ListItemIcon } from '@mui/material';
 
 
 
@@ -146,40 +147,60 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
             <FormControl
               size="small"
             >
-              <InputLabel id="type-label">Type</InputLabel>
-
-              <Select
-                labelId="type-label"
-                value={type}
-                label="Type"
-                onChange={(e, value) => {}}
-              >
-                <MenuItem value="Learn">Learn</MenuItem>
-                <MenuItem value="Practice">Practice</MenuItem>
-                <MenuItem value="Implement">Implement</MenuItem>
-                <MenuItem value="Study">Study</MenuItem>
-              </Select>
-            </FormControl>
-          
-            <FormControl
-              size="small"
-            >
               <InputLabel id="mode-label">Mode</InputLabel>
 
               <Select
                 labelId="mode-label"
-                value={mode}
+                value={type}
                 label="Mode"
-                onChange={(e, value) => {}}
               >
-                {Object.values(ComponentMode).map((item, index) => (
-                  <MenuItem
-                    key={index}
-                    value={item}
-                  >
-                    {item}
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  value="Learn"
+                >
+                  <ListItemIcon>
+                    <School />
+                  </ListItemIcon>
+
+                  <ListItemText>
+                    Learn
+                  </ListItemText>
+                </MenuItem>
+
+                <MenuItem
+                  value="Practice"
+                >
+                  <ListItemIcon>
+                    <LocalLibrary />
+                  </ListItemIcon>
+
+                  <ListItemText>
+                    Practice
+                  </ListItemText>
+                </MenuItem>
+
+                <MenuItem
+                  value="Implement"
+                >
+                  <ListItemIcon>
+                    <CloudUpload />
+                  </ListItemIcon>
+
+                  <ListItemText>
+                    Implement
+                  </ListItemText>
+                </MenuItem>
+
+                <MenuItem
+                  value="Certify"
+                >
+                  <ListItemIcon>
+                    <School />
+                  </ListItemIcon>
+
+                  <ListItemText>
+                    Certify
+                  </ListItemText>
+                </MenuItem>
               </Select>
             </FormControl>
 
@@ -347,13 +368,17 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
 
         <DialogContent>
           <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS.\nNext up: Practice this skill to earn a higher score on the rubric."}
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+          </DialogContentText>
+          
+          <DialogContentText>
+            {"Next up: Practice this skill to earn a higher score on the rubric."}
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
           <Button
-            onClick={(e) => {  }}
+            href="./practice"
           >
             Practice Skill
           </Button>

@@ -24,7 +24,7 @@ export type Implement = {
   link: string
 };
 
-export type Study = {
+export type Certify = {
   link: string
 };
 
@@ -34,7 +34,7 @@ export type Skill = {
   learn: Learn,
   practice: Practice,
   implement: Implement,
-  study: Study
+  certify: Certify
 };
 
 export type Project = {

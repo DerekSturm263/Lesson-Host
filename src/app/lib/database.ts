@@ -1,7 +1,7 @@
 'use server'
 
 import { MongoClient, ObjectId } from 'mongodb';
-import { Skill, Project, Course, Learn, Practice, Implement, Study } from '@/app/lib/types';
+import { Skill, Project, Course, Learn, Practice, Implement, Certify } from '@/app/lib/types';
 
 const client = new MongoClient(process.env.MONGODB_URI ?? '', {
   serverSelectionTimeoutMS: 120000,
@@ -46,7 +46,7 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
     implement: {
       link: ""
     },
-    study: {
+    certify: {
       link: ""
     }
   };

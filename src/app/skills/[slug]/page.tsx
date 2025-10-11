@@ -59,11 +59,11 @@ export default async function Page({ params, searchParams }: Props) {
           </Link>
           
           <Link
-            href={"./" + slug + "/study" + urlParamAppend}
+            href={"./" + slug + "/certify" + urlParamAppend}
             target="_self"
             rel="noopener noreferrer"
           >
-            Study
+            Certify
           </Link>
         </div>
       </main>
