@@ -137,7 +137,9 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
             spacing={2}
             sx={{ width: '300px', justifyContent: 'flex-end' }}
           >
-            <FormControl>
+            <FormControl
+              size="small"
+            >
               <InputLabel id="mode-label">Mode</InputLabel>
 
               <Select
