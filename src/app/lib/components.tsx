@@ -710,7 +710,7 @@ function WordWrapper({ children }: { children?: React.ReactNode }) {
     }
 
     const data = JSON.parse(await response.json());
-    // Todo: Return defintion in dialog box
+    // TODO: Return defintion in dialog box
   }
 
   return (

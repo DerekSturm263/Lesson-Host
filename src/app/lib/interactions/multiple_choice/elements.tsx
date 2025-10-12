@@ -83,7 +83,7 @@ function Component(props: InteractionProps) {
   async function submit() {
     props.setIsThinking(true);
 
-    // TODO: Fix
+    // TODO: Make actually read the selected values
     const feedback = await verify(helpers.getElement(props.elementID).text, [ "" ], helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
     props.setIsThinking(false);
