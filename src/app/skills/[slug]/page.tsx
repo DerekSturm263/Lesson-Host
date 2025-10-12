@@ -44,23 +44,22 @@ export default async function Page({ params, searchParams }: Props) {
         />
         <Toolbar />
 
-        <Stack
-          spacing={2}
-        >
-          <SkillDescription
-            skill={skill}
-            mode={mode as ComponentMode}
-          />
-        </Stack>
+        <SkillDescription
+          skill={skill}
+          mode={mode as ComponentMode}
+        />
 
         <Stack
           direction="row"
-          spacing={2}
+          spacing={5}
+          sx={{ justifyContent: "center" }}
         >
           <Button
             href={"./" + slug + "/learn" + urlParamAppend}
             variant="contained"
             startIcon={<School />}
+            sx={{ padding: ' 100px 50px 100px 50px' }}
+            size="large"
           >
             Learn
           </Button>
@@ -69,6 +68,8 @@ export default async function Page({ params, searchParams }: Props) {
             href={"./" + slug + "/practice" + urlParamAppend}
             variant="contained"
             startIcon={<LocalLibrary />}
+            sx={{ padding: ' 100px 50px 100px 50px' }}
+            size="large"
           >
             Practice
           </Button>
@@ -77,6 +78,8 @@ export default async function Page({ params, searchParams }: Props) {
             href={"./" + slug + "/implement" + urlParamAppend}
             variant="contained"
             startIcon={<CloudUpload />}
+            sx={{ padding: ' 100px 50px 100px 50px' }}
+            size="large"
           >
             Implement
           </Button>
@@ -85,6 +88,8 @@ export default async function Page({ params, searchParams }: Props) {
             href={"./" + slug + "/certify" + urlParamAppend}
             variant="contained"
             startIcon={<VerifiedUser />}
+            sx={{ padding: ' 100px 50px 100px 50px' }}
+            size="large"
           >
             Certify
           </Button>

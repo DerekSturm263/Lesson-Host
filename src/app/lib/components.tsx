@@ -800,6 +800,7 @@ export function SkillDescription({ skill, mode }: { skill: Skill, mode: Componen
   const header = (
     <Typography
       variant='h6'
+      sx={{ textAlign: "center" }}
     >
       {description}
     </Typography>
@@ -826,6 +827,7 @@ export function ProjectDescription({ project, mode }: { project: Project, mode: 
   const header = (
     <Typography
       variant='h6'
+      sx={{ textAlign: "center" }}
     >
       {description}
     </Typography>
@@ -852,6 +854,7 @@ export function CourseDescription({ course, mode }: { course: Course, mode: Comp
   const header = (
     <Typography
       variant='h6'
+      sx={{ textAlign: "center" }}
     >
       {description}
     </Typography>
