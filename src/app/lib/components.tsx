@@ -2,7 +2,7 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps } from '@/app/lib/types';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
 
@@ -51,6 +51,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Divider from '@mui/material/Divider';
+import PaginationItem from '@mui/material/PaginationItem';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Link from '@mui/material/Link';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -60,19 +67,15 @@ import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import VerifiedUser from '@mui/icons-material/VerifiedUser';
 import CloudUpload from '@mui/icons-material/CloudUpload';
+import VerifiedUser from '@mui/icons-material/VerifiedUser';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
 import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
-import PaginationItem from '@mui/material/PaginationItem';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Link from '@mui/material/Link';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import Psychology from '@mui/icons-material/Psychology';
+import Assignment from '@mui/icons-material/Assignment';
+import Book from '@mui/icons-material/Book';
 
 
 
@@ -94,6 +97,8 @@ const interactionMap: Record<string, InteractionPackage> = {
 };
 
 export function Header({ title, mode, type, progress }: { title: string, mode: ComponentMode, type: string, progress: number }) {
+  const [ headerTitle, setHeaderTitle ] = useState(title);
+
   return (
     <Fragment>
       <AppBar
@@ -114,13 +119,25 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
           <Stack
             spacing={2}
           >
-            <Link
-              variant="h6"
-              sx={{ textAlign: 'center', textDecoration: 'none' }}
-              href="./"
-            >
-              {title}
-            </Link>
+            {mode == ComponentMode.Edit ? (
+              <TextField
+                label="Title"
+                autoComplete="off"
+                value={headerTitle}
+                onChange={(e) => {
+                  setHeaderTitle(e.target.value)
+                  // TODO: Add code to actually set it.
+                }}
+              />
+            ) : (
+              <Link
+                variant="h6"
+                sx={{ textAlign: 'center', textDecoration: 'none' }}
+                href="./"
+              >
+                {title}
+              </Link>
+            )}
 
             {mode == ComponentMode.View && (
               <LinearProgress
@@ -137,6 +154,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
             spacing={2}
             sx={{ width: '300px', justifyContent: 'flex-end' }}
           >
+            {type != "" && (
             <FormControl
               size="small"
             >
@@ -152,6 +170,7 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
                 >
                   <ListItemButton
                     href="./learn"
+                    sx={{ padding: '0px' }}
                   >
                     <ListItemIcon>
                       <School />
@@ -166,40 +185,56 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
                 <MenuItem
                   value="Practice"
                 >
-                  <ListItemIcon>
-                    <LocalLibrary />
-                  </ListItemIcon>
+                  <ListItemButton
+                    href="./practice"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <LocalLibrary />
+                    </ListItemIcon>
 
-                  <ListItemText>
-                    Practice
-                  </ListItemText>
+                    <ListItemText>
+                      Practice
+                    </ListItemText>
+                  </ListItemButton>
                 </MenuItem>
 
                 <MenuItem
                   value="Implement"
                 >
-                  <ListItemIcon>
-                    <CloudUpload />
-                  </ListItemIcon>
+                  <ListItemButton
+                    href="./implement"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <CloudUpload />
+                    </ListItemIcon>
 
-                  <ListItemText>
-                    Implement
-                  </ListItemText>
+                    <ListItemText>
+                      Implement
+                    </ListItemText>
+                  </ListItemButton>
                 </MenuItem>
 
                 <MenuItem
                   value="Certify"
                 >
-                  <ListItemIcon>
-                    <VerifiedUser />
-                  </ListItemIcon>
+                  <ListItemButton
+                    href="./certify"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <VerifiedUser />
+                    </ListItemIcon>
 
-                  <ListItemText>
-                    Certify
-                  </ListItemText>
+                    <ListItemText>
+                      Certify
+                    </ListItemText>
+                  </ListItemButton>
                 </MenuItem>
               </Select>
             </FormControl>
+            )}
 
             {mode == ComponentMode.Edit && (
               <Button
@@ -382,7 +417,12 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
         </DialogActions>
       </Dialog>
 
-      <Header title={title} mode={mode as ComponentMode} type="Learn" progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length} />
+      <Header
+        title={title}
+        mode={mode as ComponentMode}
+        type="Learn"
+        progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length}
+      />
 
       <Box
         display='flex'
@@ -711,79 +751,58 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 
 export function CreateSkillButton() {
   return (
-    <button
+    <Button
+      variant="contained"
+      startIcon={<Psychology />}
       onClick={async (e) => {
         const newSkill = await createSkill();
-        window.open(`https://www.myskillstudy.com/learn/skills/${newSkill[1]}?mode=edit`);
+        window.open(`./skills/${newSkill[1]}?mode=edit`);
       }}
     >
       Skill
-    </button>
+    </Button>
   );
 }
 
 export function CreateProjectButton() {
   return (
-    <button
+    <Button
+      variant="contained"
+      startIcon={<Assignment />}
       onClick={async (e) => {
         const newProject = await createProject();
-        window.open(`https://www.myskillstudy.com/learn/projects/${newProject[1]}?mode=edit`);
+        window.open(`./projects/${newProject[1]}?mode=edit`, );
       }}
     >
       Project
-    </button>
+    </Button>
   );
 }
 
 export function CreateCourseButton() {
   return (
-    <button
+    <Button
+      variant="contained"
+      startIcon={<Book />}
       onClick={async (e) => {
         const newCourse = await createCourse();
-        window.open(`https://www.myskillstudy.com/learn/courses/${newCourse[1]}?mode=edit`);
+        window.open(`./courses/${newCourse[1]}?mode=edit`);
       }}
     >
       Course
-    </button>
+    </Button>
   );
-}
-
-export function SkillTitle({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
-  const [ title, setTitle ] = useState(skill.title);
-
-  const header = (
-    <h1
-      className="mainHeader"
-    >
-      {title}
-    </h1>
-  );
-
-  const input = (
-    <TextField
-      label="Title"
-      name="title"
-      autoComplete="off"
-      value={title}
-      onChange={(e) => {
-        setTitle(e.target.value)
-        skill.title = e.target.value;
-      }}
-    />
-  );
-
-  return mode == ComponentMode.Edit ? input : header;
 }
 
 export function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (
-    <h1
-      className="subHeader"
+    <Typography
+      variant='h6'
     >
       {description}
-    </h1>
+    </Typography>
   );
 
   const input = (
@@ -794,6 +813,58 @@ export function SkillDescription({ skill, mode }: { skill: Skill, mode: Componen
       onChange={(e) => {
         setDescription(e.target.value)
         skill.description = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
+export function ProjectDescription({ project, mode }: { project: Project, mode: ComponentMode }) {
+  const [ description, setDescription ] = useState(project.description);
+  
+  const header = (
+    <Typography
+      variant='h6'
+    >
+      {description}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Description"
+      autoComplete="off"
+      value={description}
+      onChange={(e) => {
+        setDescription(e.target.value)
+        project.description = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
+export function CourseDescription({ course, mode }: { course: Course, mode: ComponentMode }) {
+  const [ description, setDescription ] = useState(course.description);
+  
+  const header = (
+    <Typography
+      variant='h6'
+    >
+      {description}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Description"
+      autoComplete="off"
+      value={description}
+      onChange={(e) => {
+        setDescription(e.target.value)
+        course.description = e.target.value;
       }}
     />
   );

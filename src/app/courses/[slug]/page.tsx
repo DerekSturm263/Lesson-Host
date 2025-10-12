@@ -1,9 +1,12 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { Header } from '@/app/lib/components';
+import { CourseDescription, Header } from '@/app/lib/components';
 import { getCourse } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
-/*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+import Toolbar from '@mui/material/Toolbar';
+import Stack from '@mui/material/Stack';
+
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const course = await getCourse(slug);
 
@@ -11,7 +14,7 @@ import { Metadata, ResolvingMetadata } from 'next';
     title: `${course.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
-}*/
+}
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
@@ -27,9 +30,22 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header title={course.title} mode={mode as ComponentMode} type="" progress={1} />
+        <Header
+          title={course.title}
+          mode={mode as ComponentMode}
+          type=""
+          progress={0}
+        />
+        <Toolbar />
 
-        <h1 className="mainHeader">{course.title}</h1>
+        <Stack
+          spacing={2}
+        >
+          <CourseDescription
+            course={course}
+            mode={mode as ComponentMode}
+          />
+        </Stack>
       </main>
     </div>
   );

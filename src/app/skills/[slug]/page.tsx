@@ -1,10 +1,18 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { Header, SkillDescription, SkillTitle } from '@/app/lib/components';
+import { Header, SkillDescription } from '@/app/lib/components';
 import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
-import Link from 'next/link';
 
-/*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import Stack from '@mui/material/Stack';
+
+import School from '@mui/icons-material/School';
+import LocalLibrary from '@mui/icons-material/LocalLibrary';
+import CloudUpload from '@mui/icons-material/CloudUpload';
+import VerifiedUser from '@mui/icons-material/VerifiedUser';
+
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const skill = await getSkill(slug);
 
@@ -12,7 +20,7 @@ import Link from 'next/link';
     title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
-}*/
+}
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
@@ -28,44 +36,59 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header title={skill.title} mode={mode as ComponentMode} type="" progress={1} />
+        <Header
+          title={skill.title}
+          mode={mode as ComponentMode}
+          type=""
+          progress={0}
+        />
+        <Toolbar />
 
-        <SkillTitle skill={skill} mode={mode as ComponentMode} />
-        <SkillDescription skill={skill} mode={mode as ComponentMode} />
+        <Stack
+          spacing={2}
+        >
+          <SkillDescription
+            skill={skill}
+            mode={mode as ComponentMode}
+          />
+        </Stack>
 
-        <div className="colButtons">
-          <Link
+        <Stack
+          direction="row"
+          spacing={2}
+        >
+          <Button
             href={"./" + slug + "/learn" + urlParamAppend}
-            target="_self"
-            rel="noopener noreferrer"
+            variant="contained"
+            startIcon={<School />}
           >
             Learn
-          </Link>
+          </Button>
 
-          <Link
+          <Button
             href={"./" + slug + "/practice" + urlParamAppend}
-            target="_self"
-            rel="noopener noreferrer"
+            variant="contained"
+            startIcon={<LocalLibrary />}
           >
             Practice
-          </Link>
+          </Button>
 
-          <Link
+          <Button
             href={"./" + slug + "/implement" + urlParamAppend}
-            target="_self"
-            rel="noopener noreferrer"
+            variant="contained"
+            startIcon={<CloudUpload />}
           >
             Implement
-          </Link>
+          </Button>
           
-          <Link
+          <Button
             href={"./" + slug + "/certify" + urlParamAppend}
-            target="_self"
-            rel="noopener noreferrer"
+            variant="contained"
+            startIcon={<VerifiedUser />}
           >
             Certify
-          </Link>
-        </div>
+          </Button>
+        </Stack>
       </main>
     </div>
   );

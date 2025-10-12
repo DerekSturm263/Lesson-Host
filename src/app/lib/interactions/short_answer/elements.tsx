@@ -59,7 +59,7 @@ function Component(props: InteractionProps) {
           label="Write your response here"
           name="response"
           autoComplete="off"
-          disabled={false}
+          disabled={props.isDisabled}
           value={userResponse}
           onChange={(e) => setUserResponse(e.target.value)}
           sx={{ flexGrow: 1 }}

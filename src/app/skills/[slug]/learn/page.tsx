@@ -3,15 +3,15 @@ import { LearnContent } from '@/app/lib/components';
 import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
-/*export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const skill = await getSkill(slug);
 
   return {
-    title: `Learn ${skill.title} | MySkillStudy.com`,
+    title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
-}*/
+}
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
@@ -22,7 +22,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   const skill = await getSkill(slug);
 
-  const page = (
+  return (
     <div>
       <main>
         <LearnContent
@@ -35,6 +35,4 @@ export default async function Page({ params, searchParams }: Props) {
       </main>
     </div>
   );
-
-  return page;
 }
