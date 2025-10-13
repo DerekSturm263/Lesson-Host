@@ -395,7 +395,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
   return (
     <Fragment>
       <Dialog
-        open={elementsCompleted.filter(element => element).length == elementsCompleted.length}
+        open={mode == ComponentMode.View && elementsCompleted.filter(element => element).length == elementsCompleted.length}
       >
         <DialogTitle>
           Lesson Complete!
