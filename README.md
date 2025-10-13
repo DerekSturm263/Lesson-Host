@@ -1,8 +1,8 @@
-### Welcome to MySkillStudy.com, the best way to learn new skills!
+## Welcome to MySkillStudy.com, the best way to learn new skills!
 
 Go to [https://myskillstudy.com](https://myskillstudy.com) to view the website in action. From here, you can view existing lessons and create new ones.
 
-## Current Features
+### Current Features
 - Skills Learn Pages
 - AI Rephrase/Explanations
 - Interaction Types:
@@ -11,7 +11,7 @@ Go to [https://myskillstudy.com](https://myskillstudy.com) to view the website i
   - Codespaces
   - Short Answer
 
-## Planned Features
+### Planned Features
 - AI-Generated Lessons
 - Skills Practice/Implement/Certify Pages
 - Natural Read Aloud
