@@ -117,15 +117,18 @@ export default async function Home() {
 
           <Stack
             direction="row"
+            spacing={2}
           >
             <Card
               sx={{ maxWidth: 345 }}
             >
-              <CardHeader
-                title="Console RPG"
-              />
-
               <CardContent>
+                <Typography
+                  variant="h3"
+                >
+                  Console RPG
+                </Typography>
+
                 <Rating
                   name="project-rating"
                   value={1}
