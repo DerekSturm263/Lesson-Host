@@ -127,7 +127,13 @@ export default async function Home() {
                 <Rating
                   name="project-rating"
                   value={1}
+                  readOnly={true}
                 />
+
+                <Typography>
+                  Create a Console RPG using various C# skills. This project is aimed towards beginners, but can be enjoyed by experienced developers as well.
+                </Typography>
+
                 <LinearProgress
                   variant="determinate"
                   value={0}
