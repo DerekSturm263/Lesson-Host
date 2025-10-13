@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import { Chip } from '@mui/material';
 
 export const metadata: Metadata = {
   title: 'Home | MySkillStudy.com',
@@ -46,23 +47,77 @@ export default async function Home() {
           </Button>
         </Stack>
 
-        <Typography
-          variant="h4"
-        >
-          Courses
-        </Typography>
+        <Stack>        
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between" }}
+          >
+            <Typography
+              variant="h4"
+            >
+              Popular Courses
+            </Typography>
 
-        <Typography
-          variant="h4"
-        >
-          Skills
-        </Typography>
+            <Chip
+              label="View All"
+              onClick={e => {}}
+            />
+          </Stack>
 
-        <Typography
-          variant="h4"
-        >
-          Projects
-        </Typography>
+          <Stack
+            direction="row"
+          >
+          
+          </Stack>
+        </Stack>
+
+        <Stack>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between" }}
+          >
+            <Typography
+              variant="h4"
+            >
+              Popular Skills
+            </Typography>
+
+            <Chip
+              label="View All"
+              onClick={e => {}}
+            />
+          </Stack>
+
+          <Stack
+            direction="row"
+          >
+          
+          </Stack>
+        </Stack>
+
+        <Stack>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between" }}
+          >
+            <Typography
+              variant="h4"
+            >
+              Popular Projects
+            </Typography>
+
+            <Chip
+              label="View All"
+              onClick={e => {}}
+            />
+          </Stack>
+
+          <Stack
+            direction="row"
+          >
+          
+          </Stack>
+        </Stack>
       </main>
     </div>
   );

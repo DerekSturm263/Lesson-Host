@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { ThemeProvider } from '@mui/material/styles';
-import { CookiesProvider } from 'react-cookie';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from "@/app/theme";
 
@@ -15,9 +14,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ThemeProvider theme={theme}>
           <CssBaseline />
           
-            <body>
-              {children}
-            </body>
+          <body>
+            {children}
+          </body>
         </ThemeProvider>
       </html>
   );
