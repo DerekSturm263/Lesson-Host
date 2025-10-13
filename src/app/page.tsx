@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { Card, CardActions, CardContent, CardHeader, Chip, LinearProgress } from '@mui/material';
+import { Card, CardActions, CardContent, CardHeader, Chip, LinearProgress, Rating } from '@mui/material';
 
 export const metadata: Metadata = {
   title: 'Home | MySkillStudy.com',
@@ -119,12 +119,17 @@ export default async function Home() {
             direction="row"
           >
             <Card>
-              <CardHeader>
-                Console RPG
-              </CardHeader>
+              <CardHeader
+                title="Console RPG"
+              />
 
               <CardContent>
+                <Rating
+                  name="project-rating"
+                  value={1}
+                />
                 <LinearProgress
+                  variant="determinate"
                   value={0}
                 />
               </CardContent>
