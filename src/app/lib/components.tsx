@@ -96,7 +96,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, mode, type, progress }: { title: string, mode: ComponentMode, type: string, progress: number }) {
+export function Header({ title, mode, type, progress, hideLogo }: { title: string, mode: ComponentMode, type: string, progress: number, hideLogo: boolean }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
 
   return (
@@ -108,13 +108,15 @@ export function Header({ title, mode, type, progress }: { title: string, mode: C
         <Toolbar
           sx={{ display: 'flex', justifyContent: 'space-between' }}
         >
-          <Link
-            variant="h6"
-            sx={{ width: '300px', textDecoration: 'none' }}
-            href="/"
-          >
-            MySkillStudy.com
-          </Link>
+          {!hideLogo && (
+            <Link
+              variant="h6"
+              sx={{ width: '300px', textDecoration: 'none' }}
+              href="/"
+            >
+              MySkillStudy.com
+            </Link>
+          )}
 
           <Stack
             spacing={2}
@@ -313,7 +315,7 @@ function ChapterButton({ selected, elementID, isDisabled, mode, progress, onClic
   );
 }
 
-export function LearnContent({ slug, title, learn, mode, apiKey }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
+export function LearnContent({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   return (
     <CookiesProvider
       defaultSetOptions={{ path: '/' }}
@@ -324,12 +326,13 @@ export function LearnContent({ slug, title, learn, mode, apiKey }: { slug: strin
         learn={learn}
         mode={mode}
         apiKey={apiKey}
+        hideLogo={hideLogo}
       ></LearnContentNoCookies>
     </CookiesProvider>
   );
 }
 
-function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string }) {
+function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   const [ chapters, setChapters ] = useState(learn.chapters);
   const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
@@ -422,6 +425,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey }: { slug: str
         mode={mode as ComponentMode}
         type="Learn"
         progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length}
+        hideLogo={hideLogo}
       />
 
       <Box

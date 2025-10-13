@@ -18,14 +18,12 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
-
   const urlParams = await searchParams;
-  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+
+  const hideLogo = urlParams && urlParams.hideLogo == 'true';
   const mode = urlParams?.mode ?? "view";
 
   const course = await getCourse(slug);
-
-  const urlParamAppend = urlParams ? "?" + Object.entries(urlParams).map(value => `${value[0]}=${value[1]}`).join('&') : "";
 
   return (
     <div>
@@ -35,6 +33,7 @@ export default async function Page({ params, searchParams }: Props) {
           mode={mode as ComponentMode}
           type=""
           progress={0}
+          hideLogo={hideLogo}
         />
         <Toolbar />
 

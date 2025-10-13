@@ -22,6 +22,7 @@ export default async function Home() {
           mode={ComponentMode.Master}
           type=""
           progress={0}
+          hideLogo={false}
         />
         <Toolbar />
 

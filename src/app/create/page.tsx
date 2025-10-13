@@ -20,6 +20,7 @@ export default function Page() {
           mode={ComponentMode.Master}
           type=""
           progress={1}
+          hideLogo={false}
         />
         <Toolbar />
 

@@ -15,9 +15,9 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function Page({ params, searchParams }: Props) {
   const { slug } = await params;
-
   const urlParams = await searchParams;
-  const hideHeader = !urlParams || urlParams.hideHeader == 'true';
+
+  const hideLogo = urlParams && urlParams.hideLogo == 'true';
   const mode = urlParams?.mode ?? "view";
 
   const skill = await getSkill(slug);
@@ -31,6 +31,7 @@ export default async function Page({ params, searchParams }: Props) {
           learn={skill.learn}
           mode={mode as ComponentMode}
           apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
+          hideLogo={hideLogo}
         />
       </main>
     </div>
