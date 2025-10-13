@@ -118,7 +118,9 @@ export default async function Home() {
           <Stack
             direction="row"
           >
-            <Card>
+            <Card
+              sx={{ maxWidth: 345 }}
+            >
               <CardHeader
                 title="Console RPG"
               />
