@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Welcome to [MySkillStudy.com](https://myskillstudy.com), the best way to learn new skills!
 
-## Getting Started
+Click the above link to view the website in action. From here, you can view existing lessons and create new ones.
 
-First, run the development server:
+## Mission Statement
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Free public education is a right that everyone should possess. MySkillStudy.com is designed to give everyone access to a fullly self-paced and interactive curriculum that anybody can contribute to and take advantage of. MySkillStudy.com will always be free and allow any of its users to upload lessons that they are experts at. On this website, you can learn, practice, implement, and become certified in anything you can think of.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Current
+- Skills Learn Pages
+- AI Rephrase/Explanations
+- Interaction Types:
+  - Multiple Choice
+  - True or False
+  - Codespaces
+  - Short Answer
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Planned
+- AI-Generated Lessons
+- Skills Practice/Implement/Certify Pages
+- Natural Read Aloud
+- Projects
+- Courses
+- New Interaction Types:
+  - DAW
+  - Drawing
+  - Engine
+  - Files
+  - Graph
+  - IFrame
+  - Matching
+  - Ordering
 
-## Learn More
+## Contributing
+This website is and will always be open source. If you'd like to contribute by adding any of the above features, just [fork](https://github.com/DerekSturm263/Lesson-Host/fork) the project, add your desired feature, and submit a pull request with your changes. If you'd like to add a feature that's not listed above, please submit a feedback request via GitHub Issues.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Issues/Feedback
+Please report any issues by adding them to the [GitHub Issues](https://github.com/DerekSturm263/Lesson-Host/issues) list. Feedback and feature requests can also be submitted through there.
