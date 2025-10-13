@@ -34,7 +34,7 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
   - Ordering
 
 ## Contributing
-This website is and will always be open source. If you'd like to contribute by adding any of the above features, just make a fork of the project and submit a pull request with your changes. If you'd like to add a feature that's not listed above, please submit a feedback request via GitHub Issues.
+This website is and will always be open source. If you'd like to contribute by adding any of the above features, just [fork](https://github.com/DerekSturm263/Lesson-Host/fork) the project, add your desired feature, and submit a pull request with your changes. If you'd like to add a feature that's not listed above, please submit a feedback request via GitHub Issues.
 
 ## Issues/Feedback
-Please report any issues by adding them to the GitHub Issues above. Feedback and feature requests can also be submitted through there.
+Please report any issues by adding them to the [GitHub Issues](https://github.com/DerekSturm263/Lesson-Host/issues) list. Feedback and feature requests can also be submitted through there.
