@@ -18,6 +18,7 @@ import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/t
 import { Fragment, useState } from 'react';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 export type InteractionType = {
   language: CodespaceLanguage,
@@ -230,27 +231,30 @@ function Component(props: InteractionProps) {
       direction='row'
     >
       {props.mode == ComponentMode.Edit && (
-        <label>
-          Language:
+        <FormControl
+          size="small"
+        >
+          <InputLabel id="mode-label">Language</InputLabel>
 
-          <select
-            name="selectType"
+          <Select
+            labelId="language-label"
             value={language}
+            label="Language"
             onChange={(e) => {
               setLanguage(e.target.value as CodespaceLanguage);
               helpers.getInteractionValue<InteractionType>(props.elementID).language = e.target.value as CodespaceLanguage;
             }}
           >
             {(Object.values(CodespaceLanguage).map((item, index) => (
-              <option
-                key={index}
+              <MenuItem
                 value={item}
+                key={index}
               >
                 {item}
-              </option>
+              </MenuItem>
             )))}
-          </select>
-        </label>
+          </Select>
+        </FormControl>
       )}
 
       {props.mode == ComponentMode.Edit && (

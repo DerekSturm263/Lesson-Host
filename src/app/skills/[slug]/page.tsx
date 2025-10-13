@@ -54,7 +54,7 @@ export default async function Page({ params, searchParams }: Props) {
           sx={{ justifyContent: "center" }}
         >
           <Button
-            href={"learn"}
+            href={"/learn"}
             variant="contained"
             startIcon={<School />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
@@ -64,7 +64,7 @@ export default async function Page({ params, searchParams }: Props) {
           </Button>
 
           <Button
-            href={"practice"}
+            href={"./practice"}
             variant="contained"
             startIcon={<LocalLibrary />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
@@ -74,7 +74,7 @@ export default async function Page({ params, searchParams }: Props) {
           </Button>
 
           <Button
-            href={"implement"}
+            href={"implement/"}
             variant="contained"
             startIcon={<CloudUpload />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
