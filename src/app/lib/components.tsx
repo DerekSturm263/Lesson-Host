@@ -1,1290 +1,880 @@
 'use client'
 
-import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX } from 'react';
-import { useEffect } from 'react';
-import { Editor } from '@monaco-editor/react';
-import { verifyCodespace } from './generate';
-import { saveSkillLearn, createSkill, createProject, createCourse } from './database';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
+import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course } from '@/app/lib/types';
+import { ModelType } from '@/app/lib/ai/types';
+import { CookiesProvider, useCookies } from 'react-cookie';
+
 import Markdown from 'react-markdown';
-import ky from 'ky';
-import * as functions from '../lib/functions';
-import * as types from '../lib/types';
-import * as helpers from '../lib/helpers';
+import generateText from '@/app/lib/ai/functions';
+import speakText from '@/app/lib/tts/functions'
+import * as helpers from '@/app/lib/helpers';
+
+import ShortAnswer from './interactions/short_answer/elements';
+import MultipleChoice from './interactions/multiple_choice/elements';
+import TrueOrFalse from './interactions/true_or_false/elements';
+import Matching from './interactions/matching/elements';
+import Ordering from './interactions/ordering/elements';
+import Files from './interactions/files/elements';
+import Drawing from './interactions/drawing/elements';
+import Graph from './interactions/graph/elements';
+import DAW from './interactions/daw/elements';
+import Codespace from './interactions/codespace/elements';
+import Engine from './interactions/engine/elements';
+import IFrame from './interactions/iframe/elements';
 
 import Button from '@mui/material/Button';
-import RadioGroup from '@mui/material/RadioGroup';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
-import LinearProgress from '@mui/material/LinearProgress';
-import Backdrop from '@mui/material/Backdrop';
+import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Chip from '@mui/material/Chip';
 import AppBar from '@mui/material/AppBar';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Drawer from '@mui/material/Drawer';
 import Pagination from '@mui/material/Pagination';
-import Tabs from '@mui/material/Tabs';
-import MenuComponent from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Dialog from '@mui/material/Dialog';
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Divider from '@mui/material/Divider';
+import PaginationItem from '@mui/material/PaginationItem';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Link from '@mui/material/Link';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
 import Menu from '@mui/icons-material/Menu';
-import CheckCircle from '@mui/icons-material/CheckCircle';
-import PlayArrow from '@mui/icons-material/PlayArrow';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import Create from '@mui/icons-material/Create';
 import CloudUpload from '@mui/icons-material/CloudUpload';
+import VerifiedUser from '@mui/icons-material/VerifiedUser';
+import Delete from '@mui/icons-material/Delete';
+import MoreVert from '@mui/icons-material/MoreVert';
+import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
+import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
+import Psychology from '@mui/icons-material/Psychology';
+import Assignment from '@mui/icons-material/Assignment';
+import Book from '@mui/icons-material/Book';
 
-export function Header() {
+
+
+// Core.
+
+const interactionMap: Record<string, InteractionPackage> = {
+  "shortAnswer": ShortAnswer,
+  "multipleChoice": MultipleChoice,
+  "trueOrFalse": TrueOrFalse,
+  "matching": Matching,
+  "ordering": Ordering,
+  "files": Files,
+  "drawing": Drawing,
+  "graph": Graph,
+  "daw": DAW,
+  "codespace": Codespace,
+  "engine": Engine,
+  "iframe": IFrame
+};
+
+export function Header({ title, mode, type, progress, hideLogo }: { title: string, mode: ComponentMode, type: string, progress: number, hideLogo: boolean }) {
+  const [ headerTitle, setHeaderTitle ] = useState(title);
+
   return (
-    <div className="header">
-      <h3>
-        <Link
-          href="/"
-          target="_self"
+    <Fragment>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar
+          sx={{ display: 'flex', justifyContent: 'space-between' }}
         >
-          MySkillStudy.com
-        </Link>
-      </h3>
+          {!hideLogo && (
+            <Link
+              variant="h6"
+              sx={{ width: '300px', textDecoration: 'none' }}
+              href="/"
+            >
+              MySkillStudy.com
+            </Link>
+          )}
 
-      <ol>
-        <Link
-          href="/learn"
-          target="_self"
-          rel="noopener noreferrer"
-        >
-          Learn
-        </Link>
-          
-        <Link
-          href="/create"
-          target="_self"
-          rel="noopener noreferrer"
-        >
-          Create
-        </Link>
-      </ol>
+          <Stack
+            spacing={2}
+          >
+            {mode == ComponentMode.Edit ? (
+              <TextField
+                label="Title"
+                autoComplete="off"
+                value={headerTitle}
+                onChange={(e) => {
+                  setHeaderTitle(e.target.value)
+                  // TODO: Add code to actually set it.
+                }}
+              />
+            ) : (
+              <Link
+                variant="h6"
+                sx={{ textAlign: 'center', textDecoration: 'none' }}
+                href="./"
+              >
+                {title}
+              </Link>
+            )}
 
-      <select name="selectLanguage" id="selectLanguage">
-        <option value="en">English</option>
-        <option value="nl">Dutch</option>
-        <option value="fr">French</option>
-        <option value="de">German</option>
-        <option value="hi">Hindi</option>
-        <option value="it">Italian</option>
-        <option value="ja">Japanese</option>
-        <option value="ko">Korean</option>
-        <option value="pl">Polish</option>
-        <option value="ru">Russian</option>
-        <option value="es">Spanish</option>
-        <option value="sv">Swedish</option>
-      </select>
-    </div>
+            {mode == ComponentMode.View && (
+              <LinearProgress
+                variant="determinate"
+                value={progress * 100}
+                sx={{ width: '200px' }}
+                style={{ marginTop: '6px' }}
+              />
+            )}
+          </Stack>
+
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ width: '300px', justifyContent: 'flex-end' }}
+          >
+            {type != "" && (
+            <FormControl
+              size="small"
+            >
+              <InputLabel id="mode-label">Mode</InputLabel>
+
+              <Select
+                labelId="mode-label"
+                value={type}
+                label="Mode"
+              >
+                <MenuItem
+                  value="Learn"
+                >
+                  <ListItemButton
+                    href="./learn"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <School />
+                    </ListItemIcon>
+
+                    <ListItemText>
+                      Learn
+                    </ListItemText>
+                  </ListItemButton>
+                </MenuItem>
+
+                <MenuItem
+                  value="Practice"
+                >
+                  <ListItemButton
+                    href="./practice"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <LocalLibrary />
+                    </ListItemIcon>
+
+                    <ListItemText>
+                      Practice
+                    </ListItemText>
+                  </ListItemButton>
+                </MenuItem>
+
+                <MenuItem
+                  value="Implement"
+                >
+                  <ListItemButton
+                    href="./implement"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <CloudUpload />
+                    </ListItemIcon>
+
+                    <ListItemText>
+                      Implement
+                    </ListItemText>
+                  </ListItemButton>
+                </MenuItem>
+
+                <MenuItem
+                  value="Certify"
+                >
+                  <ListItemButton
+                    href="./certify"
+                    sx={{ padding: '0px' }}
+                  >
+                    <ListItemIcon>
+                      <VerifiedUser />
+                    </ListItemIcon>
+
+                    <ListItemText>
+                      Certify
+                    </ListItemText>
+                  </ListItemButton>
+                </MenuItem>
+              </Select>
+            </FormControl>
+            )}
+
+            {mode == ComponentMode.Edit && (
+              <Button
+                variant="contained"
+                onClick={async (e) => { 
+                  //await saveSkillLearn(slug, skill.learn);
+                }}
+              >
+                Save
+              </Button>
+            )}
+          </Stack>
+        </Toolbar>
+      </AppBar>
+    </Fragment>
   );
 }
 
 export function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
-  return (
-    <div className="sidebar">
-      <h3>
-        {label}
-      </h3>
+  const [ isOpen, setIsOpen ] = useState(true);
 
-      <ol>
-        {Children.map(children, child => 
-          <li>
-            {child}
-          </li>
-        )}
-      </ol>
-    </div>
-  );
-}
-
-export function Element({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
   return (
-    <div
-      id={`element${helpers.getAbsoluteIndex(elementID)}`}
-      className="element"
+    <Drawer
+      variant="permanent"
+      open={isOpen}
+      sx={{
+        width: 300,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: { width: 300, boxSizing: 'border-box' }
+      }}
     >
-      <Interaction elementID={elementID} mode={mode} />
-      <Text elementID={elementID} mode={mode} />
-    </div>
+      <Toolbar />
+
+      <Box
+        sx={{  overflow: 'auto' }}
+      >
+        <Typography
+          variant='h6'
+          sx={{ margin: 'auto', textAlign: 'center', height: '48px', alignContent: 'center' }}
+        >
+          {label}
+        </Typography>
+
+        <Divider />
+
+        <List>
+          {Children.map(children, child => 
+            <Fragment>
+              {child}
+            </Fragment>
+          )}
+        </List>
+      </Box>
+    </Drawer>
   );
 }
 
-export function ChapterButton({ elementID, mode, removeChapter }: { elementID: types.ElementID, mode: types.ComponentMode, removeChapter: (index: number) => void }) {
+function ChapterButton({ selected, elementID, isDisabled, mode, progress, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, progress: number, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
-  const [ state, setState ] = useState(helpers.getElement(elementID).state);
-
-  useEffect(() => {
-    functions.load({ learn: elementID.learn, chapterIndex: 0, elementIndex: 0, keys: elementID.keys });
-
-    window.addEventListener(`updateChapter${elementID.chapterIndex}`, (e: Event) => {
-      setState((e as CustomEvent).detail);
-    });
-  }, []);
 
   return (
-    <button
-      id={`chapterButton${elementID.chapterIndex}`}
-      className='chapterButton'
-      title={`Load chapter ${elementID.chapterIndex + 1}`}
-      onClick={(e) => functions.load(elementID)}
-      disabled={state == types.ElementState.Locked}
-      data-iscomplete="false"
-      data-isselected="false"
+    <ListItem
+      secondaryAction={ mode == ComponentMode.Edit ? <IconButton><MoreVert /></IconButton> : null }
     >
-      {(mode == types.ComponentMode.Edit ? (
-        <input
-          type="text"
-          name="chapterTitle"
-          value={title}
-          onInput={(e) => {
-            setTitle(e.currentTarget.value);
-            helpers.getChapter(elementID).title = e.currentTarget.value;
-          }}
-        />
-      ) : (
-        <h4>
-          {title}
-        </h4>
-      ))}
-
-      <Image
-        id={`chapterCheckmark${elementID.chapterIndex}`}
-        className="checkmark"
-        src="/icons/checkmark.png"
-        alt="Checkmark"
-        data-iscomplete="false"
-      />
-      
-      {mode == types.ComponentMode.Edit && (
-        <button
-          onClick={(e) => {
-            removeChapter(elementID.chapterIndex);
-          }}
-        >
-          Delete
-        </button>
-      )}
-    </button>
-  );
-}
-
-export function LearnPageContent({ slug, skill, mode, apiKey }: { slug: string, skill: types.Skill, mode: types.ComponentMode, apiKey: string }) {
-  const [ chapters, setChapters ] = useState(skill.learn.chapters);
-
-  function addChapter() {
-    const newChapters = chapters;
-
-    newChapters.push({
-      title: "New Chapter",
-      elements: [
-        {
-          type: types.ElementType.ShortAnswer,
-          text: "New element",
-          value: { correctAnswer: "" },
-          state: types.ElementState.Complete
-        }
-      ]
-    });
-    setChapters(newChapters);
-
-    skill.learn.chapters = newChapters;
-  }
-
-  function removeChapter(index: number) {
-    const newChapters = chapters;
-    
-    chapters.splice(index, 1);
-    setChapters(newChapters);
-
-    skill.learn.chapters = newChapters;
-  }
-
-  if (mode == types.ComponentMode.View) {
-    for (let i = 0; i < chapters.length; ++i) {
-      for (let j = 0; j < chapters[i].elements.length; ++j) {
-        if (i != 0 || j != 0) {
-          chapters[i].elements[j].state = types.ElementState.Locked;
-        }
-      }
-    }
-  }
-
-  return (
-    <div className="content">
-      <Sidebar label="Chapters">
-        {chapters.map((chapter, index) => (
-          <ChapterButton
-            key={index}
-            elementID={{ learn: skill.learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] }}
-            mode={mode}
-            removeChapter={removeChapter}
-          />
-        ))}
-
-        {mode == types.ComponentMode.Edit && (
-          <button
-            onClick={(e) => addChapter()}
-          >
-            New Chapter
-          </button>
-        )}
-
-        {mode == types.ComponentMode.Edit && (
-          <button
-            onClick={async (e) => { 
-              await saveSkillLearn(slug, skill.learn);
-            }}
-          >
-            Save
-          </button>
-        )}
-      </Sidebar>
-
-      <div className="elements">
-        {chapters.map((chapter, cIndex) => (
-          chapter.elements.map((element, eIndex) => (
-            <Element
-              key={`${cIndex}:${eIndex}`}
-              elementID={{ learn: skill.learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] }}
-              mode={mode}
-            />
-          ))
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Interaction({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ type, setType ] = useState(helpers.getElement(elementID).type);
-  const [ isDisabled, setIsDisabled ] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener(`updateAssessment${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setIsDisabled((e as CustomEvent).detail);
-    });
-  }, []);
-
-  function setTypeAndUpdate(type: types.ElementType) {
-    setType(type);
-    helpers.getElement(elementID).type = type;
-
-    switch (type) {
-      case types.ElementType.ShortAnswer:
-        helpers.getElement(elementID).value = {
-          correctAnswer: ""
-        };
-        break;
-        
-      case types.ElementType.MultipleChoice:
-        helpers.getElement(elementID).value = {
-          items: [],
-          type: types.MultipleChoiceType.Radio,
-          needsAllCorrect: false
-        };
-        break;
-    }
-  }
-
-  const typeSwitcher = (
-    <label>
-      Type:
-
-      <select
-        name="selectType"
-        value={type}
-        onChange={(e) => setTypeAndUpdate(e.currentTarget.value as types.ElementType)}
-      >
-        {(Object.values(types.ElementType).map((item, index) => (
-          <option
-            key={index}
-            value={item}
-          >
-            {item}
-          </option>
-        )))}
-      </select>
-    </label>
-  );
-
-  let interaction: JSX.Element = <></>;
-
-  switch (type) {
-    case types.ElementType.ShortAnswer:
-      interaction = <ShortAnswer elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.MultipleChoice:
-      interaction = <MultipleChoice elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.TrueOrFalse:
-      interaction = <TrueOrFalse elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Matching:
-      interaction = <Matching elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Ordering:
-      interaction = <Ordering elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Files:
-      interaction = <Files elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Drawing:
-      interaction = <Drawing elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Graph:
-      interaction = <Graph elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.DAW:
-      interaction = <DAW elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Codespace:
-      interaction = <Codespace elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.Engine:
-      interaction = <Engine elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-
-    case types.ElementType.IFrame:
-      interaction = <IFrame elementID={elementID} isDisabled={isDisabled} mode={mode} />;
-      break;
-  }
-
-  return (
-    <div
-      className="interaction"
-      data-type={type}
-    >
-      {mode == types.ComponentMode.Edit && typeSwitcher}
-
-      {interaction}
-    </div>
-  )
-}
-
-function ShortAnswer({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ correctAnswer, setCorrectAnswer ] = useState(helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer);
-
-  return (
-    <div
-      className="smallInteraction"
-    >
-      <form
-        action={(e) => functions.submitShortAnswer(e, elementID)}
-      >
-        <input
-          id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-          type="text"
-          name="response"
-          placeholder="Write your response here. Press enter to submit"
-          autoComplete="off"
-          disabled={isDisabled}
-        />
-
-        {mode == types.ComponentMode.Edit && (
-          <label>
-            Correct Answer:
-
-            <input
-              type="text"
-              name="correctAnswer"
-              autoComplete="off"
-              disabled={isDisabled}
-              value={correctAnswer}
-              onInput={(e) => {
-                setCorrectAnswer(e.currentTarget.value)
-                helpers.getInteractionValue<types.ShortAnswer>(elementID).correctAnswer = e.currentTarget.value;
-              }}
-            />
-          </label>
-        )}
-      </form>
-    </div>
-  );
-}
-
-function MultipleChoice({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ type, setType ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).type);
-  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect);
-
-  const [ items, setItems ] = useState(helpers.getInteractionValue<types.MultipleChoice>(elementID).items);
-
-  /*if (mode != types.ComponentMode.Edit) {
-    setItems(items.sort(item => Math.random() - 0.5));
-  }*/
-
-  function addItem() {
-    const newItems = items;
-    newItems.push({
-      value: "New Multiple Choice Item",
-      isCorrect: false
-    });
-    setItems(newItems);
-  }
-
-  function removeItem(index: number) {
-    const newItems = items;
-    newItems.splice(index, 1);
-    setItems(newItems);
-  }
-
-  return (
-    <div
-      className="smallInteraction"
-    >
-      <form
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        className='multipleOptions'
-        action={(e) => functions.submitMultipleChoice(e, elementID)}
-      >
-        {items.map((item, index) => (
-          <MultipleChoiceItem
-            key={index}
-            elementID={elementID}
-            isDisabled={isDisabled}
-            mode={mode}
-            item={item}
-            index={index}
-            type={type}
-          />
-        ))}
-
-        {mode == types.ComponentMode.Edit && (
-          <label>
-            Type:
-
-            <select
-              name="selectType"
-              value={type}
-              onChange={(e) => setType(e.currentTarget.value as types.MultipleChoiceType)}
-            >
-              {(Object.values(types.MultipleChoiceType).map((item, index) => (
-                <option
-                  key={index}
-                  value={item}
-                >
-                  {item}
-                </option>
-              )))}
-            </select>
-          </label>
-        )}
-        
-        {mode == types.ComponentMode.Edit && (
-          <label>
-            Needs All Correct:
-
-            <input
-              type="checkbox"
-              name="needsAllCorrect"
-              id="needsAllCorrect"
-              checked={needsAllCorrect}
-              onInput={(e) => {
-                setNeedsAllCorrect(e.currentTarget.checked);
-                helpers.getInteractionValue<types.MultipleChoice>(elementID).needsAllCorrect = e.currentTarget.checked;
-              }}
-            />
-          </label>
-        )}
-
-        <input
-          type="submit"
-          name="submit"
-          disabled={isDisabled}
-        />
-      </form>
-    </div>
-  );
-}
-
-function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.MultipleChoiceItem, index: number, type: types.MultipleChoiceType }) {
-  const [ value, setValue ] = useState(item.value);
-  const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
-
-  return (
-    <label>
-      <input
-        type={type}
-        name="response"
-        id={value}
-        value={isCorrect.toString()}
+      <ListItemButton
         disabled={isDisabled}
-      />
-
-      {(mode == types.ComponentMode.Edit ? (
-        <div>
-          <label>
-            Is Correct:
-            
-            <input
-              type="checkbox"
-              name="isCorrect"
-              checked={isCorrect}
-              onInput={(e) => {
-                setIsCorrect(e.currentTarget.checked);
-
-                if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].isCorrect = e.currentTarget.checked;
-                }
-              }}
-            />
-          </label>
-          
-          <label>
-            Value:
-
-            <input
-              type="text"
-              name="value"
-              value={value}
-              onInput={(e) => {
-                setValue(e.currentTarget.value);
-                
-                if (mode == types.ComponentMode.Edit) {
-                  helpers.getInteractionValue<types.MultipleChoice>(elementID).items[index].value = e.currentTarget.value;
-                }
-              }}
-            />
-          </label>
-        </div>
-      ) : (
-        <Markdown>
-          {value}
-        </Markdown>
-      ))}
-    </label>
-  );
-}
-
-function TrueOrFalse({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect);
-
-  return (
-    <div
-      className="smallInteraction"
-    >
-      <form
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        className='multipleOptions'
-        action={(e) => functions.submitTrueOrFalse(e, elementID)}
+        selected={selected}
+        onClick={onClick}
       >
-        <label>
-          <input
-            type="radio"
-            name="response"
-            id="true"
-            value="true"
-            disabled={isDisabled}
-            checked={mode == types.ComponentMode.Edit && isCorrect}
-            onChange={(e) => {
-              setIsCorrect(true);
-
-              if (mode == types.ComponentMode.Edit) {
-                helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect = true;
-              }
-            }}
-          />
-
-          True
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            name="response"
-            id="false"
-            value="false"
-            disabled={isDisabled}
-            checked={mode == types.ComponentMode.Edit && !isCorrect}
-            onChange={(e) => {
-              setIsCorrect(false);
-              
-              if (mode == types.ComponentMode.Edit) {
-                helpers.getInteractionValue<types.TrueOrFalse>(elementID).isCorrect = false;
-              }
-            }}
-          />
-
-          False
-        </label>
-
-        <input
-          type="submit"
-          name="submit"
-          disabled={isDisabled}
+        <ListItemText
+          primary={title}
+          secondary={mode == ComponentMode.View ? <LinearProgress variant="determinate" value={progress * 100} /> : <Fragment></Fragment> }
         />
-      </form>
-    </div>
+      </ListItemButton>
+    </ListItem>
   );
 }
 
-function Matching({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<types.Matching>(elementID).items);
-  
-  //const shuffledItemsLeft = useState(items.map(item => item.leftSide).sort(item => Math.random() - 0.5))[0];
-  //const shuffledItemsRight = useState(items.map(item => item.rightSide).sort(item => Math.random() - 0.5))[0];
-  
+export function LearnContent({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   return (
-    <div
-      className="smallInteraction"
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
     >
-      {/*<Reorder>
-        {shuffledItemsLeft.map((item, index) => (
-          <li
-            key={index}
-          >
-            {item}
-          </li>
-        ))}
-      </Reorder>
-
-      <Reorder>
-        {shuffledItemsRight.map((item, index) => (
-          <li
-            key={index}
-          >
-            {item}
-          </li>
-        ))}
-      </Reorder>*/}
-    </div>
+      <LearnContentNoCookies
+        slug={slug}
+        title={title}
+        learn={learn}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></LearnContentNoCookies>
+    </CookiesProvider>
   );
 }
 
-function Ordering({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ items, setItems ] = useState(helpers.getInteractionValue<types.Ordering>(elementID).correctOrder);
+function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const [ chapters, setChapters ] = useState(learn.chapters);
+  const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
+  const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
+  const [ elementsCompleted, setElementsCompleted ] = useState(Array<boolean>(learn.chapters.reduce((sum, chapter) => sum + chapter.elements.length, 0)).fill(mode != ComponentMode.View));
+  const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
+  const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
+  const [ snackbarText, setSnackbarText ] = useState("");
+  const [ isThinking, setIsThinking ] = useState(false);
+  const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
 
-  /*if (mode != types.ComponentMode.Edit) {
-    setItems(items.sort(item => Math.random() - 0.5));
-  }*/
-
-  return (
-    <div
-      className="smallInteraction"
-    >
-      {/*<Reorder>
-        {items.map((item, index) => (
-          <li
-            key={index}
-          >
-            {item}
-          </li>
-        ))}
-      </Reorder>*/}
-    </div>
-  );
-}
-
-function Files({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ files, setFiles ] = useState(helpers.getInteractionValue<types.Files>(elementID).files);
-
-  function addFile() {
-    const newFiles = files;
-    newFiles.push({
-      source: "",
-      isDownloadable: false
-    });
-    setFiles(newFiles);
+  function setText(value: string) {
+    const newTexts = texts;
+    newTexts[helpers.getAbsoluteIndex(currentElement)] = value;
+    setTexts(newTexts);
+    
+    if (cookies.autoReadAloud)
+      readAloud();
   }
 
-  function removeFile(index: number) {
-    const newFiles = files;
-    newFiles.splice(index, 1);
-    setFiles(newFiles);
+  function setIsThinkingSmart(isThinking: boolean) {
+    setIsThinking(isThinking);
+    setIsNavigationEnabled(!isThinking);
   }
 
-  return (
-    <div
-      className="smallInteraction"
-    >
-      {files.map((item, index) => (
-        <FileItem
-          key={index}
-          elementID={elementID}
-          isDisabled={isDisabled}
-          mode={mode}
-          item={item}
-          index={index}
-        />
-      ))}
-    </div>
-  );
-}
+  async function readAloud() {
+    const request = {
+      input: { text: texts[helpers.getAbsoluteIndex(currentElement)] },
+      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
+      audioConfig: { audioEncoding: 'MP3' }
+    };
 
-function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode, item: types.File, index: number }) {
-  const [ source, setSource ] = useState(item.source);
-  const [ isDownloadable, setIsDownloadable ] = useState(item.isDownloadable);
-  
-  const fileType = source.substring(source.length - 3) == "png" ? ("png") :
-  source.substring(source.length - 3) == "mp4" ? ("mp4") :
-  source.substring(source.length - 3) == "mp3" ? ("mp3") : "other";
+    const stream = await speakText();
 
-  switch (fileType) {
-    case "png":
-      return (
-        <Image
-          src={item.source}
-          alt={item.source}
-        />
-      );
-
-    case "mp4":
-      return (
-        <video
-          src={item.source}
-          controls
-        ></video>
-      );
-
-    case "mp3":
-      return (
-        <audio
-          src={item.source}
-          controls
-        ></audio>
-      );
-
-    case "other":
-      return (
-        <></>
-      );
+    stream.on('data', (response) => { console.log(response) });
+    stream.on('error', (err) => { throw(err) });
+    stream.on('end', () => { });
+    stream.write(request);
+    stream.end();
   }
-}
 
-function Drawing({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <div
-      className="fullscreenInteraction"
-    >
-      
-    </div>
-  );
-}
+  async function toggleAutoReadAloud() {
+    setCookie('autoReadAloud', !cookies.autoReadAloud, { path: '/' });
+  }
 
-function Graph({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <div
-      className="fullscreenInteraction"
-      onLoad={(e) => functions.loadGraph(elementID)}
-    ></div>
-  );
-}
+  async function reset() {
+    setText(helpers.getElement(currentElement).text);
+  }
 
-function DAW({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  return (
-    <div
-      className="fullscreenInteraction"
-    >
-      
-    </div>
-  );
-}
-
-function Codespace({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ language, setLanguage ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).language);
-  const [ content, setContent ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).content);
-  const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).isSimplified);
-  const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<types.Codespace>(elementID).correctOutput);
-
-  const [ output, setOutput ] = useState("Press \"Run\" to execute your code. Any outputs or errors will be printed here");
-
-  async function executeCode() {
-    setOutput("Running...");
-    helpers.startThinking(elementID);
-
-    const templateify = (text: string) =>
-      `using System;
-
-      public class Program
-      {
-        public static void Main(string[] args)
-        {
-          ${text}
-        }
-      }`;
-
-    const response = await ky.post('https://onecompiler-apis.p.rapidapi.com/api/v1/run', {
-      headers: {
-        'x-rapidapi-key': elementID.keys[0],
-        'x-rapidapi-host': 'onecompiler-apis.p.rapidapi.com',
-        'Content-Type': 'application/json',
-      },
-      json: {
-        language: language,
-        stdin: "",
-        files: [
-          {
-            name: "code.cs",
-            content: isSimplified ? templateify(content) : content
-          }
-        ]
-      }
-    }).json() as types.CodeResult;
-
-    const output = `${response.stdout ?? ''}\n${response.stderr ?? ''}`;
-    setOutput(output.trim() == '' ? 'Program did not output anything' : output);
-
-    const feedback = await verifyCodespace(helpers.getElement(elementID).text, content, response, helpers.getInteractionValue<types.Codespace>(elementID));
-    helpers.setText(elementID, feedback.feedback);
-
-    functions.readAloud(elementID);
-
-    if (feedback.isValid) {
-      functions.complete(elementID);
+  function complete(isComplete: boolean) {
+    if (mode == ComponentMode.View && !elementsCompleted[helpers.getAbsoluteIndex(currentElement)]) {
+      setSnackbarText("Good job! Click the next page to continue");
+      setIsSnackbarOpen(true);
     }
+
+    const newElementsCompleted = elementsCompleted;
+    newElementsCompleted[helpers.getAbsoluteIndex(currentElement)] = isComplete;
+    setElementsCompleted(newElementsCompleted);
   }
 
   return (
-    <div
-      className="fullscreenInteraction"
-    >
-      {mode == types.ComponentMode.Edit && (
-        <label>
-          Language:
+    <Fragment>
+      <Dialog
+        open={mode == ComponentMode.View && elementsCompleted.filter(element => element).length == elementsCompleted.length}
+      >
+        <DialogTitle>
+          Lesson Complete!
+        </DialogTitle>
 
-          <select
-            name="selectType"
-            value={language}
-            onChange={(e) => {
-              setLanguage(e.currentTarget.value as types.CodespaceLanguage);
-              helpers.getInteractionValue<types.Codespace>(elementID).language = e.currentTarget.value as types.CodespaceLanguage;
-            }}
+        <DialogContent>
+          <DialogContentText>
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+          </DialogContentText>
+          
+          <DialogContentText>
+            {"Next up: Practice this skill to earn a higher score on the rubric."}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            href="./practice"
           >
-            {(Object.values(types.CodespaceLanguage).map((item, index) => (
-              <option
-                key={index}
-                value={item}
-              >
-                {item}
-              </option>
-            )))}
-          </select>
-        </label>
-      )}
+            Practice Skill
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-      {mode == types.ComponentMode.Edit && (
-        <label>
-          Is Simplified:
-
-          <input
-            type="checkbox"
-            name="isSimplified"
-            id="isSimplified"
-            checked={isSimplified}
-            onInput={(e) => {
-              setIsSimplified(e.currentTarget.checked);
-              helpers.getInteractionValue<types.Codespace>(elementID).isSimplified = e.currentTarget.checked;
-            }}
-          />
-        </label>
-      )}
-
-      <Editor
-        defaultLanguage={language}
-        defaultValue={content}
-        theme="vs-dark"
-        onChange={(e) => {
-          setContent(e ?? '');
-
-          if (mode == types.ComponentMode.Edit) {
-            helpers.getInteractionValue<types.Codespace>(elementID).content = e ?? '';
-          }
-        }}
-        width="60%"
-        height="100%"
+      <Header
+        title={title}
+        mode={mode as ComponentMode}
+        type="Learn"
+        progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length}
+        hideLogo={hideLogo}
       />
 
-      <div
-        className="codeEditorRight"
+      <Box
+        display='flex'
+        sx={{ height: '100vh' }}
       >
-        <p>
-          {output}
-        </p>
-
-        <button
-          onClick={executeCode}
+        <Sidebar
+          label="Chapters"
         >
-          Run
-        </button>
-      </div>
+          {chapters.map((chapter, index) => {
+            const chapterFirstElement = { learn: learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] };
 
+            return (
+              <ChapterButton
+                isDisabled={!isNavigationEnabled || (index != 0 && !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1])}
+                selected={currentElement.chapterIndex == index}
+                key={index}
+                elementID={chapterFirstElement}
+                mode={mode}
+                progress={elementsCompleted.reduce((sum, element, index) => sum += element && (index >= helpers.getAbsoluteIndex(chapterFirstElement) && index < helpers.getAbsoluteIndex(chapterFirstElement) + chapter.elements.length) ? 1 : 0, 0) / chapter.elements.length}
+                onClick={(e) => {
+                  setCurrentElement(chapterFirstElement);
+                }}
+              />
+            );
+          })}
+
+          {mode == ComponentMode.Edit && (
+            <Button
+              variant="contained"
+            >
+              New Chapter
+            </Button>
+          )}
+        </Sidebar>
+
+        <Stack
+          sx={{ flexGrow: 1 }}
+        >
+          <Toolbar />
+
+          <Interaction
+            elementID={currentElement}
+            isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
+            mode={mode}
+            setText={setText}
+            setIsThinking={setIsThinkingSmart}
+            setComplete={complete}
+          />
+
+          {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
+            const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
+
+            return (
+              <Box
+                sx={{ display: cIndex == currentChapter && eIndex == currentElement ? 'block' : 'none' }}
+                key={helpers.getAbsoluteIndex(elementID)}
+              >
+                <Interaction
+                  elementID={elementID}
+                  isDisabled={!interactionsEnabled[helpers.getAbsoluteIndex(elementID)]}
+                  setText={setText}
+                  mode={mode}
+                />
+              </Box>
+            );
+          }))*/}
       
-      {mode == types.ComponentMode.Edit && (
-        <label>
-          Correct Output:
+          <Text
+            elementID={currentElement}
+            text={texts[helpers.getAbsoluteIndex(currentElement)]}
+            mode={mode}
+            isThinking={isThinking}
+            setText={setText}
+            setIsThinking={setIsThinkingSmart}
+            readAloud={readAloud}
+            toggleAutoReadAloud={toggleAutoReadAloud}
+            reset={reset}
+            isNavigationEnabled={isNavigationEnabled}
+            elementsCompleted={elementsCompleted}
+            setCurrentElement={setCurrentElement}
+            doReadAloud={cookies.autoReadAloud}
+          />
 
-          <textarea
-            name="correctOutput"
-            value={correctOutput}
-            rows={20}
-            cols={30}
-            onChange={(e) => {
-              setCorrectOutput(e.currentTarget.value);
-              helpers.getInteractionValue<types.Codespace>(elementID).correctOutput = e.currentTarget.value;
+          <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            autoHideDuration={3000}
+            open={isSnackbarOpen}
+            message={snackbarText}
+            onClose={(e, reason?) => {
+              if (reason === 'clickaway') {
+                return;
+              }
+
+              setIsSnackbarOpen(false);
             }}
           />
-        </label>
-      )}
-    </div>
+        
+          {mode == ComponentMode.Edit && (
+            <Tooltip title="Delete this element">
+              <Chip
+                icon={<Delete />}
+                label="Delete"
+              />
+            </Tooltip>
+          )}
+        </Stack>
+      </Box>
+    </Fragment>
   );
 }
 
-function Engine({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
+function Interaction(props: InteractionProps) {
+  const Component = interactionMap[helpers.getElement(props.elementID).type].Component;
+
   return (
-    <iframe
-      className="fullscreenInteraction"
-      src="https://editor.godotengine.org/releases/latest/"
-    ></iframe>
+    <Component
+      {...props}
+    />
   );
 }
 
-function IFrame({ elementID, isDisabled, mode }: { elementID: types.ElementID, isDisabled: boolean, mode: types.ComponentMode }) {
-  const [ source, setSource ] = useState(helpers.getInteractionValue<types.IFrame>(elementID).source);
+function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean }) {
+  async function rephrase() {
+    setIsThinking(true);
 
-  return (
-    <div
-      className="fullscreenInteraction"
-    >
-      <iframe
-        id={`interaction${helpers.getAbsoluteIndex(elementID)}`}
-        className="fullscreenInteraction"
-        src={source}
-      ></iframe>
-
-      {mode == types.ComponentMode.Edit && (
-        <label>
-          Source:
-
-          <input
-            type="text"
-            name="source"
-            autoComplete="off"
-            disabled={isDisabled}
-            value={source}
-            onInput={(e) => {
-              setSource(e.currentTarget.value);
-              helpers.getInteractionValue<types.IFrame>(elementID).source = e.currentTarget.value;
-            }}
-          />
-        </label>
-      )}
-    </div>
-  );
-}
-
-let globalIndex = 0;
-
-function Text({ elementID, mode }: { elementID: types.ElementID, mode: types.ComponentMode }) {
-  const [ text, setText ] = useState(helpers.getElement(elementID).text);
-  const [ elements, setElements ] = useState(helpers.getChapter(elementID).elements);
-
-  useEffect(() => {
-    window.addEventListener(`updateText${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setText((e as CustomEvent).detail);
+    const newText = await generateText({
+      model: ModelType.Quick,
+      prompt:
+      `TASK:
+      Rephrase a given TEXT. 
+      
+      TEXT:
+      ${text}`,
+      systemInstruction: `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.`
     });
-  }, []);
-
-  function addElement() {
-    const newElements = elements;
-    newElements.push({
-      type: types.ElementType.ShortAnswer,
-      text: "New element",
-      value: { correctAnswer: "" },
-      state: types.ElementState.Complete
-    });
-    setElements(newElements);
-  }
-
-  function removeElement(index: number) {
-    const newElements = elements;
-    newElements.splice(index, 1);
-    setElements(newElements);
+    
+    setText(newText);
+    setIsThinking(false);
   }
 
   globalIndex = 0;
 
   return (
-    <div className="textBox">
-      <div
-        id={`text${helpers.getAbsoluteIndex(elementID)}`}
-        data-lastnonthinkingtext={helpers.getElement(elementID).text}
-        className="text"
+    <Card
+      id={`text${helpers.getAbsoluteIndex(elementID)}`}
+    >
+      <CardContent
+        style={{ height: '20vh', overflowY: 'auto' }}
       >
-        {(mode == types.ComponentMode.Edit ? (
-          <textarea
-            name="elementText"
+        {isThinking && <LinearProgress />}
+
+        {(mode == ComponentMode.Edit ? (
+          <TextField
+            label="Text"
+            multiline
             value={text}
-            rows={4}
-            cols={120}
             onChange={(e) => {
-              setText(e.currentTarget.value);
-              helpers.getElement(elementID).text = e.currentTarget.value;
+              setText(e.target.value);
+              helpers.getElement(elementID).text = e.target.value;
             }}
           />
         ) : (
-          <Markdown
-            /*components={{
-              strong({ node, children }) {
-                return <strong><WordWrapper text={String(children)} /></strong>
-              },
-              i({ node, children }) {
-                return <i><WordWrapper text={String(children)} /></i>
-              },
-              p({ node, children }) {
-                return <WordWrapper text={String(children)} />
-              },
-              li({ node, children }) {
-                return <li><WordWrapper text={String(children)} /></li>
-              },
-              code({ node, children }) {
-                return <code><WordWrapper text={String(children)} /></code>
-              }
-            }}*/
-          >
-            {text}
+          <Markdown>
+            {isThinking ? "Thinking..." : text}
           </Markdown>
         ))}
-      </div>
+      </CardContent>
 
-      <div className="buttons">
-        <div className="col1">
-          {elements.map((element, index) => (
-            <Dot
-              key={index}
-              elementID={{ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: index, keys: elementID.keys }}
+      <CardActions
+        sx={{ justifyContent: 'space-between' }}
+      >
+        <Pagination
+          count={helpers.getChapter(elementID).elements.length}
+          page={elementID.elementIndex + 1}
+          disabled={!isNavigationEnabled}
+          renderItem={(item) => (
+            <PaginationItem
+              {...item}
+              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || (!elementsCompleted[helpers.getAbsoluteIndex({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: 0, keys: elementID.keys }) + (item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
+              onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
             />
-          ))}
+          )}
+        />
 
-          {mode == types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => addElement()}
-            >
-              New
-            </button>
-          )}
-        </div>
+        <Stack
+          direction="row"
+          spacing={1}
+        >
+          <Tooltip title="Rephrase this text in simpler terms">
+            <Chip
+              icon={<AutoAwesome />}
+              label="Rephrase"
+              onClick={(e) => rephrase()}
+              disabled={isThinking}
+            />
+          </Tooltip>
 
-        <div className="col2">
-          {mode != types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => functions.rephrase(elementID)}
-              title="Rephrase text"
-            >
-              <Image
-                src="/icons/sparkle.png"
-                width={25}
-                height={25}
-                alt="Rephrase"
-              />
-              Rephrase
-            </button>
-          )}
-          
-          {mode != types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => functions.readAloud(elementID)}
-              title="Read text aloud"
-            >
-              <Image
-                src="/icons/speaker.png"
-                width={25}
-                height={25}
-                alt="Read Aloud"
-              />
-              Read Aloud
-            </button>
-          )}
+          <Tooltip title="Read this text out loud">
+            <Chip
+              icon={<VolumeUp />}
+              label="Read Aloud"
+              onClick={(e) => readAloud()}
+              disabled={isThinking}
+            />
+          </Tooltip>
 
-          {mode != types.ComponentMode.Edit && (
-            <button
-              onClick={(e) => functions.reset(elementID)}
-              title="Reset text and interaction"
-            >
-              <Image
-                src="/icons/refresh.png"
-                width={25}
-                height={25}
-                alt="Reset"
-              />
-              Reset
-            </button>
-          )}
+          <Tooltip title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}>
+            <Chip
+              icon={doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
+              label={`Turn ${doReadAloud ? "Off" : "On"} Auto Read`}
+              onClick={(e) => toggleAutoReadAloud()}
+              disabled={isThinking}
+            />
+          </Tooltip>
 
-          {mode == types.ComponentMode.Edit && (
-            <div className="col2">
-              <button
-                onClick={(e) => removeElement(elementID.elementIndex)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+          <Tooltip title="Reset this element back to its original state">
+            <Chip
+              icon={<Refresh />}
+              label="Reset"
+              onClick={(e) => reset()}
+              disabled={isThinking}
+            />
+          </Tooltip>
+
+          <Tooltip title="Bring this text to the main focus">
+            <Chip
+              icon={<Fullscreen />}
+              label="Fullscreen"
+              onClick={(e) => {}}
+              disabled={isThinking}
+            />
+          </Tooltip>
+        </Stack>
+      </CardActions>
+    </Card>
   );
 }
 
-function WordWrapper({ text }: { text: string }) {
+function TypeSwitcher({ elementID }: { elementID: ElementID }) {
+  const [ type, setType ] = useState(helpers.getElement(elementID).type);
+
+  function setTypeAndUpdate(type: string) {
+    setType(type);
+    helpers.getElement(elementID).type = type;
+    helpers.getElement(elementID).value = interactionMap[type].defaultValue;
+  }
+
   return (
-    <>
-      {text.split(/\s+/).map((word, i) => (
+    <FormControl
+      size="small"
+    >
+      <InputLabel id="type-label">Type</InputLabel>
+
+      <Select
+        labelId="type-label"
+        value={type}
+        label="Type"
+        onChange={(e) => setTypeAndUpdate(e.target.value)}
+      >
+        {(Object.values(interactionMap).map((item, index) => (
+          <MenuItem
+            key={index}
+            value={item.id}
+          >
+            {item.prettyName}
+          </MenuItem>
+        )))}
+      </Select>
+    </FormControl>
+  );
+}
+
+
+
+// Miscellaneous.
+
+let globalIndex = 0;
+
+function WordWrapper({ children }: { children?: React.ReactNode }) {
+  async function define(word: string) {
+    const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word);
+  
+    if (!response.ok) {
+      console.error(`Could not define ${word}`);
+    }
+
+    const data = JSON.parse(await response.json());
+    // TODO: Return defintion in dialog box
+  }
+
+  return (
+    <Fragment>
+      {/*{text.split(/\s+/).map((word, i) => (
         <span
           key={i}
           className="word"
-          onDoubleClick={(e) => functions.define(word)}
+          onDoubleClick={(e) => define(word)}
           title="Double click to define this word"
           style={{"--index": `${globalIndex++ / 8}s`} as React.CSSProperties}
         >
           {word}{" "}
         </span>
-      ))}
-    </>
+      ))}*/}
+    </Fragment>
   );
 }
 
-function Dot({ elementID }: { elementID: types.ElementID }) {
-  const [ state, setState ] = useState(helpers.getElement(elementID).state);
-
-  useEffect(() => {
-    window.addEventListener(`updateDots${helpers.getAbsoluteIndex(elementID)}`, (e: Event) => {
-      setState((e as CustomEvent).detail);
-    });
-  }, []);
-
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
   return (
-    <button
-      className={`dot dot${helpers.getAbsoluteIndex(elementID)}`}
-      onClick={(e) => functions.load(elementID)}
-      title={`Load section ${elementID.elementIndex + 1}`}
-      disabled={state == types.ElementState.Locked}
-      data-iscomplete="false"
-      data-isselected="false"
-    ></button>
+    <Stack
+      sx={{ display: 'flex', alignItems: 'center' }}
+      style={{ margin: 'auto' }}
+    >
+      <LinearProgress
+        {...props}
+      />
+
+      <Typography
+        variant="body2"
+      >
+        {`${Math.round(props.value)}% Complete`}
+      </Typography>
+    </Stack>
   );
 }
 
 export function CreateSkillButton() {
   return (
-    <button
+    <Button
+      variant="contained"
+      startIcon={<Psychology />}
       onClick={async (e) => {
         const newSkill = await createSkill();
-        window.open(`https://www.myskillstudy.com/learn/skills/${newSkill[1]}?mode=edit`);
+        window.open(`./skills/${newSkill[1]}?mode=edit`);
       }}
     >
       Skill
-    </button>
+    </Button>
   );
 }
 
 export function CreateProjectButton() {
   return (
-    <button
+    <Button
+      variant="contained"
+      startIcon={<Assignment />}
       onClick={async (e) => {
         const newProject = await createProject();
-        window.open(`https://www.myskillstudy.com/learn/projects/${newProject[1]}?mode=edit`);
+        window.open(`./projects/${newProject[1]}?mode=edit`, );
       }}
     >
       Project
-    </button>
+    </Button>
   );
 }
 
 export function CreateCourseButton() {
   return (
-    <button
+    <Button
+      variant="contained"
+      startIcon={<Book />}
       onClick={async (e) => {
         const newCourse = await createCourse();
-        window.open(`https://www.myskillstudy.com/learn/courses/${newCourse[1]}?mode=edit`);
+        window.open(`./courses/${newCourse[1]}?mode=edit`);
       }}
     >
       Course
-    </button>
+    </Button>
   );
 }
 
-export function SkillTitle({ skill, mode }: { skill: types.Skill, mode: types.ComponentMode }) {
-  const [ title, setTitle ] = useState(skill.title);
-
-  const header = (
-    <h1
-      className="mainHeader"
-    >
-      {title}
-    </h1>
-  );
-
-  const input = (
-    <label>
-      Title:
-
-      <input
-        type="text"
-        name="title"
-        autoComplete="off"
-        value={title}
-        onInput={(e) => {
-          setTitle(e.currentTarget.value)
-          skill.title = e.currentTarget.value;
-        }}
-      />
-    </label>
-  );
-
-  return mode == types.ComponentMode.Edit ? input : header;
-}
-
-export function SkillDescription({ skill, mode }: { skill: types.Skill, mode: types.ComponentMode }) {
+export function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (
-    <h1
-      className="subHeader"
+    <Typography
+      variant='h6'
+      sx={{ textAlign: "center" }}
     >
       {description}
-    </h1>
+    </Typography>
   );
 
   const input = (
-    <label>
-      Description:
-
-      <input
-        type="text"
-        name="description"
-        autoComplete="off"
-        value={description}
-        onInput={(e) => {
-          setDescription(e.currentTarget.value)
-          skill.description = e.currentTarget.value;
-        }}
-      />
-    </label>
+    <TextField
+      label="Description"
+      autoComplete="off"
+      value={description}
+      onChange={(e) => {
+        setDescription(e.target.value)
+        skill.description = e.target.value;
+      }}
+    />
   );
 
-  return mode == types.ComponentMode.Edit ? input : header;
+  return mode == ComponentMode.Edit ? input : header;
+}
+
+export function ProjectDescription({ project, mode }: { project: Project, mode: ComponentMode }) {
+  const [ description, setDescription ] = useState(project.description);
+  
+  const header = (
+    <Typography
+      variant='h6'
+      sx={{ textAlign: "center" }}
+    >
+      {description}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Description"
+      autoComplete="off"
+      value={description}
+      onChange={(e) => {
+        setDescription(e.target.value)
+        project.description = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
+export function CourseDescription({ course, mode }: { course: Course, mode: ComponentMode }) {
+  const [ description, setDescription ] = useState(course.description);
+  
+  const header = (
+    <Typography
+      variant='h6'
+      sx={{ textAlign: "center" }}
+    >
+      {description}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Description"
+      autoComplete="off"
+      value={description}
+      onChange={(e) => {
+        setDescription(e.target.value)
+        course.description = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
 }

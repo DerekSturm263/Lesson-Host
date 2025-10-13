@@ -1,5 +1,10 @@
 import { Header, CreateSkillButton, CreateProjectButton, CreateCourseButton } from '@/app/lib/components';
 import { Metadata } from 'next';
+import { ComponentMode } from '../lib/types';
+
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 
 export const metadata: Metadata = {
   title: 'Create | MySkillStudy.com',
@@ -10,14 +15,29 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header />
-        <h1 className="mainHeader">Create</h1>
+        <Header
+          title={""}
+          mode={ComponentMode.Master}
+          type=""
+          progress={1}
+          hideLogo={false}
+        />
+        <Toolbar />
 
-        <div className="colButtons">
+        <Typography
+          variant='h3'
+        >
+          Create
+        </Typography>
+        
+        <Stack
+          direction="row"
+          spacing={2}
+        >
           <CreateSkillButton />
           <CreateProjectButton />
           <CreateCourseButton />
-        </div>
+        </Stack>
       </main>
     </div>
   );

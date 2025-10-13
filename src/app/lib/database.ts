@@ -1,28 +1,23 @@
 'use server'
 
 import { MongoClient, ObjectId } from 'mongodb';
-import * as types from './types';
+import { Skill, Project, Course, Learn, Practice, Implement, Certify } from '@/app/lib/types';
 
-const uri: string = process.env.MONGODB_URI ?? '';
-const client = new MongoClient(uri, {
+const client = new MongoClient(process.env.MONGODB_URI ?? '', {
   serverSelectionTimeoutMS: 120000,
   connectTimeoutMS: 120000
 });
 
-export async function getSkill(id: string): Promise<types.Skill> {
-  await client.connect();
-
+export async function getSkill(id: string): Promise<Skill> {
   const skill = await client.db('database').collection('skills').findOne(
     { _id: new ObjectId(id) }
   );
 
-  await client.close();
-
-  return skill as unknown as types.Skill;
+  return skill as unknown as Skill;
 }
 
-export async function createSkill(): Promise<[ types.Skill, ObjectId ]> {
-  const skill: types.Skill = {
+export async function createSkill(): Promise<[ Skill, ObjectId ]> {
+  const skill: Skill = {
     title: "New Skill",
     description: "",
     learn: {
@@ -31,12 +26,11 @@ export async function createSkill(): Promise<[ types.Skill, ObjectId ]> {
           title: "New Chapter",
           elements: [
             {
-              type: types.ElementType.ShortAnswer,
+              type: "",
               text: "New element",
               value: {
                 correctAnswer: ""
-              },
-              state: types.ElementState.Complete
+              }
             }
           ]
         }
@@ -48,99 +42,73 @@ export async function createSkill(): Promise<[ types.Skill, ObjectId ]> {
     implement: {
       link: ""
     },
-    study: {
+    certify: {
       link: ""
     }
   };
 
-  await client.connect();
   const result = await client.db('database').collection('skills').insertOne(skill);
-  await client.close();
 
   return [ skill, result.insertedId ];
 }
 
-export async function saveSkillLearn(id: string, learn: types.Learn) {
-  await client.connect();
-
+export async function saveSkillLearn(id: string, learn: Learn) {
   const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
     { $set: { learn: learn } }
   );
-
-  await client.close();
 }
 
-export async function getProject(id: string): Promise<types.Project> {
-  await client.connect();
-
+export async function getProject(id: string): Promise<Project> {
   const project = await client.db('database').collection('projects').findOne(
     { _id: new ObjectId(id) }
   );
 
-  await client.close();
-
-  return project as unknown as types.Project;
+  return project as unknown as Project;
 }
 
-export async function createProject(): Promise<[ types.Project, ObjectId ]> {
-  const project: types.Project = {
+export async function createProject(): Promise<[ Project, ObjectId ]> {
+  const project: Project = {
     title: "New Project",
     description: ""
   };
 
-  await client.connect();
   const result = await client.db('database').collection('projects').insertOne(project);
-  await client.close();
 
   return [ project, result.insertedId ];
 }
 
-export async function saveProject(id: string, project: types.Project) {
-  await client.connect();
-
+export async function saveProject(id: string, project: Project) {
   await client.db('database').collection('projects').updateOne(
     { _id: new ObjectId(id) },
     { $set: project }
   );
-
-  await client.close();
 }
 
-export async function getCourse(id: string): Promise<types.Course> {
-  await client.connect();
-
+export async function getCourse(id: string): Promise<Course> {
   const course = await client.db('database').collection('courses').findOne(
     { _id: new ObjectId(id) }
   );
 
-  await client.close();
-
-  return course as unknown as types.Course;
+  return course as unknown as Course;
 }
 
-export async function createCourse(): Promise<[ types.Course, ObjectId ] > {
-  const course: types.Course = {
+export async function createCourse(): Promise<[ Course, ObjectId ] > {
+  const course: Course = {
     title: "New Course",
     description: "",
     skills: [],
     projects: []
   };
 
-  await client.connect();
   const result = await client.db('database').collection('courses').insertOne(course);
-  await client.close();
 
   return [ course, result.insertedId ];
 }
 
-export async function saveCourse(id: string, course: types.Course) {
-    await client.connect();
-
+export async function saveCourse(id: string, course: Course) {
   await client.db('database').collection('courses').updateOne(
     { _id: new ObjectId(id) },
     { $set: course }
   );
-
-  await client.close();
 }
