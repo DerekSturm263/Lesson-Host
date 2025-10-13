@@ -58,10 +58,11 @@ export default async function Home() {
               Popular Courses
             </Typography>
 
-            <Chip
-              label="View All"
-              onClick={e => {}}
-            />
+            <Button
+              href="/courses"
+            >
+              View All
+            </Button>
           </Stack>
 
           <Stack
@@ -82,10 +83,11 @@ export default async function Home() {
               Popular Skills
             </Typography>
 
-            <Chip
-              label="View All"
-              onClick={e => {}}
-            />
+            <Button
+              href="/skills"
+            >
+              View All
+            </Button>
           </Stack>
 
           <Stack
@@ -106,10 +108,11 @@ export default async function Home() {
               Popular Projects
             </Typography>
 
-            <Chip
-              label="View All"
-              onClick={e => {}}
-            />
+            <Button
+              href="/projects"
+            >
+              View All
+            </Button>
           </Stack>
 
           <Stack
