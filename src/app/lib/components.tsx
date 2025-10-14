@@ -121,7 +121,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
             onChange={(e, value) => { setTabIndex(value); }}
             variant="scrollable"
             scrollButtons="auto"
-            centered={true}
+            centered
           >
             {["Link", "IFrame"].map((label, index) => (
               <Tab
@@ -161,7 +161,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               </DialogContentText>
               
               <br />
-              
+
               <DialogContentText>
                 <Link>
                   {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
