@@ -1021,7 +1021,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
 
         {(mode == ComponentMode.Edit ? (
           <TextField
-            label=""
+            hiddenLabel={true}
             multiline
             variant="filled"
             value={text}
@@ -1030,7 +1030,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
               setText(e.target.value);
               helpers.getElement(elementID).text = e.target.value;
             }}
-            sx={{ width: "100%" }}
+            fullWidth={true}
           />
         ) : (
           <Markdown>
