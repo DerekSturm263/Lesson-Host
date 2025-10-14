@@ -76,7 +76,8 @@ import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import Psychology from '@mui/icons-material/Psychology';
 import Assignment from '@mui/icons-material/Assignment';
 import Book from '@mui/icons-material/Book';
-import { CardActionArea, Rating } from '@mui/material';
+import CardActionArea from '@mui/material/CardActionArea';
+import Rating from '@mui/material/Rating';
 
 
 
@@ -1062,7 +1063,7 @@ export function CreateCourseButton() {
   );
 }
 
-function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
+export function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (
