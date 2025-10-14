@@ -1,5 +1,5 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { Header } from '@/app/lib/components';
+import { ImplementContent } from '@/app/lib/components';
 import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
 
@@ -25,11 +25,12 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header
+        <ImplementContent
+          slug={slug}
           title={skill.title}
+          implement={skill.implement}
           mode={mode as ComponentMode}
-          type="Implement"
-          progress={1}
+          apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           hideLogo={hideLogo}
         />
       </main>

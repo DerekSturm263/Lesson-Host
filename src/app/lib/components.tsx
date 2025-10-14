@@ -2,7 +2,7 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course } from '@/app/lib/types';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, Implement, Certify } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
 
@@ -76,6 +76,7 @@ import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import Psychology from '@mui/icons-material/Psychology';
 import Assignment from '@mui/icons-material/Assignment';
 import Book from '@mui/icons-material/Book';
+import { CardActionArea, Rating } from '@mui/material';
 
 
 
@@ -255,7 +256,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
   );
 }
 
-export function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
+function Sidebar({ children, label }: { children?: React.ReactNode, label: string }) {
   const [ isOpen, setIsOpen ] = useState(true);
 
   return (
@@ -538,6 +539,269 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
   );
 }
 
+export function PracticeContent({ slug, title, practice, mode, apiKey, hideLogo }: { slug: string, title: string, practice: Practice, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <PracticeContentNoCookies
+        slug={slug}
+        title={title}
+        practice={practice}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></PracticeContentNoCookies>
+    </CookiesProvider>
+  );
+}
+
+function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLogo }: { slug: string, title: string, practice: Practice, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <Fragment>
+      <Dialog
+        open={false}
+      >
+        <DialogTitle>
+          Practice Complete!
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+          </DialogContentText>
+          
+          <DialogContentText>
+            {"Next up: Implement this skill to earn a higher score on the rubric."}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            href="./implement"
+          >
+            Implement Skill
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Header
+        title={title}
+        mode={mode as ComponentMode}
+        type="Practice"
+        progress={0}
+        hideLogo={hideLogo}
+      />
+
+      <Box
+        display='flex'
+        sx={{ height: '100vh' }}
+      >
+        <Sidebar
+          label="Chapters"
+        >
+
+        </Sidebar>
+
+        <Stack
+          sx={{ flexGrow: 1 }}
+        >
+          <Toolbar />
+          
+        </Stack>
+      </Box>
+    </Fragment>
+  );
+}
+
+export function ImplementContent({ slug, title, implement, mode, apiKey, hideLogo }: { slug: string, title: string, implement: Implement, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <ImplementContentNoCookies
+        slug={slug}
+        title={title}
+        implement={implement}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></ImplementContentNoCookies>
+    </CookiesProvider>
+  );
+}
+
+function ImplementContentNoCookies({ slug, title, implement, mode, apiKey, hideLogo }: { slug: string, title: string, implement: Implement, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <Fragment>
+      <Dialog
+        open={false}
+      >
+        <DialogTitle>
+          Implementation Complete!
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+          </DialogContentText>
+          
+          <DialogContentText>
+            {"Next up: Get certified in this skill to earn the highest score on the rubric."}
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            href="./certify"
+          >
+            Certify Skill
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Header
+        title={title}
+        mode={mode as ComponentMode}
+        type="Implement"
+        progress={0}
+        hideLogo={hideLogo}
+      />
+
+      <Box
+        display='flex'
+        sx={{ height: '100vh' }}
+      >
+        <Sidebar
+          label="Chapters"
+        >
+
+        </Sidebar>
+
+        <Stack
+          sx={{ flexGrow: 1 }}
+        >
+          <Toolbar />
+          
+        </Stack>
+      </Box>
+    </Fragment>
+  );
+}
+
+export function CertifyContent({ slug, title, certify, mode, apiKey, hideLogo }: { slug: string, title: string, certify: Certify, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <CertifyContentNoCookies
+        slug={slug}
+        title={title}
+        certify={certify}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></CertifyContentNoCookies>
+    </CookiesProvider>
+  );
+}
+
+function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo }: { slug: string, title: string, certify: Certify, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <Fragment>
+      <Dialog
+        open={false}
+      >
+        <DialogTitle>
+          Certification Complete!
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+          </DialogContentText>
+          
+          <DialogContentText>
+            {"Next up: Pick another skill to start working on."}
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+
+      <Header
+        title={title}
+        mode={mode as ComponentMode}
+        type="Certify"
+        progress={0}
+        hideLogo={hideLogo}
+      />
+
+      <Box
+        display='flex'
+        sx={{ height: '100vh' }}
+      >
+        <Sidebar
+          label="Chapters"
+        >
+
+        </Sidebar>
+
+        <Stack
+          sx={{ flexGrow: 1 }}
+        >
+          <Toolbar />
+          
+        </Stack>
+      </Box>
+    </Fragment>
+  );
+}
+
+export function ProjectContent({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <ProjectContentNoCookies
+        slug={slug}
+        title={title}
+        project={project}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></ProjectContentNoCookies>
+    </CookiesProvider>
+  );
+}
+
+function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <></>
+  );
+}
+
+export function CourseContent({ slug, title, course, mode, apiKey, hideLogo }: { slug: string, title: string, course: Course, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <CourseContentNoCookies
+        slug={slug}
+        title={title}
+        course={course}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></CourseContentNoCookies>
+    </CookiesProvider>
+  );
+}
+
+function CourseContentNoCookies({ slug, title, course, mode, apiKey, hideLogo }: { slug: string, title: string, course: Course, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <></>
+  );
+}
+
 function Interaction(props: InteractionProps) {
   const Component = interactionMap[helpers.getElement(props.elementID).type].Component;
 
@@ -798,7 +1062,7 @@ export function CreateCourseButton() {
   );
 }
 
-export function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
+function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (
@@ -825,7 +1089,7 @@ export function SkillDescription({ skill, mode }: { skill: Skill, mode: Componen
   return mode == ComponentMode.Edit ? input : header;
 }
 
-export function ProjectDescription({ project, mode }: { project: Project, mode: ComponentMode }) {
+function ProjectDescription({ project, mode }: { project: Project, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(project.description);
   
   const header = (
@@ -852,7 +1116,7 @@ export function ProjectDescription({ project, mode }: { project: Project, mode: 
   return mode == ComponentMode.Edit ? input : header;
 }
 
-export function CourseDescription({ course, mode }: { course: Course, mode: ComponentMode }) {
+function CourseDescription({ course, mode }: { course: Course, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(course.description);
   
   const header = (
@@ -877,4 +1141,121 @@ export function CourseDescription({ course, mode }: { course: Course, mode: Comp
   );
 
   return mode == ComponentMode.Edit ? input : header;
+}
+
+export function SkillCard({ skill }: { skill: Skill }) {
+  return (
+    <Card
+      sx={{ maxWidth: 345 }}
+    >
+      <CardActionArea>
+        <CardContent>
+          <Typography
+            variant="h6"
+          >
+            {skill.title}
+          </Typography>
+
+          <Rating
+            name="skill-rating"
+            value={1}
+            readOnly={true}
+          />
+
+          <Typography>
+            {skill.description}
+          </Typography>
+
+          <LinearProgress
+            variant="determinate"
+            value={0}
+          />
+        </CardContent>
+      </CardActionArea>
+
+      <CardActions>
+        <Chip
+          label="Save For Later"
+        />
+      </CardActions>
+    </Card>
+  );
+}
+
+export function ProjectCard({ project }: { project: Project }) {
+  return (
+    <Card
+      sx={{ maxWidth: 345 }}
+    >
+      <CardActionArea>
+        <CardContent>
+          <Typography
+            variant="h6"
+          >
+            {project.title}
+          </Typography>
+
+          <Rating
+            name="project-rating"
+            value={1}
+            readOnly={true}
+          />
+
+          <Typography>
+            {project.description}
+          </Typography>
+
+          <LinearProgress
+            variant="determinate"
+            value={0}
+          />
+        </CardContent>
+      </CardActionArea>
+
+      <CardActions>
+        <Chip
+          label="Save For Later"
+        />
+      </CardActions>
+    </Card>
+  );
+}
+
+export function CourseCard({ course }: { course: Course }) {
+  return (
+    <Card
+      sx={{ maxWidth: 345 }}
+    >
+      <CardActionArea>
+        <CardContent>
+          <Typography
+            variant="h6"
+          >
+            {course.title}
+          </Typography>
+
+          <Rating
+            name="course-rating"
+            value={1}
+            readOnly={true}
+          />
+
+          <Typography>
+            {course.description}
+          </Typography>
+
+          <LinearProgress
+            variant="determinate"
+            value={0}
+          />
+        </CardContent>
+      </CardActionArea>
+
+      <CardActions>
+        <Chip
+          label="Save For Later"
+        />
+      </CardActions>
+    </Card>
+  );
 }

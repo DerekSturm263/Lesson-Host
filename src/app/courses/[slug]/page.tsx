@@ -1,10 +1,7 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { CourseDescription, Header } from '@/app/lib/components';
+import { CourseContent } from '@/app/lib/components';
 import { getCourse } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
-
-import Toolbar from '@mui/material/Toolbar';
-import Stack from '@mui/material/Stack';
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
@@ -28,23 +25,14 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header
+        <CourseContent
+          slug={slug}
           title={course.title}
+          course={course}
           mode={mode as ComponentMode}
-          type=""
-          progress={0}
+          apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           hideLogo={hideLogo}
         />
-        <Toolbar />
-
-        <Stack
-          spacing={2}
-        >
-          <CourseDescription
-            course={course}
-            mode={mode as ComponentMode}
-          />
-        </Stack>
       </main>
     </div>
   );
