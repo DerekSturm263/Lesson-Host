@@ -1023,11 +1023,13 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
           <TextField
             label="Text"
             multiline
+            variant="filled"
             value={text}
             onChange={(e) => {
               setText(e.target.value);
               helpers.getElement(elementID).text = e.target.value;
             }}
+            sx={{ flexGrow: 1 }}
           />
         ) : (
           <Markdown>
