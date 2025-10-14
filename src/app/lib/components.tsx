@@ -114,7 +114,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
             <Link
               variant="h6"
               sx={{ width: '300px', textDecoration: 'none' }}
-              href={`/?mode=${mode}&$hideLogo={hideLogo}`}
+              href="/"
             >
               MySkillStudy.com
             </Link>
@@ -137,7 +137,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
               <Link
                 variant="h6"
                 sx={{ textAlign: 'center', textDecoration: 'none' }}
-                href="./"
+                href={`./?mode=${mode}&$hideLogo={hideLogo}`}
               >
                 {title}
               </Link>
