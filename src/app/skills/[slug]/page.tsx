@@ -34,12 +34,13 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <div>
-      <main>
+      <head>
         <base
           href={`https://myskillstudy.com/skills/${slug}/`}
           target="_blank"
         ></base>
-
+      </head>
+      <main>
         <Header
           title={skill.title}
           mode={mode as ComponentMode}
