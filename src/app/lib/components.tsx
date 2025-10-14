@@ -131,20 +131,24 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
             {tabIndex == 0 ? (
               <>
                 <DialogContentText>
-                  {""}
+                  {"Copy the link below and send it to give anyone access this skill."}
                 </DialogContentText>
               
-                <DialogContentText>
+                <DialogContentText
+                  component="link"
+                >
                   {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false`}
                 </DialogContentText>
               </>
             ) : (
               <>
                 <DialogContentText>
-                  {""}
+                  {"Copy the code below and paste it into your website/LMS to give users access to this skill."}
                 </DialogContentText>
               
-                <DialogContentText>
+                <DialogContentText
+                  component="link"
+                >
                   {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`}
                 </DialogContentText>
               </>
@@ -152,6 +156,12 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
         </DialogContent>
 
         <DialogActions>
+          <Button
+            onClick={(e) => navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`)}
+          >
+            Copy to Clipboard
+          </Button>
+
           <Button
             onClick={(e) => setIsOpen(false)}
           >
