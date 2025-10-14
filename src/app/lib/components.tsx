@@ -78,7 +78,7 @@ import Assignment from '@mui/icons-material/Assignment';
 import Book from '@mui/icons-material/Book';
 import CardActionArea from '@mui/material/CardActionArea';
 import Rating from '@mui/material/Rating';
-import { Tab, Tabs } from '@mui/material';
+import { FormControlLabel, Switch, Tab, Tabs } from '@mui/material';
 
 
 
@@ -104,6 +104,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
+  const [ hideLogoState, setHideLogoState ] = useState(true);
 
   return (
     <Fragment>
@@ -120,6 +121,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
             onChange={(e, value) => { setTabIndex(value); }}
             variant="scrollable"
             scrollButtons="auto"
+            centered={true}
           >
             {["Link", "IFrame"].map((label, index) => (
               <Tab
@@ -129,37 +131,58 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
             ))}
           </Tabs>
 
-            {tabIndex == 0 ? (
-              <>
-                <DialogContentText>
-                  {"Copy the link below and send it to give anyone access this skill."}
-                </DialogContentText>
+          <DialogContentText>
+            <Typography
+              variant="h4"
+            >
+              Settings
+            </Typography>
+          </DialogContentText>
+      
+          <Stack>
+            <FormControlLabel control={
+              <Switch
+                defaultChecked={true}
+                value={hideLogoState}
+                onChange={(e, value) => setHideLogoState(value)}
+              />}
+              label="Hide MySkillStudy.com Logo"
+            />
+          </Stack>
               
-                <DialogContentText>
-                  <Link>
-                    {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false`}
-                  </Link>
-                </DialogContentText>
-              </>
-            ) : (
-              <>
-                <DialogContentText>
-                  {"Copy the code below and paste it into your website/LMS to give users access to this skill."}
-                </DialogContentText>
+          {tabIndex == 0 ? (
+            <>
+              <DialogContentText>
+                {"Copy the link below and send it to give anyone access this skill."}
+              </DialogContentText>
               
-                <DialogContentText>
-                  <code>
-                    {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`}
-                  </code>
-                </DialogContentText>
-              </>
-            )}
+              <DialogContentText>
+                <Link>
+                  {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
+                </Link>
+              </DialogContentText>
+            </>
+          ) : (
+            <>
+              <DialogContentText>
+                {"Copy the code below and paste it into your website/LMS to give users access to this skill."}
+              </DialogContentText>
+
+              <DialogContentText
+                sx={{ backgroundColor: "#1c1c1c", padding: "10px", overflow: "auto", borderRadius: "5px" }}
+              >
+                <code>
+                  {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=800 height=600></iframe>`}
+                </code>
+              </DialogContentText>
+            </>
+          )}
         </DialogContent>
 
         <DialogActions>
           <Button
             onClick={(e) => {
-              navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`);
+              navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`);
               setIsSnackbarOpen(true);
             }}
           >
