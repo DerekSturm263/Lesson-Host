@@ -296,8 +296,8 @@ function Sidebar({ children, label }: { children?: React.ReactNode, label: strin
   );
 }
 
-function SidebarButton({ selected, elementID, isDisabled, mode, progress, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, progress: number, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
-  const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
+function SidebarButton({ selected, ogTitle, isDisabled, mode, progress, onClick }: { selected: boolean, ogTitle: string, isDisabled: boolean, mode: ComponentMode, progress: number, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
+  const [ title, setTitle ] = useState(ogTitle);
 
   return (
     <ListItem
@@ -445,7 +445,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
                 isDisabled={!isNavigationEnabled || (index != 0 && !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1])}
                 selected={currentElement.chapterIndex == index}
                 key={index}
-                elementID={chapterFirstElement}
+                ogTitle={chapter.title}
                 mode={mode}
                 progress={elementsCompleted.reduce((sum, element, index) => sum += element && (index >= helpers.getAbsoluteIndex(chapterFirstElement) && index < helpers.getAbsoluteIndex(chapterFirstElement) + chapter.elements.length) ? 1 : 0, 0) / chapter.elements.length}
                 onClick={(e) => {
@@ -559,6 +559,8 @@ export function PracticeContent({ slug, title, practice, mode, apiKey, hideLogo 
 
 function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLogo }: { slug: string, title: string, practice: Practice, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   const [ subSkills, setSubSkills ] = useState(practice.subSkills);
+  const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
+  const [ currentSubSkillIndex, setCurrentSubSkillIndex ] = useState(0);
 
   return (
     <Fragment>
@@ -603,7 +605,19 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         <Sidebar
           label="Sub-Skills"
         >
-          
+          {subSkills.map((subSkill, index) => (
+            <SidebarButton
+              isDisabled={!isNavigationEnabled}
+              selected={currentSubSkillIndex == index}
+              key={index}
+              ogTitle={subSkill.title}
+              mode={mode}
+              progress={0}
+              onClick={(e) => {
+                setCurrentSubSkillIndex(index);
+              }}
+            />
+          ))}
         </Sidebar>
 
         <Stack
@@ -680,7 +694,7 @@ function ImplementContentNoCookies({ slug, title, implement, mode, apiKey, hideL
         <Sidebar
           label="Chapters"
         >
-
+          
         </Sidebar>
 
         <Stack
@@ -714,6 +728,7 @@ export function CertifyContent({ slug, title, certify, mode, apiKey, hideLogo }:
 function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo }: { slug: string, title: string, certify: Certify, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   const [ resources, setResources ] = useState(certify.resources);
   const [ certificationLink, setCertificationLink ] = useState(certify.certificationLink);
+  const [ currentPageIndex, setCurrentPageIndex ] = useState(0);
 
   return (
     <Fragment>
@@ -750,7 +765,30 @@ function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo 
         <Sidebar
           label="Resources"
         >
-          
+          {resources.map((resource, index) => (
+            <SidebarButton
+              isDisabled={false}
+              selected={currentPageIndex == index}
+              key={index}
+              ogTitle={resource.title}
+              mode={mode}
+              progress={0}
+              onClick={(e) => {
+                setCurrentPageIndex(index);
+              }}
+            />
+          ))}
+
+          <SidebarButton
+            isDisabled={false}
+            selected={currentPageIndex == resources.length}
+            ogTitle="Get Certified"
+            mode={mode}
+            progress={0}
+            onClick={(e) => {
+              setCurrentPageIndex(resources.length);
+            }}
+          />
         </Sidebar>
 
         <Stack
