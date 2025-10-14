@@ -112,7 +112,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
         open={isOpen}
       >
         <DialogTitle>
-          Exported
+          Select Export Settings
         </DialogTitle>
 
         <DialogContent>
@@ -133,7 +133,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
 
           <DialogContentText>
             <Typography
-              variant="h4"
+              variant="h6"
             >
               Settings
             </Typography>
@@ -182,7 +182,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
         <DialogActions>
           <Button
             onClick={(e) => {
-              navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`);
+              navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}"></iframe>`);
               setIsSnackbarOpen(true);
             }}
           >
