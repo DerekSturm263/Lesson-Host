@@ -103,6 +103,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
+  const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
 
   return (
     <Fragment>
@@ -157,7 +158,10 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
 
         <DialogActions>
           <Button
-            onClick={(e) => navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`)}
+            onClick={(e) => {
+              navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`);
+              setIsSnackbarOpen(true);
+            }}
           >
             Copy to Clipboard
           </Button>
@@ -169,6 +173,20 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        autoHideDuration={3000}
+        open={isSnackbarOpen}
+        message={"Copied to clipboard"}
+        onClose={(e, reason?) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+
+          setIsSnackbarOpen(false);
+        }}
+      />
 
       <AppBar
         position="fixed"
