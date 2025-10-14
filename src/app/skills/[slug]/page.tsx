@@ -11,7 +11,6 @@ import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import VerifiedUser from '@mui/icons-material/VerifiedUser';
-import Head from 'next/head';
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
@@ -35,13 +34,6 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <div>
-      <Head>
-        <base
-          href={`https://myskillstudy.com/skills/${slug}/`}
-          target="_blank"
-        ></base>
-      </Head>
-
       <main>
         <Header
           title={skill.title}
@@ -63,7 +55,7 @@ export default async function Page({ params, searchParams }: Props) {
           sx={{ justifyContent: "center" }}
         >
           <Button
-            href={"/learn"}
+            href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
             variant="contained"
             startIcon={<School />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
@@ -73,7 +65,7 @@ export default async function Page({ params, searchParams }: Props) {
           </Button>
 
           <Button
-            href={"./practice"}
+            href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
             variant="contained"
             startIcon={<LocalLibrary />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
@@ -83,7 +75,7 @@ export default async function Page({ params, searchParams }: Props) {
           </Button>
 
           <Button
-            href={"implement/"}
+            href={`./${slug}/implement?mode=${mode}&hideLogo=${hideLogo}`}
             variant="contained"
             startIcon={<CloudUpload />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
@@ -93,7 +85,7 @@ export default async function Page({ params, searchParams }: Props) {
           </Button>
           
           <Button
-            href={"certify"}
+            href={`./${slug}/certify?mode=${mode}&hideLogo=${hideLogo}`}
             variant="contained"
             startIcon={<VerifiedUser />}
             sx={{ padding: ' 100px 50px 100px 50px' }}
