@@ -35,7 +35,10 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <base href="https://myskillstudy.com/" target="_blank"></base>
+        <base
+          href={`https://myskillstudy.com/skills/${slug}`}
+          target="_blank"
+        ></base>
 
         <Header
           title={skill.title}
