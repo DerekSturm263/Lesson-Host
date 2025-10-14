@@ -1016,7 +1016,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
             multiline
             variant="filled"
             value={text}
-            rows={5}
+            rows={4}
             onChange={(e) => {
               setText(e.target.value);
               helpers.getElement(elementID).text = e.target.value;
