@@ -78,6 +78,7 @@ import Assignment from '@mui/icons-material/Assignment';
 import Book from '@mui/icons-material/Book';
 import CardActionArea from '@mui/material/CardActionArea';
 import Rating from '@mui/material/Rating';
+import { Tab, Tabs } from '@mui/material';
 
 
 
@@ -98,11 +99,67 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, mode, type, progress, hideLogo }: { title: string, mode: ComponentMode, type: string, progress: number, hideLogo: boolean }) {
+export function Header({ title, slug, mode, type, progress, hideLogo }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, hideLogo: boolean }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
+  const [ isOpen, setIsOpen ] = useState(false);
+  const [ tabIndex, setTabIndex ] = useState(0);
 
   return (
     <Fragment>
+      <Dialog
+        open={isOpen}
+      >
+        <DialogTitle>
+          Exported
+        </DialogTitle>
+
+        <DialogContent>
+          <Tabs
+            value={tabIndex}
+            onChange={(e, value) => { setTabIndex(value); }}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            {["Link", "IFrame"].map((label, index) => (
+              <Tab
+                key={index}
+                label={label}
+              />
+            ))}
+          </Tabs>
+
+            {tabIndex == 0 ? (
+              <>
+                <DialogContentText>
+                  {""}
+                </DialogContentText>
+              
+                <DialogContentText>
+                  {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false`}
+                </DialogContentText>
+              </>
+            ) : (
+              <>
+                <DialogContentText>
+                  {""}
+                </DialogContentText>
+              
+                <DialogContentText>
+                  {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`}
+                </DialogContentText>
+              </>
+            )}
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={(e) => setIsOpen(false)}
+          >
+            Done
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <AppBar
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -241,14 +298,26 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
             )}
 
             {mode == ComponentMode.Edit && (
-              <Button
-                variant="contained"
-                onClick={async (e) => { 
-                  //await saveSkillLearn(slug, skill.learn);
-                }}
-              >
-                Save
-              </Button>
+              <>
+                <Button
+                  variant="contained"
+                  onClick={async (e) => { 
+                    setIsOpen(true);
+                    setTabIndex(0);
+                  }}
+                >
+                  Export
+                </Button>
+
+                <Button
+                  variant="contained"
+                  onClick={async (e) => { 
+                    //await saveSkillLearn(slug, skill.learn);
+                  }}
+                >
+                  Save
+                </Button>
+              </>
             )}
           </Stack>
         </Toolbar>
@@ -424,6 +493,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
 
       <Header
         title={title}
+        slug={slug}
         mode={mode as ComponentMode}
         type="Learn"
         progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length}
@@ -592,6 +662,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
 
       <Header
         title={title}
+        slug={slug}
         mode={mode as ComponentMode}
         type="Practice"
         progress={0}
@@ -681,6 +752,7 @@ function ImplementContentNoCookies({ slug, title, implement, mode, apiKey, hideL
 
       <Header
         title={title}
+        slug={slug}
         mode={mode as ComponentMode}
         type="Implement"
         progress={0}
@@ -752,6 +824,7 @@ function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo 
 
       <Header
         title={title}
+        slug={slug}
         mode={mode as ComponentMode}
         type="Certify"
         progress={0}
