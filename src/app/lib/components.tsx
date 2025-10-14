@@ -653,15 +653,6 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
               setIsSnackbarOpen(false);
             }}
           />
-        
-          {mode == ComponentMode.Edit && (
-            <Tooltip title="Delete this element">
-              <Chip
-                icon={<Delete />}
-                label="Delete"
-              />
-            </Tooltip>
-          )}
         </Stack>
       </Box>
     </Fragment>
@@ -1059,60 +1050,73 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
           direction="row"
           spacing={1}
         >
-          <Tooltip
-            title="Rephrase this text in simpler terms"
-          >
-            <Chip
-              icon={<AutoAwesome />}
-              label="Rephrase"
-              onClick={(e) => rephrase()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+          {mode == ComponentMode.Edit ? (
+            <>
+              <Tooltip title="Delete this element">
+                <Chip
+                  icon={<Delete />}
+                  label="Delete"
+                />
+              </Tooltip>
+            </>
+          ) : (
+            <>
+              <Tooltip
+                title="Rephrase this text in simpler terms"
+              >
+                <Chip
+                  icon={<AutoAwesome />}
+                  label="Rephrase"
+                  onClick={(e) => rephrase()}
+                  disabled={isThinking}
+                />
+              </Tooltip>
 
-          <Tooltip
-            title="Read this text out loud"
-          >
-            <Chip
-              icon={<VolumeUp />}
-              label="Read Aloud"
-              onClick={(e) => readAloud()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+              <Tooltip
+                title="Read this text out loud"
+              >
+                <Chip
+                  icon={<VolumeUp />}
+                  label="Read Aloud"
+                  onClick={(e) => readAloud()}
+                  disabled={isThinking}
+                />
+              </Tooltip>
 
-          <Tooltip
-            title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}
-          >
-            <Chip
-              icon={doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
-              label={`Turn ${doReadAloud ? "Off" : "On"} Auto Read`}
-              onClick={(e) => toggleAutoReadAloud()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+              <Tooltip
+                title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}
+              >
+                <Chip
+                  icon={doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
+                  label={`Turn ${doReadAloud ? "Off" : "On"} Auto Read`}
+                  onClick={(e) => toggleAutoReadAloud()}
+                  disabled={isThinking}
+                />
+              </Tooltip>
 
-          <Tooltip
-            title="Reset this element back to its original state"
-          >
-            <Chip
-              icon={<Refresh />}
-              label="Reset"
-              onClick={(e) => reset()}
-              disabled={isThinking}
-            />
-          </Tooltip>
+              <Tooltip
+                title="Reset this element back to its original state"
+              >
+                <Chip
+                  icon={<Refresh />}
+                  label="Reset"
+                  onClick={(e) => reset()}
+                  disabled={isThinking}
+                />
+              </Tooltip>
 
-          <Tooltip
-            title="Bring this text to the main focus"
-          >
-            <Chip
-              icon={<Fullscreen />}
-              label="Fullscreen"
-              onClick={(e) => {}}
-              disabled={isThinking}
-            />
-          </Tooltip>
+              <Tooltip
+                title="Bring this text to the main focus"
+              >
+                <Chip
+                  icon={<Fullscreen />}
+                  label="Fullscreen"
+                  onClick={(e) => {}}
+                  disabled={isThinking}
+                />
+              </Tooltip>
+            </>
+          )}
         </Stack>
       </CardActions>
     </Card>
