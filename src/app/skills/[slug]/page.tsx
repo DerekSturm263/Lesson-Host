@@ -11,6 +11,7 @@ import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
 import CloudUpload from '@mui/icons-material/CloudUpload';
 import VerifiedUser from '@mui/icons-material/VerifiedUser';
+import Head from 'next/head';
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
@@ -34,12 +35,13 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <div>
-      <head>
+      <Head>
         <base
           href={`https://myskillstudy.com/skills/${slug}/`}
           target="_blank"
         ></base>
-      </head>
+      </Head>
+
       <main>
         <Header
           title={skill.title}
