@@ -173,7 +173,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
                   value="Learn"
                 >
                   <ListItemButton
-                    href="./learn"
+                    href={`./learn?mode=${mode}&hideLogo=${hideLogo}`}
                     sx={{ padding: '0px' }}
                   >
                     <ListItemIcon>
@@ -190,7 +190,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
                   value="Practice"
                 >
                   <ListItemButton
-                    href="./practice"
+                    href={`./practice?mode=${mode}&hideLogo=${hideLogo}`}
                     sx={{ padding: '0px' }}
                   >
                     <ListItemIcon>
@@ -207,7 +207,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
                   value="Implement"
                 >
                   <ListItemButton
-                    href="./implement"
+                    href={`./implement?mode=${mode}&hideLogo=${hideLogo}`}
                     sx={{ padding: '0px' }}
                   >
                     <ListItemIcon>
@@ -224,7 +224,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
                   value="Certify"
                 >
                   <ListItemButton
-                    href="./certify"
+                    href={`./certify?mode=${mode}&hideLogo=${hideLogo}`}
                     sx={{ padding: '0px' }}
                   >
                     <ListItemIcon>
