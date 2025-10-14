@@ -37,6 +37,7 @@ export default async function Page({ params, searchParams }: Props) {
       <main>
         <Header
           title={skill.title}
+          slug={""}
           mode={mode as ComponentMode}
           type=""
           progress={0}
