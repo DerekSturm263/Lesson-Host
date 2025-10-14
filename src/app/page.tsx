@@ -68,8 +68,9 @@ export default async function Home() {
             direction="row"
             spacing={2}
           >
-            {[].map((course) => (
+            {[].map((course, index) => (
               <CourseCard
+                key={index}
                 course={course}
               />
             ))}
@@ -98,8 +99,9 @@ export default async function Home() {
             direction="row"
             spacing={2}
           >
-            {[].map((skill) => (
+            {[].map((skill, index) => (
               <SkillCard
+                key={index}
                 skill={skill}
               />
             ))}
@@ -128,8 +130,9 @@ export default async function Home() {
             direction="row"
             spacing={2}
           >
-            {[].map((project) => (
+            {[].map((project, index) => (
               <ProjectCard
+                key={index}
                 project={project}
               />
             ))}
