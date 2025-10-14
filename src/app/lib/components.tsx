@@ -134,10 +134,10 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                   {"Copy the link below and send it to give anyone access this skill."}
                 </DialogContentText>
               
-                <DialogContentText
-                  component="link"
-                >
-                  {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false`}
+                <DialogContentText>
+                  <Link>
+                    {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=false`}
+                  </Link>
                 </DialogContentText>
               </>
             ) : (
@@ -146,10 +146,10 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                   {"Copy the code below and paste it into your website/LMS to give users access to this skill."}
                 </DialogContentText>
               
-                <DialogContentText
-                  component="link"
-                >
-                  {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`}
+                <DialogContentText>
+                  <code>
+                    {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=true"></iframe>`}
+                  </code>
                 </DialogContentText>
               </>
             )}
@@ -180,7 +180,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
           {!hideLogo && (
             <Link
               variant="h6"
-              sx={{ width: '300px', textDecoration: 'none' }}
+              sx={{ width: '400px', textDecoration: 'none' }}
               href="/"
             >
               MySkillStudy.com
@@ -223,7 +223,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
           <Stack
             direction="row"
             spacing={2}
-            sx={{ width: '300px', justifyContent: 'flex-end' }}
+            sx={{ width: '400px', justifyContent: 'flex-end' }}
           >
             {type != "" && (
             <FormControl
