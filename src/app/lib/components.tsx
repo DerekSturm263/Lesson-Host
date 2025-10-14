@@ -131,6 +131,8 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
             ))}
           </Tabs>
 
+          <br />
+
           <DialogContentText>
             <Typography
               variant="h6"
@@ -149,12 +151,16 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               label="Hide MySkillStudy.com Logo"
             />
           </Stack>
+          
+          <br />
               
           {tabIndex == 0 ? (
             <>
               <DialogContentText>
                 {"Copy the link below and send it to give anyone access this skill."}
               </DialogContentText>
+              
+              <br />
               
               <DialogContentText>
                 <Link>
@@ -167,6 +173,8 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               <DialogContentText>
                 {"Copy the code below and paste it into your website/LMS to give users access to this skill."}
               </DialogContentText>
+
+              <br />
 
               <DialogContentText
                 sx={{ backgroundColor: "#1c1c1c", padding: "10px", overflow: "auto", borderRadius: "5px" }}
