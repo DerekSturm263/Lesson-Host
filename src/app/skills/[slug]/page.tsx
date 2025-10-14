@@ -19,6 +19,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   return {
     title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
+    
   }
 }
 
@@ -34,6 +35,8 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
+        <base href="https://myskillstudy.com/" target="_blank"></base>
+
         <Header
           title={skill.title}
           mode={mode as ComponentMode}
