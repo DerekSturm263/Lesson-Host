@@ -1021,15 +1021,16 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
 
         {(mode == ComponentMode.Edit ? (
           <TextField
-            label="Text"
+            label=""
             multiline
             variant="filled"
             value={text}
+            rows={5}
             onChange={(e) => {
               setText(e.target.value);
               helpers.getElement(elementID).text = e.target.value;
             }}
-            sx={{ flexGrow: 1 }}
+            sx={{ width: "100%" }}
           />
         ) : (
           <Markdown>
@@ -1058,7 +1059,9 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
           direction="row"
           spacing={1}
         >
-          <Tooltip title="Rephrase this text in simpler terms">
+          <Tooltip
+            title="Rephrase this text in simpler terms"
+          >
             <Chip
               icon={<AutoAwesome />}
               label="Rephrase"
@@ -1067,7 +1070,9 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
             />
           </Tooltip>
 
-          <Tooltip title="Read this text out loud">
+          <Tooltip
+            title="Read this text out loud"
+          >
             <Chip
               icon={<VolumeUp />}
               label="Read Aloud"
@@ -1076,7 +1081,9 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
             />
           </Tooltip>
 
-          <Tooltip title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}>
+          <Tooltip
+            title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}
+          >
             <Chip
               icon={doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
               label={`Turn ${doReadAloud ? "Off" : "On"} Auto Read`}
@@ -1085,7 +1092,9 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
             />
           </Tooltip>
 
-          <Tooltip title="Reset this element back to its original state">
+          <Tooltip
+            title="Reset this element back to its original state"
+          >
             <Chip
               icon={<Refresh />}
               label="Reset"
@@ -1094,7 +1103,9 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
             />
           </Tooltip>
 
-          <Tooltip title="Bring this text to the main focus">
+          <Tooltip
+            title="Bring this text to the main focus"
+          >
             <Chip
               icon={<Fullscreen />}
               label="Fullscreen"
