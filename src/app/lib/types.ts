@@ -28,8 +28,13 @@ export type Implement = {
   link: string
 };
 
+export type Resource = {
+  title: string,
+  link: string
+}
+
 export type Certify = {
-  resources: string[],
+  resources: Resource[],
   certificationLink: string
 };
 

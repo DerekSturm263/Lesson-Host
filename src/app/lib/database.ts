@@ -37,13 +37,23 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
       ]
     },
     practice: {
-      placeholder: false
+      subSkills: [
+        {
+          title: "New Sub-Skill"
+        }
+      ]
     },
     implement: {
       link: ""
     },
     certify: {
-      link: ""
+      resources: [
+        {
+          title: "New Resource",
+          link: ""
+        }
+      ],
+      certificationLink: ""
     }
   };
 
