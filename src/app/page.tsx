@@ -19,6 +19,7 @@ export default async function Home() {
       <main>
         <Header
           title={""}
+          slug={""}
           mode={ComponentMode.Master}
           type=""
           progress={0}
