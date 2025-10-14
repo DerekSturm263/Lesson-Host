@@ -16,8 +16,12 @@ export type Learn = {
   chapters: Chapter[]
 };
 
+export type SubSkill = {
+  title: string
+};
+
 export type Practice = {
-  placeholder: boolean
+  subSkills: SubSkill[]
 };
 
 export type Implement = {
@@ -25,7 +29,8 @@ export type Implement = {
 };
 
 export type Certify = {
-  link: string
+  resources: string[],
+  certificationLink: string
 };
 
 export type Skill = {

@@ -114,7 +114,7 @@ export function Header({ title, mode, type, progress, hideLogo }: { title: strin
             <Link
               variant="h6"
               sx={{ width: '300px', textDecoration: 'none' }}
-              href="/"
+              href={`/?mode=${mode}&$hideLogo={hideLogo}`}
             >
               MySkillStudy.com
             </Link>
@@ -296,7 +296,7 @@ function Sidebar({ children, label }: { children?: React.ReactNode, label: strin
   );
 }
 
-function ChapterButton({ selected, elementID, isDisabled, mode, progress, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, progress: number, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
+function SidebarButton({ selected, elementID, isDisabled, mode, progress, onClick }: { selected: boolean, elementID: ElementID, isDisabled: boolean, mode: ComponentMode, progress: number, onClick: MouseEventHandler<HTMLDivElement> | undefined }) {
   const [ title, setTitle ] = useState(helpers.getChapter(elementID).title);
 
   return (
@@ -441,7 +441,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
             const chapterFirstElement = { learn: learn, chapterIndex: index, elementIndex: 0, keys: [ apiKey ] };
 
             return (
-              <ChapterButton
+              <SidebarButton
                 isDisabled={!isNavigationEnabled || (index != 0 && !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1])}
                 selected={currentElement.chapterIndex == index}
                 key={index}
@@ -558,6 +558,8 @@ export function PracticeContent({ slug, title, practice, mode, apiKey, hideLogo 
 }
 
 function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLogo }: { slug: string, title: string, practice: Practice, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const [ subSkills, setSubSkills ] = useState(practice.subSkills);
+
   return (
     <Fragment>
       <Dialog
@@ -599,9 +601,9 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         sx={{ height: '100vh' }}
       >
         <Sidebar
-          label="Chapters"
+          label="Sub-Skills"
         >
-
+          
         </Sidebar>
 
         <Stack
@@ -633,6 +635,8 @@ export function ImplementContent({ slug, title, implement, mode, apiKey, hideLog
 }
 
 function ImplementContentNoCookies({ slug, title, implement, mode, apiKey, hideLogo }: { slug: string, title: string, implement: Implement, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const [ link, setLink ] = useState(implement.link);
+
   return (
     <Fragment>
       <Dialog
@@ -708,6 +712,9 @@ export function CertifyContent({ slug, title, certify, mode, apiKey, hideLogo }:
 }
 
 function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo }: { slug: string, title: string, certify: Certify, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const [ resources, setResources ] = useState(certify.resources);
+  const [ certificationLink, setCertificationLink ] = useState(certify.certificationLink);
+
   return (
     <Fragment>
       <Dialog
@@ -741,9 +748,9 @@ function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo 
         sx={{ height: '100vh' }}
       >
         <Sidebar
-          label="Chapters"
+          label="Resources"
         >
-
+          
         </Sidebar>
 
         <Stack
