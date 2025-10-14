@@ -119,8 +119,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
           <Tabs
             value={tabIndex}
             onChange={(e, value) => { setTabIndex(value); }}
-            variant="scrollable"
-            scrollButtons="auto"
+            centered={true}
           >
             {["Link", "IFrame"].map((label, index) => (
               <Tab
