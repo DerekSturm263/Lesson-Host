@@ -115,6 +115,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
     <Fragment>
       <Dialog
         open={isOpen}
+        onClose={(e) => setIsOpen(false)}
       >
         <DialogTitle>
           Select Export Settings
@@ -391,6 +392,9 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                   onClick={async (e) => { 
                     setIsOpen(true);
                     setTabIndex(0);
+                    setHideLogoState(true);
+                    setWidth(800);
+                    setHeight(600);
                   }}
                 >
                   Export
