@@ -188,6 +188,7 @@ function Component(props: InteractionProps) {
   const [ language, setLanguage ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).language);
   const [ content, setContent ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).content);
   const [ isSimplified, setIsSimplified ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).isSimplified);
+  const [ allowNewFiles, setAllowNewFiles ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).allowNewFiles);
   const [ correctOutput, setCorrectOutput ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).correctOutput);
   const [ output, setOutput ] = useState("");
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -236,6 +237,8 @@ function Component(props: InteractionProps) {
         {props.mode == ComponentMode.Edit && (
           <Stack
             direction="row"
+            spacing={2}
+            sx={{ justifyContent: "center" }}
           >
             <FormControl
               size="small"
@@ -270,6 +273,18 @@ function Component(props: InteractionProps) {
                 onChange={(e) => {
                   setIsSimplified(e.target.checked);
                   helpers.getInteractionValue<InteractionType>(props.elementID).isSimplified = e.target.checked;
+                }}
+              />}
+            />
+            
+            <FormControlLabel label="Allow New Files" control={
+              <Checkbox
+                name="allowNewFiles"
+                id="allowNewFiles"
+                checked={allowNewFiles}
+                onChange={(e) => {
+                  setAllowNewFiles(e.target.checked);
+                  helpers.getInteractionValue<InteractionType>(props.elementID).allowNewFiles = e.target.checked;
                 }}
               />}
             />
