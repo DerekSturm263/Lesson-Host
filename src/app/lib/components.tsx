@@ -104,6 +104,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
+  const [ snackbarText, setSnackbarText ] = useState("");
   const [ hideLogoState, setHideLogoState ] = useState(true);
   const [ width, setWidth ] = useState(800);
   const [ height, setHeight ] = useState(600);
@@ -220,6 +221,8 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
           <Button
             onClick={(e) => {
               navigator.clipboard.writeText(tabIndex == 0 ? link : iframe);
+
+              setSnackbarText("Copied to clipboard");
               setIsSnackbarOpen(true);
             }}
           >
@@ -238,7 +241,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         autoHideDuration={3000}
         open={isSnackbarOpen}
-        message={"Copied to clipboard"}
+        message={snackbarText}
         onClose={(e, reason?) => {
           if (reason === 'clickaway') {
             return;
@@ -404,6 +407,9 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                   variant="contained"
                   onClick={async (e) => { 
                     //await saveSkillLearn(slug, skill.learn);
+
+                    setSnackbarText("Saved");
+                    setIsSnackbarOpen(true);
                   }}
                 >
                   Save
