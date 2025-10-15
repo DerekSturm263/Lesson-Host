@@ -105,6 +105,11 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
   const [ tabIndex, setTabIndex ] = useState(0);
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ hideLogoState, setHideLogoState ] = useState(true);
+  const [ width, setWidth ] = useState(800);
+  const [ height, setHeight ] = useState(600);
+
+  const link = `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`;
+  const iframe = `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
 
   return (
     <Fragment>
@@ -149,6 +154,24 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               />}
               label="Hide MySkillStudy.com Logo"
             />
+
+            {tabIndex == 1 && (
+              <>
+                <TextField
+                  id="width"
+                  label="Width"
+                  type="number"
+                  onChange={(e) => setWidth(Number(e.target.value))}
+                />
+              
+                <TextField
+                  id="height"
+                  label="Height"
+                  type="number"
+                  onChange={(e) => setHeight(Number(e.target.value))}
+                />
+              </>
+            )}
           </Stack>
           
           <br />
@@ -164,8 +187,10 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               <DialogContentText>
                 <Link
                   href={`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
+                  {link}
                 </Link>
               </DialogContentText>
             </>
@@ -181,7 +206,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                 sx={{ backgroundColor: "#1c1c1c", padding: "10px", overflow: "auto", borderRadius: "5px" }}
               >
                 <code>
-                  {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=800 height=600></iframe>`}
+                  {iframe}
                 </code>
               </DialogContentText>
             </>
@@ -191,7 +216,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
         <DialogActions>
           <Button
             onClick={(e) => {
-              navigator.clipboard.writeText(tabIndex == 0 ? `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}` : `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}"></iframe>`);
+              navigator.clipboard.writeText(tabIndex == 0 ? link : iframe);
               setIsSnackbarOpen(true);
             }}
           >
