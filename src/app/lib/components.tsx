@@ -162,7 +162,9 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               <br />
 
               <DialogContentText>
-                <Link>
+                <Link
+                  href={`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
+                >
                   {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
                 </Link>
               </DialogContentText>
@@ -1014,7 +1016,6 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
           <TextField
             hiddenLabel={true}
             multiline
-            variant="filled"
             value={text}
             rows={4}
             onChange={(e) => {
