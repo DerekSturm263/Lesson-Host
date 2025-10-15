@@ -49,14 +49,30 @@ export type Skill = {
 
 export type Project = {
   title: string,
-  description: string
+  description: string,
+  checklist: string[],
+  type: string,
+  value: unknown
 };
+
+export enum ModuleType {
+  Skill = 'skill',
+  Project = 'project'
+}
+
+export type Module = {
+  type: ModuleType,
+  id: string
+}
+
+export type Unit = {
+  modules: Module[]
+}
 
 export type Course = {
   title: string,
   description: string,
-  skills: string[],
-  projects: string[]
+  units: Unit[]
 };
 
 /*const codespaceExample: Skill = {

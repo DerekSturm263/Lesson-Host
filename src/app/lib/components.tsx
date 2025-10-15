@@ -981,8 +981,75 @@ export function ProjectContent({ slug, title, project, mode, apiKey, hideLogo }:
 }
 
 function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const [ checklist, setChecklist ] = useState(project.checklist);
+
+  const element = { learn: { chapters: [] }, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] };
+
   return (
-    <></>
+    <Fragment>
+      <Dialog
+        open={false}
+      >
+        <DialogTitle>
+          Project Complete!
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+          </DialogContentText>
+          
+          <DialogContentText>
+            {"Next up: Pick another project to start working on."}
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+
+      <Header
+        title={title}
+        slug={slug}
+        mode={mode as ComponentMode}
+        type="Certify"
+        progress={0}
+        hideLogo={hideLogo}
+      />
+
+      <Box
+        display='flex'
+        sx={{ height: '100vh' }}
+      >
+        <Sidebar
+          label="Checklist"
+        >
+          {checklist.map((item, index) => (
+            <SidebarButton
+              isDisabled={false}
+              selected={false}
+              key={index}
+              ogTitle={item}
+              mode={mode}
+              progress={0}
+              onClick={(e) => { }}
+            />
+          ))}
+        </Sidebar>
+
+        <Stack
+          sx={{ flexGrow: 1 }}
+        >
+          <Toolbar />
+          
+          <Interaction
+            elementID={element}
+            isDisabled={false}
+            mode={mode}
+            setText={(text) => {}}
+            setIsThinking={(isThinking) => {}}
+            setComplete={(isComplete) => {}}
+          />
+        </Stack>
+      </Box>
+    </Fragment>
   );
 }
 
