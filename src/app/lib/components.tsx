@@ -161,6 +161,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                   id="width"
                   label="Width"
                   type="number"
+                  value={width}
                   onChange={(e) => setWidth(Number(e.target.value))}
                 />
               
@@ -168,6 +169,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                   id="height"
                   label="Height"
                   type="number"
+                  value={height}
                   onChange={(e) => setHeight(Number(e.target.value))}
                 />
               </>
