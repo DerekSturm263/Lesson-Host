@@ -16,13 +16,13 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
   - Short Answer
 
 ### Planned
-[] AI-Generated Lessons
-[] Skills Practice/Implement/Certify Pages
-[] Natural Read Aloud
-[] Projects
-[] Courses
-[] Mobile Support
-[] New Interaction Types:
+- [] AI-Generated Lessons
+- [] Skills Practice/Implement/Certify Pages
+- [] Natural Read Aloud
+- [] Projects
+- [] Courses
+- [] Mobile Support
+- [] New Interaction Types:
   - DAW
   - Drawing
   - Engine
