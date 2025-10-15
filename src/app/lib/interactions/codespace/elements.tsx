@@ -230,8 +230,10 @@ function Component(props: InteractionProps) {
       sx={{ flexGrow: 1 }}
       direction="row"
     >
-        <Stack>
-          {props.mode == ComponentMode.Edit && (
+      <Stack
+        sx={{ flexGrow: 1 }}
+      >
+        {props.mode == ComponentMode.Edit && (
           <Stack
             direction="row"
           >
@@ -309,7 +311,7 @@ function Component(props: InteractionProps) {
         </Stack>
       </Stack>
 
-      <Box
+      <Stack
         sx={{ flexGrow: 1 }}
       >
         {props.mode == ComponentMode.Edit ? (
@@ -326,7 +328,7 @@ function Component(props: InteractionProps) {
             fullWidth={true}
           />
         ) : (
-          <Stack>
+          <>
             <Stack
               direction="row"
               spacing={1}
@@ -366,9 +368,9 @@ function Component(props: InteractionProps) {
 
               {isRunning ? 'Running...' : output}
             </Typography>
-          </Stack>
+          </>
         )}
-      </Box>
+      </Stack>
     </Stack>
   );
 }
