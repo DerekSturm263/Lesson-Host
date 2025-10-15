@@ -12,19 +12,17 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
 - Skills Learn Pages
 - AI Rephrase/Explanations
 - Interaction Types:
-  - Multiple Choice
-  - True or False
   - Codespaces
   - Short Answer
 
 ### Planned
-- AI-Generated Lessons
-- Skills Practice/Implement/Certify Pages
-- Natural Read Aloud
-- Projects
-- Courses
-- Mobile Support
-- New Interaction Types:
+[] AI-Generated Lessons
+[] Skills Practice/Implement/Certify Pages
+[] Natural Read Aloud
+[] Projects
+[] Courses
+[] Mobile Support
+[] New Interaction Types:
   - DAW
   - Drawing
   - Engine
@@ -33,6 +31,8 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
   - IFrame
   - Matching
   - Ordering
+  - Multiple Choice
+  - True or False
 
 ## Contributing
 This website is and will always be open source. If you'd like to contribute by adding any of the above features, just [fork](https://github.com/DerekSturm263/Lesson-Host/fork) the project, add your desired feature, and submit a pull request with your changes. If you'd like to add a feature that's not listed above, please submit a feedback request via GitHub Issues.
