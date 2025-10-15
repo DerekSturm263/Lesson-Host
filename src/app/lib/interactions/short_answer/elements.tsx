@@ -50,44 +50,46 @@ function Component(props: InteractionProps) {
     <Box
       sx={{ flexGrow: 1, alignContent: 'center' }}
     >
-      {props.mode == ComponentMode.Edit ? (
-        <TextField
-          label="Correct Answer"
-          name="correctAnswer"
-          autoComplete="off"
-          value={correctAnswer}
-          onChange={(e) => {
-            const value = e.target.value === "" ? null : e.target.value;
-            setCorrectAnswer(value);
-            helpers.getInteractionValue<InteractionType>(props.elementID).correctAnswer = value;
-          }}
-          sx={{ flexGrow: 1, marginLeft: '150px', marginRight: '150px' }}
-        />
-      ) : (
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ marginLeft: '150px', marginRight: '150px' }}
-        >
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ marginLeft: '150px', marginRight: '150px' }}
+      >
+        {props.mode == ComponentMode.Edit ? (
           <TextField
-            label="Write your response here"
-            name="response"
+            label="Correct Answer"
+            name="correctAnswer"
             autoComplete="off"
-            disabled={props.isDisabled}
-            value={userResponse}
-            onChange={(e) => setUserResponse(e.target.value)}
-            sx={{ flexGrow: 1 }}
+            value={correctAnswer}
+            onChange={(e) => {
+              const value = e.target.value === "" ? null : e.target.value;
+              setCorrectAnswer(value);
+              helpers.getInteractionValue<InteractionType>(props.elementID).correctAnswer = value;
+            }}
+            sx={{ flexGrow: 1, marginLeft: '150px', marginRight: '150px' }}
           />
+        ) : (
+          <>
+            <TextField
+              label="Write your response here"
+              name="response"
+              autoComplete="off"
+              disabled={props.isDisabled}
+              value={userResponse}
+              onChange={(e) => setUserResponse(e.target.value)}
+              sx={{ flexGrow: 1 }}
+            />
 
-          <Button
-            variant="contained"
-            onClick={(e) => submit()}
-            sx={{ width: '120px' }}
-          >
-            Submit
-          </Button>
-        </Stack>
-      )}
+            <Button
+              variant="contained"
+              onClick={(e) => submit()}
+              sx={{ width: '120px' }}
+            >
+              Submit
+            </Button>
+          </>
+        )}
+      </Stack>
     </Box>
   );
 }
