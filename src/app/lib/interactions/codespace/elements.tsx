@@ -308,60 +308,61 @@ function Component(props: InteractionProps) {
       <Box
         sx={{ flexGrow: 1 }}
       >
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ height: '48px' }}
-        >
-          <Typography
-            variant="body2"
-            sx={{ textAlign: 'center', flexGrow: 1 }}
-            style={{ margin: 'auto' }}
-          >
-            Press Run to execute your code
-            <br />
-            All output and errors will be printed below
-          </Typography>
+        {props.mode == ComponentMode.Edit ? (
+          <TextField
+            label="Correct Output"
+            name="correctOutput"
+            value={correctOutput}
+            multiline
+            onChange={(e) => {
+              setCorrectOutput(e.target.value);
+              helpers.getInteractionValue<InteractionType>(props.elementID).correctOutput = e.target.value;
+            }}
+          />
+        ) : (
+          <Stack>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ height: '48px' }}
+            >
+              <Typography
+                variant="body2"
+                sx={{ textAlign: 'center', flexGrow: 1 }}
+                style={{ margin: 'auto' }}
+              >
+                Press Run to execute your code
+                <br />
+                All output and errors will be printed below
+              </Typography>
 
-          <Button
-            variant="contained"
-            startIcon={<PlayArrow />}
-            onClick={submit}
-            sx={{ width: '120px' }}
-            disabled={isRunning}
-          >
-            Run
-          </Button>
-        </Stack>
+              <Button
+                variant="contained"
+                startIcon={<PlayArrow />}
+                onClick={submit}
+                sx={{ width: '120px' }}
+                disabled={isRunning}
+              >
+                Run
+              </Button>
+            </Stack>
 
-        <Typography
-          variant="body2"
-          sx={{ margin: '16px', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}
-        >
-          {isRunning && (
-            <Fragment>
-              <LinearProgress />
-              <br />
-            </Fragment>
-          )}
+            <Typography
+              variant="body2"
+              sx={{ margin: '16px', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}
+            >
+              {isRunning && (
+                <Fragment>
+                  <LinearProgress />
+                  <br />
+                </Fragment>
+              )}
 
-          {isRunning ? 'Running...' : output}
-        </Typography>
+              {isRunning ? 'Running...' : output}
+            </Typography>
+          </Stack>
+        )}
       </Box>
-
-      
-      {props.mode == ComponentMode.Edit && (
-        <TextField
-          label="Correct Output"
-          name="correctOutput"
-          value={correctOutput}
-          multiline
-          onChange={(e) => {
-            setCorrectOutput(e.target.value);
-            helpers.getInteractionValue<InteractionType>(props.elementID).correctOutput = e.target.value;
-          }}
-        />
-      )}
     </Stack>
   );
 }
