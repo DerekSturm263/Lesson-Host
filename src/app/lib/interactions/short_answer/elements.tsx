@@ -61,7 +61,7 @@ function Component(props: InteractionProps) {
             setCorrectAnswer(value);
             helpers.getInteractionValue<InteractionType>(props.elementID).correctAnswer = value;
           }}
-          sx={{ flexGrow: 1 }}
+          sx={{ flexGrow: 1, marginLeft: '150px', marginRight: '150px' }}
         />
       ) : (
         <Stack
