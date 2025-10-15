@@ -228,81 +228,85 @@ function Component(props: InteractionProps) {
   return (
     <Stack
       sx={{ flexGrow: 1 }}
-      direction='row'
+      direction="row"
     >
-      {props.mode == ComponentMode.Edit && (
-        <FormControl
-          size="small"
-        >
-          <InputLabel id="mode-label">Language</InputLabel>
-
-          <Select
-            labelId="language-label"
-            value={language}
-            label="Language"
-            onChange={(e) => {
-              setLanguage(e.target.value as CodespaceLanguage);
-              helpers.getInteractionValue<InteractionType>(props.elementID).language = e.target.value as CodespaceLanguage;
-            }}
+        <Stack>
+          {props.mode == ComponentMode.Edit && (
+          <Stack
+            direction="row"
           >
-            {(Object.values(CodespaceLanguage).map((item, index) => (
-              <MenuItem
-                value={item}
-                key={index}
+            <FormControl
+              size="small"
+            >
+              <InputLabel id="mode-label">Language</InputLabel>
+
+              <Select
+                labelId="language-label"
+                value={language}
+                label="Language"
+                onChange={(e) => {
+                  setLanguage(e.target.value as CodespaceLanguage);
+                  helpers.getInteractionValue<InteractionType>(props.elementID).language = e.target.value as CodespaceLanguage;
+                }}
               >
-                {item}
-              </MenuItem>
-            )))}
-          </Select>
-        </FormControl>
-      )}
+                {(Object.values(CodespaceLanguage).map((item, index) => (
+                  <MenuItem
+                    value={item}
+                    key={index}
+                  >
+                    {item}
+                  </MenuItem>
+                )))}
+              </Select>
+            </FormControl>
 
-      {props.mode == ComponentMode.Edit && (
-        <FormControlLabel label="Is Simplified" control={
-          <Checkbox
-            name="isSimplified"
-            id="isSimplified"
-            checked={isSimplified}
-            onChange={(e) => {
-              setIsSimplified(e.target.checked);
-              helpers.getInteractionValue<InteractionType>(props.elementID).isSimplified = e.target.checked;
-            }}
-          />}
-        />
-      )}
-
-      <Stack
-        sx={{ flexGrow: 1, width: '60%' }}
-      >
-        <Tabs
-          value={tabIndex}
-          onChange={(e, value) => { setTabIndex(value); }}
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          {content.map((file, index) => (
-            <Tab
-              key={index}
-              label={file.name}
+            <FormControlLabel label="Is Simplified" control={
+              <Checkbox
+                name="isSimplified"
+                id="isSimplified"
+                checked={isSimplified}
+                onChange={(e) => {
+                  setIsSimplified(e.target.checked);
+                  helpers.getInteractionValue<InteractionType>(props.elementID).isSimplified = e.target.checked;
+                }}
+              />}
             />
-          ))}
-        </Tabs>
+          </Stack>
+        )}
 
-        <Editor
-          path={file.name}
-          defaultLanguage={language}
-          defaultValue={file.content}
-          theme="vs-dark"
-          onChange={(e) => {
-            const newContent = content;
-            newContent[tabIndex].content = e ?? '';
-            setContent(newContent);
+        <Stack
+          sx={{ flexGrow: 1, width: '60%' }}
+        >
+          <Tabs
+            value={tabIndex}
+            onChange={(e, value) => { setTabIndex(value); }}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            {content.map((file, index) => (
+              <Tab
+                key={index}
+                label={file.name}
+              />
+            ))}
+          </Tabs>
 
-            if (props.mode == ComponentMode.Edit) {
-              helpers.getInteractionValue<InteractionType>(props.elementID).content[tabIndex].content = e ?? '';
-            }
-          }}
-        />
+          <Editor
+            path={file.name}
+            defaultLanguage={language}
+            defaultValue={file.content}
+            theme="vs-dark"
+            onChange={(e) => {
+              const newContent = content;
+              newContent[tabIndex].content = e ?? '';
+              setContent(newContent);
+
+              if (props.mode == ComponentMode.Edit) {
+                helpers.getInteractionValue<InteractionType>(props.elementID).content[tabIndex].content = e ?? '';
+              }
+            }}
+          />
+        </Stack>
       </Stack>
 
       <Box
@@ -314,10 +318,12 @@ function Component(props: InteractionProps) {
             name="correctOutput"
             value={correctOutput}
             multiline
+            rows={22}
             onChange={(e) => {
               setCorrectOutput(e.target.value);
               helpers.getInteractionValue<InteractionType>(props.elementID).correctOutput = e.target.value;
             }}
+            fullWidth={true}
           />
         ) : (
           <Stack>
