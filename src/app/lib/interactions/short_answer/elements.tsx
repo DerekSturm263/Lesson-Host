@@ -50,31 +50,7 @@ function Component(props: InteractionProps) {
     <Box
       sx={{ flexGrow: 1, alignContent: 'center' }}
     >
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ marginLeft: '150px', marginRight: '150px' }}
-      >
-        <TextField
-          label="Write your response here"
-          name="response"
-          autoComplete="off"
-          disabled={props.isDisabled}
-          value={userResponse}
-          onChange={(e) => setUserResponse(e.target.value)}
-          sx={{ flexGrow: 1 }}
-        />
-
-        <Button
-          variant="contained"
-          onClick={(e) => submit()}
-          sx={{ width: '120px' }}
-        >
-          Submit
-        </Button>
-      </Stack>
-
-      {props.mode == ComponentMode.Edit && (
+      {props.mode == ComponentMode.Edit ? (
         <TextField
           label="Correct Answer"
           name="correctAnswer"
@@ -85,7 +61,32 @@ function Component(props: InteractionProps) {
             setCorrectAnswer(value);
             helpers.getInteractionValue<InteractionType>(props.elementID).correctAnswer = value;
           }}
+          sx={{ flexGrow: 1 }}
         />
+      ) : (
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ marginLeft: '150px', marginRight: '150px' }}
+        >
+          <TextField
+            label="Write your response here"
+            name="response"
+            autoComplete="off"
+            disabled={props.isDisabled}
+            value={userResponse}
+            onChange={(e) => setUserResponse(e.target.value)}
+            sx={{ flexGrow: 1 }}
+          />
+
+          <Button
+            variant="contained"
+            onClick={(e) => submit()}
+            sx={{ width: '120px' }}
+          >
+            Submit
+          </Button>
+        </Stack>
       )}
     </Box>
   );
