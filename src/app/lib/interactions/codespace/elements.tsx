@@ -231,7 +231,7 @@ function Component(props: InteractionProps) {
       direction="row"
     >
       <Stack
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, width: '60%' }}
       >
         {props.mode == ComponentMode.Edit && (
           <Stack
@@ -277,7 +277,7 @@ function Component(props: InteractionProps) {
         )}
 
         <Stack
-          sx={{ flexGrow: 1, width: '60%' }}
+          sx={{ flexGrow: 1 }}
         >
           <Tabs
             value={tabIndex}
