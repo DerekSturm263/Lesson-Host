@@ -1,7 +1,8 @@
 'use server'
 
 import { MongoClient, ObjectId } from 'mongodb';
-import { Skill, Project, Course, Learn, Practice, Implement, Certify } from '@/app/lib/types';
+import { Skill, Project, Course, Learn, Practice, Implement, Certify, ModuleType } from '@/app/lib/types';
+import Codespace from '@/app/lib/interactions/codespace/elements';
 
 const client = new MongoClient(process.env.MONGODB_URI ?? '', {
   serverSelectionTimeoutMS: 120000,
@@ -26,7 +27,7 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
           title: "New Chapter",
           elements: [
             {
-              type: "",
+              type: "shortAnswer",
               text: "New element",
               value: {
                 correctAnswer: ""
@@ -80,7 +81,14 @@ export async function getProject(id: string): Promise<Project> {
 export async function createProject(): Promise<[ Project, ObjectId ]> {
   const project: Project = {
     title: "New Project",
-    description: ""
+    description: "",
+    checklist: [
+      "First Item",
+      "Second Item",
+      "Third Item"
+    ],
+    type: "codespace",
+    value: Codespace.defaultValue
   };
 
   const result = await client.db('database').collection('projects').insertOne(project);
@@ -107,8 +115,17 @@ export async function createCourse(): Promise<[ Course, ObjectId ] > {
   const course: Course = {
     title: "New Course",
     description: "",
-    skills: [],
-    projects: []
+    units: [
+      {
+        title: "Unit 1",
+        modules: [
+          {
+            type: ModuleType.Skill,
+            id: ""
+          }
+        ]
+      }
+    ]
   };
 
   const result = await client.db('database').collection('courses').insertOne(course);

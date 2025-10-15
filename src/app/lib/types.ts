@@ -66,6 +66,7 @@ export type Module = {
 }
 
 export type Unit = {
+  title: string,
   modules: Module[]
 }
 
