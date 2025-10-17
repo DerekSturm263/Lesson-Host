@@ -308,80 +308,78 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
             sx={{ width: '400px', justifyContent: 'flex-end' }}
           >
             {type != "" && (
-            <FormControl
-              size="small"
-            >
-              <InputLabel id="mode-label">Mode</InputLabel>
-
-              <Select
-                labelId="mode-label"
-                value={type}
-                label="Mode"
+              <FormControl
+                size="small"
               >
-                <MenuItem
-                  value="Learn"
+                <InputLabel id="mode-label">Mode</InputLabel>
+
+                <Select
+                  labelId="mode-label"
+                  value={type}
+                  label="Mode"
                 >
-                  <ListItemButton
-                    href={`./learn?mode=${mode}&hideLogo=${hideLogo}`}
-                    sx={{ padding: '0px' }}
+                  <MenuItem
+                    value="Learn"
                   >
-                    <ListItemIcon>
-                      <School />
-                    </ListItemIcon>
+                    <ListItemButton
+                      href={`./learn?mode=${mode}&hideLogo=${hideLogo}`}
+                      sx={{ padding: '0px' }}
+                    >
+                      <ListItemIcon>
+                        <School />
+                      </ListItemIcon>
 
-                    <ListItemText>
-                      Learn
-                    </ListItemText>
-                  </ListItemButton>
-                </MenuItem>
+                      <ListItemText>
+                        Learn
+                      </ListItemText>
+                    </ListItemButton>
+                  </MenuItem>
 
-                <MenuItem
-                  value="Practice"
-                >
-                  <ListItemButton
-                    href={`./practice?mode=${mode}&hideLogo=${hideLogo}`}
-                    sx={{ padding: '0px' }}
+                  <MenuItem
+                    value="Practice"
                   >
-                    <ListItemIcon>
-                      <LocalLibrary />
-                    </ListItemIcon>
+                    <ListItemButton
+                      href={`./practice?mode=${mode}&hideLogo=${hideLogo}`}
+                      sx={{ padding: '0px' }}
+                    >
+                      <ListItemIcon>
+                        <LocalLibrary />
+                      </ListItemIcon>
 
-                    <ListItemText>
-                      Practice
-                    </ListItemText>
-                  </ListItemButton>
-                </MenuItem>
-              </Select>
-            </FormControl>
+                      <ListItemText>
+                        Practice
+                      </ListItemText>
+                    </ListItemButton>
+                  </MenuItem>
+                </Select>
+              </FormControl>
             )}
 
+            <Button
+              variant="contained"
+              onClick={async (e) => { 
+                setIsOpen(true);
+                setTabIndex(0);
+                setHideLogoState(true);
+                setWidth(800);
+                setHeight(600);
+              }}
+            >
+              {mode == ComponentMode.Edit ? "Export" : "Share"}
+            </Button>
+
             {mode == ComponentMode.Edit && (
-              <>
-                <Button
-                  variant="contained"
-                  onClick={async (e) => { 
-                    setIsOpen(true);
-                    setTabIndex(0);
-                    setHideLogoState(true);
-                    setWidth(800);
-                    setHeight(600);
-                  }}
-                >
-                  {mode == ComponentMode.Edit ? "Export" : "Share"}
-                </Button>
+              <Button
+                variant="contained"
+                onClick={async (e) => { 
+                  //await saveSkillLearn(slug, learn);
 
-                <Button
-                  variant="contained"
-                  onClick={async (e) => { 
-                    //await saveSkillLearn(slug, learn);
-
-                    setSnackbarText("Saved");
-                    setIsSnackbarOpen(true);
-                  }}
-                >
-                  Save
-                </Button>
-              </>
+                  setSnackbarText("Saved");
+                  setIsSnackbarOpen(true);
+                }}
+              >
+                Save
+              </Button>
             )}
           </Stack>
         </Toolbar>
