@@ -375,7 +375,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
             {mode == ComponentMode.Edit && (
               <Button
                 variant="contained"
-                startIcon={<Share />}
+                startIcon={<Save />}
                 onClick={async (e) => { 
                   //await saveSkillLearn(slug, learn);
 
