@@ -35,8 +35,7 @@ export type Project = {
   title: string,
   description: string,
   checklist: string[],
-  type: string,
-  value: unknown
+  value: Element
 };
 
 export enum ModuleType {
