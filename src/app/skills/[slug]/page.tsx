@@ -1,16 +1,7 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { Header, SkillDescription } from '@/app/lib/components';
+import { SkillContent } from '@/app/lib/components';
 import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
-
-import Button from '@mui/material/Button';
-import Toolbar from '@mui/material/Toolbar';
-import Stack from '@mui/material/Stack';
-
-import School from '@mui/icons-material/School';
-import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import CloudUpload from '@mui/icons-material/CloudUpload';
-import VerifiedUser from '@mui/icons-material/VerifiedUser';
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
@@ -35,47 +26,14 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header
+        <SkillContent
+          slug={slug}
           title={skill.title}
-          slug={""}
-          mode={mode as ComponentMode}
-          type=""
-          progress={0}
-          showProgress={true}
-          hideLogo={hideLogo}
-        />
-        <Toolbar />
-
-        <SkillDescription
           skill={skill}
           mode={mode as ComponentMode}
+          apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
+          hideLogo={hideLogo}
         />
-
-        <Stack
-          direction="row"
-          spacing={5}
-          sx={{ justifyContent: "center" }}
-        >
-          <Button
-            href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<School />}
-            sx={{ padding: ' 100px 50px 100px 50px' }}
-            size="large"
-          >
-            Learn
-          </Button>
-
-          <Button
-            href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<LocalLibrary />}
-            sx={{ padding: ' 100px 50px 100px 50px' }}
-            size="large"
-          >
-            Practice
-          </Button>
-        </Stack>
       </main>
     </div>
   );

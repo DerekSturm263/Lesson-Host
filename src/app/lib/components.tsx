@@ -1,7 +1,7 @@
 'use client'
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
-import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
+import { saveSkillLearn, saveSkillPractice, createSkill, createProject, createCourse } from '@/app/lib/database';
 import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
@@ -67,8 +67,6 @@ import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import School from '@mui/icons-material/School';
 import LocalLibrary from '@mui/icons-material/LocalLibrary';
-import CloudUpload from '@mui/icons-material/CloudUpload';
-import VerifiedUser from '@mui/icons-material/VerifiedUser';
 import Delete from '@mui/icons-material/Delete';
 import MoreVert from '@mui/icons-material/MoreVert';
 import RecordVoiceOver from '@mui/icons-material/RecordVoiceOver';
@@ -78,7 +76,10 @@ import Assignment from '@mui/icons-material/Assignment';
 import Book from '@mui/icons-material/Book';
 import CardActionArea from '@mui/material/CardActionArea';
 import Rating from '@mui/material/Rating';
-import { FormControlLabel, Switch, Tab, Tabs } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 
 
 
@@ -99,7 +100,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -372,7 +373,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 <Button
                   variant="contained"
                   onClick={async (e) => { 
-                    //await saveSkillLearn(slug, skill.learn);
+                    await saveSkillLearn(slug, learn);
 
                     setSnackbarText("Saved");
                     setIsSnackbarOpen(true);
@@ -446,6 +447,71 @@ function SidebarButton({ selected, ogTitle, isDisabled, mode, progress, onClick 
         />
       </ListItemButton>
     </ListItem>
+  );
+}
+
+export function SkillContent({ slug, title, skill, mode, apiKey, hideLogo }: { slug: string, title: string, skill: Skill, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
+    >
+      <SkillContentNoCookies
+        slug={slug}
+        title={title}
+        skill={skill}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      />
+    </CookiesProvider>
+  );
+}
+
+export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLogo }: { slug: string, title: string, skill: Skill, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  return (
+    <Stack>
+      <Header
+        title={title}
+        slug={""}
+        mode={mode as ComponentMode}
+        type=""
+        progress={0}
+        showProgress={true}
+        hideLogo={hideLogo}
+      />
+      <Toolbar />
+
+      <SkillDescription
+        skill={skill}
+        mode={mode as ComponentMode}
+      />
+
+      <Stack
+        direction="row"
+        spacing={5}
+        sx={{ justifyContent: "center" }}
+      >
+        <Button
+          href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
+          variant="contained"
+          startIcon={<School />}
+          sx={{ padding: ' 100px 50px 100px 50px' }}
+          size="large"
+        >
+          Learn
+        </Button>
+
+        <Button
+          href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
+          variant="contained"
+          startIcon={<LocalLibrary />}
+          sx={{ padding: ' 100px 50px 100px 50px' }}
+          size="large"
+        >
+          Practice
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
 
@@ -1157,7 +1223,7 @@ export function CreateCourseButton() {
   );
 }
 
-export function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
+function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (

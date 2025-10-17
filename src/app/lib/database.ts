@@ -64,7 +64,7 @@ export async function saveSkillLearn(id: string, learn: Learn) {
   );
 }
 
-export async function saveSkillPratice(id: string, practice: Practice) {
+export async function saveSkillPractice(id: string, practice: Practice) {
   const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
     { $set: { practice: practice } }
