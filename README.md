@@ -14,11 +14,13 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
 - [ ] Skills Pages
   - [x] Learn
   - [ ] Practice
-- [ ] TTS with Natural Voice
+- [ ] Read-Along Text
+  - [ ] Letter-by-Letter Printing
+  - [ ] Natural Voice TTS
 - [ ] Projects
 - [ ] Courses
 - [ ] Mobile Support
-- [ ] Interaction Types:
+- [ ] Interaction Types
   - [ ] Matching
   - [ ] Ordering
   - [ ] Multiple Choice
