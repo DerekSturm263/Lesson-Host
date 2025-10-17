@@ -1,13 +1,19 @@
 'use server'
 
-import { MongoClient, ObjectId } from 'mongodb';
-import { Skill, Project, Course, Learn, Practice, Implement, Certify, ModuleType } from '@/app/lib/types';
+import { MongoClient, ObjectId, WithId } from 'mongodb';
+import { Skill, Project, Course, Learn, Practice, ModuleType } from '@/app/lib/types';
 import Codespace from '@/app/lib/interactions/codespace/elements';
 
 const client = new MongoClient(process.env.MONGODB_URI ?? '', {
   serverSelectionTimeoutMS: 120000,
   connectTimeoutMS: 120000
 });
+
+export async function getAllSkills(): Promise<WithId<Skill>[]> {
+  const courses = await client.db('database').collection('skills').find().toArray();
+
+  return courses.map(item => item as unknown as WithId<Skill>);
+}
 
 export async function getSkill(id: string): Promise<Skill> {
   const skill = await client.db('database').collection('skills').findOne(
@@ -43,18 +49,6 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
           title: "New Sub-Skill"
         }
       ]
-    },
-    implement: {
-      link: ""
-    },
-    certify: {
-      resources: [
-        {
-          title: "New Resource",
-          link: ""
-        }
-      ],
-      certificationLink: ""
     }
   };
 
@@ -68,6 +62,19 @@ export async function saveSkillLearn(id: string, learn: Learn) {
     { _id: new ObjectId(id) },
     { $set: { learn: learn } }
   );
+}
+
+export async function saveSkillPratice(id: string, practice: Practice) {
+  const result = await client.db('database').collection('skills').updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { practice: practice } }
+  );
+}
+
+export async function getAllProjects(): Promise<WithId<Project>[]> {
+  const courses = await client.db('database').collection('projects').find().toArray();
+
+  return courses.map(item => item as unknown as WithId<Project>);
 }
 
 export async function getProject(id: string): Promise<Project> {
@@ -101,6 +108,12 @@ export async function saveProject(id: string, project: Project) {
     { _id: new ObjectId(id) },
     { $set: project }
   );
+}
+
+export async function getAllCourses(): Promise<WithId<Course>[]> {
+  const courses = await client.db('database').collection('courses').find().toArray();
+
+  return courses.map(item => item as unknown as WithId<Course>);
 }
 
 export async function getCourse(id: string): Promise<Course> {

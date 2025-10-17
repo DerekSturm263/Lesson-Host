@@ -24,27 +24,11 @@ export type Practice = {
   subSkills: SubSkill[]
 };
 
-export type Implement = {
-  link: string
-};
-
-export type Resource = {
-  title: string,
-  link: string
-}
-
-export type Certify = {
-  resources: Resource[],
-  certificationLink: string
-};
-
 export type Skill = {
   title: string,
   description: string,
   learn: Learn,
-  practice: Practice,
-  implement: Implement,
-  certify: Certify
+  practice: Practice
 };
 
 export type Project = {

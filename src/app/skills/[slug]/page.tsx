@@ -41,6 +41,7 @@ export default async function Page({ params, searchParams }: Props) {
           mode={mode as ComponentMode}
           type=""
           progress={0}
+          showProgress={true}
           hideLogo={hideLogo}
         />
         <Toolbar />
@@ -73,26 +74,6 @@ export default async function Page({ params, searchParams }: Props) {
             size="large"
           >
             Practice
-          </Button>
-
-          <Button
-            href={`./${slug}/implement?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<CloudUpload />}
-            sx={{ padding: ' 100px 50px 100px 50px' }}
-            size="large"
-          >
-            Implement
-          </Button>
-          
-          <Button
-            href={`./${slug}/certify?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<VerifiedUser />}
-            sx={{ padding: ' 100px 50px 100px 50px' }}
-            size="large"
-          >
-            Certify
           </Button>
         </Stack>
       </main>

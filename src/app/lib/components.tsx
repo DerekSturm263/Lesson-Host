@@ -2,7 +2,7 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { saveSkillLearn, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, Implement, Certify } from '@/app/lib/types';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
 
@@ -99,7 +99,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, hideLogo }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, hideLogo: boolean }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -277,7 +277,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
                 autoComplete="off"
                 value={headerTitle}
                 onChange={(e) => {
-                  setHeaderTitle(e.target.value)
+                  setHeaderTitle(e.target.value);
                   // TODO: Add code to actually set it.
                 }}
               />
@@ -291,7 +291,7 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
               </Link>
             )}
 
-            {mode == ComponentMode.View && (
+            {showProgress && mode == ComponentMode.View && (
               <LinearProgress
                 variant="determinate"
                 value={progress * 100}
@@ -347,40 +347,6 @@ export function Header({ title, slug, mode, type, progress, hideLogo }: { title:
 
                     <ListItemText>
                       Practice
-                    </ListItemText>
-                  </ListItemButton>
-                </MenuItem>
-
-                <MenuItem
-                  value="Implement"
-                >
-                  <ListItemButton
-                    href={`./implement?mode=${mode}&hideLogo=${hideLogo}`}
-                    sx={{ padding: '0px' }}
-                  >
-                    <ListItemIcon>
-                      <CloudUpload />
-                    </ListItemIcon>
-
-                    <ListItemText>
-                      Implement
-                    </ListItemText>
-                  </ListItemButton>
-                </MenuItem>
-
-                <MenuItem
-                  value="Certify"
-                >
-                  <ListItemButton
-                    href={`./certify?mode=${mode}&hideLogo=${hideLogo}`}
-                    sx={{ padding: '0px' }}
-                  >
-                    <ListItemIcon>
-                      <VerifiedUser />
-                    </ListItemIcon>
-
-                    <ListItemText>
-                      Certify
                     </ListItemText>
                   </ListItemButton>
                 </MenuItem>
@@ -594,6 +560,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         mode={mode as ComponentMode}
         type="Learn"
         progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length}
+        showProgress={true}
         hideLogo={hideLogo}
       />
 
@@ -754,6 +721,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         mode={mode as ComponentMode}
         type="Practice"
         progress={0}
+        showProgress={true}
         hideLogo={hideLogo}
       />
 
@@ -777,179 +745,6 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
               }}
             />
           ))}
-        </Sidebar>
-
-        <Stack
-          sx={{ flexGrow: 1 }}
-        >
-          <Toolbar />
-          
-        </Stack>
-      </Box>
-    </Fragment>
-  );
-}
-
-export function ImplementContent({ slug, title, implement, mode, apiKey, hideLogo }: { slug: string, title: string, implement: Implement, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
-      <ImplementContentNoCookies
-        slug={slug}
-        title={title}
-        implement={implement}
-        mode={mode}
-        apiKey={apiKey}
-        hideLogo={hideLogo}
-      ></ImplementContentNoCookies>
-    </CookiesProvider>
-  );
-}
-
-function ImplementContentNoCookies({ slug, title, implement, mode, apiKey, hideLogo }: { slug: string, title: string, implement: Implement, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  const [ link, setLink ] = useState(implement.link);
-
-  return (
-    <Fragment>
-      <Dialog
-        open={false}
-      >
-        <DialogTitle>
-          Implementation Complete!
-        </DialogTitle>
-
-        <DialogContent>
-          <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
-          </DialogContentText>
-          
-          <DialogContentText>
-            {"Next up: Get certified in this skill to earn the highest score on the rubric."}
-          </DialogContentText>
-        </DialogContent>
-
-        <DialogActions>
-          <Button
-            href="./certify"
-          >
-            Certify Skill
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Header
-        title={title}
-        slug={slug}
-        mode={mode as ComponentMode}
-        type="Implement"
-        progress={0}
-        hideLogo={hideLogo}
-      />
-
-      <Box
-        display='flex'
-        sx={{ height: '100vh' }}
-      >
-        <Sidebar
-          label="Chapters"
-        >
-          
-        </Sidebar>
-
-        <Stack
-          sx={{ flexGrow: 1 }}
-        >
-          <Toolbar />
-          
-        </Stack>
-      </Box>
-    </Fragment>
-  );
-}
-
-export function CertifyContent({ slug, title, certify, mode, apiKey, hideLogo }: { slug: string, title: string, certify: Certify, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
-      <CertifyContentNoCookies
-        slug={slug}
-        title={title}
-        certify={certify}
-        mode={mode}
-        apiKey={apiKey}
-        hideLogo={hideLogo}
-      ></CertifyContentNoCookies>
-    </CookiesProvider>
-  );
-}
-
-function CertifyContentNoCookies({ slug, title, certify, mode, apiKey, hideLogo }: { slug: string, title: string, certify: Certify, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  const [ resources, setResources ] = useState(certify.resources);
-  const [ certificationLink, setCertificationLink ] = useState(certify.certificationLink);
-  const [ currentPageIndex, setCurrentPageIndex ] = useState(0);
-
-  return (
-    <Fragment>
-      <Dialog
-        open={false}
-      >
-        <DialogTitle>
-          Certification Complete!
-        </DialogTitle>
-
-        <DialogContent>
-          <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
-          </DialogContentText>
-          
-          <DialogContentText>
-            {"Next up: Pick another skill to start working on."}
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
-
-      <Header
-        title={title}
-        slug={slug}
-        mode={mode as ComponentMode}
-        type="Certify"
-        progress={0}
-        hideLogo={hideLogo}
-      />
-
-      <Box
-        display='flex'
-        sx={{ height: '100vh' }}
-      >
-        <Sidebar
-          label="Resources"
-        >
-          {resources.map((resource, index) => (
-            <SidebarButton
-              isDisabled={false}
-              selected={currentPageIndex == index}
-              key={index}
-              ogTitle={resource.title}
-              mode={mode}
-              progress={0}
-              onClick={(e) => {
-                setCurrentPageIndex(index);
-              }}
-            />
-          ))}
-
-          <SidebarButton
-            isDisabled={false}
-            selected={currentPageIndex == resources.length}
-            ogTitle="Get Certified"
-            mode={mode}
-            progress={0}
-            onClick={(e) => {
-              setCurrentPageIndex(resources.length);
-            }}
-          />
         </Sidebar>
 
         <Stack
@@ -1011,6 +806,7 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         mode={mode as ComponentMode}
         type="Certify"
         progress={0}
+        showProgress={true}
         hideLogo={hideLogo}
       />
 
@@ -1442,12 +1238,14 @@ function CourseDescription({ course, mode }: { course: Course, mode: ComponentMo
   return mode == ComponentMode.Edit ? input : header;
 }
 
-export function SkillCard({ skill }: { skill: Skill }) {
+export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
   return (
     <Card
       sx={{ maxWidth: 345 }}
     >
-      <CardActionArea>
+      <CardActionArea
+        href={`/skills/${id}`}
+      >
         <CardContent>
           <Typography
             variant="h6"
@@ -1481,12 +1279,14 @@ export function SkillCard({ skill }: { skill: Skill }) {
   );
 }
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, id }: { project: Project, id: string }) {
   return (
     <Card
       sx={{ maxWidth: 345 }}
     >
-      <CardActionArea>
+      <CardActionArea
+        href={`/projects/${id}`}
+      >
         <CardContent>
           <Typography
             variant="h6"
@@ -1520,12 +1320,14 @@ export function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-export function CourseCard({ course }: { course: Course }) {
+export function CourseCard({ course, id }: { course: Course, id: string }) {
   return (
     <Card
       sx={{ maxWidth: 345 }}
     >
-      <CardActionArea>
+      <CardActionArea
+        href={`/courses/${id}`}
+      >
         <CardContent>
           <Typography
             variant="h6"

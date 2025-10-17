@@ -23,6 +23,7 @@ export default async function Home() {
           mode={ComponentMode.Master}
           type=""
           progress={0}
+          showProgress={false}
           hideLogo={false}
         />
         <Toolbar />
@@ -73,6 +74,7 @@ export default async function Home() {
               <CourseCard
                 key={index}
                 course={course}
+                id=""
               />
             ))}
           </Stack>
@@ -104,6 +106,7 @@ export default async function Home() {
               <SkillCard
                 key={index}
                 skill={skill}
+                id=""
               />
             ))}
           </Stack>
@@ -135,9 +138,16 @@ export default async function Home() {
               <ProjectCard
                 key={index}
                 project={project}
+                id=""
               />
             ))}
           </Stack>
+
+          <Button
+            href="/create"
+          >
+            Create
+          </Button>
         </Stack>
       </main>
     </div>
