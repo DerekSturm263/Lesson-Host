@@ -373,7 +373,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 <Button
                   variant="contained"
                   onClick={async (e) => { 
-                    await saveSkillLearn(slug, learn);
+                    //await saveSkillLearn(slug, learn);
 
                     setSnackbarText("Saved");
                     setIsSnackbarOpen(true);
