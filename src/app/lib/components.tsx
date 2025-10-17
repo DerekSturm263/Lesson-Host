@@ -120,7 +120,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
         onClose={(e) => setIsOpen(false)}
       >
         <DialogTitle>
-          Select Export Settings
+          {`Select ${mode == ComponentMode.Edit ? "Export" : "Share"} Settings`}
         </DialogTitle>
 
         <DialogContent>
@@ -367,7 +367,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                     setHeight(600);
                   }}
                 >
-                  Export
+                  {mode == ComponentMode.Edit ? "Export" : "Share"}
                 </Button>
 
                 <Button
