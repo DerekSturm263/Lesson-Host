@@ -113,6 +113,9 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
   const [ width, setWidth ] = useState(800);
   const [ height, setHeight ] = useState(600);
 
+  const link = `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`;
+  const iframe = `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
+
   return (
     <Fragment>
       <Dialog
@@ -195,7 +198,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
+                  {link}
                 </Link>
               </DialogContentText>
             </>
@@ -211,7 +214,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 sx={{ backgroundColor: "#1c1c1c", padding: "10px", overflow: "auto", borderRadius: "5px" }}
               >
                 <code>
-                  {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`}
+                  {iframe}
                 </code>
               </DialogContentText>
             </>
@@ -221,9 +224,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
         <DialogActions>
           <Button
             onClick={(e) => {
-              navigator.clipboard.writeText(tabIndex == 0 ?
-                `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}` :
-                `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`);
+              navigator.clipboard.writeText(tabIndex == 0 ? link : iframe);
 
               setSnackbarText("Copied to clipboard");
               setIsSnackbarOpen(true);
@@ -474,7 +475,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
     <Stack>
       <Header
         title={title}
-        slug={""}
+        slug={slug}
         mode={mode as ComponentMode}
         type=""
         progress={0}
@@ -887,9 +888,9 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         >
           {checklist.map((item, index) => (
             <SidebarButton
+              key={index}
               isDisabled={false}
               selected={false}
-              key={index}
               ogTitle={item}
               mode={mode}
               progress={0}
