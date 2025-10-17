@@ -58,6 +58,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Link from '@mui/material/Link';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import CardActionArea from '@mui/material/CardActionArea';
+import Rating from '@mui/material/Rating';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -74,12 +80,9 @@ import VoiceOverOff from '@mui/icons-material/VoiceOverOff';
 import Psychology from '@mui/icons-material/Psychology';
 import Assignment from '@mui/icons-material/Assignment';
 import Book from '@mui/icons-material/Book';
-import CardActionArea from '@mui/material/CardActionArea';
-import Rating from '@mui/material/Rating';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import Save from '@mui/icons-material/Save';
+import Launch from '@mui/icons-material/Launch';
+import Share from '@mui/icons-material/Share';
 
 
 
@@ -357,6 +360,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
 
             <Button
               variant="contained"
+              startIcon={mode == ComponentMode.Edit ? <Launch /> : <Share />}
               onClick={async (e) => { 
                 setIsOpen(true);
                 setTabIndex(0);
@@ -371,6 +375,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
             {mode == ComponentMode.Edit && (
               <Button
                 variant="contained"
+                startIcon={<Share />}
                 onClick={async (e) => { 
                   //await saveSkillLearn(slug, learn);
 
