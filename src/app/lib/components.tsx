@@ -113,9 +113,6 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
   const [ width, setWidth ] = useState(800);
   const [ height, setHeight ] = useState(600);
 
-  const link = `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`;
-  const iframe = `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
-
   return (
     <Fragment>
       <Dialog
@@ -198,7 +195,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {link}
+                  {`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
                 </Link>
               </DialogContentText>
             </>
@@ -214,7 +211,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 sx={{ backgroundColor: "#1c1c1c", padding: "10px", overflow: "auto", borderRadius: "5px" }}
               >
                 <code>
-                  {iframe}
+                  {`<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`}
                 </code>
               </DialogContentText>
             </>
@@ -224,7 +221,9 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
         <DialogActions>
           <Button
             onClick={(e) => {
-              navigator.clipboard.writeText(tabIndex == 0 ? link : iframe);
+              navigator.clipboard.writeText(tabIndex == 0 ?
+                `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}` :
+                `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`);
 
               setSnackbarText("Copied to clipboard");
               setIsSnackbarOpen(true);
