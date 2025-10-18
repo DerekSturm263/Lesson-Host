@@ -893,7 +893,7 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
               key={index}
               isDisabled={false}
               selected={false}
-              ogTitle={item}
+              ogTitle={item.title}
               mode={mode}
               progress={0}
               onClick={(e) => { }}
