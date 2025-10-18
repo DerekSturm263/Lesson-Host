@@ -1312,7 +1312,7 @@ function CourseDescription({ course, mode }: { course: Course, mode: ComponentMo
 export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
   return (
     <Card
-      sx={{ maxWidth: 345 }}
+      sx={{ wdth: 400 }}
     >
       <CardActionArea
         href={`/skills/${id}`}
@@ -1353,7 +1353,7 @@ export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
 export function ProjectCard({ project, id }: { project: Project, id: string }) {
   return (
     <Card
-      sx={{ maxWidth: 345 }}
+      sx={{ wdth: 400 }}
     >
       <CardActionArea
         href={`/projects/${id}`}
@@ -1394,7 +1394,7 @@ export function ProjectCard({ project, id }: { project: Project, id: string }) {
 export function CourseCard({ course, id }: { course: Course, id: string }) {
   return (
     <Card
-      sx={{ maxWidth: 345 }}
+      sx={{ wdth: 400 }}
     >
       <CardActionArea
         href={`/courses/${id}`}
