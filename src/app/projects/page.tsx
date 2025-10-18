@@ -29,6 +29,7 @@ export default async function Page({ params, searchParams }: Props) {
         <Grid
           container
           spacing={5}
+          sx={{ justifyContent: "center" }}
         >
           {projects.map((project, index) => (
             <ProjectCard
