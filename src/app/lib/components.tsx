@@ -358,7 +358,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
               </FormControl>
             )}
 
-            {slug != "" && (
+            {slug != "" && hideLogo == false (
               <Button
                 variant="contained"
                 startIcon={mode == ComponentMode.Edit ? <Launch /> : <Share />}
