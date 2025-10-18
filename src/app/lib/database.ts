@@ -90,12 +90,30 @@ export async function createProject(): Promise<[ Project, ObjectId ]> {
     title: "New Project",
     description: "",
     checklist: [
-      "First Item",
-      "Second Item",
-      "Third Item"
+      {
+        title: "First Item",
+        skills: [
+          ""
+        ]
+      },
+      {
+        title: "Second Item",
+        skills: [
+          ""
+        ]
+      },
+      {
+        title: "Third Item",
+        skills: [
+          ""
+        ]
+      }
     ],
-    type: "codespace",
-    value: Codespace.defaultValue
+    value: {
+      type: "codespace",
+      text: "",
+      value: Codespace.defaultValue
+    }
   };
 
   const result = await client.db('database').collection('projects').insertOne(project);

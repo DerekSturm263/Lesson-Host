@@ -31,10 +31,15 @@ export type Skill = {
   practice: Practice
 };
 
+export type ChecklistItem = {
+  title: string,
+  skills: string[]
+};
+
 export type Project = {
   title: string,
   description: string,
-  checklist: string[],
+  checklist: ChecklistItem[],
   value: Element
 };
 
