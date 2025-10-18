@@ -358,19 +358,21 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
               </FormControl>
             )}
 
-            <Button
-              variant="contained"
-              startIcon={mode == ComponentMode.Edit ? <Launch /> : <Share />}
-              onClick={async (e) => { 
-                setIsOpen(true);
-                setTabIndex(0);
-                setHideLogoState(true);
-                setWidth(800);
-                setHeight(600);
-              }}
-            >
-              {mode == ComponentMode.Edit ? "Export" : "Share"}
-            </Button>
+            {slug != "" && (
+              <Button
+                variant="contained"
+                startIcon={mode == ComponentMode.Edit ? <Launch /> : <Share />}
+                onClick={async (e) => { 
+                  setIsOpen(true);
+                  setTabIndex(0);
+                  setHideLogoState(true);
+                  setWidth(800);
+                  setHeight(600);
+                }}
+              >
+                {mode == ComponentMode.Edit ? "Export" : "Share"}
+              </Button>
+            )}
 
             {mode == ComponentMode.Edit && (
               <Button
