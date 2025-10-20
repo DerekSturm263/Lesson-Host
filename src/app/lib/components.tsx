@@ -676,9 +676,11 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
           <Toolbar />
 
           <Stack>
-            <TypeSwitcher
-              elementID={currentElement}
-            />
+            {mode == ComponentMode.Edit && (
+              <TypeSwitcher
+                elementID={currentElement}
+              />
+            )}
 
             <Interaction
               elementID={currentElement}
@@ -1016,13 +1018,13 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
         sx={{ justifyContent: 'space-between', flexWrap: 'wrap' }}
       >
         <Pagination
-          count={helpers.getChapter(elementID).elements.length}
+          count={helpers.getChapterLength(elementID)}
           page={elementID.elementIndex + 1}
           disabled={!isNavigationEnabled}
           renderItem={(item) => (
             <PaginationItem
               {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapter(elementID).elements.length || (!elementsCompleted[helpers.getAbsoluteIndex({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: 0, keys: elementID.keys }) + (item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
+              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapterLength(elementID) || (!elementsCompleted[helpers.getAbsoluteIndex({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: 0, keys: elementID.keys }) + (item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
               onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
             />
           )}

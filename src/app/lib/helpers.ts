@@ -1,11 +1,7 @@
 import { ElementID, Chapter, Element } from "./types";
 
-export function getChapter(elementID: ElementID): Chapter {
-  return elementID.learn.chapters[elementID.chapterIndex];
-}
-
-export function getElement(elementID: ElementID): Element {
-  return getChapter(elementID).elements[elementID.elementIndex];
+export function getChapterLength(elementID: ElementID): number {
+  return elementID.learn.chapters[elementID.chapterIndex].elements.length;
 }
 
 export function getAbsoluteIndex(elementID: ElementID): number {
@@ -19,5 +15,5 @@ export function getAbsoluteIndex(elementID: ElementID): number {
 }
 
 export function getInteractionValue<T>(elementID: ElementID): T {
-  return getElement(elementID).value as T;
+  return  elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value as T;
 }
