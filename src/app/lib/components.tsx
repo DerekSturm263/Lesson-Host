@@ -540,7 +540,7 @@ export function LearnContent({ slug, title, learn, mode, apiKey, hideLogo }: { s
 
 function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   const [ chapters, setChapters ] = useState(learn.chapters);
-  const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] });
+  const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] } as ElementID);
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
   const [ elementsCompleted, setElementsCompleted ] = useState(Array<boolean>(learn.chapters.reduce((sum, chapter) => sum + chapter.elements.length, 0)).fill(mode != ComponentMode.View));
   const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
@@ -716,9 +716,9 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
             elementsCompleted={elementsCompleted}
             setCurrentElement={setCurrentElement}
             doReadAloud={cookies.autoReadAloud}
-            deleteElement={}
-            insertElementBefore={}
-            insertElementAfter={}
+            deleteElement={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 1)}
+            insertElementBefore={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 0, {})}
+            insertElementAfter={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 0, {})}
           />
 
           <Snackbar
