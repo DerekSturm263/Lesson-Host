@@ -717,7 +717,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
             setCurrentElement={setCurrentElement}
             doReadAloud={cookies.autoReadAloud}
             deleteElement={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 1)}
-            insertElementBefore={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 0, {})}
+            insertElementBefore={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex + 1, 0, {})}
             insertElementAfter={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 0, {})}
           />
 
