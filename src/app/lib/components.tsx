@@ -954,7 +954,7 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean }) {
+function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement, deleteElement, insertElementBefore, insertElementAfter }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean, deleteElement: () => void, insertElementBefore: () => void }, insertElmenetAfter: () => void) {
   async function rephrase() {
     setIsThinking(true);
 
@@ -1030,7 +1030,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
               >
                 <Chip
                   icon={<Add />}
-                  label="Insert Elememt Before"
+                  label="Insert Element Before"
                 />
               </Tooltip>
 
