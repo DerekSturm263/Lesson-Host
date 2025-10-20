@@ -648,9 +648,9 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
 
             return (
               <SidebarButton
+                key={index}
                 isDisabled={!isNavigationEnabled || (index != 0 && !elementsCompleted[helpers.getAbsoluteIndex(chapterFirstElement) - 1])}
                 selected={currentElement.chapterIndex == index}
-                key={index}
                 ogTitle={chapter.title}
                 mode={mode}
                 progress={elementsCompleted.reduce((sum, element, index) => sum += element && (index >= helpers.getAbsoluteIndex(chapterFirstElement) && index < helpers.getAbsoluteIndex(chapterFirstElement) + chapter.elements.length) ? 1 : 0, 0) / chapter.elements.length}
@@ -716,6 +716,9 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
             elementsCompleted={elementsCompleted}
             setCurrentElement={setCurrentElement}
             doReadAloud={cookies.autoReadAloud}
+            deleteElement={}
+            insertElementBefore={}
+            insertElementAfter={}
           />
 
           <Snackbar
@@ -954,7 +957,7 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement, deleteElement, insertElementBefore, insertElementAfter }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean, deleteElement: () => void, insertElementBefore: () => void }, insertElmenetAfter: () => void) {
+function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement, deleteElement, insertElementBefore, insertElementAfter }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean, deleteElement: () => void, insertElementBefore: () => void, insertElementAfter: () => void }) {
   async function rephrase() {
     setIsThinking(true);
 
@@ -1031,6 +1034,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Add />}
                   label="Insert Element Before"
+                  onClick={insertElementBefore}
                 />
               </Tooltip>
 
@@ -1040,6 +1044,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Add />}
                   label="Insert Element After"
+                  onClick={insertElementAfter}
                 />
               </Tooltip>
 
@@ -1049,6 +1054,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Delete />}
                   label="Delete"
+                  onClick={deleteElement}
                 />
               </Tooltip>
             </>
