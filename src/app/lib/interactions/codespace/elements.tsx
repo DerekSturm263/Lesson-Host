@@ -217,7 +217,7 @@ function Component(props: InteractionProps) {
     setOutput(output.trim() == '' ? 'Program did not output anything' : output);
     setIsRunning(false);
 
-    const feedback = await verify(helpers.getElement(props.elementID).text, content, response, helpers.getInteractionValue<InteractionType>(props.elementID));
+    const feedback = await verify(props.originalText, content, response, helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
     props.setIsThinking(false);
 

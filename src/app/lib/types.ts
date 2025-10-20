@@ -436,10 +436,30 @@ export type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
+export type TextProps = {
+  elementID: ElementID,
+  text: string,
+  mode: ComponentMode,
+  isNavigationEnabled: boolean,
+  elementsCompleted: boolean[],
+  isThinking: boolean,
+  doReadAloud: boolean,
+  setText: (val: string) => void,
+  setIsThinking: (val: boolean) => void,
+  readAloud: Function,
+  toggleAutoReadAloud: Function,
+  reset: Function,
+  setCurrentElement: (element: ElementID) => void,
+  deleteElement: Function,
+  insertElementBefore: Function,
+  insertElementAfter: Function
+};
+
 export type InteractionProps = {
   elementID: ElementID,
   isDisabled: boolean,
   mode: ComponentMode,
+  originalText: string,
   setText: (val: string) => void,
   setIsThinking: (val: boolean) => void,
   setComplete: (val: boolean) => void

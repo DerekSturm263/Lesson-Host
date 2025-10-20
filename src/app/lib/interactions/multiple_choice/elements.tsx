@@ -84,7 +84,7 @@ function Component(props: InteractionProps) {
     props.setIsThinking(true);
 
     // TODO: Make actually read the selected values
-    const feedback = await verify(helpers.getElement(props.elementID).text, [ "" ], helpers.getInteractionValue<InteractionType>(props.elementID));
+    const feedback = await verify(props.originalText, [ "" ], helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
     props.setIsThinking(false);
 

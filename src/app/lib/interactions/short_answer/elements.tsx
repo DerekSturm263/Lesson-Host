@@ -37,7 +37,7 @@ function Component(props: InteractionProps) {
   async function submit() {
     props.setIsThinking(true);
 
-    const feedback = await verify(helpers.getElement(props.elementID).text, userResponse, helpers.getInteractionValue<InteractionType>(props.elementID));
+    const feedback = await verify(props.originalText, userResponse, helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
     props.setIsThinking(false);
 

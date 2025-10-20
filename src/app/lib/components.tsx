@@ -1,8 +1,8 @@
 'use client'
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
-import { saveSkillLearn, saveSkillPractice, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice } from '@/app/lib/types';
+import { saveSkill, createSkill, createProject, createCourse } from '@/app/lib/database';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, TextProps } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
 
@@ -380,7 +380,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 variant="contained"
                 startIcon={<Save />}
                 onClick={async (e) => { 
-                  //await saveSkillLearn(slug, learn);
+                  await saveSkill(slug, learn);
 
                   setSnackbarText("Saved");
                   setIsSnackbarOpen(true);
@@ -539,11 +539,13 @@ export function LearnContent({ slug, title, learn, mode, apiKey, hideLogo }: { s
 }
 
 function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const originalTexts = learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat();
+
   const [ chapters, setChapters ] = useState(learn.chapters);
   const [ currentElement, setCurrentElement ] = useState({ learn: learn, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] } as ElementID);
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
   const [ elementsCompleted, setElementsCompleted ] = useState(Array<boolean>(learn.chapters.reduce((sum, chapter) => sum + chapter.elements.length, 0)).fill(mode != ComponentMode.View));
-  const [ texts, setTexts ] = useState(learn.chapters.map((chapter) => chapter.elements.map((element) => element.text)).flat());
+  const [ texts, setTexts ] = useState(originalTexts);
   const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
   const [ snackbarText, setSnackbarText ] = useState("");
   const [ isThinking, setIsThinking ] = useState(false);
@@ -584,7 +586,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
   }
 
   async function reset() {
-    setText(helpers.getElement(currentElement).text);
+    setText(originalTexts[helpers.getAbsoluteIndex(currentElement)]);
   }
 
   function complete(isComplete: boolean) {
@@ -596,6 +598,20 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
     const newElementsCompleted = elementsCompleted;
     newElementsCompleted[helpers.getAbsoluteIndex(currentElement)] = isComplete;
     setElementsCompleted(newElementsCompleted);
+  }
+
+  function addChapter() {
+    const newChapters = chapters;
+    newChapters.push();
+
+    setChapters(newChapters);
+  }
+
+  function removeChapter(index: number) {
+    const newChapters = chapters;
+    newChapters.splice(index, 1);
+
+    setChapters(newChapters);
   }
 
   return (
@@ -664,6 +680,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
           {mode == ComponentMode.Edit && (
             <Button
               variant="contained"
+              onClick={(e) => addChapter()}
             >
               New Chapter
             </Button>
@@ -675,7 +692,9 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         >
           <Toolbar />
 
-          <Stack>
+          <Stack
+            sx={{ flexGrow: 1 }}
+          >
             {mode == ComponentMode.Edit && (
               <TypeSwitcher
                 elementID={currentElement}
@@ -686,6 +705,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
               elementID={currentElement}
               isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
               mode={mode}
+              originalText={originalTexts[helpers.getAbsoluteIndex(currentElement)]}
               setText={setText}
               setIsThinking={setIsThinkingSmart}
               setComplete={complete}
@@ -918,14 +938,25 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         >
           <Toolbar />
           
-          <Interaction
-            elementID={element}
-            isDisabled={false}
-            mode={mode}
-            setText={(text) => {}}
-            setIsThinking={(isThinking) => {}}
-            setComplete={(isComplete) => {}}
-          />
+          <Stack
+            sx={{ flexGrow: 1 }}
+          >
+            {mode == ComponentMode.Edit && (
+              <TypeSwitcher
+                elementID={element}
+              />
+            )}
+
+            <Interaction
+              elementID={element}
+              isDisabled={false}
+              mode={mode}
+              originalText=""
+              setText={(text) => {}}
+              setIsThinking={(isThinking) => {}}
+              setComplete={(isComplete) => {}}
+            />
+          </Stack>
         </Stack>
       </Box>
     </Fragment>
@@ -956,7 +987,7 @@ function CourseContentNoCookies({ slug, title, course, mode, apiKey, hideLogo }:
 }
 
 function Interaction(props: InteractionProps) {
-  const Component = interactionMap[helpers.getElement(props.elementID).type].Component;
+  const Component = interactionMap[props.elementID.learn.chapters[props.elementID.chapterIndex].elements[props.elementID.elementIndex].type].Component;
 
   return (
     <Component
@@ -965,9 +996,9 @@ function Interaction(props: InteractionProps) {
   );
 }
 
-function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, isThinking, doReadAloud, setText, setIsThinking, readAloud, toggleAutoReadAloud, reset, setCurrentElement, deleteElement, insertElementBefore, insertElementAfter }: { elementID: ElementID, text: string, setText: (val: string) => void, setIsThinking: (val: boolean) => void, readAloud: () => void, toggleAutoReadAloud: () => void, reset: () => void, mode: ComponentMode, isNavigationEnabled: boolean, elementsCompleted: boolean[], isThinking: boolean, setCurrentElement: (element: ElementID) => void, doReadAloud: boolean, deleteElement: () => void, insertElementBefore: () => void, insertElementAfter: () => void }) {
+function Text(props: TextProps) {
   async function rephrase() {
-    setIsThinking(true);
+    props.setIsThinking(true);
 
     const newText = await generateText({
       model: ModelType.Quick,
@@ -976,40 +1007,40 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
       Rephrase a given TEXT. 
       
       TEXT:
-      ${text}`,
+      ${props.text}`,
       systemInstruction: `You are an expert at rephrasing things in a more understandable way. When you rephrase things, it should become easier to understand, but not much longer. If it's possible to make it easier to understand while keeping it short, do so. Use new examples and friendlier language than the original text.`
     });
     
-    setText(newText);
-    setIsThinking(false);
+    props.setText(newText);
+    props.setIsThinking(false);
   }
 
   globalIndex = 0;
 
   return (
     <Card
-      id={`text${helpers.getAbsoluteIndex(elementID)}`}
+      id={`text${helpers.getAbsoluteIndex(props.elementID)}`}
     >
       <CardContent
         style={{ height: '20vh', overflowY: 'auto' }}
       >
-        {isThinking && <LinearProgress />}
+        {props.isThinking && <LinearProgress />}
 
-        {(mode == ComponentMode.Edit ? (
+        {(props.mode == ComponentMode.Edit ? (
           <TextField
             hiddenLabel={true}
             multiline
-            value={text}
+            value={props.text}
             rows={4}
             onChange={(e) => {
-              setText(e.target.value);
-              helpers.getElement(elementID).text = e.target.value;
+              props.setText(e.target.value);
+              props.elementID.learn.chapters[props.elementID.chapterIndex].elements[props.elementID.elementIndex].text = e.target.value;
             }}
             fullWidth={true}
           />
         ) : (
           <Markdown>
-            {isThinking ? "Thinking..." : text}
+            {props.isThinking ? "Thinking..." : props.text}
           </Markdown>
         ))}
       </CardContent>
@@ -1018,14 +1049,14 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
         sx={{ justifyContent: 'space-between', flexWrap: 'wrap' }}
       >
         <Pagination
-          count={helpers.getChapterLength(elementID)}
-          page={elementID.elementIndex + 1}
-          disabled={!isNavigationEnabled}
+          count={helpers.getChapterLength(props.elementID)}
+          page={props.elementID.elementIndex + 1}
+          disabled={!props.isNavigationEnabled}
           renderItem={(item) => (
             <PaginationItem
               {...item}
-              disabled={!isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapterLength(elementID) || (!elementsCompleted[helpers.getAbsoluteIndex({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: 0, keys: elementID.keys }) + (item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
-              onClick={() => setCurrentElement({ learn: elementID.learn, chapterIndex: elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: elementID.keys })}
+              disabled={!props.isNavigationEnabled || (item.page ?? 0) <= 0 || (item.page ?? 0) > helpers.getChapterLength(props.elementID) || (!props.elementsCompleted[helpers.getAbsoluteIndex({ learn: props.elementID.learn, chapterIndex: props.elementID.chapterIndex, elementIndex: 0, keys: props.elementID.keys }) + (item.page ?? 0) - 2] && (item.page ?? 0) != 1)}
+              onClick={() => props.setCurrentElement({ learn: props.elementID.learn, chapterIndex: props.elementID.chapterIndex, elementIndex: (item.page ?? 0) - 1, keys: props.elementID.keys })}
             />
           )}
         />
@@ -1034,7 +1065,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
           direction="row"
           spacing={1}
         >
-          {mode == ComponentMode.Edit ? (
+          {props.mode == ComponentMode.Edit ? (
             <>
               <Tooltip
                 title="Insert a new element after this one"
@@ -1042,7 +1073,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Add />}
                   label="Insert Element Before"
-                  onClick={insertElementBefore}
+                  onClick={props.insertElementBefore.call}
                 />
               </Tooltip>
 
@@ -1052,7 +1083,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Add />}
                   label="Insert Element After"
-                  onClick={insertElementAfter}
+                  onClick={props.insertElementAfter.call}
                 />
               </Tooltip>
 
@@ -1062,7 +1093,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Delete />}
                   label="Delete"
-                  onClick={deleteElement}
+                  onClick={props.deleteElement.call}
                 />
               </Tooltip>
             </>
@@ -1075,7 +1106,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                   icon={<AutoAwesome />}
                   label="Rephrase"
                   onClick={(e) => rephrase()}
-                  disabled={isThinking}
+                  disabled={props.isThinking}
                 />
               </Tooltip>
 
@@ -1085,19 +1116,19 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<VolumeUp />}
                   label="Read Aloud"
-                  onClick={(e) => readAloud()}
-                  disabled={isThinking}
+                  onClick={(e) => props.readAloud()}
+                  disabled={props.isThinking}
                 />
               </Tooltip>
 
               <Tooltip
-                title={`Turn ${doReadAloud ? "off" : "on"} immediately reading new text aloud`}
+                title={`Turn ${props.doReadAloud ? "off" : "on"} immediately reading new text aloud`}
               >
                 <Chip
-                  icon={doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
-                  label={`Turn ${doReadAloud ? "Off" : "On"} Auto Read`}
-                  onClick={(e) => toggleAutoReadAloud()}
-                  disabled={isThinking}
+                  icon={props.doReadAloud ? <VoiceOverOff /> : <RecordVoiceOver />}
+                  label={`Turn ${props.doReadAloud ? "Off" : "On"} Auto Read`}
+                  onClick={(e) => props.toggleAutoReadAloud()}
+                  disabled={props.isThinking}
                 />
               </Tooltip>
 
@@ -1107,8 +1138,8 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                 <Chip
                   icon={<Refresh />}
                   label="Reset"
-                  onClick={(e) => reset()}
-                  disabled={isThinking}
+                  onClick={(e) => props.reset()}
+                  disabled={props.isThinking}
                 />
               </Tooltip>
 
@@ -1119,7 +1150,7 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
                   icon={<Fullscreen />}
                   label="Fullscreen"
                   onClick={(e) => {}}
-                  disabled={isThinking}
+                  disabled={props.isThinking}
                 />
               </Tooltip>
             </>
@@ -1131,12 +1162,13 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
 }
 
 function TypeSwitcher({ elementID }: { elementID: ElementID }) {
-  const [ type, setType ] = useState(helpers.getElement(elementID).type);
+  const [ type, setType ] = useState(elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].type);
 
   function setTypeAndUpdate(type: string) {
     setType(type);
-    helpers.getElement(elementID).type = type;
-    helpers.getElement(elementID).value = interactionMap[type].defaultValue;
+    
+    elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].type = type;
+    elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = interactionMap[type].defaultValue;
   }
 
   return (

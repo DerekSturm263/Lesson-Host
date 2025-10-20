@@ -1,6 +1,6 @@
 'use server'
 
-import { MongoClient, ObjectId, WithId } from 'mongodb';
+import { MongoClient, ObjectId, UpdateResult, WithId } from 'mongodb';
 import { Skill, Project, Course, Learn, Practice, ModuleType } from '@/app/lib/types';
 import Codespace from '@/app/lib/interactions/codespace/elements';
 
@@ -57,18 +57,13 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
   return [ skill, result.insertedId ];
 }
 
-export async function saveSkillLearn(id: string, learn: Learn) {
+export async function saveSkill(id: string, skill: Learn | Practice): Promise<UpdateResult<Skill>> {
   const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
-    { $set: { learn: learn } }
+    { $set: (skill instanceof Learn) ? { learn: skill } : { practice: skill } }
   );
-}
 
-export async function saveSkillPractice(id: string, practice: Practice) {
-  const result = await client.db('database').collection('skills').updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { practice: practice } }
-  );
+  return result;
 }
 
 export async function getAllProjects(): Promise<WithId<Project>[]> {
