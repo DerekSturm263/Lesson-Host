@@ -83,6 +83,7 @@ import Book from '@mui/icons-material/Book';
 import Save from '@mui/icons-material/Save';
 import Launch from '@mui/icons-material/Launch';
 import Share from '@mui/icons-material/Share';
+import Add from ' @mui/icons-material/Add';
 
 
 
@@ -1024,7 +1025,27 @@ function Text({ elementID, text, mode, isNavigationEnabled, elementsCompleted, i
         >
           {mode == ComponentMode.Edit ? (
             <>
-              <Tooltip title="Delete this element">
+              <Tooltip
+                title="Insert a new element after this one"
+              >
+                <Chip
+                  icon={<Add />}
+                  label="Insert Elememt Before"
+                />
+              </Tooltip>
+
+              <Tooltip
+                title="Insert a new element after this one"
+              >
+                <Chip
+                  icon={<Add />}
+                  label="Insert Element After"
+                />
+              </Tooltip>
+
+              <Tooltip
+                title="Delete this element"
+              >
                 <Chip
                   icon={<Delete />}
                   label="Delete"
