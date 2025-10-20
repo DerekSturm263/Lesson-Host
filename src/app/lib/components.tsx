@@ -675,14 +675,20 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         >
           <Toolbar />
 
-          <Interaction
-            elementID={currentElement}
-            isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
-            mode={mode}
-            setText={setText}
-            setIsThinking={setIsThinkingSmart}
-            setComplete={complete}
-          />
+          <Stack>
+            <TypeSwitcher
+              elementID={currentElement}
+            />
+
+            <Interaction
+              elementID={currentElement}
+              isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
+              mode={mode}
+              setText={setText}
+              setIsThinking={setIsThinkingSmart}
+              setComplete={complete}
+            />
+          </Stack>
 
           {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
             const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
@@ -717,8 +723,8 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
             setCurrentElement={setCurrentElement}
             doReadAloud={cookies.autoReadAloud}
             deleteElement={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 1)}
-            insertElementBefore={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex + 1, 0, {})}
-            insertElementAfter={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 0, {})}
+            insertElementBefore={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex + 1, 0, { type: "shortAnswer", text: "", value: ShortAnswer.defaultValue })}
+            insertElementAfter={() => learn.chapters[currentElement.chapterIndex].elements.splice(currentElement.elementIndex, 0, { type: "shortAnswer", text: "", value: ShortAnswer.defaultValue })}
           />
 
           <Snackbar
