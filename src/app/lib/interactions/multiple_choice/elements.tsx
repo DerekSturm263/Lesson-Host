@@ -85,7 +85,7 @@ const schema = {
 function Component(props: InteractionProps) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
   const [ choiceType, setChoiceType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).choiceType);
-  const [ selected, setSelected ] = useState([]);
+  const [ selected, setSelected ] = useState([ "" ]);
 
   async function submit() {
     props.setIsThinking(true);
@@ -116,7 +116,7 @@ function Component(props: InteractionProps) {
 
   function selectItem(index: number) {
     const newSelected = selected;
-    newSelected.push(items[index]);
+    newSelected.push(items[index].value);
     setSelected(newSelected);
   }
 
