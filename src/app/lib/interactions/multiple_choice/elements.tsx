@@ -193,7 +193,7 @@ function Component(props: InteractionProps) {
   );
 }
 
-function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: { elementID: ElementID, isDisabled: boolean, mode: ComponentMode, item: MultipleChoiceItem, index: number, type: MultipleChoiceType }) {
+function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: { elementID: ElementID, isDisabled: boolean, mode: ComponentMode, item: MultipleChoiceItem, index: number, type: ChoiceType }) {
   const [ value, setValue ] = useState(item.value);
   const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
 
