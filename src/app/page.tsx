@@ -25,6 +25,7 @@ export default async function Home() {
           progress={0}
           showProgress={false}
           hideLogo={false}
+          value={undefined}
         />
         <Toolbar />
 

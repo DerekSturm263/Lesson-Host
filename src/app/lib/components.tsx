@@ -104,7 +104,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -484,7 +484,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         progress={0}
         showProgress={true}
         hideLogo={hideLogo}
-        value={skill.learn}
+        value={undefined}
       />
       <Toolbar />
 

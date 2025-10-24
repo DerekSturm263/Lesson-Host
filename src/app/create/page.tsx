@@ -23,6 +23,7 @@ export default function Page() {
           progress={0}
           showProgress={false}
           hideLogo={false}
+          value={undefined}
         />
         <Toolbar />
 

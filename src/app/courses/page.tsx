@@ -23,6 +23,7 @@ export default async function Page({ params, searchParams }: Props) {
           progress={0}
           showProgress={false}
           hideLogo={false}
+          value={undefined}
         />
         <Toolbar />
         

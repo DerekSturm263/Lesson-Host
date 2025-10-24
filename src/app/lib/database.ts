@@ -143,7 +143,10 @@ export async function createCourse(): Promise<[ Course, ObjectId ] > {
   return [ course, result.insertedId ];
 }
 
-export async function save(id: string, value: Learn | Practice | Project | Course) {
+export async function save(id: string, value: Learn | Practice | Project | Course | undefined) {
+  if (value === undefined)
+    return;
+
   if ("chapters" in value)
     return saveSkillLearn(id, value);
   else if ("subSkills" in value)
