@@ -55,6 +55,8 @@ function Component(props: InteractionProps) {
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className="fullscreenInteraction"
         src={source}
+        width="100%"
+        height="100%"
       ></iframe>
     </Stack>
   );
