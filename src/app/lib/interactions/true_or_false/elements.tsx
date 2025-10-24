@@ -70,6 +70,8 @@ function Component(props: InteractionProps) {
           <FormControlLabel value="true" control={<Radio />} label="True" />
           <FormControlLabel value="false" control={<Radio />} label="False" />
         </RadioGroup>
+
+        <br />
           
         {props.mode == ComponentMode.View && (
           <Button
