@@ -19,6 +19,9 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
   - [ ] Natural Voice TTS
 - [ ] Projects
 - [ ] Courses
+- [ ] Accounts
+  - [ ] Save Data
+  - [ ] Saved Lessons
 - [ ] Mobile Support
 - [ ] Interaction Types
   - [x] Short Answer
