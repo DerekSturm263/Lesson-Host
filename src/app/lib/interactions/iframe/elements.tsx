@@ -34,15 +34,9 @@ function Component(props: InteractionProps) {
   const [ source, setSource ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).source);
 
   return (
-    <Box
+    <Stack
       sx={{ flexGrow: 1 }}
     >
-      <iframe
-        id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
-        className="fullscreenInteraction"
-        src={source}
-      ></iframe>
-
       {props.mode == ComponentMode.Edit && (
         <TextField
           label="Source"
@@ -56,7 +50,13 @@ function Component(props: InteractionProps) {
           }}
         />
       )}
-    </Box>
+      
+      <iframe
+        id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
+        className="fullscreenInteraction"
+        src={source}
+      ></iframe>
+    </Stack>
   );
 }
 
