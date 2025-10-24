@@ -64,8 +64,17 @@ function Component(props: InteractionProps) {
         <RadioGroup
           defaultValue=""
           name="true-false-group"
-          value={userIsCorrect}
-          onChange={(e) => setUserIsCorrect(e.target.value == "true")}
+          value={props.mode == ComponentMode.Edit ? isCorrect : userIsCorrect}
+          onChange={(e) => {
+            const isCorrect = e.target.value == "true";
+
+            if (props.mode == ComponentMode.Edit) {
+              setIsCorrect(isCorrect);
+              helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect = isCorrect;
+            } else {
+              setUserIsCorrect(e.target.value == "true");
+            }
+          }}
         >
           <FormControlLabel value="true" control={<Radio />} label="True" />
           <FormControlLabel value="false" control={<Radio />} label="False" />
