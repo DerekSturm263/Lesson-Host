@@ -7,7 +7,7 @@ export default async function verify(question: string, userResponse: string[], v
   let contents = '';
   
   const correctAnswers = value.items.filter(item => item.isCorrect).map(item => item.value);
-  if ((!value.needsAllCorrect && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
+  /*if ((!value.choiceType && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
     // Got at least one right answer, and either doesn't need all correct or got them all correct.
     isValid = true;
 
@@ -41,7 +41,7 @@ export default async function verify(question: string, userResponse: string[], v
       CORRECT ANSWER(S):
       ${correctAnswers.join(', ')}
       `;
-  }
+  }*/
 
   const response = await generateText({
     model: ModelType.Quick,
