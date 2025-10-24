@@ -32,7 +32,7 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
   - [ ] Engine
   - [ ] Files
   - [ ] Graph
-  - [ ] IFrame
+  - [x] IFrame
 
 ## Contributing
 This website is and will always be open source. If you'd like to contribute by adding any of the above features, just [fork](https://github.com/DerekSturm263/Lesson-Host/fork) the project, add your desired feature, and submit a pull request with your changes. If you'd like to add a feature that's not listed above, please submit a feedback request via GitHub Issues.
