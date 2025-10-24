@@ -3,6 +3,9 @@
 import Box from '@mui/material/Box';
 import verify from './functions';
 import FormControl from '@mui/material/FormControl';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel'
 import { useState } from 'react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
@@ -33,6 +36,7 @@ const schema = {
 
 function Component(props: InteractionProps) {
   const [ isCorrect, setIsCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect);
+  const [ userIsCorrect, setUserIsCorrect ] = useState(false);
 
   async function submit() {
     props.setIsThinking(true);
@@ -53,53 +57,16 @@ function Component(props: InteractionProps) {
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
-        onSubmit={(e) => submit()}
       >
-        <label>
-          <input
-            type="radio"
-            name="response"
-            id="true"
-            value="true"
-            disabled={props.isDisabled}
-            checked={props.mode == ComponentMode.Edit && isCorrect}
-            onChange={(e) => {
-              setIsCorrect(true);
-
-              if (props.mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect = true;
-              }
-            }}
-          />
-
-          True
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            name="response"
-            id="false"
-            value="false"
-            disabled={props.isDisabled}
-            checked={props.mode == ComponentMode.Edit && !isCorrect}
-            onChange={(e) => {
-              setIsCorrect(false);
-              
-              if (props.mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<InteractionType>(props.elementID).isCorrect = false;
-              }
-            }}
-          />
-
-          False
-        </label>
-
-        <input
-          type="submit"
-          name="submit"
-          disabled={props.isDisabled}
-        />
+        <RadioGroup
+          defaultValue=""
+          name="true-false-group"
+          value={userIsCorrect}
+          onChange={(e) => setUserIsCorrect(e.target.value)}
+        >
+          <FormControlLabel value="true" control={<Radio />} label="True" />
+          <FormControlLabel value="false" control={<Radio />} label="False" />
+        </RadioGroup>
       </FormControl>
     </Box>
   );
