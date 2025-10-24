@@ -172,16 +172,20 @@ async function saveSkillPractice(id: string, practice: Practice): Promise<Update
   return result;
 }
 
-async function saveProject(id: string, project: Project) {
-  await client.db('database').collection('projects').updateOne(
+async function saveProject(id: string, project: Project): Promise<UpdateResult<Project>> {
+  const result = await client.db('database').collection('projects').updateOne(
     { _id: new ObjectId(id) },
     { $set: project }
   );
+
+  return result;
 }
 
-async function saveCourse(id: string, course: Course) {
-  await client.db('database').collection('courses').updateOne(
+async function saveCourse(id: string, course: Course): Promise<UpdateResult<Course>> {
+  const result = await client.db('database').collection('courses').updateOne(
     { _id: new ObjectId(id) },
     { $set: course }
   );
+
+  return result;
 }
