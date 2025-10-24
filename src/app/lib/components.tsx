@@ -1034,7 +1034,7 @@ function Text(props: TextProps) {
           <TextField
             hiddenLabel={true}
             multiline
-            value={props.text}
+            defaultValue={props.text}
             rows={4}
             onChange={(e) => {
               props.setText(e.target.value);
