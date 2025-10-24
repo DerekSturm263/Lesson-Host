@@ -57,6 +57,7 @@ function Component(props: InteractionProps) {
         src={source}
         width="100%"
         height="100%"
+        onLoad={(e) => props.setComplete(true)}
       ></iframe>
     </Stack>
   );
