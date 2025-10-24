@@ -1,10 +1,5 @@
 'use client'
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Markdown from 'react-markdown';
 import verify from './functions';
 import { useState } from 'react';
@@ -12,10 +7,18 @@ import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from '
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 export type InteractionType = {
   items: MultipleChoiceItem[],
-  type: MultipleChoiceType,
-  needsAllCorrect: boolean
+  choiceType: ChoiceType
 };
 
 type MultipleChoiceItem = {
@@ -23,9 +26,10 @@ type MultipleChoiceItem = {
   isCorrect: boolean
 };
 
-enum MultipleChoiceType {
-  Radio = 'radio',
-  Checkbox = 'checkbox'
+enum ChoiceType {
+  Single = 'single',
+  MultipleNeedsOne = 'checkboxNeedsOne',
+  MultipleNeedsAll = 'checkboxNeedsAll'
 }
 
 const defaultValue: InteractionType = {
@@ -35,8 +39,7 @@ const defaultValue: InteractionType = {
       isCorrect: true
     }
   ],
-  type: MultipleChoiceType.Radio,
-  needsAllCorrect: true
+  choiceType: ChoiceType.Single,
 }
 
 const schema = {
@@ -76,15 +79,14 @@ const schema = {
 };
 
 function Component(props: InteractionProps) {
-  const [ type, setType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).type);
-  const [ needsAllCorrect, setNeedsAllCorrect ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).needsAllCorrect);
   const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
+  const [ choiceType, setChoiceType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).choiceType);
+  const [ selected, setSelected ] = useState([]);
 
   async function submit() {
     props.setIsThinking(true);
 
-    // TODO: Make actually read the selected values
-    const feedback = await verify(props.originalText, [ "" ], helpers.getInteractionValue<InteractionType>(props.elementID));
+    const feedback = await verify(props.originalText, selected, helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
     props.setIsThinking(false);
 
@@ -108,6 +110,18 @@ function Component(props: InteractionProps) {
     setItems(newItems);
   }
 
+  function selectItem(index: number) {
+    const newSelected = selected;
+    newSelected.push(items[index]);
+    setSelected(newSelected);
+  }
+
+  function unselectItem(index: number) {
+    const newSelected = selected;
+    newSelected.splice(index, 1);
+    setSelected(newSelected);
+  }
+
   return (
     <Box
       sx={{ flexGrow: 1 }}
@@ -115,7 +129,6 @@ function Component(props: InteractionProps) {
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
-        onSubmit={(e) => submit()}
       >
         {items.map((item, index) => (
           <MultipleChoiceItem
@@ -125,50 +138,50 @@ function Component(props: InteractionProps) {
             mode={props.mode}
             item={item}
             index={index}
-            type={type}
+            type={choiceType == "single" ? "radio" : "checkbox"}
           />
         ))}
 
         {props.mode == ComponentMode.Edit && (
-          <label>
-            Type:
-
-            <select
-              name="selectType"
-              value={type}
-              onChange={(e) => setType(e.target.value as MultipleChoiceType)}
+          <FormControl
+            size="small"
+          >
+            <InputLabel id="mode-label">Type</InputLabel>
+          
+            <Select
+              labelId="language-label"
+              value={choiceType}
+              label="Language"
+              onChange={(e) => {
+                setChoiceType(e.target.value as ChoiceType);
+                helpers.getInteractionValue<InteractionType>(props.elementID).choiceType = e.target.value as ChoiceType;
+              }}
             >
-              {(Object.values(MultipleChoiceType).map((item, index) => (
-                <option
-                  key={index}
+              {(Object.values(ChoiceType).map((item, index) => (
+                <MenuItem
                   value={item}
+                  key={index}
                 >
                   {item}
-                </option>
+                </MenuItem>
               )))}
-            </select>
-          </label>
+            </Select>
+          </FormControl>
         )}
         
-        {props.mode == ComponentMode.Edit && (
-          <FormControlLabel label="Needs All Correct" control={
-            <Checkbox
-              name="needsAllCorrect"
-              id="needsAllCorrect"
-              checked={needsAllCorrect}
-              onChange={(e) => {
-                setNeedsAllCorrect(e.target.checked);
-                helpers.getInteractionValue<InteractionType>(props.elementID).needsAllCorrect = e.target.checked;
-              }}
-            />}
-          />
+        {props.mode == ComponentMode.View && (
+          <>
+            <br />
+          
+            <Button
+              variant="contained"
+              onClick={(e) => submit()}
+              sx={{ width: '120px' }}
+            >
+              Submit
+            </Button>
+          </>
         )}
-
-        <input
-          type="submit"
-          name="submit"
-          disabled={props.isDisabled}
-        />
       </FormControl>
     </Box>
   );

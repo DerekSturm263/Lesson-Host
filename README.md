@@ -17,12 +17,20 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
 - [ ] Read-Along Text
   - [ ] Letter-by-Letter Printing
   - [ ] Natural Voice TTS
+  - [ ] Intuitive Controls
 - [ ] Projects
 - [ ] Courses
 - [ ] Accounts
   - [ ] Save Data
-  - [ ] Saved Lessons
+  - [ ] Saved Skills
+  - [ ] Saved Projects
+  - [ ] Saved Courses
 - [ ] Mobile Support
+- [ ] Notifications
+- [ ] Social Features
+  - [ ] Ratings
+  - [ ] Comments
+  - [ ] Follows
 - [ ] Interaction Types
   - [x] Short Answer
   - [x] True or False

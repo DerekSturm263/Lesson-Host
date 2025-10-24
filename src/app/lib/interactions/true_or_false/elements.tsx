@@ -1,17 +1,17 @@
 'use client'
 
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import verify from './functions';
-import FormControl from '@mui/material/FormControl';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel'
 import { useState } from 'react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel'
 
 export type InteractionType = {
   isCorrect: boolean
