@@ -198,9 +198,8 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
   const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
 
   return (
-    <FormControlLabel
-      value={item.value}
-      control={(mode == ComponentMode.Edit ? (
+    <>
+      {(mode == ComponentMode.Edit ? (
         <Stack
           direction="row"
         >
@@ -235,7 +234,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
           label={<Markdown />}
         />
       ))}
-    />
+    </>
   );
 }
 
