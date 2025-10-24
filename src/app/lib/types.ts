@@ -446,13 +446,13 @@ export type TextProps = {
   doReadAloud: boolean,
   setText: (val: string) => void,
   setIsThinking: (val: boolean) => void,
-  readAloud: Function,
-  toggleAutoReadAloud: Function,
-  reset: Function,
+  readAloud: () => void,
+  toggleAutoReadAloud: () => void,
+  reset: () => void,
   setCurrentElement: (element: ElementID) => void,
-  deleteElement: Function,
-  insertElementBefore: Function,
-  insertElementAfter: Function
+  deleteElement: () => void,
+  insertElementBefore: () => void,
+  insertElementAfter: () => void
 };
 
 export type InteractionProps = {
