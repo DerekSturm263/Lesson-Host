@@ -5,6 +5,9 @@ import { InteractionType } from "./elements";
 export default async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {
   let isValid = false;
   let contents = '';
+
+  isValid = true;
+  contents = 'j';
   
   const correctAnswers = value.items.filter(item => item.isCorrect).map(item => item.value);
   /*if ((!value.choiceType && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
