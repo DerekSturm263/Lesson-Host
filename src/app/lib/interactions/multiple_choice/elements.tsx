@@ -231,7 +231,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
         <FormControlLabel
           value={item.value}
           control={<Radio />}
-          label={<Markdown />}
+          label={<Markdown>{item.value}</Markdown>}
         />
       ))}
     </>
