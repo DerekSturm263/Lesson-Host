@@ -59,6 +59,7 @@ function Component(props: InteractionProps) {
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
+        sx={{ alignItems: "center" }}
       >
         <RadioGroup
           defaultValue=""
@@ -70,13 +71,15 @@ function Component(props: InteractionProps) {
           <FormControlLabel value="false" control={<Radio />} label="False" />
         </RadioGroup>
           
-        <Button
-          variant="contained"
-          onClick={(e) => submit()}
-          sx={{ width: '120px' }}
-        >
-          Submit
-        </Button>
+        {props.mode == ComponentMode.View && (
+          <Button
+            variant="contained"
+            onClick={(e) => submit()}
+            sx={{ width: '120px' }}
+          >
+            Submit
+          </Button>
+        )}
       </FormControl>
     </Box>
   );
