@@ -1,6 +1,8 @@
 'use client'
 
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import verify from './functions';
 import FormControl from '@mui/material/FormControl';
 import Radio from '@mui/material/Radio';
@@ -41,7 +43,7 @@ function Component(props: InteractionProps) {
   async function submit() {
     props.setIsThinking(true);
 
-    const feedback = await verify(props.originalText, isCorrect, helpers.getInteractionValue<InteractionType>(props.elementID));
+    const feedback = await verify(props.originalText, userIsCorrect, helpers.getInteractionValue<InteractionType>(props.elementID));
     props.setText(feedback.feedback);
     props.setIsThinking(false);
 
@@ -67,6 +69,14 @@ function Component(props: InteractionProps) {
           <FormControlLabel value="true" control={<Radio />} label="True" />
           <FormControlLabel value="false" control={<Radio />} label="False" />
         </RadioGroup>
+          
+        <Button
+          variant="contained"
+          onClick={(e) => submit()}
+          sx={{ width: '120px' }}
+        >
+          Submit
+        </Button>
       </FormControl>
     </Box>
   );
