@@ -8,9 +8,12 @@ import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import RadioGroup from '@mui/material/RadioGroup';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -130,17 +133,19 @@ function Component(props: InteractionProps) {
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
       >
-        {items.map((item, index) => (
-          <MultipleChoiceItem
-            key={index}
-            elementID={props.elementID}
-            isDisabled={props.isDisabled}
-            mode={props.mode}
-            item={item}
-            index={index}
-            type={choiceType == "single" ? "radio" : "checkbox"}
-          />
-        ))}
+        <RadioGroup>
+          {items.map((item, index) => (
+            <MultipleChoiceItem
+              key={index}
+              elementID={props.elementID}
+              isDisabled={props.isDisabled}
+              mode={props.mode}
+              item={item}
+              index={index}
+              type={choiceType == "single" ? "radio" : "checkbox"}
+            />
+          ))}
+        </RadioGroup>
 
         {props.mode == ComponentMode.Edit && (
           <FormControl
@@ -192,17 +197,12 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
   const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
 
   return (
-    <label>
-      <input
-        type={type}
-        name="response"
-        id={value}
-        value={isCorrect.toString()}
-        disabled={isDisabled}
-      />
-
-      {(mode == ComponentMode.Edit ? (
-        <Box>
+    <FormControlLabel
+      value={item.value}
+      control={(mode == ComponentMode.Edit ? (
+        <Stack
+          direction="row"
+        >
           <FormControlLabel label="Is Correct" control={
             <Checkbox
               name="isCorrect"
@@ -223,19 +223,16 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
             value={value}
             onChange={(e) => {
               setValue(e.target.value);
-              
-              if (mode == ComponentMode.Edit) {
-                helpers.getInteractionValue<InteractionType>(elementID).items[index].value = e.target.value;
-              }
+              helpers.getInteractionValue<InteractionType>(elementID).items[index].value = e.target.value;
             }}
           />
-        </Box>
+        </Stack>
       ) : (
         <Markdown>
           {value}
         </Markdown>
       ))}
-    </label>
+    />
   );
 }
 
