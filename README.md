@@ -21,17 +21,17 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
 - [ ] Courses
 - [ ] Mobile Support
 - [ ] Interaction Types
-  - [ ] Matching
-  - [ ] Ordering
-  - [ ] Multiple Choice
-  - [ ] True or False
   - [x] Short Answer
-  - [x] Codespace
-  - [ ] DAW
-  - [ ] Drawing
-  - [ ] Engine
+  - [x] True or False
+  - [ ] Multiple Choice
+  - [ ] Ordering
+  - [ ] Matching
   - [ ] Files
+  - [ ] Drawing
   - [ ] Graph
+  - [ ] DAW
+  - [x] Codespace
+  - [ ] Engine
   - [x] IFrame
 
 ## Contributing
