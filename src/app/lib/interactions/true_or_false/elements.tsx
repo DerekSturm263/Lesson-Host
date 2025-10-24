@@ -71,16 +71,18 @@ function Component(props: InteractionProps) {
           <FormControlLabel value="false" control={<Radio />} label="False" />
         </RadioGroup>
 
-        <br />
-          
         {props.mode == ComponentMode.View && (
-          <Button
-            variant="contained"
-            onClick={(e) => submit()}
-            sx={{ width: '120px' }}
-          >
-            Submit
-          </Button>
+          <>
+            <br />
+          
+            <Button
+              variant="contained"
+              onClick={(e) => submit()}
+              sx={{ width: '120px' }}
+            >
+              Submit
+            </Button>
+          </>
         )}
       </FormControl>
     </Box>
