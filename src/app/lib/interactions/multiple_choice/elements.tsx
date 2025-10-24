@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
@@ -142,7 +143,7 @@ function Component(props: InteractionProps) {
               mode={props.mode}
               item={item}
               index={index}
-              type={choiceType == "single" ? "radio" : "checkbox"}
+              type={choiceType}
             />
           ))}
         </RadioGroup>
@@ -203,6 +204,16 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
         <Stack
           direction="row"
         >
+          <TextField
+            label="Value"
+            name="value"
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              helpers.getInteractionValue<InteractionType>(elementID).items[index].value = e.target.value;
+            }}
+          />
+
           <FormControlLabel label="Is Correct" control={
             <Checkbox
               name="isCorrect"
@@ -216,21 +227,13 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
               }}
             />}
           />
-          
-          <TextField
-            label="Value"
-            name="value"
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              helpers.getInteractionValue<InteractionType>(elementID).items[index].value = e.target.value;
-            }}
-          />
         </Stack>
       ) : (
-        <Markdown>
-          {value}
-        </Markdown>
+        <FormControlLabel
+          value={item.value}
+          control={<Radio />}
+          label={<Markdown />}
+        />
       ))}
     />
   );
