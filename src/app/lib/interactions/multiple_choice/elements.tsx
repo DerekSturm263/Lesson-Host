@@ -230,7 +230,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, type }: 
       ) : (
         <FormControlLabel
           value={item.value}
-          control={<Radio />}
+          control={(type == ChoiceType.Single ? <Radio /> : <Checkbox />)}
           label={<Markdown>{item.value}</Markdown>}
         />
       ))}
