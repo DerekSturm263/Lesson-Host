@@ -1,7 +1,7 @@
 'use client'
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
-import { saveSkill, createSkill, createProject, createCourse } from '@/app/lib/database';
+import { save, createSkill, createProject, createCourse } from '@/app/lib/database';
 import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, TextProps } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
@@ -104,7 +104,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -380,7 +380,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 variant="contained"
                 startIcon={<Save />}
                 onClick={async (e) => { 
-                  await saveSkill(slug, value);
+                  await save(slug, value);
 
                   setSnackbarText("Saved");
                   setIsSnackbarOpen(true);
