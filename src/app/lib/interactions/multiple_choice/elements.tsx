@@ -134,20 +134,7 @@ function Component(props: InteractionProps) {
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
       >
-        <RadioGroup>
-          {items.map((item, index) => (
-            <MultipleChoiceItem
-              key={index}
-              elementID={props.elementID}
-              isDisabled={props.isDisabled}
-              mode={props.mode}
-              item={item}
-              index={index}
-              type={choiceType}
-            />
-          ))}
-        </RadioGroup>
-
+        
         {props.mode == ComponentMode.Edit && (
           <FormControl
             size="small"
@@ -175,6 +162,20 @@ function Component(props: InteractionProps) {
           </FormControl>
         )}
         
+        <RadioGroup>
+          {items.map((item, index) => (
+            <MultipleChoiceItem
+              key={index}
+              elementID={props.elementID}
+              isDisabled={props.isDisabled}
+              mode={props.mode}
+              item={item}
+              index={index}
+              type={choiceType}
+            />
+          ))}
+        </RadioGroup>
+
         {props.mode == ComponentMode.View && (
           <>
             <br />
