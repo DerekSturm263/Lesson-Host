@@ -62,7 +62,7 @@ function Component(props: InteractionProps) {
           defaultValue=""
           name="true-false-group"
           value={userIsCorrect}
-          onChange={(e) => setUserIsCorrect(e.target.value)}
+          onChange={(e) => setUserIsCorrect(e.target.value == "true")}
         >
           <FormControlLabel value="true" control={<Radio />} label="True" />
           <FormControlLabel value="false" control={<Radio />} label="False" />
