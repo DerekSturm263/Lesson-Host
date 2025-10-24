@@ -1,6 +1,6 @@
 'use client'
 
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
@@ -50,7 +50,7 @@ function Component(props: InteractionProps) {
           }}
         />
       )}
-      
+
       <iframe
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className="fullscreenInteraction"
