@@ -57,7 +57,11 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
   return [ skill, result.insertedId ];
 }
 
-export async function saveSkill(id: string, skill: Learn | Practice): Promise<UpdateResult<Skill>> {
+export async function save(id: string, value: Learn | Practice | Project | Course) {
+
+}
+
+async function saveSkill(id: string, skill: Learn | Practice): Promise<UpdateResult<Skill>> {
   const result = await client.db('database').collection('skills').updateOne(
     { _id: new ObjectId(id) },
     { $set: (skill instanceof Learn) ? { learn: skill } : { practice: skill } }
@@ -116,7 +120,7 @@ export async function createProject(): Promise<[ Project, ObjectId ]> {
   return [ project, result.insertedId ];
 }
 
-export async function saveProject(id: string, project: Project) {
+async function saveProject(id: string, project: Project) {
   await client.db('database').collection('projects').updateOne(
     { _id: new ObjectId(id) },
     { $set: project }
@@ -159,7 +163,7 @@ export async function createCourse(): Promise<[ Course, ObjectId ] > {
   return [ course, result.insertedId ];
 }
 
-export async function saveCourse(id: string, course: Course) {
+async function saveCourse(id: string, course: Course) {
   await client.db('database').collection('courses').updateOne(
     { _id: new ObjectId(id) },
     { $set: course }

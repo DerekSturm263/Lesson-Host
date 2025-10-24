@@ -104,7 +104,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -380,7 +380,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 variant="contained"
                 startIcon={<Save />}
                 onClick={async (e) => { 
-                  await saveSkill(slug, learn);
+                  await saveSkill(slug, value);
 
                   setSnackbarText("Saved");
                   setIsSnackbarOpen(true);
@@ -484,6 +484,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         progress={0}
         showProgress={true}
         hideLogo={hideLogo}
+        value={skill.learn}
       />
       <Toolbar />
 
@@ -650,6 +651,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         progress={elementsCompleted.filter((element) => element).length / elementsCompleted.length}
         showProgress={true}
         hideLogo={hideLogo}
+        value={learn}
       />
 
       <Box
@@ -826,6 +828,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         progress={0}
         showProgress={true}
         hideLogo={hideLogo}
+        value={practice}
       />
 
       <Box
@@ -911,6 +914,7 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         progress={0}
         showProgress={true}
         hideLogo={hideLogo}
+        value={project}
       />
 
       <Box
