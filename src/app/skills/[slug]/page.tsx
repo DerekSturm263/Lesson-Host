@@ -10,7 +10,6 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   return {
     title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
-    
   }
 }
 
