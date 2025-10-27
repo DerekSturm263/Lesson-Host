@@ -195,7 +195,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
 
               <DialogContentText>
                 <Link
-                  href={`https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`}
+                  href={window.location.href}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
