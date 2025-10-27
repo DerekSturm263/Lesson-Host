@@ -884,7 +884,8 @@ export function ProjectContent({ slug, title, project, mode, apiKey, hideLogo }:
 function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   const [ checklist, setChecklist ] = useState(project.checklist);
 
-  const element = { learn: { chapters: [ { title: "", elements: [ project.value ] } ] }, chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] };
+  const learn = { chapters: [ { title: "", elements: [ project.value ] } ] };
+  const element = { learn: learn , chapterIndex: 0, elementIndex: 0, keys: [ apiKey ] };
 
   return (
     <Fragment>

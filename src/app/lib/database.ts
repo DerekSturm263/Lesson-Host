@@ -1,8 +1,23 @@
 'use server'
 
 import { MongoClient, ObjectId, UpdateResult, WithId } from 'mongodb';
-import { Skill, Project, Course, Learn, Practice, ModuleType } from '@/app/lib/types';
+import { Skill, Project, Course, Learn, Practice, ModuleType, InteractionPackage } from '@/app/lib/types';
+
+import Drawing from '@/app/lib/interactions/drawing/elements';
+import Graph from '@/app/lib/interactions/graph/elements';
+import DAW from '@/app/lib/interactions/daw/elements';
 import Codespace from '@/app/lib/interactions/codespace/elements';
+import Engine from '@/app/lib/interactions/engine/elements';
+import IFrame from '@/app/lib/interactions/iframe/elements';
+
+const interactionMap: Record<string, InteractionPackage> = {
+  "drawing": Drawing,
+  "graph": Graph,
+  "daw": DAW,
+  "codespace": Codespace,
+  "engine": Engine,
+  "iframe": IFrame
+};
 
 const client = new MongoClient(process.env.MONGODB_URI ?? '', {
   serverSelectionTimeoutMS: 120000,
@@ -63,9 +78,7 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
             {
               type: "shortAnswer",
               text: "New element",
-              value: {
-                correctAnswer: ""
-              }
+              value: interactionMap["shortAnswer"].defaultValue
             }
           ]
         }
@@ -112,7 +125,7 @@ export async function createProject(): Promise<[ Project, ObjectId ]> {
     value: {
       type: "codespace",
       text: "",
-      value: Codespace.defaultValue
+      value: interactionMap["codespace"].defaultValue
     }
   };
 
