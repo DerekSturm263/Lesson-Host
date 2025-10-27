@@ -486,7 +486,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         hideLogo={hideLogo}
         value={undefined}
         showSave={false}
-        linkType="skill"
+        linkType="skills"
       />
       <Toolbar />
 
@@ -655,7 +655,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         hideLogo={hideLogo}
         value={learn}
         showSave={false}
-        linkType="skill"
+        linkType="skills"
       />
 
       <Box
@@ -834,7 +834,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         hideLogo={hideLogo}
         value={practice}
         showSave={false}
-        linkType="skill"
+        linkType="skills"
       />
 
       <Box
@@ -923,7 +923,7 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         hideLogo={hideLogo}
         value={project}
         showSave={true}
-        linkType="project"
+        linkType="projects"
       />
 
       <Box
