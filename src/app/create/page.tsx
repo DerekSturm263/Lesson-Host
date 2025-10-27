@@ -25,6 +25,7 @@ export default function Page() {
           hideLogo={false}
           value={undefined}
           showSave={false}
+          linkType=""
         />
         <Toolbar />
 

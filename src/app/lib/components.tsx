@@ -104,7 +104,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value, showSave }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined, showSave: boolean }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value, showSave, linkType }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined, showSave: boolean, linkType: string }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -114,8 +114,8 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
   const [ width, setWidth ] = useState(800);
   const [ height, setHeight ] = useState(600);
 
-  const link = `https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}`;
-  const iframe = `<iframe src="https://myskillstudy.com/skills/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
+  const link = `https://myskillstudy.com/${linkType}/${slug}?mode=view&hideLogo=${hideLogoState}`;
+  const iframe = `<iframe src="https://myskillstudy.com/${linkType}/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
 
   return (
     <Fragment>
@@ -195,7 +195,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
 
               <DialogContentText>
                 <Link
-                  href={window.location.href}
+                  href={link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -486,6 +486,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         hideLogo={hideLogo}
         value={undefined}
         showSave={false}
+        linkType="skill"
       />
       <Toolbar />
 
@@ -654,6 +655,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         hideLogo={hideLogo}
         value={learn}
         showSave={false}
+        linkType="skill"
       />
 
       <Box
@@ -832,6 +834,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         hideLogo={hideLogo}
         value={practice}
         showSave={false}
+        linkType="skill"
       />
 
       <Box
@@ -920,6 +923,7 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         hideLogo={hideLogo}
         value={project}
         showSave={true}
+        linkType="project"
       />
 
       <Box

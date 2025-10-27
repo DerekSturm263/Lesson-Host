@@ -27,6 +27,7 @@ export default async function Home() {
           hideLogo={false}
           value={undefined}
           showSave={false}
+          linkType=""
         />
         <Toolbar />
 

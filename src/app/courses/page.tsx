@@ -25,6 +25,7 @@ export default async function Page({ params, searchParams }: Props) {
           hideLogo={false}
           value={undefined}
           showSave={false}
+          linkType=""
         />
         <Toolbar />
         
