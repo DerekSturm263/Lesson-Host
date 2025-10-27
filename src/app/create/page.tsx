@@ -24,6 +24,7 @@ export default function Page() {
           showProgress={false}
           hideLogo={false}
           value={undefined}
+          showSave={false}
         />
         <Toolbar />
 

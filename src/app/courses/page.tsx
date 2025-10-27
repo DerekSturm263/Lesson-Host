@@ -24,6 +24,7 @@ export default async function Page({ params, searchParams }: Props) {
           showProgress={false}
           hideLogo={false}
           value={undefined}
+          showSave={false}
         />
         <Toolbar />
         

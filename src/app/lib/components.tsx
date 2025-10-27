@@ -104,7 +104,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value, showSave }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined, showSave: boolean }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -375,7 +375,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
               </Button>
             )}
 
-            {mode == ComponentMode.Edit && (
+            {(showSave || mode == ComponentMode.Edit) && (
               <Button
                 variant="contained"
                 startIcon={<Save />}
@@ -485,6 +485,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         showProgress={true}
         hideLogo={hideLogo}
         value={undefined}
+        showSave={false}
       />
       <Toolbar />
 
@@ -652,6 +653,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         showProgress={true}
         hideLogo={hideLogo}
         value={learn}
+        showSave={false}
       />
 
       <Box
@@ -829,6 +831,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
         showProgress={true}
         hideLogo={hideLogo}
         value={practice}
+        showSave={false}
       />
 
       <Box
@@ -911,18 +914,19 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
         title={title}
         slug={slug}
         mode={mode as ComponentMode}
-        type="Certify"
+        type=""
         progress={0}
         showProgress={true}
         hideLogo={hideLogo}
         value={project}
+        showSave={true}
       />
 
       <Box
         display='flex'
         sx={{ height: '100vh' }}
       >
-        <Sidebar
+        {/*<Sidebar
           label="Checklist"
         >
           {checklist.map((item, index) => (
@@ -936,7 +940,7 @@ function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo 
               onClick={(e) => { }}
             />
           ))}
-        </Sidebar>
+        </Sidebar>*/}
 
         <Stack
           sx={{ flexGrow: 1 }}
