@@ -65,11 +65,12 @@ function Component(props: InteractionProps) {
   //const renderedEntities = entities.map(entity => ({ ...entity, renderer: Renderer }));
 
   return (
-    <GameEngine
+    <></>
+    /*<GameEngine
       style={{ ...properties, width: "100%", height: "100%" }}
       systems={[]}
       entities={entities}
-    />
+    />*/
   );
 }
 
