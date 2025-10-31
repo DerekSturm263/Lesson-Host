@@ -3,7 +3,7 @@
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import { CSSProperties, JSX, PureComponent, useState } from 'react';
-import { GameEngine } from 'react-game-engine';
+//import { GameEngine } from 'react-game-engine';
 import * as helpers from '@/app/lib/helpers';
 
 export type InteractionType = {

@@ -128,7 +128,7 @@ function Component(props: InteractionProps) {
 
   return (
     <Box
-      sx={{ flexGrow: 1 }}
+      sx={{ flexGrow: 1, alignSelf: "center", alignContent: "center" }}
     >
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
