@@ -811,7 +811,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
           </DialogContentText>
           
           <DialogContentText>
-            {"Next up: Implement this skill to earn a higher score on the rubric."}
+            {"Next up: Work on the next skill."}
           </DialogContentText>
         </DialogContent>
 
