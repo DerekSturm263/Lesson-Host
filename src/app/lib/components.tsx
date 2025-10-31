@@ -363,7 +363,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
               <Button
                 variant="contained"
                 startIcon={mode == ComponentMode.Edit ? <Launch /> : <Share />}
-                onClick={async (e) => { 
+                onClick={async (e) => {
                   setIsOpen(true);
                   setTabIndex(0);
                   setHideLogoState(true);
@@ -375,11 +375,23 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
               </Button>
             )}
 
+            {(mode == ComponentMode.Edit) && (
+              <Button
+                variant="contained"
+                startIcon={<AutoAwesome />}
+                onClick={async (e) => {
+
+                }}
+              >
+                Generate
+              </Button>
+            )}
+
             {(showSave || mode == ComponentMode.Edit) && (
               <Button
                 variant="contained"
                 startIcon={<Save />}
-                onClick={async (e) => { 
+                onClick={async (e) => {
                   await save(slug, value);
 
                   setSnackbarText("Saved");
