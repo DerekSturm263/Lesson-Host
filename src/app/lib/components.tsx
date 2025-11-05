@@ -1241,7 +1241,7 @@ export function CreateSharableButton({ create, type, path }: { create: () => Pro
         window.open(`./path/${newSharable[1]}?mode=edit`);
       }}
     >
-      
+      {type}
     </Button>
   );
 }
