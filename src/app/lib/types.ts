@@ -66,6 +66,7 @@ export interface Course extends Sharable {
 
 export interface Sharable {
   title: string,
+  tagLine: string,
   description: string,
   rating: number
 }

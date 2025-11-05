@@ -1,7 +1,11 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { CourseContent } from '@/app/lib/components';
+import { SharableContent } from '@/app/lib/components';
 import { getCourse } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
+
+import Button from '@mui/material/Button';
+
+import Launch from '@mui/icons-material/Launch';
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
@@ -25,14 +29,23 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <CourseContent
+        <SharableContent
           slug={slug}
           title={course.title}
-          course={course}
+          sharable={course}
           mode={mode as ComponentMode}
           apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           hideLogo={hideLogo}
-        />
+        >
+          <Button
+            href={`./${slug}/open?mode=${mode}&hideLogo=${hideLogo}`}
+            variant="contained"
+            startIcon={<Launch />}
+            size="large"
+          >
+            Open
+          </Button>
+        </SharableContent>
       </main>
     </div>
   );

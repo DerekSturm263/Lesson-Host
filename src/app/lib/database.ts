@@ -61,6 +61,7 @@ export async function getCourse(id: string): Promise<Course> {
 export async function createSkill(): Promise<[ Skill, ObjectId ]> {
   const skill: Skill = {
     title: "New Skill",
+    tagLine: "",
     description: "",
     learn: {
       chapters: [
@@ -104,6 +105,7 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
 export async function createProject(): Promise<[ Project, ObjectId ]> {
   const project: Project = {
     title: "New Project",
+    tagLine: "",
     description: "",
     checklist: [
       {
@@ -141,6 +143,7 @@ export async function createProject(): Promise<[ Project, ObjectId ]> {
 export async function createCourse(): Promise<[ Course, ObjectId ] > {
   const course: Course = {
     title: "New Course",
+    tagLine: "",
     description: "",
     units: [
       {

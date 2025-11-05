@@ -1258,7 +1258,9 @@ export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo,
         mode={mode}
         apiKey={apiKey}
         hideLogo={hideLogo}
-      ></SharableContentNoCookies>
+      >
+        {children}
+      </SharableContentNoCookies>
     </CookiesProvider>
   );
 }
@@ -1305,7 +1307,7 @@ function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLog
           mode={mode as ComponentMode}
         />
 
-        <SharableDescription
+        <SharableTagline
           sharable={sharable}
           mode={mode as ComponentMode}
         />
@@ -1338,6 +1340,15 @@ function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLog
           />
         ))}
       </Tabs>
+
+      {tabIndex == 0 ? (
+        <SharableDescription
+          sharable={sharable}
+          mode={mode as ComponentMode}
+        />
+      ) : (
+        <></>
+      )}
     </Stack>
   );
 }
@@ -1368,6 +1379,32 @@ function SharableTitle({ sharable, mode }: { sharable: Sharable, mode: Component
   return mode == ComponentMode.Edit ? input : header;
 }
 
+function SharableTagline({ sharable, mode }: { sharable: Sharable, mode: ComponentMode }) {
+  const [ tagLine, setTagLine ] = useState(sharable.tagLine);
+  
+  const header = (
+    <Typography
+      variant='body1'
+    >
+      {tagLine}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Tagline"
+      autoComplete="off"
+      value={tagLine}
+      onChange={(e) => {
+        setTagLine(e.target.value)
+        sharable.tagLine = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
 function SharableDescription({ sharable, mode }: { sharable: Sharable, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(sharable.description);
   
@@ -1383,6 +1420,9 @@ function SharableDescription({ sharable, mode }: { sharable: Sharable, mode: Com
     <TextField
       label="Description"
       autoComplete="off"
+      rows={4}
+      multiline
+      fullWidth={true}
       value={description}
       onChange={(e) => {
         setDescription(e.target.value)
