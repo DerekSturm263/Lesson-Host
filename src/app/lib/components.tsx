@@ -527,7 +527,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
 
       <Breadcrumbs>
         <Link
-          href=""
+          href="./"
         >
           Skills
         </Link>
@@ -554,6 +554,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         <Rating
           name="skill-rating"
           value={skill.rating}
+          precision={0.5}
           readOnly={true}
         />
 
@@ -1565,6 +1566,7 @@ export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
           <Rating
             name="skill-rating"
             value={skill.rating}
+            precision={0.5}
             readOnly={true}
           />
 
@@ -1606,6 +1608,7 @@ export function ProjectCard({ project, id }: { project: Project, id: string }) {
           <Rating
             name="project-rating"
             value={project.rating}
+            precision={0.5}
             readOnly={true}
           />
 
@@ -1647,6 +1650,7 @@ export function CourseCard({ course, id }: { course: Course, id: string }) {
           <Rating
             name="course-rating"
             value={course.rating}
+            precision={0.5}
             readOnly={true}
           />
 
