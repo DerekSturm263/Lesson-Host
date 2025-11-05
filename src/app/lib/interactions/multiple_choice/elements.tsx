@@ -2,7 +2,7 @@
 
 import Markdown from 'react-markdown';
 import verify from './functions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
@@ -84,6 +84,11 @@ const schema = {
 
 function Component(props: InteractionProps) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
+
+  useEffect(() => {
+    setItems(items.toSorted(item => Math.random()));
+  }, []);
+
   const [ choiceType, setChoiceType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).choiceType);
   const [ selected, setSelected ] = useState([ "" ]);
 
