@@ -42,16 +42,19 @@ export default function Page() {
         >
           <CreateSharableButton
             create={createSkill}
+            type="Skill"
             path="skills"
           />
 
           <CreateSharableButton
             create={createProject}
+            type="Project"
             path="projects"
           />
           
           <CreateSharableButton
             create={createCourse}
+            type="Course"
             path="courses"
           />
         </Stack>

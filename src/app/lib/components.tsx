@@ -1231,7 +1231,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 
 // Sharables
 
-export function CreateSharableButton({ create, path }: { create: () => Promise<[ sharable: Sharable, id: ObjectId ]>, path: string }) {
+export function CreateSharableButton({ create, type, path }: { create: () => Promise<[ sharable: Sharable, id: ObjectId ]>, type: string, path: string }) {
   return (
     <Button
       variant="contained"
@@ -1241,7 +1241,7 @@ export function CreateSharableButton({ create, path }: { create: () => Promise<[
         window.open(`./path/${newSharable[1]}?mode=edit`);
       }}
     >
-      Skill
+      
     </Button>
   );
 }
