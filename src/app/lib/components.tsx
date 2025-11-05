@@ -524,7 +524,10 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
       />
       <Toolbar />
 
-      <Stack>
+      <Stack
+        spacing={2}
+        sx={{ height: 300, justifyContent: 'center' }}
+      >
         <SkillTitle
           skill={skill}
           mode={mode as ComponentMode}
