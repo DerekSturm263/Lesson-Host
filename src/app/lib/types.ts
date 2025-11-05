@@ -1,55 +1,51 @@
 import { SchemaUnion } from "@google/genai";
 import { JSX } from "react";
 
+export interface Interaction { }
+
 export type Element = {
   type: string,
   text: string,
-  value: unknown
-};
+  value: Interaction
+}
 
 export type Chapter = {
   title: string,
   elements: Element[]
-};
+}
 
 export type Learn = {
   chapters: Chapter[]
-};
+}
 
 export type SubSkill = {
   title: string,
-  value: unknown
-};
+  value: Interaction
+}
 
 export type Practice = {
   subSkills: SubSkill[]
-};
+}
 
 export type Quiz = {
   questions: Element[]
-};
+}
 
-export type Skill = {
-  title: string,
-  description: string,
+export interface Skill extends Sharable {
   learn: Learn,
   practice: Practice,
-  quiz: Quiz,
-  rating: number
-};
+  quiz: Quiz
+}
 
 export type ChecklistItem = {
   title: string,
   skills: string[]
-};
+}
 
-export type Project = {
-  title: string,
-  description: string,
+export interface Project extends Sharable {
   checklist: ChecklistItem[],
-  value: Element,
-  rating: number
-};
+  value: Element
+}
 
 export enum ModuleType {
   Skill = 'skill',
@@ -66,12 +62,15 @@ export type Unit = {
   modules: Module[]
 }
 
-export type Course = {
+export interface Course extends Sharable {
+  units: Unit[]
+}
+
+export interface Sharable {
   title: string,
   description: string,
-  units: Unit[],
   rating: number
-};
+}
 
 /*const codespaceExample: Skill = {
   title: `Loops in C#`,
@@ -432,7 +431,7 @@ export type ElementID = {
   chapterIndex: number,
   elementIndex: number,
   keys: string[]
-};
+}
 
 export enum ComponentMode {
   View = 'view',
@@ -462,7 +461,7 @@ export type TextProps = {
   deleteElement: () => void,
   insertElementBefore: () => void,
   insertElementAfter: () => void
-};
+}
 
 export type InteractionProps = {
   elementID: ElementID,
@@ -477,7 +476,7 @@ export type InteractionProps = {
 export type InteractionPackage = {
   id: string,
   prettyName: string,
-  defaultValue: unknown,
+  defaultValue: Interaction,
   schema: SchemaUnion,
   Component: (props: InteractionProps) => JSX.Element
 }

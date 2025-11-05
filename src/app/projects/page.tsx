@@ -1,6 +1,6 @@
 import { ComponentMode, Props } from '@/app/lib/types';
 import { Metadata } from 'next';
-import { Header, ProjectCard } from '../lib/components';
+import { Header, SharableCard } from '../lib/components';
 import { Grid, Toolbar } from '@mui/material';
 import { getAllCourses, getAllProjects } from '../lib/database';
 
@@ -35,9 +35,9 @@ export default async function Page({ params, searchParams }: Props) {
           sx={{ justifyContent: "center" }}
         >
           {projects.map((project, index) => (
-            <ProjectCard
+            <SharableCard
               key={index}
-              project={project}
+              sharable={project}
               id={project._id.toString()}
             />
           ))}

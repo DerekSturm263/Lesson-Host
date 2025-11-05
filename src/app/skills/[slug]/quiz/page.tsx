@@ -1,18 +1,14 @@
 import { Props, ComponentMode } from '@/app/lib/types';
-import { SharableContent } from '@/app/lib/components';
-import { getProject } from '@/app/lib/database';
+//import { QuizContent } from '@/app/lib/components';
+import { getSkill } from '@/app/lib/database';
 import { Metadata, ResolvingMetadata } from 'next';
-
-import Button from '@mui/material/Button';
-
-import Launch from '@mui/icons-material/Launch';
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const skill = await getSkill(slug);
 
   return {
-    title: `${project.title} | MySkillStudy.com`,
+    title: `${skill.title} | MySkillStudy.com`,
     description: 'Learn anything by practicing skills and creating projects.',
   }
 }
@@ -24,28 +20,19 @@ export default async function Page({ params, searchParams }: Props) {
   const hideLogo = urlParams && urlParams.hideLogo == 'true';
   const mode = urlParams?.mode ?? "view";
 
-  const project = await getProject(slug);
+  const skill = await getSkill(slug);
 
   return (
     <div>
       <main>
-        <SharableContent
+        {/*<QuizContent
           slug={slug}
-          title={project.title}
-          sharable={project}
+          title={skill.title}
+          quiz={skill.quiz}
           mode={mode as ComponentMode}
           apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           hideLogo={hideLogo}
-        >
-          <Button
-            href={`./${slug}/open?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<Launch />}
-            size="large"
-          >
-            Open
-          </Button>
-        </SharableContent>
+        />*/}
       </main>
     </div>
   );

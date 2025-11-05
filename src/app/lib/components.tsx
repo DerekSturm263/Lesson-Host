@@ -2,7 +2,7 @@
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
 import { save, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, TextProps } from '@/app/lib/types';
+import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, TextProps, Sharable } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
 
@@ -86,6 +86,7 @@ import Launch from '@mui/icons-material/Launch';
 import Share from '@mui/icons-material/Share';
 import Add from '@mui/icons-material/Add';
 import Quiz from '@mui/icons-material/Quiz';
+import { ObjectId } from 'mongodb';
 
 
 
@@ -487,127 +488,6 @@ function SidebarButton({ selected, ogTitle, isDisabled, mode, progress, onClick 
   );
 }
 
-export function SkillContent({ slug, title, skill, mode, apiKey, hideLogo }: { slug: string, title: string, skill: Skill, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
-      <SkillContentNoCookies
-        slug={slug}
-        title={title}
-        skill={skill}
-        mode={mode}
-        apiKey={apiKey}
-        hideLogo={hideLogo}
-      />
-    </CookiesProvider>
-  );
-}
-
-export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLogo }: { slug: string, title: string, skill: Skill, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  const [ tabIndex, setTabIndex ] = useState(0);
-
-  return (
-    <Stack
-      sx={{ height: '100vh' }}
-    >
-      <Header
-        title={title}
-        slug={slug}
-        mode={mode as ComponentMode}
-        type=""
-        progress={0}
-        showProgress={true}
-        hideLogo={hideLogo}
-        value={undefined}
-        showSave={false}
-        linkType="skills"
-      />
-      <Toolbar />
-
-      <Breadcrumbs>
-        <Link
-          href="./"
-        >
-          Skills
-        </Link>
-        
-        <Typography>
-          {skill.title}
-        </Typography>
-      </Breadcrumbs>
-
-      <Stack
-        spacing={2}
-        sx={{ height: 300, justifyContent: 'center' }}
-      >
-        <SkillTitle
-          skill={skill}
-          mode={mode as ComponentMode}
-        />
-
-        <SkillDescription
-          skill={skill}
-          mode={mode as ComponentMode}
-        />
-
-        <Rating
-          name="skill-rating"
-          value={skill.rating}
-          precision={0.5}
-          readOnly={true}
-        />
-
-        <Stack
-          direction="row"
-          spacing={2}
-        >
-          <Button
-            href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<School />}
-            size="large"
-          >
-            Learn
-          </Button>
-
-          <Button
-            href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<LocalLibrary />}
-            size="large"
-          >
-            Practice
-          </Button>
-
-          <Button
-            href={`./${slug}/quiz?mode=${mode}&hideLogo=${hideLogo}`}
-            variant="contained"
-            startIcon={<Quiz />}
-            size="large"
-          >
-            Quiz
-          </Button>
-        </Stack>
-      </Stack>
-
-      <Tabs
-        value={tabIndex}
-        onChange={(e, value) => { setTabIndex(value); }}
-        variant="scrollable"
-        scrollButtons="auto"
-      >
-        {["About", "Recommended", "Reviews"].map((label, index) => (
-          <Tab
-            key={index}
-            label={label}
-          />
-        ))}
-      </Tabs>
-    </Stack>
-  );
-}
-
 export function LearnContent({ slug, title, learn, mode, apiKey, hideLogo }: { slug: string, title: string, learn: Learn, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   return (
     <CookiesProvider
@@ -954,24 +834,24 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
   );
 }
 
-export function ProjectContent({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+export function OpenContent({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   return (
     <CookiesProvider
       defaultSetOptions={{ path: '/' }}
     >
-      <ProjectContentNoCookies
+      <OpenContentNoCookies
         slug={slug}
         title={title}
         project={project}
         mode={mode}
         apiKey={apiKey}
         hideLogo={hideLogo}
-      ></ProjectContentNoCookies>
+      ></OpenContentNoCookies>
     </CookiesProvider>
   );
 }
 
-function ProjectContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: { slug: string, title: string, project: Project, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   const [ checklist, setChecklist ] = useState(project.checklist);
 
   const learn = { chapters: [ { title: "", elements: [ project.value ] } ] };
@@ -1347,14 +1227,18 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
-export function CreateSkillButton() {
+
+
+// Sharables
+
+export function CreateSharableButton({ create, path }: { create: () => Promise<[ sharable: Sharable, id: ObjectId ]>, path: string }) {
   return (
     <Button
       variant="contained"
       startIcon={<Psychology />}
       onClick={async (e) => {
-        const newSkill = await createSkill();
-        window.open(`./skills/${newSkill[1]}?mode=edit`);
+        const newSharable = await create();
+        window.open(`./path/${newSharable[1]}?mode=edit`);
       }}
     >
       Skill
@@ -1362,38 +1246,104 @@ export function CreateSkillButton() {
   );
 }
 
-export function CreateProjectButton() {
+export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, children?: React.ReactNode }) {
   return (
-    <Button
-      variant="contained"
-      startIcon={<Assignment />}
-      onClick={async (e) => {
-        const newProject = await createProject();
-        window.open(`./projects/${newProject[1]}?mode=edit`, );
-      }}
+    <CookiesProvider
+      defaultSetOptions={{ path: '/' }}
     >
-      Project
-    </Button>
+      <SharableContentNoCookies
+        slug={slug}
+        title={title}
+        sharable={sharable}
+        mode={mode}
+        apiKey={apiKey}
+        hideLogo={hideLogo}
+      ></SharableContentNoCookies>
+    </CookiesProvider>
   );
 }
 
-export function CreateCourseButton() {
+function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLogo, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, children?: React.ReactNode }) {
+  const [ tabIndex, setTabIndex ] = useState(0);
+
   return (
-    <Button
-      variant="contained"
-      startIcon={<Book />}
-      onClick={async (e) => {
-        const newCourse = await createCourse();
-        window.open(`./courses/${newCourse[1]}?mode=edit`);
-      }}
+    <Stack
+      sx={{ height: '100vh' }}
     >
-      Course
-    </Button>
+      <Header
+        title={title}
+        slug={slug}
+        mode={mode as ComponentMode}
+        type=""
+        progress={0}
+        showProgress={true}
+        hideLogo={hideLogo}
+        value={undefined}
+        showSave={false}
+        linkType="skills"
+      />
+      <Toolbar />
+
+      <Breadcrumbs>
+        <Link
+          href="./"
+        >
+          Skills
+        </Link>
+        
+        <Typography>
+          {sharable.title}
+        </Typography>
+      </Breadcrumbs>
+
+      <Stack
+        spacing={2}
+        sx={{ height: 300, justifyContent: 'center' }}
+      >
+        <SharableTitle
+          sharable={sharable}
+          mode={mode as ComponentMode}
+        />
+
+        <SharableDescription
+          sharable={sharable}
+          mode={mode as ComponentMode}
+        />
+
+        <Rating
+          name="skill-rating"
+          value={sharable.rating}
+          precision={0.5}
+          readOnly={true}
+        />
+
+        <Stack
+          direction="row"
+          spacing={2}
+        >
+          {children}
+        </Stack>
+      </Stack>
+
+      <Tabs
+        value={tabIndex}
+        onChange={(e, value) => { setTabIndex(value); }}
+        variant="scrollable"
+        scrollButtons="auto"
+      >
+        {["About", "Recommended", "Reviews"].map((label, index) => (
+          <Tab
+            key={index}
+            label={label}
+          />
+        ))}
+      </Tabs>
+    </Stack>
   );
 }
 
-function SkillTitle({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
-  const [ title, setTitle ] = useState(skill.title);
+function SharableTitle({ sharable, mode }: { sharable: Sharable, mode: ComponentMode }) {
+  const [ title, setTitle ] = useState(sharable.title);
   
   const header = (
     <Typography
@@ -1410,7 +1360,7 @@ function SkillTitle({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
       value={title}
       onChange={(e) => {
         setTitle(e.target.value)
-        skill.title = e.target.value;
+        sharable.title = e.target.value;
       }}
     />
   );
@@ -1418,60 +1368,8 @@ function SkillTitle({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   return mode == ComponentMode.Edit ? input : header;
 }
 
-function ProjectTitle({ project, mode }: { project: Project, mode: ComponentMode }) {
-  const [ title, setTitle ] = useState(project.title);
-  
-  const header = (
-    <Typography
-      variant='h4'
-    >
-      {title}
-    </Typography>
-  );
-
-  const input = (
-    <TextField
-      label="Title"
-      autoComplete="off"
-      value={title}
-      onChange={(e) => {
-        setTitle(e.target.value)
-        project.title = e.target.value;
-      }}
-    />
-  );
-
-  return mode == ComponentMode.Edit ? input : header;
-}
-
-function CourseTitle({ course, mode }: { course: Course, mode: ComponentMode }) {
-  const [ title, setTitle ] = useState(course.title);
-  
-  const header = (
-    <Typography
-      variant='h4'
-    >
-      {title}
-    </Typography>
-  );
-
-  const input = (
-    <TextField
-      label="Title"
-      autoComplete="off"
-      value={title}
-      onChange={(e) => {
-        setTitle(e.target.value)
-        course.title = e.target.value;
-      }}
-    />
-  );
-
-  return mode == ComponentMode.Edit ? input : header;
-}
-
-function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
-  const [ description, setDescription ] = useState(skill.description);
+function SharableDescription({ sharable, mode }: { sharable: Sharable, mode: ComponentMode }) {
+  const [ description, setDescription ] = useState(sharable.description);
   
   const header = (
     <Typography
@@ -1488,7 +1386,7 @@ function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }
       value={description}
       onChange={(e) => {
         setDescription(e.target.value)
-        skill.description = e.target.value;
+        sharable.description = e.target.value;
       }}
     />
   );
@@ -1496,59 +1394,7 @@ function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }
   return mode == ComponentMode.Edit ? input : header;
 }
 
-function ProjectDescription({ project, mode }: { project: Project, mode: ComponentMode }) {
-  const [ description, setDescription ] = useState(project.description);
-  
-  const header = (
-    <Typography
-      variant='body1'
-    >
-      {description}
-    </Typography>
-  );
-
-  const input = (
-    <TextField
-      label="Description"
-      autoComplete="off"
-      value={description}
-      onChange={(e) => {
-        setDescription(e.target.value)
-        project.description = e.target.value;
-      }}
-    />
-  );
-
-  return mode == ComponentMode.Edit ? input : header;
-}
-
-function CourseDescription({ course, mode }: { course: Course, mode: ComponentMode }) {
-  const [ description, setDescription ] = useState(course.description);
-  
-  const header = (
-    <Typography
-      variant='body1'
-    >
-      {description}
-    </Typography>
-  );
-
-  const input = (
-    <TextField
-      label="Description"
-      autoComplete="off"
-      value={description}
-      onChange={(e) => {
-        setDescription(e.target.value)
-        course.description = e.target.value;
-      }}
-    />
-  );
-
-  return mode == ComponentMode.Edit ? input : header;
-}
-
-export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
+export function SharableCard({ sharable, id }: { sharable: Sharable, id: string }) {
   return (
     <Card
       sx={{ width: '300px' }}
@@ -1560,102 +1406,18 @@ export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
           <Typography
             variant="h6"
           >
-            {skill.title}
+            {sharable.title}
           </Typography>
 
           <Rating
             name="skill-rating"
-            value={skill.rating}
+            value={sharable.rating}
             precision={0.5}
             readOnly={true}
           />
 
           <Typography>
-            {skill.description}
-          </Typography>
-
-          <LinearProgress
-            variant="determinate"
-            value={0}
-          />
-        </CardContent>
-      </CardActionArea>
-
-      <CardActions>
-        <Chip
-          label="Save For Later"
-        />
-      </CardActions>
-    </Card>
-  );
-}
-
-export function ProjectCard({ project, id }: { project: Project, id: string }) {
-  return (
-    <Card
-      sx={{ width: '300px' }}
-    >
-      <CardActionArea
-        href={`/projects/${id}`}
-      >
-        <CardContent>
-          <Typography
-            variant="h6"
-          >
-            {project.title}
-          </Typography>
-
-          <Rating
-            name="project-rating"
-            value={project.rating}
-            precision={0.5}
-            readOnly={true}
-          />
-
-          <Typography>
-            {project.description}
-          </Typography>
-
-          <LinearProgress
-            variant="determinate"
-            value={0}
-          />
-        </CardContent>
-      </CardActionArea>
-
-      <CardActions>
-        <Chip
-          label="Save For Later"
-        />
-      </CardActions>
-    </Card>
-  );
-}
-
-export function CourseCard({ course, id }: { course: Course, id: string }) {
-  return (
-    <Card
-      sx={{ width: '300px' }}
-    >
-      <CardActionArea
-        href={`/courses/${id}`}
-      >
-        <CardContent>
-          <Typography
-            variant="h6"
-          >
-            {course.title}
-          </Typography>
-
-          <Rating
-            name="course-rating"
-            value={course.rating}
-            precision={0.5}
-            readOnly={true}
-          />
-
-          <Typography>
-            {course.description}
+            {sharable.description}
           </Typography>
 
           <LinearProgress

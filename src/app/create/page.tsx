@@ -1,6 +1,7 @@
-import { Header, CreateSkillButton, CreateProjectButton, CreateCourseButton } from '@/app/lib/components';
+import { Header, CreateSharableButton } from '@/app/lib/components';
 import { Metadata } from 'next';
 import { ComponentMode } from '../lib/types';
+import { createSkill, createProject, createCourse } from '@/app/lib/database';
 
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -39,9 +40,20 @@ export default function Page() {
           direction="row"
           spacing={2}
         >
-          <CreateSkillButton />
-          <CreateProjectButton />
-          <CreateCourseButton />
+          <CreateSharableButton
+            create={createSkill}
+            path="skills"
+          />
+
+          <CreateSharableButton
+            create={createProject}
+            path="projects"
+          />
+          
+          <CreateSharableButton
+            create={createCourse}
+            path="courses"
+          />
         </Stack>
       </main>
     </div>

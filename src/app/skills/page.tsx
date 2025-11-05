@@ -1,6 +1,6 @@
 import { ComponentMode, Props } from '@/app/lib/types';
 import { Metadata } from 'next';
-import { Header, SkillCard } from '../lib/components';
+import { Header, SharableCard } from '../lib/components';
 import { Grid, Toolbar } from '@mui/material';
 import { getAllSkills } from '../lib/database';
 
@@ -43,9 +43,9 @@ export default async function Page({ params, searchParams }: Props) {
           sx={{ justifyContent: "center" }}
         >
           {skills.map((skill, index) => (
-            <SkillCard
+            <SharableCard
               key={index}
-              skill={skill}
+              sharable={skill}
               id={skill._id.toString()}
             />
           ))}
