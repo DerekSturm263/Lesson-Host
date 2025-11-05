@@ -487,7 +487,9 @@ export function SkillContent({ slug, title, skill, mode, apiKey, hideLogo }: { s
 
 export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLogo }: { slug: string, title: string, skill: Skill, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
   return (
-    <Stack>
+    <Stack
+      sx={{ height: '100vh' }}
+    >
       <Header
         title={title}
         slug={slug}
@@ -504,6 +506,7 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
 
       <Stack
         spacing={6}
+        sx={{ flexGrow: 1, justifyContent: 'center' }}
       >
         <SkillDescription
           skill={skill}
