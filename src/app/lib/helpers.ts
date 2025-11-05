@@ -14,7 +14,7 @@ export function getAbsoluteIndex(elementID: ElementID): number {
   return index + elementID.elementIndex;
 }
 
-export function getInteractionValue<T>(elementID: ElementID): T {
+export function getInteractionValue<T extends object>(elementID: ElementID): T {
   let value = elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value;
   if (value == null)
     value = {} as T;
