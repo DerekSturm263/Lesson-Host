@@ -4,6 +4,8 @@ import { Header, SkillCard } from '../lib/components';
 import { Grid, Toolbar } from '@mui/material';
 import { getAllSkills } from '../lib/database';
 
+import Typography from '@mui/material/Typography';
+
 export const metadata: Metadata = {
   title: 'Skills | MySkillStudy.com',
   description: 'Learn anything by practicing skills and creating projects.',
@@ -28,6 +30,12 @@ export default async function Page({ params, searchParams }: Props) {
           linkType=""
         />
         <Toolbar />
+
+        {/*<Typography
+          variant='h1'
+        >
+
+        </Typography> */}
 
         <Grid
           container

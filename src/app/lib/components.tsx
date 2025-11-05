@@ -502,35 +502,39 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
       />
       <Toolbar />
 
-      <SkillDescription
-        skill={skill}
-        mode={mode as ComponentMode}
-      />
-
       <Stack
-        direction="row"
-        spacing={5}
-        sx={{ justifyContent: "center" }}
+        spacing={6}
       >
-        <Button
-          href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
-          variant="contained"
-          startIcon={<School />}
-          sx={{ padding: ' 100px 50px 100px 50px' }}
-          size="large"
-        >
-          Learn
-        </Button>
+        <SkillDescription
+          skill={skill}
+          mode={mode as ComponentMode}
+        />
 
-        <Button
-          href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
-          variant="contained"
-          startIcon={<LocalLibrary />}
-          sx={{ padding: ' 100px 50px 100px 50px' }}
-          size="large"
+        <Stack
+          direction="row"
+          spacing={5}
+          sx={{ justifyContent: "center" }}
         >
-          Practice
-        </Button>
+          <Button
+            href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
+            variant="contained"
+            startIcon={<School />}
+            sx={{ padding: ' 100px 50px 100px 50px' }}
+            size="large"
+          >
+            Learn
+          </Button>
+
+          <Button
+            href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
+            variant="contained"
+            startIcon={<LocalLibrary />}
+            sx={{ padding: ' 100px 50px 100px 50px' }}
+            size="large"
+          >
+            Practice
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
   );
