@@ -64,6 +64,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import Breadcrumbs from '@mui/material/Breadcrumbs'
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
@@ -523,6 +524,18 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         linkType="skills"
       />
       <Toolbar />
+
+      <Breadcrumbs>
+        <Link
+          href=""
+        >
+          Skills
+        </Link>
+        
+        <Typography>
+          {skill.title}
+        </Typography>
+      </Breadcrumbs>
 
       <Stack
         spacing={2}
