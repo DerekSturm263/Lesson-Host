@@ -1394,13 +1394,13 @@ function SharableDescription({ sharable, mode }: { sharable: Sharable, mode: Com
   return mode == ComponentMode.Edit ? input : header;
 }
 
-export function SharableCard({ sharable, id }: { sharable: Sharable, id: string }) {
+export function SharableCard({ sharable, id, type }: { sharable: Sharable, id: string, type: string }) {
   return (
     <Card
       sx={{ width: '300px' }}
     >
       <CardActionArea
-        href={`/skills/${id}`}
+        href={`https://myskillstudy.com/${type}/${id}`}
       >
         <CardContent>
           <Typography

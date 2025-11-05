@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ComponentMode } from './lib/types';
-import { Header, CourseCard, SkillCard, ProjectCard } from './lib/components';
+import { Header, SharableCard } from './lib/components';
 
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
@@ -74,10 +74,11 @@ export default async function Home() {
             spacing={2}
           >
             {[].map((course, index) => (
-              <CourseCard
+              <SharableCard
                 key={index}
-                course={course}
+                sharable={course}
                 id=""
+                type="courses"
               />
             ))}
           </Stack>
@@ -106,10 +107,11 @@ export default async function Home() {
             spacing={2}
           >
             {[].map((skill, index) => (
-              <SkillCard
+              <SharableCard
                 key={index}
-                skill={skill}
+                sharable={skill}
                 id=""
+                type="skills"
               />
             ))}
           </Stack>
@@ -138,10 +140,11 @@ export default async function Home() {
             spacing={2}
           >
             {[].map((project, index) => (
-              <ProjectCard
+              <SharableCard
                 key={index}
-                project={project}
+                sharable={project}
                 id=""
+                type="projects"
               />
             ))}
           </Stack>

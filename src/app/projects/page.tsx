@@ -39,6 +39,7 @@ export default async function Page({ params, searchParams }: Props) {
               key={index}
               sharable={project}
               id={project._id.toString()}
+              type="projects"
             />
           ))}
         </Grid>
