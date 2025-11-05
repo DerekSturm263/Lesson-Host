@@ -940,29 +940,6 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
   );
 }
 
-export function CourseContent({ slug, title, course, mode, apiKey, hideLogo }: { slug: string, title: string, course: Course, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  return (
-    <CookiesProvider
-      defaultSetOptions={{ path: '/' }}
-    >
-      <CourseContentNoCookies
-        slug={slug}
-        title={title}
-        course={course}
-        mode={mode}
-        apiKey={apiKey}
-        hideLogo={hideLogo}
-      ></CourseContentNoCookies>
-    </CookiesProvider>
-  );
-}
-
-function CourseContentNoCookies({ slug, title, course, mode, apiKey, hideLogo }: { slug: string, title: string, course: Course, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
-  return (
-    <></>
-  );
-}
-
 function Interaction(props: InteractionProps) {
   const Component = interactionMap[props.elementID.learn.chapters[props.elementID.chapterIndex].elements[props.elementID.elementIndex].type].Component;
 
