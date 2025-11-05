@@ -1238,7 +1238,7 @@ export function CreateSharableButton({ create, type, path }: { create: () => Pro
       startIcon={<Psychology />}
       onClick={async (e) => {
         const newSharable = await create();
-        window.open(`./path/${newSharable[1]}?mode=edit`);
+        window.open(`./${path}/${newSharable[1]}?mode=edit`);
       }}
     >
       {type}
