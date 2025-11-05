@@ -1,7 +1,10 @@
 import { SchemaUnion } from "@google/genai";
 import { JSX } from "react";
 
-export interface Interaction { }
+/* eslint-disable  no-explicit-any */
+export interface Interaction {
+
+}
 
 export type Element = {
   type: string,
