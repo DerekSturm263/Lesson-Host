@@ -38,6 +38,7 @@ export default async function Page({ params, searchParams }: Props) {
           mode={mode as ComponentMode}
           apiKey={process.env.ONECOMPILER_API_KEY ?? ''}
           hideLogo={hideLogo}
+          type="skills"
         >
           <Button
             href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}

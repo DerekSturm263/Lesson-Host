@@ -1246,7 +1246,7 @@ export function CreateSharableButton({ create, type, path }: { create: () => Pro
   );
 }
 
-export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, children?: React.ReactNode }) {
+export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo, type, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, type: string, children?: React.ReactNode }) {
   return (
     <CookiesProvider
       defaultSetOptions={{ path: '/' }}
@@ -1258,6 +1258,7 @@ export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo,
         mode={mode}
         apiKey={apiKey}
         hideLogo={hideLogo}
+        type={type}
       >
         {children}
       </SharableContentNoCookies>
@@ -1265,7 +1266,7 @@ export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo,
   );
 }
 
-function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLogo, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, children?: React.ReactNode }) {
+function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLogo, type, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, type: string, children?: React.ReactNode }) {
   const [ tabIndex, setTabIndex ] = useState(0);
   const tabs = mode == ComponentMode.Edit ? ["About"] : ["About", "Recommended", "Reviews"];
 
@@ -1283,7 +1284,7 @@ function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLog
         hideLogo={hideLogo}
         value={undefined}
         showSave={false}
-        linkType="skills"
+        linkType={type}
       />
       <Toolbar />
 
