@@ -894,7 +894,7 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
         display='flex'
         sx={{ height: '100vh' }}
       >
-        {/*<Sidebar
+        {<Sidebar
           label="Checklist"
         >
           {checklist.map((item, index) => (
@@ -908,7 +908,7 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
               onClick={(e) => { }}
             />
           ))}
-        </Sidebar>*/}
+        </Sidebar>}
 
         <Stack
           sx={{ flexGrow: 1 }}
