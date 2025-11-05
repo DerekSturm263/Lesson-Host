@@ -18,7 +18,7 @@ export type Learn = {
 
 export type SubSkill = {
   title: string,
-  value: Element
+  value: unknown
 };
 
 export type Practice = {

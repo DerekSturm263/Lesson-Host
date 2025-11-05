@@ -79,7 +79,8 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
     practice: {
       subSkills: [
         {
-          title: "New Sub-Skill"
+          title: "New Sub-Skill",
+          value: interactionMap["shortAnswer"].defaultValue
         }
       ]
     }

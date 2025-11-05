@@ -380,7 +380,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 variant="contained"
                 startIcon={<AutoAwesome />}
                 onClick={async (e) => {
-
+                  
                 }}
               >
                 Generate
