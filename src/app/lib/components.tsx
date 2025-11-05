@@ -1267,6 +1267,7 @@ export function SharableContent({ slug, title, sharable, mode, apiKey, hideLogo,
 
 function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLogo, children }: { slug: string, title: string, sharable: Sharable, mode: ComponentMode, apiKey: string, hideLogo: boolean, children?: React.ReactNode }) {
   const [ tabIndex, setTabIndex ] = useState(0);
+  const tabs = mode == ComponentMode.Edit ? ["About"] : ["About", "Recommended", "Reviews"];
 
   return (
     <Stack
@@ -1312,12 +1313,14 @@ function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLog
           mode={mode as ComponentMode}
         />
 
-        <Rating
-          name="skill-rating"
-          value={sharable.rating}
-          precision={0.5}
-          readOnly={true}
-        />
+        {mode != ComponentMode.Edit && (
+          <Rating
+            name="skill-rating"
+            value={sharable.rating}
+            precision={0.5}
+            readOnly={true}
+          />
+        )}
 
         <Stack
           direction="row"
@@ -1333,7 +1336,7 @@ function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLog
         variant="scrollable"
         scrollButtons="auto"
       >
-        {["About", "Recommended", "Reviews"].map((label, index) => (
+        {tabs.map((label, index) => (
           <Tab
             key={index}
             label={label}
