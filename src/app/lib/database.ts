@@ -83,7 +83,17 @@ export async function createSkill(): Promise<[ Skill, ObjectId ]> {
           value: interactionMap["shortAnswer"].defaultValue
         }
       ]
-    }
+    },
+    quiz: {
+      questions: [
+        {
+          type: "shortAnswer",
+          text: "New element",
+          value: interactionMap["shortAnswer"].defaultValue
+        }
+      ]
+    },
+    rating: 0
   };
 
   const result = await client.db('database').collection('skills').insertOne(skill);
@@ -119,7 +129,8 @@ export async function createProject(): Promise<[ Project, ObjectId ]> {
       type: "codespace",
       text: "",
       value: interactionMap["codespace"].defaultValue
-    }
+    },
+    rating: 0
   };
 
   const result = await client.db('database').collection('projects').insertOne(project);
@@ -141,7 +152,8 @@ export async function createCourse(): Promise<[ Course, ObjectId ] > {
           }
         ]
       }
-    ]
+    ],
+    rating: 0
   };
 
   const result = await client.db('database').collection('courses').insertOne(course);

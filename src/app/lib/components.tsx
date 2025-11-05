@@ -84,6 +84,7 @@ import Save from '@mui/icons-material/Save';
 import Launch from '@mui/icons-material/Launch';
 import Share from '@mui/icons-material/Share';
 import Add from '@mui/icons-material/Add';
+import Quiz from '@mui/icons-material/Quiz';
 
 
 
@@ -504,25 +505,26 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
       />
       <Toolbar />
 
-      <Stack
-        spacing={6}
-        sx={{ flexGrow: 1, justifyContent: 'center' }}
-      >
         <SkillDescription
           skill={skill}
           mode={mode as ComponentMode}
         />
 
+        <Rating
+          name="skill-rating"
+          value={skill.rating}
+          readOnly={true}
+        />
+
         <Stack
           direction="row"
-          spacing={5}
+          spacing={2}
           sx={{ justifyContent: "center" }}
         >
           <Button
             href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
             variant="contained"
             startIcon={<School />}
-            sx={{ padding: ' 100px 50px 100px 50px' }}
             size="large"
           >
             Learn
@@ -532,13 +534,20 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
             href={`./${slug}/practice?mode=${mode}&hideLogo=${hideLogo}`}
             variant="contained"
             startIcon={<LocalLibrary />}
-            sx={{ padding: ' 100px 50px 100px 50px' }}
             size="large"
           >
             Practice
           </Button>
+
+          <Button
+            href={`./${slug}/quiz?mode=${mode}&hideLogo=${hideLogo}`}
+            variant="contained"
+            startIcon={<Quiz />}
+            size="large"
+          >
+            Quiz
+          </Button>
         </Stack>
-      </Stack>
     </Stack>
   );
 }
@@ -1425,7 +1434,7 @@ export function SkillCard({ skill, id }: { skill: Skill, id: string }) {
 
           <Rating
             name="skill-rating"
-            value={1}
+            value={skill.rating}
             readOnly={true}
           />
 
@@ -1466,7 +1475,7 @@ export function ProjectCard({ project, id }: { project: Project, id: string }) {
 
           <Rating
             name="project-rating"
-            value={1}
+            value={project.rating}
             readOnly={true}
           />
 
@@ -1507,7 +1516,7 @@ export function CourseCard({ course, id }: { course: Course, id: string }) {
 
           <Rating
             name="course-rating"
-            value={1}
+            value={course.rating}
             readOnly={true}
           />
 

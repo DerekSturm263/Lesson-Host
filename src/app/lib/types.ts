@@ -25,11 +25,17 @@ export type Practice = {
   subSkills: SubSkill[]
 };
 
+export type Quiz = {
+  questions: Element[]
+};
+
 export type Skill = {
   title: string,
   description: string,
   learn: Learn,
-  practice: Practice
+  practice: Practice,
+  quiz: Quiz,
+  rating: number
 };
 
 export type ChecklistItem = {
@@ -41,7 +47,8 @@ export type Project = {
   title: string,
   description: string,
   checklist: ChecklistItem[],
-  value: Element
+  value: Element,
+  rating: number
 };
 
 export enum ModuleType {
@@ -62,7 +69,8 @@ export type Unit = {
 export type Course = {
   title: string,
   description: string,
-  units: Unit[]
+  units: Unit[],
+  rating: number
 };
 
 /*const codespaceExample: Skill = {
