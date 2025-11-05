@@ -356,6 +356,23 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                       </ListItemText>
                     </ListItemButton>
                   </MenuItem>
+
+                  <MenuItem
+                    value="Quiz"
+                  >
+                    <ListItemButton
+                      href={`./quiz?mode=${mode}&hideLogo=${hideLogo}`}
+                      sx={{ padding: '0px' }}
+                    >
+                      <ListItemIcon>
+                        <Quiz />
+                      </ListItemIcon>
+
+                      <ListItemText>
+                        Quiz
+                      </ListItemText>
+                    </ListItemButton>
+                  </MenuItem>
                 </Select>
               </FormControl>
             )}
@@ -487,6 +504,8 @@ export function SkillContent({ slug, title, skill, mode, apiKey, hideLogo }: { s
 }
 
 export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLogo }: { slug: string, title: string, skill: Skill, mode: ComponentMode, apiKey: string, hideLogo: boolean }) {
+  const [ tabIndex, setTabIndex ] = useState(0);
+
   return (
     <Stack
       sx={{ height: '100vh' }}
@@ -505,6 +524,12 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
       />
       <Toolbar />
 
+      <Stack>
+        <SkillTitle
+          skill={skill}
+          mode={mode as ComponentMode}
+        />
+
         <SkillDescription
           skill={skill}
           mode={mode as ComponentMode}
@@ -519,7 +544,6 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
         <Stack
           direction="row"
           spacing={2}
-          sx={{ justifyContent: "center" }}
         >
           <Button
             href={`./${slug}/learn?mode=${mode}&hideLogo=${hideLogo}`}
@@ -548,6 +572,21 @@ export function SkillContentNoCookies({ slug, title, skill, mode, apiKey, hideLo
             Quiz
           </Button>
         </Stack>
+      </Stack>
+
+      <Tabs
+        value={tabIndex}
+        onChange={(e, value) => { setTabIndex(value); }}
+        variant="scrollable"
+        scrollButtons="auto"
+      >
+        {["About", "Recommended", "Reviews"].map((label, index) => (
+          <Tab
+            key={index}
+            label={label}
+          />
+        ))}
+      </Tabs>
     </Stack>
   );
 }
@@ -1336,13 +1375,90 @@ export function CreateCourseButton() {
   );
 }
 
+function SkillTitle({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
+  const [ title, setTitle ] = useState(skill.title);
+  
+  const header = (
+    <Typography
+      variant='h4'
+    >
+      {title}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Title"
+      autoComplete="off"
+      value={title}
+      onChange={(e) => {
+        setTitle(e.target.value)
+        skill.title = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
+function ProjectTitle({ project, mode }: { project: Project, mode: ComponentMode }) {
+  const [ title, setTitle ] = useState(project.title);
+  
+  const header = (
+    <Typography
+      variant='h4'
+    >
+      {title}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Title"
+      autoComplete="off"
+      value={title}
+      onChange={(e) => {
+        setTitle(e.target.value)
+        project.title = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
+function CourseTitle({ course, mode }: { course: Course, mode: ComponentMode }) {
+  const [ title, setTitle ] = useState(course.title);
+  
+  const header = (
+    <Typography
+      variant='h4'
+    >
+      {title}
+    </Typography>
+  );
+
+  const input = (
+    <TextField
+      label="Title"
+      autoComplete="off"
+      value={title}
+      onChange={(e) => {
+        setTitle(e.target.value)
+        course.title = e.target.value;
+      }}
+    />
+  );
+
+  return mode == ComponentMode.Edit ? input : header;
+}
+
 function SkillDescription({ skill, mode }: { skill: Skill, mode: ComponentMode }) {
   const [ description, setDescription ] = useState(skill.description);
   
   const header = (
     <Typography
-      variant='h6'
-      sx={{ textAlign: "center" }}
+      variant='body1'
     >
       {description}
     </Typography>
@@ -1368,8 +1484,7 @@ function ProjectDescription({ project, mode }: { project: Project, mode: Compone
   
   const header = (
     <Typography
-      variant='h6'
-      sx={{ textAlign: "center" }}
+      variant='body1'
     >
       {description}
     </Typography>
@@ -1395,8 +1510,7 @@ function CourseDescription({ course, mode }: { course: Course, mode: ComponentMo
   
   const header = (
     <Typography
-      variant='h6'
-      sx={{ textAlign: "center" }}
+      variant='body1'
     >
       {description}
     </Typography>
