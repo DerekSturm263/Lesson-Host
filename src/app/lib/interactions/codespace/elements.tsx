@@ -306,6 +306,12 @@ function Component(props: InteractionProps) {
                 label={file.name}
               />
             ))}
+
+            {(props.mode == ComponentMode.Edit || allowNewFiles) && (
+              <Tab
+                label="New File"
+              />
+            )}
           </Tabs>
 
           <Editor
