@@ -1,6 +1,6 @@
 import { ComponentMode, Props } from '@/app/lib/types';
 import { Metadata } from 'next';
-import { Header, SharableCard } from '../lib/components';
+import { Header, Header2, SharableCard } from '../lib/components';
 import { Breadcrumbs, Grid, Toolbar, Typography } from '@mui/material';
 import { getAllCourses } from '../lib/database';
 
@@ -15,18 +15,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <div>
       <main>
-        <Header
-          title="Courses"
-          slug={""}
-          mode={ComponentMode.View}
-          type=""
-          progress={0}
-          showProgress={false}
-          hideLogo={false}
-          value={undefined}
-          showSave={false}
-          linkType=""
-        />
+        <Header2 />
         <Toolbar />
 
         <Typography

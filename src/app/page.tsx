@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ComponentMode } from './lib/types';
-import { Header, SharableCard } from './lib/components';
+import { Header, Header2, SharableCard } from './lib/components';
 
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
@@ -17,18 +17,7 @@ export default async function Home() {
   return (
     <div>
       <main>
-        <Header
-          title={""}
-          slug={""}
-          mode={ComponentMode.Master}
-          type=""
-          progress={0}
-          showProgress={false}
-          hideLogo={false}
-          value={undefined}
-          showSave={false}
-          linkType=""
-        />
+        <Header2 />
         <Toolbar />
 
         <Stack
