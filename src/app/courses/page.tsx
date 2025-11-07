@@ -41,7 +41,7 @@ export default async function Page({ params, searchParams }: Props) {
           Courses contain multiple skills and projects, split between units. These are best for learning entire subjects.
         </Typography>
 
-        <Masonry
+        <Grid
           container
           spacing={5}
           sx={{ justifyContent: "center" }}
