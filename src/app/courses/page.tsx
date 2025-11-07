@@ -1,7 +1,7 @@
 import { ComponentMode, Props } from '@/app/lib/types';
 import { Metadata } from 'next';
 import { Header, SharableCard } from '../lib/components';
-import { Grid, Toolbar, Typography } from '@mui/material';
+import { Breadcrumbs, Grid, Toolbar, Typography } from '@mui/material';
 import { getAllCourses } from '../lib/database';
 
 export const metadata: Metadata = {
@@ -40,6 +40,10 @@ export default async function Page({ params, searchParams }: Props) {
         >
           Courses contain multiple skills and projects, split between units. These are best for learning entire subjects.
         </Typography>
+
+        <Breadcrumbs>
+        
+        </Breadcrumbs>
 
         <Grid
           container

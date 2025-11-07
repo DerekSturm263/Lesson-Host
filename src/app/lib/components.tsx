@@ -65,12 +65,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Menu from '@mui/material/Menu';
 
 import Refresh from '@mui/icons-material/Refresh';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import AutoAwesome from '@mui/icons-material/AutoAwesome';
-import Menu from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import School from '@mui/icons-material/School';
@@ -106,6 +107,51 @@ const interactionMap: Record<string, InteractionPackage> = {
   "engine": Engine,
   "iframe": IFrame
 };
+
+export function Header2({}: {}) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <AppBar
+      position="fixed"
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    >
+      <Toolbar
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+      >
+        <Link
+          variant="h6"
+          sx={{ width: '400px', textDecoration: 'none' }}
+          href="/"
+        >
+          MySkillStudy.com
+        </Link>
+
+        <Button>
+          Learn
+        </Button>
+
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose}>Courses</MenuItem>
+          <MenuItem onClick={handleClose}>Projects</MenuItem>
+          <MenuItem onClick={handleClose}>Skills</MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
+  );
+}
 
 export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value, showSave, linkType, children }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined, showSave: boolean, linkType: string, children?: React.ReactNode }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
@@ -1281,7 +1327,7 @@ function SharableContentNoCookies({ slug, title, sharable, mode, apiKey, hideLog
         <Link
           href="./"
         >
-          Skills
+          {type}
         </Link>
         
         <Typography>
