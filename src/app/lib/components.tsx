@@ -134,7 +134,9 @@ export function Header2({}: {}) {
           MySkillStudy.com
         </Link>
 
-        <Button>
+        <Button
+          onClick={handleClick}
+        >
           Learn
         </Button>
 
