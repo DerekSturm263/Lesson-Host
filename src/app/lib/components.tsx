@@ -1,7 +1,7 @@
 'use client'
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
-import { save } from '@/app/lib/database';
+import { save, remove } from '@/app/lib/database';
 import { ElementID, ComponentMode, InteractionPackage, Learn, InteractionProps, Project, Course, Practice, TextProps, Sharable } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
@@ -419,6 +419,18 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 }}
               >
                 Save
+              </Button>
+            )}
+            
+            {(mode == ComponentMode.Edit) && (
+              <Button
+                variant="contained"
+                startIcon={<Delete />}
+                onClick={async (e) => {
+                  await remove(slug, linkType);
+                }}
+              >
+                Delete
               </Button>
             )}
           </Stack>

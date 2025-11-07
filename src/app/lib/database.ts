@@ -213,3 +213,9 @@ async function saveCourse(id: string, course: Course): Promise<UpdateResult<Cour
 
   return result;
 }
+
+export async function remove(id: string, type: string) {
+  await client.db('database').collection(type).deleteOne(
+    { _id: new ObjectId(id) }
+  );
+}
