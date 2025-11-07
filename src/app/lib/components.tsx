@@ -1,10 +1,11 @@
 'use client'
 
 import { Fragment, Children, isValidElement, cloneElement, useRef, ReactNode, useState, ReactElement, JSX, MouseEventHandler, useEffect } from 'react';
-import { save, createSkill, createProject, createCourse } from '@/app/lib/database';
-import { ElementID, ComponentMode, InteractionPackage, Skill, Learn, InteractionProps, Project, Course, Practice, TextProps, Sharable } from '@/app/lib/types';
+import { save } from '@/app/lib/database';
+import { ElementID, ComponentMode, InteractionPackage, Learn, InteractionProps, Project, Course, Practice, TextProps, Sharable } from '@/app/lib/types';
 import { ModelType } from '@/app/lib/ai/types';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import { ObjectId } from 'mongodb';
 
 import Markdown from 'react-markdown';
 import generateText from '@/app/lib/ai/functions';
@@ -86,7 +87,6 @@ import Launch from '@mui/icons-material/Launch';
 import Share from '@mui/icons-material/Share';
 import Add from '@mui/icons-material/Add';
 import Quiz from '@mui/icons-material/Quiz';
-import { ObjectId } from 'mongodb';
 
 
 
@@ -107,7 +107,7 @@ const interactionMap: Record<string, InteractionPackage> = {
   "iframe": IFrame
 };
 
-export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value, showSave, linkType }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined, showSave: boolean, linkType: string }) {
+export function Header({ title, slug, mode, type, progress, showProgress, hideLogo, value, showSave, linkType, children }: { title: string, slug: string, mode: ComponentMode, type: string, progress: number, showProgress: boolean, hideLogo: boolean, value: Learn | Practice | Project | Course | undefined, showSave: boolean, linkType: string, children?: React.ReactNode }) {
   const [ headerTitle, setHeaderTitle ] = useState(title);
   const [ isOpen, setIsOpen ] = useState(false);
   const [ tabIndex, setTabIndex ] = useState(0);
@@ -127,7 +127,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
         onClose={(e) => setIsOpen(false)}
       >
         <DialogTitle>
-          {`Select ${mode == ComponentMode.Edit ? "Export" : "Share"} Settings`}
+          {`Select Share Settings`}
         </DialogTitle>
 
         <DialogContent>
@@ -191,7 +191,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
           {tabIndex == 0 ? (
             <>
               <DialogContentText>
-                {"Copy the link below and send it to give anyone access this skill."}
+                {"Copy the link below and send it to give anyone access this content."}
               </DialogContentText>
               
               <br />
@@ -391,7 +391,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                   setHeight(600);
                 }}
               >
-                {mode == ComponentMode.Edit ? "Export" : "Share"}
+                Share
               </Button>
             )}
 
@@ -1351,7 +1351,7 @@ function SharableTitle({ sharable, mode }: { sharable: Sharable, mode: Component
       autoComplete="off"
       value={title}
       onChange={(e) => {
-        setTitle(e.target.value)
+        setTitle(e.target.value);
         sharable.title = e.target.value;
       }}
     />
@@ -1377,7 +1377,7 @@ function SharableTagline({ sharable, mode }: { sharable: Sharable, mode: Compone
       autoComplete="off"
       value={tagLine}
       onChange={(e) => {
-        setTagLine(e.target.value)
+        setTagLine(e.target.value);
         sharable.tagLine = e.target.value;
       }}
     />
@@ -1406,7 +1406,7 @@ function SharableDescription({ sharable, mode }: { sharable: Sharable, mode: Com
       fullWidth={true}
       value={description}
       onChange={(e) => {
-        setDescription(e.target.value)
+        setDescription(e.target.value);
         sharable.description = e.target.value;
       }}
     />

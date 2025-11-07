@@ -31,11 +31,17 @@ export default async function Page({ params, searchParams }: Props) {
         />
         <Toolbar />
 
-        {/*<Typography
-          variant='h1'
+        <Typography
+          variant="h2"
         >
+          Skills
+        </Typography>
 
-        </Typography> */}
+        <Typography
+          variant="body1"
+        >
+          Skills are single, actionable things that you can do. Learn, practice, and quiz yourself on any skill you can think of.
+        </Typography>
 
         <Grid
           container

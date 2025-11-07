@@ -1,7 +1,7 @@
 import { ComponentMode, Props } from '@/app/lib/types';
 import { Metadata } from 'next';
 import { Header, SharableCard } from '../lib/components';
-import { Grid, Toolbar } from '@mui/material';
+import { Grid, Toolbar, Typography } from '@mui/material';
 import { getAllCourses } from '../lib/database';
 
 export const metadata: Metadata = {
@@ -28,8 +28,20 @@ export default async function Page({ params, searchParams }: Props) {
           linkType=""
         />
         <Toolbar />
+
+        <Typography
+          variant="h2"
+        >
+          Courses
+        </Typography>
         
-        <Grid
+        <Typography
+          variant="body1"
+        >
+          Courses contain multiple skills and projects, split between units. These are best for learning entire subjects.
+        </Typography>
+
+        <Masonry
           container
           spacing={5}
           sx={{ justifyContent: "center" }}

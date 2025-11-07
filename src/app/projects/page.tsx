@@ -1,7 +1,7 @@
 import { ComponentMode, Props } from '@/app/lib/types';
 import { Metadata } from 'next';
 import { Header, SharableCard } from '../lib/components';
-import { Grid, Toolbar } from '@mui/material';
+import { Grid, Toolbar, Typography } from '@mui/material';
 import { getAllCourses, getAllProjects } from '../lib/database';
 
 export const metadata: Metadata = {
@@ -28,6 +28,18 @@ export default async function Page({ params, searchParams }: Props) {
           linkType=""
         />
         <Toolbar />
+
+        <Typography
+          variant="h2"
+        >
+          Projects
+        </Typography>
+
+        <Typography
+          variant="body1"
+        >
+          Projects are preset environments where you can practice skills to create bigger works and productions.
+        </Typography>
 
         <Grid
           container
