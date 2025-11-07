@@ -1,4 +1,4 @@
-import { Header, CreateSharableButton } from '@/app/lib/components';
+import { Header, CreateSharableButton, Header2 } from '@/app/lib/components';
 import { Metadata } from 'next';
 import { ComponentMode } from '../lib/types';
 import { createSkill, createProject, createCourse } from '@/app/lib/database';
@@ -16,18 +16,7 @@ export default function Page() {
   return (
     <div>
       <main>
-        <Header
-          title={""}
-          slug={""}
-          mode={ComponentMode.Master}
-          type=""
-          progress={0}
-          showProgress={false}
-          hideLogo={false}
-          value={undefined}
-          showSave={false}
-          linkType=""
-        />
+        <Header2 />
         <Toolbar />
 
         <Typography

@@ -146,9 +146,50 @@ export function Header2() {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>Courses</MenuItem>
-          <MenuItem onClick={handleClose}>Projects</MenuItem>
-          <MenuItem onClick={handleClose}>Skills</MenuItem>
+          <MenuItem onClick={handleClose}>
+            <ListItemButton
+              href="myskillstudy.com/courses"
+              sx={{ padding: '0px' }}
+            >
+              <ListItemIcon>
+                <Book />
+              </ListItemIcon>
+
+              <ListItemText>
+                Courses
+              </ListItemText>
+            </ListItemButton>
+          </MenuItem>
+
+          <MenuItem onClick={handleClose}>
+            <ListItemButton
+              href="myskillstudy.com/skills"
+              sx={{ padding: '0px' }}
+            >
+              <ListItemIcon>
+                <Psychology />
+              </ListItemIcon>
+
+              <ListItemText>
+                Skills
+              </ListItemText>
+            </ListItemButton>
+          </MenuItem>
+
+          <MenuItem onClick={handleClose}>
+            <ListItemButton
+              href="myskillstudy.com/projects"
+              sx={{ padding: '0px' }}
+            >
+              <ListItemIcon>
+                <Assignment />
+              </ListItemIcon>
+
+              <ListItemText>
+                Projects
+              </ListItemText>
+            </ListItemButton>
+          </MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
