@@ -174,7 +174,7 @@ function Component(props: InteractionProps) {
               isDisabled={props.isDisabled}
               mode={props.mode}
               item={item}
-              isRadio={items.filter((item) => item).length == 1}
+              isRadio={items.filter((item) => item.isCorrect).length == 1}
               index={index}
               toggle={(index: number, toggleState: boolean) => {
                 if (selected[index])
