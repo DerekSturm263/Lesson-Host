@@ -1,50 +1,36 @@
 import generateText from "@/app/lib/ai/functions";
 import { ModelType, Verification } from "@/app/lib/ai/types";
-import { InteractionType } from "./elements";
+import { InteractionType, MultipleChoiceItem, ChoiceType } from "./elements";
 
-export default async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {
-  let isValid = false;
-  let contents = '';
+export default async function verify(question: string, userResponse: MultipleChoiceItem[], value: InteractionType): Promise<Verification> {
+  const isValid = false;
+  const contents = '';
 
-  isValid = true;
-  contents = 'j';
-  
-  const correctAnswers = value.items.filter(item => item.isCorrect).map(item => item.value);
-  /*if ((!value.choiceType && userResponse.some(item => correctAnswers.includes(item))) || areArraysEqual(userResponse, correctAnswers)) {
-    // Got at least one right answer, and either doesn't need all correct or got them all correct.
-    isValid = true;
+  // if (value.choiceType == ChoiceType.Single) {
+  //   if (userResponse[0] == value.items.filter(item => item.isCorrect)[0]) {
+  //     // User got the single correct answer.
 
-    contents =
-      `TASK:
-      The student's selections were correct. Congratulate the student on getting their answer right. Review their SELECTION(S) to recap how the QUESTION was solved and why their selections were correct.
+  //   } else {
+  //     // User did not get the single correct answer.
 
-      QUESTION:
-      ${question}
+  //   }
+  // } else if (value.choiceType == ChoiceType.MultipleNeedsAll) {
+  //   if () {
+  //     // User got all the correct answers and needed all of them.
 
-      SELECTION(S):
-      ${userResponse.join(', ')}
+  //   } else {
+  //     // User didn't get all the correct answers and needed all of them.
+      
+  //   }
+  // } else {
+  //   if () {
+  //     // User got at least one correct answer and didn't need all of them.
 
-      CORRECT ANSWER(S):
-      ${correctAnswers.join(', ')}
-      `;
-  } else {
-    // Didn't get any right answers.
-    isValid = false;
-    
-    contents =
-      `TASK:
-      The student's selections were incorrect. View the student's SELECTION(S) and the original QUESTION and give the student feedback on why their selections aren't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER(S).
-
-      QUESTION:
-      ${question}
-
-      SELECTION(S):
-      ${userResponse.join(', ')}
-
-      CORRECT ANSWER(S):
-      ${correctAnswers.join(', ')}
-      `;
-  }*/
+  //   } else {
+  //     // User didn't get any correct answers and didn't need all of them.
+      
+  //   }
+  // }
 
   const response = await generateText({
     model: ModelType.Quick,
