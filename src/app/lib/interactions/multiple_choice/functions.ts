@@ -3,39 +3,80 @@ import { ModelType, Verification } from "@/app/lib/ai/types";
 import { InteractionType, MultipleChoiceItem, ChoiceType } from "./elements";
 
 export default async function verify(question: string, userResponse: MultipleChoiceItem[], value: InteractionType): Promise<Verification> {
-  const isValid = false;
-  const contents = '';
+  let isValid = false;
+  let contents = '';
 
-  // if (value.choiceType == ChoiceType.Single) {
-  //   if (userResponse[0] == value.items.filter(item => item.isCorrect)[0]) {
-  //     // User got the single correct answer.
+  const overlappingAnswers = userResponse.filter(item1 => value.items.filter(item2 => item2.isCorrect).includes(item1));
 
-  //   } else {
-  //     // User did not get the single correct answer.
+  if (value.items.filter((item) => item.isCorrect).length == 1) {
+    isValid = overlappingAnswers.length > 0;
 
-  //   }
-  // } else if (value.choiceType == ChoiceType.MultipleNeedsAll) {
-  //   if () {
-  //     // User got all the correct answers and needed all of them.
+    contents =
+    `TASK:
+    ${isValid ?
+      `The student's response was correct. Congratulate the student on getting their answer right. Review how the QUESTION was solved, why the USER RESPONSE was correct, and why the INCORRECT ANSWERS were incorrect.` :
+      `The student's response was incorrect. View the USER'S RESPONSE and the original QUESTION and give the student feedback on why their answer was one of the INCORRECT ANSWERS. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
+    }
 
-  //   } else {
-  //     // User didn't get all the correct answers and needed all of them.
-      
-  //   }
-  // } else {
-  //   if () {
-  //     // User got at least one correct answer and didn't need all of them.
+    QUESTION:
+    ${question}
 
-  //   } else {
-  //     // User didn't get any correct answers and didn't need all of them.
-      
-  //   }
-  // }
+    USER'S RESPONSE:
+    ${userResponse.map(item => item.value).join(', ')}
+
+    CORRECT ANSWER:
+    ${value.items.filter(item => item.isCorrect).map(item => item.value).join(', ')}
+
+    INCORRECT ANSWERS:
+    ${value.items.filter(item => !item.isCorrect).map(item => item.value).join(', ')}`;
+  } else if (value.choiceType == ChoiceType.NeedsAllCorrect) {
+    isValid = overlappingAnswers.length == value.items.length;
+
+    contents =
+    `TASK:
+    ${isValid ?
+      `The student's response was correct, they got all the CORRECT ANSWERS. Congratulate the student on getting their answers right. Review how the QUESTION was solved, why the USER RESPONSE was correct, and why the INCORRECT ANSWERS were incorrect.` :
+      `The student's response was incorrect, they didn't get all the CORRECT ANSWERS. View the USER'S RESPONSE and the original QUESTION and give the student feedback on why their answer was wrong. Pay attention to if any of the USER's RESPONSES were part of the INCORRECT ANSWERS or if they just didn't get all the CORRECT ANSWERS. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
+    }
+
+    QUESTION:
+    ${question}
+
+    USER'S RESPONSE:
+    ${userResponse.map(item => item.value).join(', ')}
+
+    CORRECT ANSWERS:
+    ${value.items.map(item => item.value).join(', ')}
+
+    INCORRECT ANSWERS:
+    ${value.items.filter(item => !item.isCorrect).map(item => item.value).join(', ')}`;
+  } else {
+    isValid = overlappingAnswers.length > 0 && userResponse.length == overlappingAnswers.length;
+
+    contents =
+    `TASK:
+    ${isValid ?
+      `The student's response was correct, they got at least one of the CORRECT ANSWERS. Congratulate the student on getting an answer right. Review how the QUESTION was solved, why the USER RESPONSE was correct, and why the other CORRECT ANSWERS that weren't part of the USER'S RESPONSE were also correct.` :
+      `The student's response was incorrect, they didn't get at least one of the CORRECT ANSWERS or one of their responses was an INCORRECT ANSWER. View the USER'S RESPONSE and the original QUESTION and give the student feedback on why their answer was one of the INCORRECT ANSWERS. Pay attention to if any of the USER'S RESPONSES were part of the INCORRECT ANSWERS. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
+    }
+
+    QUESTION:
+    ${question}
+
+    USER'S RESPONSE:
+    ${userResponse.map(item => item.value).join(', ')}
+
+    CORRECT ANSWERS:
+    ${value.items.map(item => item.value).join(', ')}
+
+    INCORRECT ANSWERS:
+    ${value.items.filter(item => !item.isCorrect).map(item => item.value).join(', ')}`;
+  }
 
   const response = await generateText({
     model: ModelType.Quick,
     prompt: contents,
-    systemInstruction: `You are a high school tutor. You evaluate a student's SELECTIONS on a multiple choice QUESTION and give them proper FEEDBACK based on whether or not their selections are correct. You will be told whether or not the student is correct, all you need to do is give the FEEDBACK.`
+    systemInstruction: `You are a high school tutor. You evaluate a student's USER RESPONSE on a multiple choice QUESTION and give them proper FEEDBACK based on whether or not their selections are correct. You will be told whether or not the student is correct, all you need to do is give the FEEDBACK.`
   });
 
   return {

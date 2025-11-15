@@ -3,15 +3,16 @@ import { ModelType, Verification } from "@/app/lib/ai/types";
 import { InteractionType } from "./elements";
 
 export default async function verify(question: string, userResponse: boolean, value: InteractionType): Promise<Verification> {
-  const isCorrect = userResponse == value.isCorrect;
+  const isValid = userResponse == value.isCorrect;
 
   const response = await generateText({
     model: ModelType.Quick,
     prompt:
     `TASK:
-    ${isCorrect ?
+    ${isValid ?
       `The student's response was correct. Congratulate the student on getting their answer right. Review how the QUESTION was solved and why the user's RESPONSE was correct.` :
-      `The student's response aws incorrect. View the student's RESPONSE and the original QUESTION and give the student feedback on why their answer isn't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`}
+      `The student's response aws incorrect. View the student's RESPONSE and the original QUESTION and give the student feedback on why their answer wasn't the CORRECT ANSWER. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
+    }
 
     QUESTION:
     ${question}
@@ -25,7 +26,7 @@ export default async function verify(question: string, userResponse: boolean, va
   });
 
   return {
-    isValid: isCorrect,
+    isValid: isValid,
     feedback: response
   };
 }

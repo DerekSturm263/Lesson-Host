@@ -10,7 +10,7 @@ export default async function verify(question: string, userResponse: string, val
       model: ModelType.Quick,
       prompt: 
       `TASK:
-      Decide whether a given RESPONSE is a valid answer to a given QUESTION and give appropriate feedback.
+      Decide whether a given RESPONSE is a valid answer to a given QUESTION and give appropriate FEEDBACK to help the user understand based on whether they were right or wrong.
       
       QUESTION:
       ${question}
@@ -32,21 +32,13 @@ export default async function verify(question: string, userResponse: string, val
 
     response = await generateText({
       model: ModelType.Quick,
-      prompt: isValid ?
+      prompt:
       `TASK:
-      The student's response was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.
-
-      QUESTION:
-      ${question}
-
-      RESPONSE:
-      ${userResponse}
+      ${isValid ?
+        `The student's response was correct. Congratulate the student on getting their answer right. Review their RESPONSE to recap how the QUESTION was solved and why it was correct.` :
+        `The student's response was incorrect. View the student's RESPONSE and the original QUESTION and give the student feedback on why their answer wasn't the CORRECT ANSWER. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
+      }
       
-      CORRECT ANSWER:
-      ${value.correctAnswer}` :
-      `TASK:
-      The student's response was incorrect. View the student's RESPONSE and the original QUESTION and give the student feedback on why their answer isn't correct. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.
-
       QUESTION:
       ${question}
 
