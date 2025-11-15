@@ -32,8 +32,8 @@ type MultipleChoiceItem = {
 
 enum ChoiceType {
   Single = 'single',
-  MultipleNeedsOne = 'checkboxNeedsOne',
-  MultipleNeedsAll = 'checkboxNeedsAll'
+  MultipleNeedsOne = 'multipleNeedsOne',
+  MultipleNeedsAll = 'multipleNeedsAll'
 }
 
 const defaultValue: InteractionType = {
