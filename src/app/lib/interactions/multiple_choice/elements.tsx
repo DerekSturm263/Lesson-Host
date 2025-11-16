@@ -177,10 +177,10 @@ function Component(props: InteractionProps) {
               isRadio={items.filter((item) => item.isCorrect).length == 1}
               index={index}
               toggle={(index: number, toggleState: boolean) => {
-                if (selected[index])
-                  unselectItem(index);
-                else
+                if (toggleState)
                   selectItem(index);
+                else
+                  unselectItem(index);
               }}
               setSelected={(index: number) => {
                 setSelected([ items[index] ]);
