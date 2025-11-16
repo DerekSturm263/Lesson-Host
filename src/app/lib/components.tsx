@@ -205,6 +205,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
   const [ hideLogoState, setHideLogoState ] = useState(true);
   const [ width, setWidth ] = useState(800);
   const [ height, setHeight ] = useState(600);
+  const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
 
   const link = `https://myskillstudy.com/${linkType}/${slug}?mode=view&hideLogo=${hideLogoState}`;
   const iframe = `<iframe src="https://myskillstudy.com/${linkType}/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
@@ -330,6 +331,37 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
             onClick={(e) => setIsOpen(false)}
           >
             Done
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={isDeleteOpen}
+        onClose={(e) => setIsDeleteOpen(false)}
+      >
+        <DialogTitle>
+          Delete Permanently?
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this content permanently? You will not be able to bring it back.
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={(e) => setIsDeleteOpen(false)}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            onClick={async (e) => {
+              await remove(slug, linkType);
+            }}
+          >
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -523,7 +555,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
               >
                 <IconButton
                   onClick={async (e) => {
-                    await remove(slug, linkType);
+                    setIsDeleteOpen(true);
                   }}
                 >
                   <Delete />
