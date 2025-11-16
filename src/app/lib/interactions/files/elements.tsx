@@ -105,6 +105,7 @@ function Component(props: InteractionProps) {
       {props.mode == ComponentMode.Edit && (
         <Button
           onClick={(e) => { addFile() }}
+          variant="contained"
         >
           Add File
         </Button>
