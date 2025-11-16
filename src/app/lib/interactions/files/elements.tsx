@@ -99,11 +99,13 @@ function Component(props: InteractionProps) {
         ))}
       </Stack>
 
-      <Button
-        onClick={(e) => { addFile() }}
-      >
-        Add File
-      </Button>
+      {props.mode == ComponentMode.Edit && (
+        <Button
+          onClick={(e) => { addFile() }}
+        >
+          Add File
+        </Button>
+      )}
     </Stack>
   );
 }
@@ -124,6 +126,7 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
             value={source}
             onChange={(e) => {
               setSource(e.target.value);
+              helpers.getInteractionValue<InteractionType>(elementID).files[index].source = e.target.value;
             }}
           />
 
@@ -152,6 +155,14 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
         ></audio>
       ) : (
         <></>
+      )}
+
+      {isDownloadable && (
+        <Button
+          onClick={(e) => {}}
+        >
+          Download
+        </Button>
       )}
     </Stack>
   );
