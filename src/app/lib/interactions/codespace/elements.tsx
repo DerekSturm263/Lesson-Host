@@ -311,7 +311,6 @@ function Component(props: InteractionProps) {
             {(props.mode == ComponentMode.Edit || allowNewFiles) && (
               <Tab
                 icon={<Add />}
-                sx={{ width: '50px' }}
                 onClick={(e) => {
                   const newContent = content;
                   newContent.push({ name: "New File", content: "" });

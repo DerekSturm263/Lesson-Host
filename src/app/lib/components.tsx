@@ -771,6 +771,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
     <Fragment>
       <Dialog
         open={!hideDialogue && mode == ComponentMode.View && elementsCompleted.filter(element => element).length == elementsCompleted.length}
+        onClose={(e) => setHideDialogue(true)}
       >
         <DialogTitle>
           Lesson Complete!
@@ -957,6 +958,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
     <Fragment>
       <Dialog
         open={!hideDialogue}
+        onClose={(e) => setHideDialogue(true)}
       >
         <DialogTitle>
           Practice Complete!
