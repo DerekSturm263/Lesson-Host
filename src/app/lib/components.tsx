@@ -94,18 +94,18 @@ import Quiz from '@mui/icons-material/Quiz';
 // Core.
 
 const interactionMap: Record<string, InteractionPackage> = {
-  "shortAnswer": ShortAnswer,
-  "multipleChoice": MultipleChoice,
-  "trueOrFalse": TrueOrFalse,
-  "matching": Matching,
-  "ordering": Ordering,
   "files": Files,
   "drawing": Drawing,
   "graph": Graph,
   "daw": DAW,
   "codespace": Codespace,
   "engine": Engine,
-  "iframe": IFrame
+  "shortAnswer": ShortAnswer,
+  "trueOrFalse": TrueOrFalse,
+  "multipleChoice": MultipleChoice,
+  "ordering": Ordering,
+  "matching": Matching,
+  "iframe": IFrame,
 };
 
 export function Header2() {
