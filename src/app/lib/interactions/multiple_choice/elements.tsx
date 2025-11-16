@@ -85,7 +85,7 @@ function Component(props: InteractionProps) {
   const [ items, setItems ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).items);
 
   useEffect(() => {
-    setItems(items.toSorted(item => Math.random()));
+    setItems(items.toSorted((item1, item2) => Math.random()));
   }, []);
 
   const [ choiceType, setChoiceType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).choiceType);
