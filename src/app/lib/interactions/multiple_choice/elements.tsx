@@ -89,7 +89,7 @@ function Component(props: InteractionProps) {
   }, []);
 
   const [ choiceType, setChoiceType ] = useState(helpers.getInteractionValue<InteractionType>(props.elementID).choiceType);
-  const [ selected, setSelected ] = useState([ ] as MultipleChoiceItem[]);
+  const [ selected, setSelected ] = useState([ ] as string[]);
 
   async function submit() {
     props.setIsThinking(true);
@@ -118,15 +118,15 @@ function Component(props: InteractionProps) {
     setItems(newItems);
   }
 
-  function selectItem(index: number) {
+  function selectItem(item: string) {
     const newSelected = selected;
-    newSelected.push(items[index]);
+    newSelected.push(item);
     setSelected(newSelected);
   }
 
-  function unselectItem(index: number) {
+  function unselectItem(item: string) {
     const newSelected = selected;
-    newSelected.splice(index, 1);
+    newSelected.splice(newSelected.indexOf(item), 1);
     setSelected(newSelected);
   }
 
@@ -176,14 +176,14 @@ function Component(props: InteractionProps) {
               item={item}
               isRadio={items.filter((item) => item.isCorrect).length == 1}
               index={index}
-              toggle={(index: number, toggleState: boolean) => {
+              toggle={(item: string, toggleState: boolean) => {
                 if (toggleState)
-                  selectItem(index);
+                  selectItem(item);
                 else
-                  unselectItem(index);
+                  unselectItem(item);
               }}
-              setSelected={(index: number) => {
-                setSelected([ items[index] ]);
+              setSelected={(item: string) => {
+                setSelected([ item ]);
               }}
             />
           ))}
@@ -207,7 +207,7 @@ function Component(props: InteractionProps) {
   );
 }
 
-function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, isRadio, toggle, setSelected }: { elementID: ElementID, isDisabled: boolean, mode: ComponentMode, item: MultipleChoiceItem, index: number, isRadio: boolean, toggle: (index: number, toggleState: boolean) => void, setSelected: (index: number) => void }) {
+function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, isRadio, toggle, setSelected }: { elementID: ElementID, isDisabled: boolean, mode: ComponentMode, item: MultipleChoiceItem, index: number, isRadio: boolean, toggle: (item: string, toggleState: boolean) => void, setSelected: (item: string) => void }) {
   const [ value, setValue ] = useState(item.value);
   const [ isCorrect, setIsCorrect ] = useState(item.isCorrect);
 
@@ -247,13 +247,13 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, isRadio,
           control={(isRadio ?
           <Radio
             onChange={(e) => {
-              setSelected(index);
+              setSelected(item.value);
             }}
           />
           :
           <Checkbox
             onChange={(e) => {
-              toggle(index, e.target.checked);
+              toggle(item.value, e.target.checked);
             }}
           />)}
           label={<Markdown>{item.value}</Markdown>}

@@ -2,11 +2,11 @@ import generateText from "@/app/lib/ai/functions";
 import { ModelType, Verification } from "@/app/lib/ai/types";
 import { InteractionType, MultipleChoiceItem, ChoiceType } from "./elements";
 
-export default async function verify(question: string, userResponse: MultipleChoiceItem[], value: InteractionType): Promise<Verification> {
+export default async function verify(question: string, userResponse: string[], value: InteractionType): Promise<Verification> {
   let isValid = false;
   let contents = '';
 
-  const overlappingAnswers = userResponse.filter(item1 => value.items.filter(item2 => item2.isCorrect).includes(item1));
+  const overlappingAnswers = userResponse.filter(item1 => value.items.filter(item2 => item2.isCorrect).some(item3 => item1 == item3.value));
 
   if (value.items.filter((item) => item.isCorrect).length == 1) {
     isValid = overlappingAnswers.length > 0;
@@ -22,7 +22,7 @@ export default async function verify(question: string, userResponse: MultipleCho
     ${question}
 
     USER'S RESPONSE:
-    ${userResponse.map(item => item.value).join(', ')}
+    ${userResponse.join(', ')}
 
     CORRECT ANSWER:
     ${value.items.filter(item => item.isCorrect).map(item => item.value).join(', ')}
@@ -43,7 +43,7 @@ export default async function verify(question: string, userResponse: MultipleCho
     ${question}
 
     USER'S RESPONSE:
-    ${userResponse.map(item => item.value).join(', ')}
+    ${userResponse.join(', ')}
 
     CORRECT ANSWERS:
     ${value.items.map(item => item.value).join(', ')}
@@ -64,7 +64,7 @@ export default async function verify(question: string, userResponse: MultipleCho
     ${question}
 
     USER'S RESPONSE:
-    ${userResponse.map(item => item.value).join(', ')}
+    ${userResponse.join(', ')}
 
     CORRECT ANSWERS:
     ${value.items.map(item => item.value).join(', ')}
