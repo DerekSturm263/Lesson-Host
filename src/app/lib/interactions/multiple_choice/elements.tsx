@@ -137,6 +137,7 @@ function Component(props: InteractionProps) {
       <FormControl
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
+        disabled={props.isDisabled}
       >
         
         {props.mode == ComponentMode.Edit && items.filter(item => item.isCorrect).length > 1 && (
@@ -146,9 +147,9 @@ function Component(props: InteractionProps) {
             <InputLabel id="mode-label">Type</InputLabel>
           
             <Select
-              labelId="language-label"
+              labelId="choice-label"
               value={choiceType}
-              label="Language"
+              label="Choice Type"
               onChange={(e) => {
                 setChoiceType(e.target.value as ChoiceType);
                 helpers.getInteractionValue<InteractionType>(props.elementID).choiceType = e.target.value as ChoiceType;

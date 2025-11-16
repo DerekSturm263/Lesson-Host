@@ -60,6 +60,7 @@ function Component(props: InteractionProps) {
         id={`interaction${helpers.getAbsoluteIndex(props.elementID)}`}
         className='multipleOptions'
         sx={{ alignItems: "center" }}
+        disabled={props.isDisabled}
       >
         <RadioGroup
           defaultValue=""
