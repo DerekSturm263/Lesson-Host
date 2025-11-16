@@ -97,6 +97,7 @@ function Component(props: InteractionProps) {
             mode={props.mode}
             item={item}
             index={index}
+            removeItem={removeFile}
           />
         ))}
       </Stack>
@@ -112,7 +113,7 @@ function Component(props: InteractionProps) {
   );
 }
 
-function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: ElementID, isDisabled: boolean, mode: ComponentMode, item: File, index: number }) {
+function FileItem({ elementID, isDisabled, mode, item, index, removeItem }: { elementID: ElementID, isDisabled: boolean, mode: ComponentMode, item: File, index: number, removeItem: (index: number) => void }) {
   const [ source, setSource ] = useState(item.source);
   const [ isDownloadable, setIsDownloadable ] = useState(item.isDownloadable);
   
@@ -161,7 +162,7 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
 
       {isDownloadable && (
         <Button
-          onClick={(e) => {}}
+          onClick={(e) => removeItem(index)}
         >
           Download
         </Button>
