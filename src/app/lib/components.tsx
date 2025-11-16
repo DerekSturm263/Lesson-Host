@@ -781,11 +781,17 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
           </DialogContentText>
           
           <DialogContentText>
-            {"Next up: Practice this skill to earn a higher score on the rubric."}
+            {"Next up: Practice this skill to achieve a higher understanding."}
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
+          <Button
+            onClick={(e) => elementsCompleted.push(true)}
+          >
+            Close
+          </Button>
+
           <Button
             href="./practice"
           >
@@ -960,15 +966,21 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
           </DialogContentText>
           
           <DialogContentText>
-            {"Next up: Work on the next skill."}
+            {"Next up: Quiz yourself on this skill to check your understanding."}
           </DialogContentText>
         </DialogContent>
 
         <DialogActions>
           <Button
-            href="./implement"
+            onClick={(e) => {}}
           >
-            Implement Skill
+            Close
+          </Button>
+
+          <Button
+            href="./quiz"
+          >
+            Quiz Skill
           </Button>
         </DialogActions>
       </Dialog>
@@ -1060,6 +1072,14 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
             {"Next up: Pick another project to start working on."}
           </DialogContentText>
         </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={(e) => {}}
+          >
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
 
       <Header
