@@ -1185,6 +1185,7 @@ function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type
             key={index}
             value={item.id}
           >
+            <ListItemButton>
               <ListItemIcon>
                 <item.icon />
               </ListItemIcon>
@@ -1192,6 +1193,7 @@ function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type
               <ListItemText>
                 {item.prettyName}
               </ListItemText>
+            </ListItemButton>
           </MenuItem>
         )))}
       </Select>
