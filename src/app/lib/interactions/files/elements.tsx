@@ -1,12 +1,12 @@
 'use client'
 
-import Box from '@mui/material/Box';
 import Image from 'next/image';
 import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from "@/app/lib/types";
 import { useState } from "react";
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
-import { Stack, TextField } from '@mui/material';
+import { Button, IconButton, Stack, TextField } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
 export type InteractionType = {
   files: File[]
@@ -81,21 +81,29 @@ function Component(props: InteractionProps) {
   }
 
   return (
-    <Stack
-      sx={{ flexGrow: 1 }}
-      direction="row"
-      spacing={2}
-    >
-      {files.map((item, index) => (
-        <FileItem
-          key={index}
-          elementID={props.elementID}
-          isDisabled={props.isDisabled}
-          mode={props.mode}
-          item={item}
-          index={index}
-        />
-      ))}
+    <Stack>
+      <Stack
+        sx={{ flexGrow: 1 }}
+        direction="row"
+        spacing={2}
+      >
+        {files.map((item, index) => (
+          <FileItem
+            key={index}
+            elementID={props.elementID}
+            isDisabled={props.isDisabled}
+            mode={props.mode}
+            item={item}
+            index={index}
+          />
+        ))}
+      </Stack>
+
+      <Button
+        onClick={(e) => { addFile() }}
+      >
+        Add File
+      </Button>
     </Stack>
   );
 }
@@ -107,16 +115,24 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
   const extension = source.substring(source.length - 3);
 
   return (
-    <>
+    <Stack>
       {mode == ComponentMode.Edit && (
-        <TextField
-          label="Source"
-          autoComplete="off"
-          value={source}
-          onChange={(e) => {
-            setSource(e.target.value);
-          }}
-        />
+        <>
+          <TextField
+            label="Source"
+            autoComplete="off"
+            value={source}
+            onChange={(e) => {
+              setSource(e.target.value);
+            }}
+          />
+
+          <IconButton
+            onClick={(e) => {}}
+          >
+            <Delete />
+          </IconButton>
+        </>
       )}
       
       {extension == "png" ? (
@@ -137,7 +153,7 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
       ) : (
         <></>
       )}
-    </>
+    </Stack>
   );
 }
 
