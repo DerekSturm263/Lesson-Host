@@ -205,7 +205,9 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
   const [ hideLogoState, setHideLogoState ] = useState(true);
   const [ width, setWidth ] = useState(800);
   const [ height, setHeight ] = useState(600);
+  const [ isAIOpen, setIsAIOpen ] = useState(false);
   const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
+  const [ description, setDescription] = useState("");
 
   const link = `https://myskillstudy.com/${linkType}/${slug}?mode=view&hideLogo=${hideLogoState}`;
   const iframe = `<iframe src="https://myskillstudy.com/${linkType}/${slug}?mode=view&hideLogo=${hideLogoState}" width=${width} height=${height}></iframe>`;
@@ -336,11 +338,53 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
       </Dialog>
 
       <Dialog
+        open={isAIOpen}
+        onClose={(e) => setIsAIOpen(false)}
+      >
+        <DialogTitle>
+          Generation Settings
+        </DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            Your content will be generated based on the description you enter below. All existing settings will be overriden by the generated content.
+          </DialogContentText>
+      
+          <Stack>
+            <TextField
+              id="description"
+              label="Description"
+              value={description}
+              multiline={true}
+              rows={5}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Stack>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={(e) => setIsAIOpen(false)}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            onClick={async (e) => {
+              
+            }}
+          >
+            Generate
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
         open={isDeleteOpen}
         onClose={(e) => setIsDeleteOpen(false)}
       >
         <DialogTitle>
-          Delete Permanently?
+          Delete Content?
         </DialogTitle>
 
         <DialogContent>
@@ -523,8 +567,8 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 title="Generate using AI"
               >
                 <IconButton
-                  onClick={async (e) => {
-
+                  onClick={(e) => {
+                    setIsAIOpen(true);
                   }}
                 >
                   <AutoAwesome />
@@ -554,7 +598,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                 title="Delete permanently"
               >
                 <IconButton
-                  onClick={async (e) => {
+                  onClick={(e) => {
                     setIsDeleteOpen(true);
                   }}
                 >
