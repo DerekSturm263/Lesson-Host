@@ -1340,7 +1340,7 @@ function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type
         MenuProps={{
           PaperProps: {
             style: {
-              maxHeight: 400
+              maxHeight: '400px'
             }
           }
         }}
