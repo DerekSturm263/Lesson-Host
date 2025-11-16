@@ -1,6 +1,7 @@
 'use client'
 
 import Box from '@mui/material/Box';
+import Desmos from 'desmos';
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
 
@@ -26,6 +27,13 @@ const schema = {
 };
 
 function Component(props: InteractionProps) {
+  const elt = document.createElement('div');
+  elt.style.width = "100%";
+  elt.style.height = "100%";
+
+  const calculator = Desmos.GraphingCalculator(elt);
+  calculator.setExpression({ id: "", latex: "y=x^2" });
+
   return (
     <Box
       sx={{ flexGrow: 1 }}

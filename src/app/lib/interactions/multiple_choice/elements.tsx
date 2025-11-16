@@ -139,7 +139,6 @@ function Component(props: InteractionProps) {
         className='multipleOptions'
         disabled={props.isDisabled}
       >
-        
         {props.mode == ComponentMode.Edit && items.filter(item => item.isCorrect).length > 1 && (
           <FormControl
             size="small"
