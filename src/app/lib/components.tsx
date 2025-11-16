@@ -26,6 +26,7 @@ import Engine from './interactions/engine/elements';
 import IFrame from './interactions/iframe/elements';
 
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
@@ -47,7 +48,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
@@ -469,9 +469,7 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
             )}
 
             {slug != "" && hideLogo == false && (
-              <Button
-                variant="contained"
-                startIcon={mode == ComponentMode.Edit ? <Launch /> : <Share />}
+              <IconButton
                 onClick={async (e) => {
                   setIsOpen(true);
                   setTabIndex(0);
@@ -480,26 +478,22 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                   setHeight(600);
                 }}
               >
-                Share
-              </Button>
+                {mode == ComponentMode.Edit ? <Launch /> : <Share />}
+              </IconButton>
             )}
 
             {(mode == ComponentMode.Edit) && (
-              <Button
-                variant="contained"
-                startIcon={<AutoAwesome />}
+              <IconButton
                 onClick={async (e) => {
                   
                 }}
               >
-                Generate
-              </Button>
+                <AutoAwesome />
+              </IconButton>
             )}
 
             {(showSave || mode == ComponentMode.Edit) && (
-              <Button
-                variant="contained"
-                startIcon={<Save />}
+              <IconButton
                 onClick={async (e) => {
                   await save(slug, value);
 
@@ -507,20 +501,18 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
                   setIsSnackbarOpen(true);
                 }}
               >
-                Save
-              </Button>
+                <Save />
+              </IconButton>
             )}
             
             {(mode == ComponentMode.Edit) && (
-              <Button
-                variant="contained"
-                startIcon={<Delete />}
+              <IconButton
                 onClick={async (e) => {
                   await remove(slug, linkType);
                 }}
               >
-                Delete
-              </Button>
+                <Delete />
+              </IconButton>
             )}
           </Stack>
         </Toolbar>
