@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Desmos from 'desmos';
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
+import { createElement } from 'react';
 
 export type InteractionType = {
   placeholder: boolean
@@ -27,9 +28,7 @@ const schema = {
 };
 
 function Component(props: InteractionProps) {
-  const elt = document.createElement('div');
-  elt.style.width = "100%";
-  elt.style.height = "100%";
+  const elt = createElement('div');
 
   const calculator = Desmos.GraphingCalculator(elt);
   calculator.setExpression({ id: "", latex: "y=x^2" });
@@ -38,7 +37,7 @@ function Component(props: InteractionProps) {
     <Box
       sx={{ flexGrow: 1 }}
     >
-      
+      {elt}
     </Box>
   );
 }
