@@ -96,6 +96,7 @@ function Component(props: InteractionProps) {
 const interaction: InteractionPackage = {
   id: "matching",
   prettyName: "Matching",
+  category: "Assessments",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

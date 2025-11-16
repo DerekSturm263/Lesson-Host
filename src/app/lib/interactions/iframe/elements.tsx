@@ -66,6 +66,7 @@ function Component(props: InteractionProps) {
 const interaction: InteractionPackage = {
   id: "iframe",
   prettyName: "IFrame",
+  category: "Miscellaneous",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

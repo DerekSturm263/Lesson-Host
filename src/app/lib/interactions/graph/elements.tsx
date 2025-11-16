@@ -45,6 +45,7 @@ function Component(props: InteractionProps) {
 const interaction: InteractionPackage = {
   id: "graph",
   prettyName: "Graph",
+  category: "Mathematics",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

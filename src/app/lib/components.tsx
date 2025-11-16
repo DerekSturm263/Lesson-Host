@@ -1337,6 +1337,13 @@ function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type
         value={type}
         label="Type"
         onChange={(e) => setTypeAndUpdate(e.target.value)}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: 400
+            }
+          }
+        }}
       >
         {(Object.values(interactionMap).map((item, index) => (
           <MenuItem

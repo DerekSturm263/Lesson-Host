@@ -103,6 +103,7 @@ function Component(props: InteractionProps) {
 const interaction: InteractionPackage = {
   id: "trueOrFalse",
   prettyName: "True or False",
+  category: "Assessments",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

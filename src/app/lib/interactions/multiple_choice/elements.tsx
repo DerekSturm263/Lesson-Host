@@ -267,6 +267,7 @@ function MultipleChoiceItem({ elementID, isDisabled, mode, item, index, isRadio,
 const interaction: InteractionPackage = {
   id: "multipleChoice",
   prettyName: "Multiple Choice",
+  category: "Assessments",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

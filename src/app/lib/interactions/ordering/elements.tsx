@@ -63,6 +63,7 @@ function Component(props: InteractionProps) {
 const interaction: InteractionPackage = {
   id: "ordering",
   prettyName: "Ordering",
+  category: "Assessments",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

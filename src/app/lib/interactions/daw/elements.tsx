@@ -38,6 +38,7 @@ function Component(props: InteractionProps) {
 const interaction: InteractionPackage = {
   id: "daw",
   prettyName: "Digital Audio Workstation",
+  category: "Audio",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

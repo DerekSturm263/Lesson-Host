@@ -424,6 +424,7 @@ function unsimplify(file: CodespaceFile) {
 const interaction: InteractionPackage = {
   id: "codespace",
   prettyName: "Codespace",
+  category: "Computer Science",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

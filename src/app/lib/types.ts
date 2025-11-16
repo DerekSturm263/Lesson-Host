@@ -475,6 +475,7 @@ export type InteractionProps = {
 export type InteractionPackage = {
   id: string,
   prettyName: string,
+  category: string,
   defaultValue: object,
   schema: SchemaUnion,
   Component: (props: InteractionProps) => JSX.Element

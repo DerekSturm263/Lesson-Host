@@ -175,6 +175,7 @@ function FileItem({ elementID, isDisabled, mode, item, index, removeItem }: { el
 const interaction: InteractionPackage = {
   id: "files",
   prettyName: "Files",
+  category: "Miscellaneous",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

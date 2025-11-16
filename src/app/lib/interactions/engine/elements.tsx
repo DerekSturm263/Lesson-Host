@@ -100,6 +100,7 @@ class Renderer extends PureComponent {
 const interaction: InteractionPackage = {
   id: "engine",
   prettyName: "Engine",
+  category: "Computer Science",
   defaultValue: defaultValue,
   schema: schema,
   Component: Component
