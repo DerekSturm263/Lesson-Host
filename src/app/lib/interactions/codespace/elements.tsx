@@ -305,14 +305,6 @@ function Component(props: InteractionProps) {
               <Tab
                 key={index}
                 label={file.name}
-                icon={
-                  <IconButton
-                    onClick={(e) => {}}
-                  >
-                    <MoreVert />
-                  </IconButton>
-                }
-                iconPosition='end'
               />
             ))}
 
