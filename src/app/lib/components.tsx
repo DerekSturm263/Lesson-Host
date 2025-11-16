@@ -855,25 +855,15 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
         >
           <Toolbar />
 
-          <Stack
-            sx={{ flexGrow: 1 }}
-          >
-            {mode == ComponentMode.Edit && (
-              <TypeSwitcher
-                elementID={currentElement}
-              />
-            )}
-
-            <Interaction
-              elementID={currentElement}
-              isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
-              mode={mode}
-              originalText={originalTexts[helpers.getAbsoluteIndex(currentElement)]}
-              setText={setText}
-              setIsThinking={setIsThinkingSmart}
-              setComplete={complete}
-            />
-          </Stack>
+          <Interaction
+            elementID={currentElement}
+            isDisabled={mode == ComponentMode.View && elementsCompleted[helpers.getAbsoluteIndex(currentElement)]}
+            mode={mode}
+            originalText={originalTexts[helpers.getAbsoluteIndex(currentElement)]}
+            setText={setText}
+            setIsThinking={setIsThinkingSmart}
+            setComplete={complete}
+          />
 
           {/*chapters.map((chapter, cIndex) => chapter.elements.map((element, eIndex) => {
             const elementID = { learn: learn, chapterIndex: cIndex, elementIndex: eIndex, keys: [ apiKey ] };
@@ -1123,26 +1113,16 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
           sx={{ flexGrow: 1 }}
         >
           <Toolbar />
-          
-          <Stack
-            sx={{ flexGrow: 1 }}
-          >
-            {mode == ComponentMode.Edit && (
-              <TypeSwitcher
-                elementID={element}
-              />
-            )}
 
-            <Interaction
-              elementID={element}
-              isDisabled={false}
-              mode={mode}
-              originalText=""
-              setText={(text) => {}}
-              setIsThinking={(isThinking) => {}}
-              setComplete={(isComplete) => {}}
-            />
-          </Stack>
+          <Interaction
+            elementID={element}
+            isDisabled={false}
+            mode={mode}
+            originalText=""
+            setText={(text) => {}}
+            setIsThinking={(isThinking) => {}}
+            setComplete={(isComplete) => {}}
+          />
         </Stack>
       </Box>
     </Fragment>
@@ -1150,12 +1130,26 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
 }
 
 function Interaction(props: InteractionProps) {
-  const Component = interactionMap[props.elementID.learn.chapters[props.elementID.chapterIndex].elements[props.elementID.elementIndex].type].Component;
+  const [ type, setType ] = useState(props.elementID.learn.chapters[props.elementID.chapterIndex].elements[props.elementID.elementIndex].type);
+
+  const Component = interactionMap[type].Component;
 
   return (
-    <Component
-      {...props}
-    />
+    <Stack
+      sx={{ flexGrow: 1 }}
+    >
+      {props.mode == ComponentMode.Edit && (
+        <TypeSwitcher
+          elementID={props.elementID}
+          type={type}
+          setType={setType}
+        />
+      )}
+
+      <Component
+        {...props}
+      />
+    </Stack>
   );
 }
 
@@ -1324,9 +1318,7 @@ function Text(props: TextProps) {
   );
 }
 
-function TypeSwitcher({ elementID }: { elementID: ElementID }) {
-  const [ type, setType ] = useState(elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].type);
-
+function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type: string, setType: (type: string) => void }) {
   function setTypeAndUpdate(type: string) {
     setType(type);
     
