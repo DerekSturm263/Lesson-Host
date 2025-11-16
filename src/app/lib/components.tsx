@@ -469,50 +469,66 @@ export function Header({ title, slug, mode, type, progress, showProgress, hideLo
             )}
 
             {slug != "" && hideLogo == false && (
-              <IconButton
-                onClick={async (e) => {
-                  setIsOpen(true);
-                  setTabIndex(0);
-                  setHideLogoState(true);
-                  setWidth(800);
-                  setHeight(600);
-                }}
+              <Tooltip
+                title="Share or embed this content"
               >
-                {mode == ComponentMode.Edit ? <Launch /> : <Share />}
-              </IconButton>
+                <IconButton
+                  onClick={async (e) => {
+                    setIsOpen(true);
+                    setTabIndex(0);
+                    setHideLogoState(true);
+                    setWidth(800);
+                    setHeight(600);
+                  }}
+                >
+                  <Share />
+                </IconButton>
+              </Tooltip>
             )}
 
             {(mode == ComponentMode.Edit) && (
-              <IconButton
-                onClick={async (e) => {
-                  
-                }}
+              <Tooltip
+                title="Generate using AI"
               >
-                <AutoAwesome />
-              </IconButton>
+                <IconButton
+                  onClick={async (e) => {
+
+                  }}
+                >
+                  <AutoAwesome />
+                </IconButton>
+              </Tooltip>
             )}
 
             {(showSave || mode == ComponentMode.Edit) && (
-              <IconButton
-                onClick={async (e) => {
-                  await save(slug, value);
-
-                  setSnackbarText("Saved");
-                  setIsSnackbarOpen(true);
-                }}
+              <Tooltip
+                title="Save changes"
               >
-                <Save />
-              </IconButton>
+                <IconButton
+                  onClick={async (e) => {
+                    await save(slug, value);
+
+                    setSnackbarText("Saved");
+                    setIsSnackbarOpen(true);
+                  }}
+                >
+                  <Save />
+                </IconButton>
+              </Tooltip>
             )}
             
             {(mode == ComponentMode.Edit) && (
-              <IconButton
-                onClick={async (e) => {
-                  await remove(slug, linkType);
-                }}
+              <Tooltip
+                title="Delete permanently"
               >
-                <Delete />
-              </IconButton>
+                <IconButton
+                  onClick={async (e) => {
+                    await remove(slug, linkType);
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              </Tooltip>
             )}
           </Stack>
         </Toolbar>
