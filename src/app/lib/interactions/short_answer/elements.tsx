@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { ComponentMode, InteractionProps, InteractionPackage } from "@/app/lib/types";
 import { Type } from '@google/genai';
 import * as helpers from "@/app/lib/helpers";
+import { FormatQuote } from '@mui/icons-material';
 
 export type InteractionType = {
   correctAnswer: string | null
@@ -99,6 +100,7 @@ const interaction: InteractionPackage = {
   id: "shortAnswer",
   prettyName: "Short Answer",
   category: "Assessments",
+  icon: FormatQuote,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

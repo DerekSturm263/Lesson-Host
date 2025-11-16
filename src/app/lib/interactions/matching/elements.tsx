@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { InteractionPackage, InteractionProps } from "@/app/lib/types";
 import { Type } from '@google/genai';
 import * as helpers from "@/app/lib/helpers";
+import { SyncAlt } from '@mui/icons-material';
 
 export type InteractionType = {
   items: MatchingItem[]
@@ -97,6 +98,7 @@ const interaction: InteractionPackage = {
   id: "matching",
   prettyName: "Matching",
   category: "Assessments",
+  icon: SyncAlt,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

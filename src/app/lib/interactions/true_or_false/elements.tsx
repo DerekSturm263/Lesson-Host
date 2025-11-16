@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel'
+import { ToggleOn } from '@mui/icons-material';
 
 export type InteractionType = {
   isCorrect: boolean
@@ -104,6 +105,7 @@ const interaction: InteractionPackage = {
   id: "trueOrFalse",
   prettyName: "True or False",
   category: "Assessments",
+  icon: ToggleOn,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import { createElement } from 'react';
+import { Architecture } from '@mui/icons-material';
 
 export type InteractionType = {
   placeholder: boolean
@@ -46,6 +47,7 @@ const interaction: InteractionPackage = {
   id: "graph",
   prettyName: "Graph",
   category: "Mathematics",
+  icon: Architecture,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

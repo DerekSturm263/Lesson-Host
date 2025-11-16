@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { InteractionPackage, InteractionProps } from "../../types";
 import { Type } from '@google/genai';
 import * as helpers from "../../helpers";
+import { FormatLineSpacing } from '@mui/icons-material';
 
 export type InteractionType = {
   correctOrder: string[]
@@ -64,6 +65,7 @@ const interaction: InteractionPackage = {
   id: "ordering",
   prettyName: "Ordering",
   category: "Assessments",
+  icon: FormatLineSpacing,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

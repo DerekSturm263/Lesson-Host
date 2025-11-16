@@ -19,7 +19,7 @@ import { Fragment, useState } from 'react';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 import { FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
-import { Add, MoreVert } from '@mui/icons-material';
+import { Add, Code, MoreVert } from '@mui/icons-material';
 
 export type InteractionType = {
   language: CodespaceLanguage,
@@ -425,6 +425,7 @@ const interaction: InteractionPackage = {
   id: "codespace",
   prettyName: "Codespace",
   category: "Computer Science",
+  icon: Code,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

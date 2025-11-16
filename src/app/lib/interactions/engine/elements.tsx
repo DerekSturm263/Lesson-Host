@@ -5,6 +5,7 @@ import { Type } from '@google/genai';
 import { CSSProperties, JSX, PureComponent, useState } from 'react';
 //import { GameEngine } from 'react-game-engine';
 import * as helpers from '@/app/lib/helpers';
+import { SportsEsports } from '@mui/icons-material';
 
 export type InteractionType = {
   properties: CSSProperties,
@@ -101,6 +102,7 @@ const interaction: InteractionPackage = {
   id: "engine",
   prettyName: "Engine",
   category: "Computer Science",
+  icon: SportsEsports,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import { Delete, Folder } from '@mui/icons-material';
 
 export type InteractionType = {
   files: File[]
@@ -176,6 +176,7 @@ const interaction: InteractionPackage = {
   id: "files",
   prettyName: "Files",
   category: "Miscellaneous",
+  icon: Folder,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

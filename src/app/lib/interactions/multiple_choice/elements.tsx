@@ -19,6 +19,7 @@ import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { CheckBox } from '@mui/icons-material';
 
 export type InteractionType = {
   items: MultipleChoiceItem[],
@@ -268,6 +269,7 @@ const interaction: InteractionPackage = {
   id: "multipleChoice",
   prettyName: "Multiple Choice",
   category: "Assessments",
+  icon: CheckBox,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

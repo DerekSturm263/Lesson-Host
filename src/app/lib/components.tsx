@@ -1153,6 +1153,54 @@ function Interaction(props: InteractionProps) {
   );
 }
 
+function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type: string, setType: (type: string) => void }) {
+  function setTypeAndUpdate(type: string) {
+    setType(type);
+    
+    elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].type = type;
+    elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = interactionMap[type].defaultValue;
+  }
+
+  return (
+    <FormControl
+      size="small"
+    >
+      <InputLabel id="type-label">Type</InputLabel>
+
+      <Select
+        labelId="type-label"
+        value={type}
+        label="Type"
+        onChange={(e) => setTypeAndUpdate(e.target.value)}
+        MenuProps={{
+          PaperProps: {
+            style: {
+              maxHeight: '400px'
+            }
+          }
+        }}
+      >
+        {(Object.values(interactionMap).map((item, index) => (
+          <MenuItem
+            key={index}
+            value={item.id}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <item.icon />
+              </ListItemIcon>
+
+              <ListItemText>
+                {item.prettyName}
+              </ListItemText>
+            </ListItemButton>
+          </MenuItem>
+        )))}
+      </Select>
+    </FormControl>
+  );
+}
+
 function Text(props: TextProps) {
   async function rephrase() {
     props.setIsThinking(true);
@@ -1315,46 +1363,6 @@ function Text(props: TextProps) {
         </Stack>
       </CardActions>
     </Card>
-  );
-}
-
-function TypeSwitcher({ elementID, type, setType }: { elementID: ElementID, type: string, setType: (type: string) => void }) {
-  function setTypeAndUpdate(type: string) {
-    setType(type);
-    
-    elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].type = type;
-    elementID.learn.chapters[elementID.chapterIndex].elements[elementID.elementIndex].value = interactionMap[type].defaultValue;
-  }
-
-  return (
-    <FormControl
-      size="small"
-    >
-      <InputLabel id="type-label">Type</InputLabel>
-
-      <Select
-        labelId="type-label"
-        value={type}
-        label="Type"
-        onChange={(e) => setTypeAndUpdate(e.target.value)}
-        MenuProps={{
-          PaperProps: {
-            style: {
-              maxHeight: '400px'
-            }
-          }
-        }}
-      >
-        {(Object.values(interactionMap).map((item, index) => (
-          <MenuItem
-            key={index}
-            value={item.id}
-          >
-            {item.prettyName}
-          </MenuItem>
-        )))}
-      </Select>
-    </FormControl>
   );
 }
 

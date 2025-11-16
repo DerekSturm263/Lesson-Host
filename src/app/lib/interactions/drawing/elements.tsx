@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 //import Atrament from 'atrament';
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
+import { Brush } from '@mui/icons-material';
 
 export type InteractionType = {
   placeholder: boolean
@@ -40,6 +41,7 @@ const interaction: InteractionPackage = {
   id: "drawing",
   prettyName: "Drawing",
   category: "Art",
+  icon: Brush,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

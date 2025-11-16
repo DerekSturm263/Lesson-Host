@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
+import { FilterFrames } from '@mui/icons-material';
 
 export type InteractionType = {
   source: string
@@ -67,6 +68,7 @@ const interaction: InteractionPackage = {
   id: "iframe",
   prettyName: "IFrame",
   category: "Miscellaneous",
+  icon: FilterFrames,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

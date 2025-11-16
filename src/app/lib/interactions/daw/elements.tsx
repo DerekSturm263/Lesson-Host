@@ -3,6 +3,7 @@
 import Box from '@mui/material/Box';
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
+import { GraphicEq } from '@mui/icons-material';
 
 export type InteractionType = {
   placeholder: boolean
@@ -39,6 +40,7 @@ const interaction: InteractionPackage = {
   id: "daw",
   prettyName: "Digital Audio Workstation",
   category: "Audio",
+  icon: GraphicEq,
   defaultValue: defaultValue,
   schema: schema,
   Component: Component

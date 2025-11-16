@@ -1,4 +1,5 @@
 import { SchemaUnion } from "@google/genai";
+import { SvgIconComponent } from "@mui/icons-material";
 import { JSX } from "react";
 
 export type Element = {
@@ -476,6 +477,7 @@ export type InteractionPackage = {
   id: string,
   prettyName: string,
   category: string,
+  icon: SvgIconComponent,
   defaultValue: object,
   schema: SchemaUnion,
   Component: (props: InteractionProps) => JSX.Element
