@@ -297,7 +297,10 @@ function Component(props: InteractionProps) {
         >
           <Tabs
             value={tabIndex}
-            onChange={(e, value) => { setTabIndex(value); }}
+            onChange={(e, value) => {
+              if (value < content.length)
+                setTabIndex(value);
+            }}
             variant="scrollable"
             scrollButtons="auto"
           >
