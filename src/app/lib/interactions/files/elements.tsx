@@ -81,9 +81,11 @@ function Component(props: InteractionProps) {
   }
 
   return (
-    <Stack>
+    <Stack
+      sx={{ alignContent: 'center' }}
+    >
       <Stack
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, justifyContent: 'center' }}
         direction="row"
         spacing={2}
       >
