@@ -702,6 +702,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
   const [ snackbarText, setSnackbarText ] = useState("");
   const [ isThinking, setIsThinking ] = useState(false);
   const [ cookies, setCookie ] = useCookies(['autoReadAloud']);
+  const [ hideDialogue, setHideDialogue ] = useState(false);
 
   function setText(value: string) {
     const newTexts = texts;
@@ -769,7 +770,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
   return (
     <Fragment>
       <Dialog
-        open={mode == ComponentMode.View && elementsCompleted.filter(element => element).length == elementsCompleted.length}
+        open={!hideDialogue && mode == ComponentMode.View && elementsCompleted.filter(element => element).length == elementsCompleted.length}
       >
         <DialogTitle>
           Lesson Complete!
@@ -777,7 +778,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
 
         <DialogContent>
           <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+            {"Good job on completing this lesson!"}
           </DialogContentText>
           
           <DialogContentText>
@@ -787,7 +788,7 @@ function LearnContentNoCookies({ slug, title, learn, mode, apiKey, hideLogo }: {
 
         <DialogActions>
           <Button
-            onClick={(e) => elementsCompleted.push(true)}
+            onClick={(e) => setHideDialogue(true)}
           >
             Close
           </Button>
@@ -950,11 +951,12 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
   const [ subSkills, setSubSkills ] = useState(practice.subSkills);
   const [ isNavigationEnabled, setIsNavigationEnabled ] = useState(true);
   const [ currentSubSkillIndex, setCurrentSubSkillIndex ] = useState(0);
+  const [ hideDialogue, setHideDialogue ] = useState(false);
 
   return (
     <Fragment>
       <Dialog
-        open={false}
+        open={!hideDialogue}
       >
         <DialogTitle>
           Practice Complete!
@@ -962,7 +964,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
 
         <DialogContent>
           <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+            {"Good job on completing this practice!"}
           </DialogContentText>
           
           <DialogContentText>
@@ -972,7 +974,7 @@ function PracticeContentNoCookies({ slug, title, practice, mode, apiKey, hideLog
 
         <DialogActions>
           <Button
-            onClick={(e) => {}}
+            onClick={(e) => setHideDialogue(true)}
           >
             Close
           </Button>
@@ -1065,7 +1067,7 @@ function OpenContentNoCookies({ slug, title, project, mode, apiKey, hideLogo }: 
 
         <DialogContent>
           <DialogContentText>
-            {"Take a screenshot of this dialogue and upload it to the assignment page on your school's LMS."}
+            {"Good job on completing this project!"}
           </DialogContentText>
           
           <DialogContentText>
