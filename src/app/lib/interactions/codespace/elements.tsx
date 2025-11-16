@@ -18,8 +18,8 @@ import { ComponentMode, InteractionPackage, InteractionProps } from '@/app/lib/t
 import { Fragment, useState } from 'react';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material';
+import { Add, MoreVert } from '@mui/icons-material';
 
 export type InteractionType = {
   language: CodespaceLanguage,
@@ -297,10 +297,7 @@ function Component(props: InteractionProps) {
         >
           <Tabs
             value={tabIndex}
-            onChange={(e, value) => {
-              if (value < content.length)
-                setTabIndex(value);
-            }}
+            onChange={(e, value) => { setTabIndex(value); }}
             variant="scrollable"
             scrollButtons="auto"
           >
@@ -308,6 +305,14 @@ function Component(props: InteractionProps) {
               <Tab
                 key={index}
                 label={file.name}
+                icon={
+                  <IconButton
+                    onClick={(e) => {}}
+                  >
+                    <MoreVert />
+                  </IconButton>
+                }
+                iconPosition='end'
               />
             ))}
 
