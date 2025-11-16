@@ -36,7 +36,7 @@ export default async function verify(question: string, userResponse: string[], v
     `TASK:
     ${isValid ?
       `The student's response was correct, they got all the CORRECT ANSWERS. Congratulate the student on getting their answers right. Review how the QUESTION was solved, why the USER RESPONSE was correct, and why the INCORRECT ANSWERS were incorrect.` :
-      `The student's response was incorrect, they didn't get all the CORRECT ANSWERS. View the USER'S RESPONSE and the original QUESTION and give the student feedback on why their answer was wrong. Pay attention to if any of the USER's RESPONSES were part of the INCORRECT ANSWERS or if they just didn't get all the CORRECT ANSWERS. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
+      `The student's response was incorrect, they didn't get all the CORRECT ANSWERS. View the USER'S RESPONSE and the original QUESTION and give the student feedback on why their answer was wrong. Pay attention to if any of the USER's RESPONSES were part of the INCORRECT ANSWERS or if they just didn't get all the CORRECT ANSWERS. If they selected one of the INCORRECT ANSWERS, tell the user why it's wrong. Give the student some guidance on how they should work towards getting the CORRECT ANSWER.`
     }
 
     QUESTION:

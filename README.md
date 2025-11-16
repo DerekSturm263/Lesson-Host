@@ -42,14 +42,14 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
 - [ ] Interaction Types
   - [x] Short Answer
   - [x] True or False
-  - [x] Multiple Choice
+  - [x] Multiple Choice (needs edit features)
   - [ ] Matching
   - [ ] Ordering
   - [ ] Files
   - [ ] Drawing
   - [ ] Graph
   - [ ] Digital Audio Workspace
-  - [x] Codespace
+  - [x] Codespace (needs edit features)
   - [ ] Engine
   - [x] IFrame
 
