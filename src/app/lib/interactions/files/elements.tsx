@@ -5,7 +5,7 @@ import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from "
 import { useState } from "react";
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
-import { Button, IconButton, Stack, TextField } from '@mui/material';
+import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 
 export type InteractionType = {
@@ -81,8 +81,8 @@ function Component(props: InteractionProps) {
   }
 
   return (
-    <Stack
-      sx={{ alignContent: 'center' }}
+    <Box
+      sx={{ flexGrow: 1, alignSelf: "center", alignContent: "center" }}
     >
       <Stack
         sx={{ flexGrow: 1, justifyContent: 'center' }}
@@ -108,7 +108,7 @@ function Component(props: InteractionProps) {
           Add File
         </Button>
       )}
-    </Stack>
+    </Box>
   );
 }
 
