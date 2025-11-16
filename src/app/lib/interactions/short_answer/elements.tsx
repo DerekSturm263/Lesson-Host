@@ -84,6 +84,7 @@ function Component(props: InteractionProps) {
               variant="contained"
               onClick={(e) => submit()}
               sx={{ width: '120px' }}
+              disabled={props.isDisabled}
             >
               Submit
             </Button>
