@@ -30,7 +30,7 @@ export default async function verify(question: string, userResponse: string[], v
     INCORRECT ANSWERS:
     ${value.items.filter(item => !item.isCorrect).map(item => item.value).join(', ')}`;
   } else if (value.choiceType == ChoiceType.NeedsAllCorrect) {
-    isValid = overlappingAnswers.length == value.items.filter(item => item.isCorrect).length;
+    isValid = overlappingAnswers.length == value.items.filter(item => item.isCorrect).length && overlappingAnswers.length == userResponse.length;
 
     contents =
     `TASK:
