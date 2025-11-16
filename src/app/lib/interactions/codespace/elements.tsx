@@ -19,6 +19,7 @@ import { Fragment, useState } from 'react';
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Add } from '@mui/icons-material';
 
 export type InteractionType = {
   language: CodespaceLanguage,
@@ -309,7 +310,16 @@ function Component(props: InteractionProps) {
 
             {(props.mode == ComponentMode.Edit || allowNewFiles) && (
               <Tab
-                label="New File"
+                icon={<Add />}
+                onClick={(e) => {
+                  const newContent = content;
+                  newContent.push({ name: "New File", content: "" });
+                  setContent(newContent);
+
+                  if (props.mode == ComponentMode.Edit) {
+                    helpers.getInteractionValue<InteractionType>(props.elementID).content = content;
+                  }
+                }}
               />
             )}
           </Tabs>
