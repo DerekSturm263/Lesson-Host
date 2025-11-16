@@ -11,18 +11,18 @@ Free public education is a right that everyone should possess. MySkillStudy.com 
   - [x] Rephrase
   - [x] Explain
   - [ ] Lesson Generator
-- [ ] Skill Pages
+- [ ] Skills
   - [ ] Overview
   - [x] Learn
   - [ ] Practice
   - [ ] Quiz
-- [ ] Project Pages
+- [ ] Projects
   - [ ] Overview
   - [ ] Open
   - [ ] Example
-- [ ] Course Pages
+- [ ] Courses
   - [ ] Overview
-- [ ] Read-Along Text
+- [ ] Engaging Text
   - [ ] Letter-by-Letter Printing
   - [ ] Natural Voice TTS
   - [ ] Intuitive Controls
