@@ -40,6 +40,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "atrament": "^5.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "react-reorder": "^3.0.0-alpha.7",

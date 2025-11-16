@@ -6,6 +6,7 @@ import { ElementID, ComponentMode, InteractionProps, InteractionPackage } from "
 import { useState } from "react";
 import { Type } from '@google/genai';
 import * as helpers from '@/app/lib/helpers';
+import { Stack, TextField } from '@mui/material';
 
 export type InteractionType = {
   files: File[]
@@ -80,8 +81,10 @@ function Component(props: InteractionProps) {
   }
 
   return (
-    <Box
+    <Stack
       sx={{ flexGrow: 1 }}
+      direction="row"
+      spacing={2}
     >
       {files.map((item, index) => (
         <FileItem
@@ -93,7 +96,7 @@ function Component(props: InteractionProps) {
           index={index}
         />
       ))}
-    </Box>
+    </Stack>
   );
 }
 
@@ -101,40 +104,41 @@ function FileItem({ elementID, isDisabled, mode, item, index }: { elementID: Ele
   const [ source, setSource ] = useState(item.source);
   const [ isDownloadable, setIsDownloadable ] = useState(item.isDownloadable);
   
-  const fileType = source.substring(source.length - 3) == "png" ? ("png") :
-  source.substring(source.length - 3) == "mp4" ? ("mp4") :
-  source.substring(source.length - 3) == "mp3" ? ("mp3") : "other";
+  const extension = source.substring(source.length - 3);
 
-  switch (fileType) {
-    case "png":
-      return (
-        <Image
-          src={item.source}
-          alt={item.source}
+  return (
+    <>
+      {mode == ComponentMode.Edit && (
+        <TextField
+          label="Source"
+          autoComplete="off"
+          value={source}
+          onChange={(e) => {
+            setSource(e.target.value);
+          }}
         />
-      );
-
-    case "mp4":
-      return (
+      )}
+      
+      {extension == "png" ? (
+        <Image
+          src={source}
+          alt={source}
+        />
+      ) : extension == "mp4" ? (
         <video
-          src={item.source}
+          src={source}
           controls
         ></video>
-      );
-
-    case "mp3":
-      return (
+      ) : extension == "mp3" ? (
         <audio
-          src={item.source}
+          src={source}
           controls
         ></audio>
-      );
-
-    case "other":
-      return (
+      ) : (
         <></>
-      );
-  }
+      )}
+    </>
+  );
 }
 
 const interaction: InteractionPackage = {

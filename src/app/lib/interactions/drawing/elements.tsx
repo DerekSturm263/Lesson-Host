@@ -1,6 +1,7 @@
 'use client'
 
 import Box from '@mui/material/Box';
+//import Atrament from 'atrament';
 import { InteractionPackage, InteractionProps } from '@/app/lib/types';
 import { Type } from '@google/genai';
 
