@@ -56,3 +56,5 @@ This website is and will always be open source. If you'd like to contribute by a
 
 ## Issues/Feedback/Proposals
 Please report any issues by adding them to the [GitHub Issues](https://github.com/DerekSturm263/Lesson-Host/issues) list. Feedback and feature proposals can also be submitted through there. You will be notified if your feedback/proposal is accepted into the feature backlog.
+
+### [Join the discussion on Discord!](https://discord.gg/Xctg4ffRz5)
